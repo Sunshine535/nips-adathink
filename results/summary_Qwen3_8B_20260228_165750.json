@@ -1,0 +1,69 @@
+{
+  "meta": {
+    "timestamp_utc": "20260228_165750",
+    "model": "Qwen/Qwen3-8B",
+    "n_samples": 40,
+    "seed": 11,
+    "data_seed": 3303,
+    "world_size": 4,
+    "distributed": true,
+    "budgets": [
+      128,
+      256,
+      512
+    ],
+    "adaptive_chunks": [
+      128,
+      128,
+      256
+    ],
+    "adaptive_max_total": 512,
+    "use_verifier": false,
+    "prompt_format": "chat",
+    "direct_answer": false,
+    "enable_thinking": true,
+    "strict_final_only": true,
+    "projection_on_missing_final": true,
+    "projection_max_tokens": 32
+  },
+  "fixed": {
+    "128": {
+      "accuracy": 0.425,
+      "avg_tokens": 144.3,
+      "avg_latency_s": 3.636267754844448,
+      "final_rate": 0.0,
+      "projection_rate": 1.0,
+      "avg_projection_tokens": 16.3
+    },
+    "256": {
+      "accuracy": 0.625,
+      "avg_tokens": 273.0,
+      "avg_latency_s": 6.819507041547331,
+      "final_rate": 0.0,
+      "projection_rate": 1.0,
+      "avg_projection_tokens": 17.0
+    },
+    "512": {
+      "accuracy": 0.825,
+      "avg_tokens": 464.95,
+      "avg_latency_s": 11.636252024827991,
+      "final_rate": 0.05,
+      "projection_rate": 0.95,
+      "avg_projection_tokens": 9.85
+    }
+  },
+  "adaptive": {
+    "accuracy": 0.875,
+    "avg_tokens": 466.2,
+    "avg_latency_s": 11.652436250663595,
+    "avg_verifier_calls": 0.0,
+    "early_stop_rate": 0.0,
+    "final_rate": 0.025,
+    "projection_rate": 0.975,
+    "avg_projection_tokens": 10.075
+  },
+  "overthinking": {
+    "fixed_128_vs_fixed_512": 0.0,
+    "fixed_128_vs_adaptive": 0.0
+  }
+}

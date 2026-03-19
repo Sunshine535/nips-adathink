@@ -1,0 +1,62 @@
+{
+  "meta": {
+    "timestamp_utc": "20260303_145945",
+    "input_csvs": [
+      "methods/01_adathink/results/per_sample_Qwen3_8B_20260228_164451.csv",
+      "methods/01_adathink/results/per_sample_Qwen3_8B_20260228_165122.csv",
+      "methods/01_adathink/results/per_sample_Qwen3_8B_20260228_165750.csv",
+      "methods/01_adathink/results/per_sample_Qwen3_8B_20260303_134742.csv",
+      "methods/01_adathink/results/per_sample_Qwen3_8B_20260303_135353.csv",
+      "methods/01_adathink/results/per_sample_Qwen3_8B_20260303_140015.csv",
+      "methods/01_adathink/results/per_sample_Qwen3_8B_20260303_140626.csv"
+    ],
+    "n_samples": 280,
+    "n_bootstrap": 10000,
+    "bootstrap_seed": 20260228,
+    "alpha": 0.05
+  },
+  "means": {
+    "fixed_128": {
+      "accuracy": 0.42857142857142855,
+      "avg_tokens": 145.44285714285715
+    },
+    "fixed_256": {
+      "accuracy": 0.6178571428571429,
+      "avg_tokens": 271.475
+    },
+    "fixed_512": {
+      "accuracy": 0.825,
+      "avg_tokens": 463.9642857142857
+    },
+    "adaptive": {
+      "accuracy": 0.8464285714285714,
+      "avg_tokens": 466.58214285714286
+    }
+  },
+  "paired_delta": {
+    "fixed256_minus_fixed512": {
+      "accuracy_mean": -0.20714285714285716,
+      "accuracy_ci95": [
+        -0.26071428571428573,
+        -0.15357142857142858
+      ],
+      "avg_tokens_mean": -192.48928571428573,
+      "avg_tokens_ci95": [
+        -201.35714285714286,
+        -183.12857142857143
+      ]
+    },
+    "adaptive_minus_fixed256": {
+      "accuracy_mean": 0.22857142857142856,
+      "accuracy_ci95": [
+        0.175,
+        0.28214285714285714
+      ],
+      "avg_tokens_mean": 195.10714285714286,
+      "avg_tokens_ci95": [
+        185.91785714285714,
+        203.95
+      ]
+    }
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "meta": {
+    "timestamp_utc": "20260227_134409",
+    "model": "Qwen/Qwen3-8B",
+    "n_samples": 100,
+    "world_size": 4,
+    "distributed": true,
+    "budgets": [
+      64,
+      128,
+      256
+    ],
+    "adaptive_chunks": [
+      64,
+      64,
+      128
+    ],
+    "adaptive_max_total": 256,
+    "use_verifier": false,
+    "prompt_format": "chat",
+    "direct_answer": true,
+    "enable_thinking": false
+  },
+  "fixed": {
+    "64": {
+      "accuracy": 0.28,
+      "avg_tokens": 18.47,
+      "avg_latency_s": 0.4771681125994655
+    },
+    "128": {
+      "accuracy": 0.34,
+      "avg_tokens": 28.78,
+      "avg_latency_s": 0.7131804175092838
+    },
+    "256": {
+      "accuracy": 0.42,
+      "avg_tokens": 35.81,
+      "avg_latency_s": 0.8867778651797562
+    }
+  },
+  "adaptive": {
+    "accuracy": 0.43,
+    "avg_tokens": 36.68,
+    "avg_latency_s": 0.914715804240841,
+    "avg_verifier_calls": 0.0,
+    "early_stop_rate": 0.89
+  },
+  "overthinking": {
+    "fixed_64_vs_fixed_256": 0.0,
+    "fixed_64_vs_adaptive": 0.0
+  }
+}

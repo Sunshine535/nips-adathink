@@ -1,0 +1,69 @@
+{
+  "meta": {
+    "timestamp_utc": "20260303_140626",
+    "model": "Qwen/Qwen3-8B",
+    "n_samples": 40,
+    "seed": 11,
+    "data_seed": 3707,
+    "world_size": 4,
+    "distributed": true,
+    "budgets": [
+      128,
+      256,
+      512
+    ],
+    "adaptive_chunks": [
+      128,
+      128,
+      256
+    ],
+    "adaptive_max_total": 512,
+    "use_verifier": false,
+    "prompt_format": "chat",
+    "direct_answer": false,
+    "enable_thinking": true,
+    "strict_final_only": true,
+    "projection_on_missing_final": true,
+    "projection_max_tokens": 32
+  },
+  "fixed": {
+    "128": {
+      "accuracy": 0.55,
+      "avg_tokens": 146.025,
+      "avg_latency_s": 3.6751675646498825,
+      "final_rate": 0.0,
+      "projection_rate": 1.0,
+      "avg_projection_tokens": 18.025
+    },
+    "256": {
+      "accuracy": 0.65,
+      "avg_tokens": 269.375,
+      "avg_latency_s": 6.700590908099821,
+      "final_rate": 0.025,
+      "projection_rate": 0.975,
+      "avg_projection_tokens": 15.425
+    },
+    "512": {
+      "accuracy": 0.9,
+      "avg_tokens": 440.45,
+      "avg_latency_s": 10.94731229382469,
+      "final_rate": 0.05,
+      "projection_rate": 0.95,
+      "avg_projection_tokens": 8.55
+    }
+  },
+  "adaptive": {
+    "accuracy": 0.925,
+    "avg_tokens": 450.05,
+    "avg_latency_s": 11.220829646700214,
+    "avg_verifier_calls": 0.0,
+    "early_stop_rate": 0.0,
+    "final_rate": 0.025,
+    "projection_rate": 0.975,
+    "avg_projection_tokens": 9.0
+  },
+  "overthinking": {
+    "fixed_128_vs_fixed_512": 0.0,
+    "fixed_128_vs_adaptive": 0.0
+  }
+}

@@ -1,0 +1,199 @@
+# Experiment Status (Updated 2026-03-03)
+
+## 01 AdaThink
+- Key scripts:
+  - `methods/01_adathink/scripts/run_gsm8k_experiment.py`
+  - `methods/01_adathink/scripts/run_gsm8k_torchrun_4gpu.sh`
+- Strict/projection replications (Qwen3.5-27B, `n=40` each):
+  - `summary_Qwen3.5_27B_20260227_150649.json` (`data_seed=101`)
+    - `Acc@128=0.40`, `Acc@256=0.55`, `Acc@512=0.425`, `Acc@Adaptive=0.40`
+  - `summary_Qwen3.5_27B_20260227_152431.json` (`data_seed=202`)
+    - `Acc@128=0.325`, `Acc@256=0.50`, `Acc@512=0.475`, `Acc@Adaptive=0.525`
+  - `summary_Qwen3.5_27B_20260227_154356.json` (`data_seed=303`)
+    - `Acc@128=0.275`, `Acc@256=0.45`, `Acc@512=0.55`, `Acc@Adaptive=0.55`
+  - `summary_Qwen3.5_27B_20260227_192225.json` (`data_seed=404`)
+    - `Acc@128=0.40`, `Acc@256=0.625`, `Acc@512=0.625`, `Acc@Adaptive=0.575`
+  - `summary_Qwen3.5_27B_20260228_050913.json` (`data_seed=505`)
+    - `Acc@128=0.25`, `Acc@256=0.325`, `Acc@512=0.425`, `Acc@Adaptive=0.60`
+  - `summary_Qwen3.5_27B_20260228_052641.json` (`data_seed=606`)
+    - `Acc@128=0.275`, `Acc@256=0.45`, `Acc@512=0.45`, `Acc@Adaptive=0.475`
+  - `summary_Qwen3.5_27B_20260228_055128.json` (`data_seed=707`)
+    - `Acc@128=0.35`, `Acc@256=0.375`, `Acc@512=0.45`, `Acc@Adaptive=0.60`
+  - `summary_Qwen3.5_27B_20260228_060842.json` (`data_seed=808`)
+    - `Acc@128=0.325`, `Acc@256=0.40`, `Acc@512=0.375`, `Acc@Adaptive=0.425`
+  - `summary_Qwen3.5_27B_20260228_065843.json` (`data_seed=909`)
+    - `Acc@128=0.225`, `Acc@256=0.40`, `Acc@512=0.50`, `Acc@Adaptive=0.525`
+  - `summary_Qwen3.5_27B_20260228_071554.json` (`data_seed=1001`)
+    - `Acc@128=0.40`, `Acc@256=0.35`, `Acc@512=0.40`, `Acc@Adaptive=0.35`
+  - `summary_Qwen3.5_27B_20260228_081708.json` (`data_seed=1103`)
+    - `Acc@128=0.475`, `Acc@256=0.775`, `Acc@512=0.60`, `Acc@Adaptive=0.60`
+  - `summary_Qwen3.5_27B_20260228_083415.json` (`data_seed=1205`)
+    - `Acc@128=0.30`, `Acc@256=0.50`, `Acc@512=0.525`, `Acc@Adaptive=0.40`
+  - `summary_Qwen3.5_27B_20260228_100413.json` (`data_seed=1307`)
+    - `Acc@128=0.325`, `Acc@256=0.30`, `Acc@512=0.45`, `Acc@Adaptive=0.525`
+  - `summary_Qwen3.5_27B_20260228_102125.json` (`data_seed=1409`)
+    - `Acc@128=0.40`, `Acc@256=0.60`, `Acc@512=0.525`, `Acc@Adaptive=0.55`
+  - `summary_Qwen3.5_27B_20260228_104506.json` (`data_seed=1511`)
+    - `Acc@128=0.30`, `Acc@256=0.375`, `Acc@512=0.55`, `Acc@Adaptive=0.60`
+  - `summary_Qwen3.5_27B_20260228_112037.json` (`data_seed=1613`)
+    - `Acc@128=0.325`, `Acc@256=0.425`, `Acc@512=0.45`, `Acc@Adaptive=0.35`
+  - `summary_Qwen3.5_27B_20260228_114200.json` (`data_seed=1717`)
+    - `Acc@128=0.60`, `Acc@256=0.575`, `Acc@512=0.40`, `Acc@Adaptive=0.425`
+  - `summary_Qwen3.5_27B_20260228_122430.json` (`data_seed=1819`)
+    - `Acc@128=0.25`, `Acc@256=0.425`, `Acc@512=0.60`, `Acc@Adaptive=0.625`
+  - `summary_Qwen3.5_27B_20260228_125252.json` (`data_seed=1921`)
+    - `Acc@128=0.30`, `Acc@256=0.475`, `Acc@512=0.60`, `Acc@Adaptive=0.625`
+  - `summary_Qwen3.5_27B_20260228_135728.json` (`data_seed=2023`)
+    - `Acc@128=0.20`, `Acc@256=0.45`, `Acc@512=0.525`, `Acc@Adaptive=0.475`
+  - `summary_Qwen3.5_27B_20260228_141822.json` (`data_seed=2125`)
+    - `Acc@128=0.45`, `Acc@256=0.475`, `Acc@512=0.375`, `Acc@Adaptive=0.40`
+  - `summary_Qwen3.5_27B_20260228_150620.json` (`data_seed=2227`)
+    - `Acc@128=0.20`, `Acc@256=0.375`, `Acc@512=0.525`, `Acc@Adaptive=0.625`
+  - `summary_Qwen3.5_27B_20260228_152825.json` (`data_seed=2329`)
+    - `Acc@128=0.40`, `Acc@256=0.45`, `Acc@512=0.40`, `Acc@Adaptive=0.45`
+- Twenty-three-run pooled summary (`n=920`):
+  - `qwen35_27b_overthinking_23seed_20260228.json`
+  - means: `Acc@128=0.3370`, `Acc@256=0.4620`, `Acc@512=0.4870`, `Acc@Adaptive=0.5076`
+  - paired deltas:
+    - `fixed256-fixed512`: `-0.0250` acc (95% CI `[-0.0707,+0.0207]`)
+    - `adaptive-fixed256`: `+0.0457` acc (95% CI `[+0.0000,+0.0913]`), with `+256.24` tokens
+- Learned controller update:
+  - `template_controller_lam0p15_20260228_23seed.json`
+  - significance:
+    - `template_controller_significance_lam0p15_20260228_23seed_vs_fixed256.json`
+  - macro mean: `acc=0.60435`, `tokens=269.49`, `utility=0.52539`
+  - vs fixed256: `+0.14239 acc`, `-16.80 tokens`, `+0.14731 utility`
+  - paired bootstrap CI:
+    - DeltaAcc `[+0.11957, +0.16522]`
+    - DeltaTokens `[-23.37, -10.19]`
+    - DeltaUtility `[+0.12519, +0.17000]`
+- Parametric controller update (linear hashed policy):
+  - `learned_controller_lam0p15_20260228_163626.json`
+  - significance:
+    - `learned_controller_significance_lam0p15_20260228_23seed_vs_fixed256.json`
+  - macro mean: `acc=0.56957`, `tokens=242.67`, `utility=0.49847`
+  - vs fixed256: `+0.10761 acc`, `-43.63 tokens`, `+0.12039 utility`
+  - paired bootstrap CI:
+    - DeltaAcc `[+0.07500, +0.14130]`
+    - DeltaTokens `[-52.39, -34.34]`
+    - DeltaUtility `[+0.08770, +0.15349]`
+- Second-scale extension (Qwen3-8B, thinking+strict+projection, `n=40` each):
+  - `summary_Qwen3_8B_20260228_164451.json` (`data_seed=3101`): `Acc@128=0.35`, `Acc@256=0.675`, `Acc@512=0.85`, `Acc@Adaptive=0.875`
+  - `summary_Qwen3_8B_20260228_165122.json` (`data_seed=3202`): `Acc@128=0.40`, `Acc@256=0.525`, `Acc@512=0.80`, `Acc@Adaptive=0.85`
+  - `summary_Qwen3_8B_20260228_165750.json` (`data_seed=3303`): `Acc@128=0.425`, `Acc@256=0.625`, `Acc@512=0.825`, `Acc@Adaptive=0.875`
+  - pooled overthinking (`n=120`):
+    - `qwen3_8b_think_overthinking_3seed_20260228.json`
+    - means: `Acc@128=0.3917`, `Acc@256=0.6083`, `Acc@512=0.8250`, `Acc@Adaptive=0.8667`
+    - `adaptive-fixed256`: `+0.2583` acc (95% CI `[+0.1750,+0.3500]`), `+201.78` tokens
+  - template controller (LOO):
+    - `template_controller_qwen3_8b_think_lam0p15_3seed_20260228.json`
+    - significance:
+      - `template_controller_qwen3_8b_think_significance_lam0p15_3seed_vs_fixed256_20260228.json`
+    - vs fixed256: `+0.1500 acc`, `+159.21 tokens`, `+0.10336 utility`
+  - parametric linear controller on same split:
+    - `learned_controller_lam0p15_20260228_165820.json`
+    - significance:
+      - `learned_controller_qwen3_8b_think_significance_lam0p15_3seed_vs_fixed256_20260228.json`
+    - vs fixed256: `-0.1250 acc`, `-65.14 tokens`, `-0.10592 utility`
+- 2026-03-03 optimization follow-up (same 8B-think 3-seed pool):
+  - Added sweep runner:
+    - `methods/01_adathink/scripts/run_parametric_sweep.py`
+  - Added value-based controller:
+    - `methods/01_adathink/scripts/run_value_budget_controller.py`
+  - Parametric sweep summaries:
+    - `qwen3_8b_think_gridC_20260303_scoreboard.csv`
+    - `qwen3_8b_think_gridCplus_20260303_scoreboard.csv`
+  - Value-controller summaries:
+    - `value_controller_qwen3_8b_think_pen0_20260303.json`
+    - `value_controller_qwen3_8b_think_pen1_20260303.json`
+    - `value_controller_qwen3_8b_think_penalty_sweep_20260303.csv`
+  - Best quality-heavy point (value controller, penalty `0.0`):
+    - vs fixed256: `+0.0750 acc`, `+54.13 tokens`, `+0.05914 utility`
+    - CIs:
+      - DeltaAcc `[+0.0000,+0.1500]`
+      - DeltaTokens `[+29.63,+78.59]`
+      - DeltaUtility `[-0.01219,+0.13247]`
+  - Best near-cost point (value controller, penalty `0.6~1.2`):
+    - vs fixed256: `+0.0083 acc`, `+11.03 tokens`, `+0.00510 utility`
+    - CIs:
+      - DeltaAcc `[-0.0583,+0.0750]`
+      - DeltaTokens `[-10.66,+33.69]`
+      - DeltaUtility `[-0.06413,+0.07559]`
+  - Interpretation:
+    - Cost gap is reduced substantially (from `+159` token to `+11` token zone), but matched-cost effect remains statistically inconclusive at `n=120`.
+- 2026-03-03 second-scale expansion completed (`7` seeds, `n=280`):
+  - new seeds:
+    - `summary_Qwen3_8B_20260303_134742.json` (`data_seed=3404`)
+    - `summary_Qwen3_8B_20260303_135353.json` (`data_seed=3505`)
+    - `summary_Qwen3_8B_20260303_140015.json` (`data_seed=3606`)
+    - `summary_Qwen3_8B_20260303_140626.json` (`data_seed=3707`)
+  - finalized manifest and pooled aggregate:
+    - `manifest_qwen3_8b_think_strict_7seed_20260303_145943.json`
+    - `qwen3_8b_think_overthinking_7seed_20260303_145943.json`
+  - pooled overthinking means:
+    - `Acc@128=0.4286`, `Tok@128=145.44`
+    - `Acc@256=0.6179`, `Tok@256=271.48`
+    - `Acc@512=0.8250`, `Tok@512=463.96`
+    - `Acc@Adaptive=0.8464`, `Tok@Adaptive=466.58`
+  - value-controller significance (vs fixed256):
+    - quality-first (`penalty=0.0`):
+      - `DeltaAcc=+0.1357` (95% CI `[+0.0929,+0.1821]`)
+      - `DeltaTokens=+86.67` (95% CI `[+70.95,+102.68]`)
+      - `DeltaUtility=+0.1103` (95% CI `[+0.0684,+0.1541]`)
+      - file: `value_controller_qwen3_8b_think_pen0_significance_vs_fixed256_20260303_145943.json`
+    - near-cost recommended (`penalty=0.8`):
+      - `DeltaAcc=+0.0464` (95% CI `[+0.0071,+0.0857]`)
+      - `DeltaTokens=+11.74` (95% CI `[-2.14,+25.78]`)
+      - `DeltaUtility=+0.0430` (95% CI `[+0.0061,+0.0794]`)
+      - file: `value_controller_qwen3_8b_think_7seed_pen0p8_significance_vs_fixed256_20260303_7seed.json`
+  - full penalty sweep:
+    - `value_controller_qwen3_8b_think_penalty_sweep_20260303_7seed.csv`
+  - interpretation:
+    - unlike `n=120`/`n=160`, matched-cost utility is now positive with CI above zero in near-cost settings.
+
+## 02 TRACE-Hallu (Pilot)
+- Script:
+  - `methods/02_trace_hallu/scripts/run_trace_hallu_pilot.py`
+- Output:
+  - `methods/02_trace_hallu/results/trace_hallu_pilot_20260227_150036.json`
+- Snapshot:
+  - detector F1 `0.644`
+  - policy acc `0.525`, avg tokens `43.25`, utility `0.4997`
+
+## 03 NoisePO (Pilot)
+- Script:
+  - `methods/03_noisepo/scripts/run_noisepo_pilot.py`
+- Output:
+  - `methods/03_noisepo/results/noisepo_pilot_20260227_150037.json`
+- Snapshot:
+  - robust-vs-standard differences are small/negative under this pilot.
+
+## 04 UniRAG-Policy (Pilot)
+- Script:
+  - `methods/04_unirag_policy/scripts/run_unirag_policy_pilot.py`
+- Output:
+  - `methods/04_unirag_policy/results/unirag_policy_pilot_20260227_150036.json`
+- Snapshot:
+  - best policy ties fixed256 on test utility.
+
+## 05 Text2Subspace (Pilot)
+- Script:
+  - `methods/05_text2subspace/scripts/run_text2subspace_pilot.py`
+- Output:
+  - `methods/05_text2subspace/results/text2subspace_pilot_20260227_151439.json`
+- Snapshot:
+  - low-rank rank-8 matches full-rank on this pilot (`acc=0.40`, utility `0.3848`).
+
+## 06 TemplateBank++ (Pilot)
+- Script:
+  - `methods/06_templatebank_pp/scripts/run_templatebank_pilot.py`
+- Output:
+  - `methods/06_templatebank_pp/results/templatebank_pilot_20260227_150036.json`
+- Snapshot:
+  - static/dynamic memory both below fixed256 quality but better utility than fixed64/fixed128.
+
+## Priority Next
+1. AdaThink: expand second-scale 8B-think replication (`>=10` seeds, target `n>=400`) using value-controller near-cost config to tighten CIs.
+2. AdaThink: add mandatory ablations (`halting-only`, `no-branch`, `no-verifier`) on both 27B and 8B-think tables.
+3. AdaThink: run larger `n` (>=200 per subset) on 27B to tighten confidence intervals and report Pareto frontiers.
+4. Convert pilots in `02~06` to non-proxy benchmarks with replications and paired statistical tests.

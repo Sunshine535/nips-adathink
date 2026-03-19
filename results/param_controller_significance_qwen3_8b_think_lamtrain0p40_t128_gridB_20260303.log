@@ -1,0 +1,46 @@
+{
+  "meta": {
+    "timestamp_utc": "20260303_123851",
+    "rows_csv": "methods/01_adathink/results/param_controller_rows_qwen3_8b_think_lamtrain0p40_t128_gridB_20260303.csv",
+    "compare_budget": 256,
+    "lambda_cost": 0.15,
+    "norm_tokens": 512.0,
+    "n_bootstrap": 10000,
+    "bootstrap_seed": 20260303,
+    "n_samples": 120
+  },
+  "learned_mean": {
+    "accuracy": 0.7416666666666667,
+    "avg_tokens": 397.56666666666666,
+    "avg_utility": 0.6251920572916667
+  },
+  "fixed_mean": {
+    "accuracy": 0.6083333333333333,
+    "avg_tokens": 272.05,
+    "avg_utility": 0.5286311848958333
+  },
+  "paired_delta_learned_minus_fixed": {
+    "accuracy": {
+      "mean": 0.13333333333333333,
+      "ci95": [
+        0.058333333333333334,
+        0.20833333333333334
+      ]
+    },
+    "avg_tokens": {
+      "mean": 125.51666666666667,
+      "ci95": [
+        105.69166666666666,
+        145.60833333333332
+      ]
+    },
+    "avg_utility": {
+      "mean": 0.09656087239583333,
+      "ci95": [
+        0.022649739583333342,
+        0.17229817708333336
+      ]
+    }
+  }
+}
+Saved: methods/01_adathink/results/param_controller_significance_qwen3_8b_think_lamtrain0p40_t128_gridB_20260303_vs_fixed256_evalLam0p15.json

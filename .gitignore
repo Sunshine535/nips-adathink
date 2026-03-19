@@ -1,0 +1,26 @@
+__pycache__/
+*.pyc
+*.pyo
+*.swp
+*.tmp
+*.pid
+
+# Local caches and download logs
+download_all.log
+download_core.log
+
+# Model weights (too large for git)
+models/
+checkpoints/
+
+# Editor
+.cursor/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Large result logs (keep JSON/CSV summaries)
+results/bg_*.log
+results/fg_*.log

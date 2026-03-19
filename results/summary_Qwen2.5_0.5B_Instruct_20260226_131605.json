@@ -1,0 +1,47 @@
+{
+  "meta": {
+    "timestamp_utc": "20260226_131605",
+    "model": "Qwen/Qwen2.5-0.5B-Instruct",
+    "n_samples": 3,
+    "budgets": [
+      32,
+      64,
+      128
+    ],
+    "adaptive_chunks": [
+      32,
+      32,
+      64
+    ],
+    "adaptive_max_total": 128,
+    "use_verifier": false
+  },
+  "fixed": {
+    "32": {
+      "accuracy": 0.0,
+      "avg_tokens": 32.0,
+      "avg_latency_s": 1.2518119566666428
+    },
+    "64": {
+      "accuracy": 0.0,
+      "avg_tokens": 64.0,
+      "avg_latency_s": 2.449151094663345
+    },
+    "128": {
+      "accuracy": 0.0,
+      "avg_tokens": 128.0,
+      "avg_latency_s": 4.851579631664208
+    }
+  },
+  "adaptive": {
+    "accuracy": 0.0,
+    "avg_tokens": 128.0,
+    "avg_latency_s": 4.936822766661256,
+    "avg_verifier_calls": 0.0,
+    "early_stop_rate": 0.0
+  },
+  "overthinking": {
+    "fixed_32_vs_fixed_128": 0.0,
+    "fixed_32_vs_adaptive": 0.0
+  }
+}

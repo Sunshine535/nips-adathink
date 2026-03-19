@@ -1,0 +1,69 @@
+{
+  "meta": {
+    "timestamp_utc": "20260228_102230",
+    "input_csvs": [
+      "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260227_150649.csv",
+      "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260227_152431.csv",
+      "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260227_154356.csv",
+      "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260227_192225.csv",
+      "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260228_050913.csv",
+      "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260228_052641.csv",
+      "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260228_055128.csv",
+      "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260228_060842.csv",
+      "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260228_065843.csv",
+      "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260228_071554.csv",
+      "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260228_081708.csv",
+      "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260228_083415.csv",
+      "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260228_100413.csv",
+      "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260228_102125.csv"
+    ],
+    "n_samples": 560,
+    "n_bootstrap": 10000,
+    "bootstrap_seed": 20260228,
+    "alpha": 0.05
+  },
+  "means": {
+    "fixed_128": {
+      "accuracy": 0.3375,
+      "avg_tokens": 158.26964285714286
+    },
+    "fixed_256": {
+      "accuracy": 0.4714285714285714,
+      "avg_tokens": 286.55892857142857
+    },
+    "fixed_512": {
+      "accuracy": 0.48392857142857143,
+      "avg_tokens": 542.4196428571429
+    },
+    "adaptive": {
+      "accuracy": 0.5071428571428571,
+      "avg_tokens": 542.2946428571429
+    }
+  },
+  "paired_delta": {
+    "fixed256_minus_fixed512": {
+      "accuracy_mean": -0.0125,
+      "accuracy_ci95": [
+        -0.07142857142857142,
+        0.044642857142857144
+      ],
+      "avg_tokens_mean": -255.8607142857143,
+      "avg_tokens_ci95": [
+        -256.51785714285717,
+        -255.19464285714287
+      ]
+    },
+    "adaptive_minus_fixed256": {
+      "accuracy_mean": 0.03571428571428571,
+      "accuracy_ci95": [
+        -0.023214285714285715,
+        0.09464285714285714
+      ],
+      "avg_tokens_mean": 255.7357142857143,
+      "avg_tokens_ci95": [
+        255.09642857142856,
+        256.3982142857143
+      ]
+    }
+  }
+}
