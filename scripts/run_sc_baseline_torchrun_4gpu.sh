@@ -10,11 +10,13 @@ if [ -z "${TORCHRUN_BIN}" ]; then
 fi
 
 : "${HF_ENDPOINT:=https://hf-mirror.com}"
-: "${XDG_CACHE_HOME:=/mnt/ae22ef98-e02a-4dfa-acf4-a307e8941cd9/nwh}"
+: "${XDG_CACHE_HOME:=$HOME/.cache}"
 : "${HF_HOME:=${XDG_CACHE_HOME}/huggingface}"
-: "${CUDA_VISIBLE_DEVICES:=0,1,2,3}"
+: "${CUDA_VISIBLE_DEVICES:=0,1,2,3,4,5,6,7}"
 
 export HF_ENDPOINT XDG_CACHE_HOME HF_HOME CUDA_VISIBLE_DEVICES
 
-"${TORCHRUN_BIN}" --standalone --nproc_per_node=4 \
-  methods/01_adathink/scripts/run_gsm8k_sc_baseline.py "$@"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+
+"${TORCHRUN_BIN}" --standalone --nproc_per_node=8 \
+  "${SCRIPT_DIR}/run_gsm8k_sc_baseline.py" "$@"
