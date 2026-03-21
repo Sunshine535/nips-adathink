@@ -1,0 +1,651 @@
+{
+  "meta": {
+    "timestamp_utc": "20260320_081550",
+    "input_csvs": [
+      "/workspace/nips-adathink/results/per_sample_math500_Qwen3.5_27B_20260320_055941.csv",
+      "/workspace/nips-adathink/results/per_sample_math500_Qwen3.5_27B_20260320_060352.csv",
+      "/workspace/nips-adathink/results/per_sample_math500_Qwen3.5_27B_20260320_060816.csv",
+      "/workspace/nips-adathink/results/per_sample_math500_Qwen3.5_27B_20260320_061205.csv",
+      "/workspace/nips-adathink/results/per_sample_math500_Qwen3.5_27B_20260320_061547.csv",
+      "/workspace/nips-adathink/results/per_sample_math500_Qwen3.5_27B_20260320_061953.csv",
+      "/workspace/nips-adathink/results/per_sample_math500_Qwen3.5_27B_20260320_062334.csv",
+      "/workspace/nips-adathink/results/per_sample_math500_Qwen3.5_27B_20260320_062732.csv",
+      "/workspace/nips-adathink/results/per_sample_math500_Qwen3.5_27B_20260320_063105.csv",
+      "/workspace/nips-adathink/results/per_sample_math500_Qwen3.5_27B_20260320_063505.csv",
+      "/workspace/nips-adathink/results/per_sample_math500_Qwen3.5_27B_20260320_063913.csv",
+      "/workspace/nips-adathink/results/per_sample_math500_Qwen3.5_27B_20260320_064313.csv",
+      "/workspace/nips-adathink/results/per_sample_math500_Qwen3.5_27B_20260320_064648.csv",
+      "/workspace/nips-adathink/results/per_sample_math500_Qwen3.5_27B_20260320_065106.csv",
+      "/workspace/nips-adathink/results/per_sample_math500_Qwen3.5_27B_20260320_065511.csv",
+      "/workspace/nips-adathink/results/per_sample_math500_Qwen3.5_27B_20260320_065922.csv",
+      "/workspace/nips-adathink/results/per_sample_math500_Qwen3.5_27B_20260320_070321.csv"
+    ],
+    "budgets": [
+      512,
+      1024,
+      2048
+    ],
+    "lambda_cost": 0.15,
+    "norm_tokens": 512.0,
+    "modes": [
+      "first1",
+      "first2",
+      "first3",
+      "first4",
+      "first2_lenbin",
+      "first3_lenbin"
+    ],
+    "protocol": "leave-one-csv-out with inner mode selection"
+  },
+  "folds": [
+    {
+      "test_csv": "/workspace/nips-adathink/results/per_sample_math500_Qwen3.5_27B_20260320_055941.csv",
+      "test_size": 40,
+      "selected_mode": "first3",
+      "learned": {
+        "accuracy": 0.125,
+        "avg_tokens": 779.825,
+        "avg_utility": -0.10346435546874995,
+        "action_match_best_rate": 0.775,
+        "reuse_rate": 0.8
+      },
+      "fixed": {
+        "512": {
+          "accuracy": 0.0,
+          "avg_tokens": 512.0,
+          "avg_utility": -0.15
+        },
+        "1024": {
+          "accuracy": 0.05,
+          "avg_tokens": 1024.0,
+          "avg_utility": -0.25
+        },
+        "2048": {
+          "accuracy": 0.275,
+          "avg_tokens": 1963.175,
+          "avg_utility": -0.30014892578124996
+        }
+      },
+      "oracle": {
+        "accuracy": 0.275,
+        "avg_tokens": 826.875,
+        "avg_utility": 0.03275146484375004
+      }
+    },
+    {
+      "test_csv": "/workspace/nips-adathink/results/per_sample_math500_Qwen3.5_27B_20260320_060352.csv",
+      "test_size": 40,
+      "selected_mode": "first4",
+      "learned": {
+        "accuracy": 0.125,
+        "avg_tokens": 687.15,
+        "avg_utility": -0.07631347656249994,
+        "action_match_best_rate": 0.875,
+        "reuse_rate": 0.725
+      },
+      "fixed": {
+        "512": {
+          "accuracy": 0.0,
+          "avg_tokens": 512.0,
+          "avg_utility": -0.15
+        },
+        "1024": {
+          "accuracy": 0.0,
+          "avg_tokens": 1024.0,
+          "avg_utility": -0.3
+        },
+        "2048": {
+          "accuracy": 0.225,
+          "avg_tokens": 2005.875,
+          "avg_utility": -0.36265869140624996
+        }
+      },
+      "oracle": {
+        "accuracy": 0.225,
+        "avg_tokens": 815.475,
+        "avg_utility": -0.01390869140624997
+      }
+    },
+    {
+      "test_csv": "/workspace/nips-adathink/results/per_sample_math500_Qwen3.5_27B_20260320_060816.csv",
+      "test_size": 40,
+      "selected_mode": "first4",
+      "learned": {
+        "accuracy": 0.075,
+        "avg_tokens": 651.65,
+        "avg_utility": -0.11591308593750001,
+        "action_match_best_rate": 0.825,
+        "reuse_rate": 0.775
+      },
+      "fixed": {
+        "512": {
+          "accuracy": 0.0,
+          "avg_tokens": 512.0,
+          "avg_utility": -0.15
+        },
+        "1024": {
+          "accuracy": 0.05,
+          "avg_tokens": 1024.0,
+          "avg_utility": -0.25
+        },
+        "2048": {
+          "accuracy": 0.2,
+          "avg_tokens": 2004.175,
+          "avg_utility": -0.38716064453124993
+        }
+      },
+      "oracle": {
+        "accuracy": 0.2,
+        "avg_tokens": 747.275,
+        "avg_utility": -0.01892822265625
+      }
+    },
+    {
+      "test_csv": "/workspace/nips-adathink/results/per_sample_math500_Qwen3.5_27B_20260320_061205.csv",
+      "test_size": 40,
+      "selected_mode": "first4",
+      "learned": {
+        "accuracy": 0.175,
+        "avg_tokens": 726.475,
+        "avg_utility": -0.037834472656249986,
+        "action_match_best_rate": 0.875,
+        "reuse_rate": 0.725
+      },
+      "fixed": {
+        "512": {
+          "accuracy": 0.0,
+          "avg_tokens": 512.0,
+          "avg_utility": -0.15
+        },
+        "1024": {
+          "accuracy": 0.075,
+          "avg_tokens": 1023.3,
+          "avg_utility": -0.22479492187499994
+        },
+        "2048": {
+          "accuracy": 0.3,
+          "avg_tokens": 1957.625,
+          "avg_utility": -0.27352294921875003
+        }
+      },
+      "oracle": {
+        "accuracy": 0.3,
+        "avg_tokens": 867.275,
+        "avg_utility": 0.045915527343750026
+      }
+    },
+    {
+      "test_csv": "/workspace/nips-adathink/results/per_sample_math500_Qwen3.5_27B_20260320_061547.csv",
+      "test_size": 40,
+      "selected_mode": "first4",
+      "learned": {
+        "accuracy": 0.025,
+        "avg_tokens": 724.025,
+        "avg_utility": -0.18711669921875013,
+        "action_match_best_rate": 0.75,
+        "reuse_rate": 0.725
+      },
+      "fixed": {
+        "512": {
+          "accuracy": 0.0,
+          "avg_tokens": 512.0,
+          "avg_utility": -0.15
+        },
+        "1024": {
+          "accuracy": 0.05,
+          "avg_tokens": 1024.0,
+          "avg_utility": -0.25
+        },
+        "2048": {
+          "accuracy": 0.125,
+          "avg_tokens": 1972.0,
+          "avg_utility": -0.452734375
+        }
+      },
+      "oracle": {
+        "accuracy": 0.15,
+        "avg_tokens": 633.375,
+        "avg_utility": -0.03555908203124998
+      }
+    },
+    {
+      "test_csv": "/workspace/nips-adathink/results/per_sample_math500_Qwen3.5_27B_20260320_061953.csv",
+      "test_size": 40,
+      "selected_mode": "first4",
+      "learned": {
+        "accuracy": 0.125,
+        "avg_tokens": 709.675,
+        "avg_utility": -0.08291259765624995,
+        "action_match_best_rate": 0.85,
+        "reuse_rate": 0.725
+      },
+      "fixed": {
+        "512": {
+          "accuracy": 0.0,
+          "avg_tokens": 512.0,
+          "avg_utility": -0.15
+        },
+        "1024": {
+          "accuracy": 0.075,
+          "avg_tokens": 1023.3,
+          "avg_utility": -0.22479492187499994
+        },
+        "2048": {
+          "accuracy": 0.175,
+          "avg_tokens": 1993.55,
+          "avg_utility": -0.40904785156249995
+        }
+      },
+      "oracle": {
+        "accuracy": 0.175,
+        "avg_tokens": 693.025,
+        "avg_utility": -0.02803466796874996
+      }
+    },
+    {
+      "test_csv": "/workspace/nips-adathink/results/per_sample_math500_Qwen3.5_27B_20260320_062334.csv",
+      "test_size": 40,
+      "selected_mode": "first4",
+      "learned": {
+        "accuracy": 0.1,
+        "avg_tokens": 675.4,
+        "avg_utility": -0.09787109374999999,
+        "action_match_best_rate": 0.775,
+        "reuse_rate": 0.75
+      },
+      "fixed": {
+        "512": {
+          "accuracy": 0.0,
+          "avg_tokens": 512.0,
+          "avg_utility": -0.15
+        },
+        "1024": {
+          "accuracy": 0.1,
+          "avg_tokens": 1021.6,
+          "avg_utility": -0.199296875
+        },
+        "2048": {
+          "accuracy": 0.225,
+          "avg_tokens": 1938.65,
+          "avg_utility": -0.34296386718750005
+        }
+      },
+      "oracle": {
+        "accuracy": 0.25,
+        "avg_tokens": 724.125,
+        "avg_utility": 0.03785400390624999
+      }
+    },
+    {
+      "test_csv": "/workspace/nips-adathink/results/per_sample_math500_Qwen3.5_27B_20260320_062732.csv",
+      "test_size": 40,
+      "selected_mode": "first4",
+      "learned": {
+        "accuracy": 0.1,
+        "avg_tokens": 779.4,
+        "avg_utility": -0.12833984375000004,
+        "action_match_best_rate": 0.875,
+        "reuse_rate": 0.775
+      },
+      "fixed": {
+        "512": {
+          "accuracy": 0.0,
+          "avg_tokens": 512.0,
+          "avg_utility": -0.15
+        },
+        "1024": {
+          "accuracy": 0.0,
+          "avg_tokens": 1024.0,
+          "avg_utility": -0.3
+        },
+        "2048": {
+          "accuracy": 0.15,
+          "avg_tokens": 1999.775,
+          "avg_utility": -0.43587158203125
+        }
+      },
+      "oracle": {
+        "accuracy": 0.15,
+        "avg_tokens": 710.425,
+        "avg_utility": -0.058132324218749955
+      }
+    },
+    {
+      "test_csv": "/workspace/nips-adathink/results/per_sample_math500_Qwen3.5_27B_20260320_063105.csv",
+      "test_size": 40,
+      "selected_mode": "first4",
+      "learned": {
+        "accuracy": 0.15,
+        "avg_tokens": 806.75,
+        "avg_utility": -0.08635253906249997,
+        "action_match_best_rate": 0.85,
+        "reuse_rate": 0.775
+      },
+      "fixed": {
+        "512": {
+          "accuracy": 0.0,
+          "avg_tokens": 512.0,
+          "avg_utility": -0.15
+        },
+        "1024": {
+          "accuracy": 0.05,
+          "avg_tokens": 1016.975,
+          "avg_utility": -0.24794189453124998
+        },
+        "2048": {
+          "accuracy": 0.2,
+          "avg_tokens": 1928.275,
+          "avg_utility": -0.36492431640624995
+        }
+      },
+      "oracle": {
+        "accuracy": 0.2,
+        "avg_tokens": 703.7,
+        "avg_utility": -0.006162109375
+      }
+    },
+    {
+      "test_csv": "/workspace/nips-adathink/results/per_sample_math500_Qwen3.5_27B_20260320_063505.csv",
+      "test_size": 40,
+      "selected_mode": "first4",
+      "learned": {
+        "accuracy": 0.15,
+        "avg_tokens": 756.825,
+        "avg_utility": -0.07172607421874995,
+        "action_match_best_rate": 0.825,
+        "reuse_rate": 0.725
+      },
+      "fixed": {
+        "512": {
+          "accuracy": 0.0,
+          "avg_tokens": 512.0,
+          "avg_utility": -0.15
+        },
+        "1024": {
+          "accuracy": 0.075,
+          "avg_tokens": 1019.225,
+          "avg_utility": -0.22360107421874997
+        },
+        "2048": {
+          "accuracy": 0.225,
+          "avg_tokens": 1946.575,
+          "avg_utility": -0.34528564453125
+        }
+      },
+      "oracle": {
+        "accuracy": 0.225,
+        "avg_tokens": 755.65,
+        "avg_utility": 0.0036181640625000296
+      }
+    },
+    {
+      "test_csv": "/workspace/nips-adathink/results/per_sample_math500_Qwen3.5_27B_20260320_063913.csv",
+      "test_size": 40,
+      "selected_mode": "first4",
+      "learned": {
+        "accuracy": 0.075,
+        "avg_tokens": 757.35,
+        "avg_utility": -0.1468798828125,
+        "action_match_best_rate": 0.75,
+        "reuse_rate": 0.675
+      },
+      "fixed": {
+        "512": {
+          "accuracy": 0.0,
+          "avg_tokens": 512.0,
+          "avg_utility": -0.15
+        },
+        "1024": {
+          "accuracy": 0.075,
+          "avg_tokens": 1023.3,
+          "avg_utility": -0.22479492187499994
+        },
+        "2048": {
+          "accuracy": 0.225,
+          "avg_tokens": 1988.725,
+          "avg_utility": -0.35763427734375
+        }
+      },
+      "oracle": {
+        "accuracy": 0.225,
+        "avg_tokens": 770.15,
+        "avg_utility": -0.0006298828125000059
+      }
+    },
+    {
+      "test_csv": "/workspace/nips-adathink/results/per_sample_math500_Qwen3.5_27B_20260320_064313.csv",
+      "test_size": 40,
+      "selected_mode": "first4",
+      "learned": {
+        "accuracy": 0.1,
+        "avg_tokens": 780.8,
+        "avg_utility": -0.12875000000000003,
+        "action_match_best_rate": 0.675,
+        "reuse_rate": 0.75
+      },
+      "fixed": {
+        "512": {
+          "accuracy": 0.0,
+          "avg_tokens": 512.0,
+          "avg_utility": -0.15
+        },
+        "1024": {
+          "accuracy": 0.15,
+          "avg_tokens": 1024.0,
+          "avg_utility": -0.15
+        },
+        "2048": {
+          "accuracy": 0.325,
+          "avg_tokens": 1951.85,
+          "avg_utility": -0.24683105468749994
+        }
+      },
+      "oracle": {
+        "accuracy": 0.325,
+        "avg_tokens": 839.85,
+        "avg_utility": 0.0789501953125
+      }
+    },
+    {
+      "test_csv": "/workspace/nips-adathink/results/per_sample_math500_Qwen3.5_27B_20260320_064648.csv",
+      "test_size": 40,
+      "selected_mode": "first4",
+      "learned": {
+        "accuracy": 0.2,
+        "avg_tokens": 808.325,
+        "avg_utility": -0.03681396484374998,
+        "action_match_best_rate": 0.775,
+        "reuse_rate": 0.725
+      },
+      "fixed": {
+        "512": {
+          "accuracy": 0.025,
+          "avg_tokens": 512.0,
+          "avg_utility": -0.125
+        },
+        "1024": {
+          "accuracy": 0.125,
+          "avg_tokens": 1018.45,
+          "avg_utility": -0.17337402343750002
+        },
+        "2048": {
+          "accuracy": 0.35,
+          "avg_tokens": 1942.375,
+          "avg_utility": -0.21905517578125
+        }
+      },
+      "oracle": {
+        "accuracy": 0.375,
+        "avg_tokens": 894.9,
+        "avg_utility": 0.11282226562499989
+      }
+    },
+    {
+      "test_csv": "/workspace/nips-adathink/results/per_sample_math500_Qwen3.5_27B_20260320_065106.csv",
+      "test_size": 40,
+      "selected_mode": "first4",
+      "learned": {
+        "accuracy": 0.125,
+        "avg_tokens": 719.6,
+        "avg_utility": -0.08582031249999994,
+        "action_match_best_rate": 0.8,
+        "reuse_rate": 0.65
+      },
+      "fixed": {
+        "512": {
+          "accuracy": 0.0,
+          "avg_tokens": 512.0,
+          "avg_utility": -0.15
+        },
+        "1024": {
+          "accuracy": 0.075,
+          "avg_tokens": 1018.975,
+          "avg_utility": -0.22352783203124998
+        },
+        "2048": {
+          "accuracy": 0.225,
+          "avg_tokens": 1958.45,
+          "avg_utility": -0.3487646484375
+        }
+      },
+      "oracle": {
+        "accuracy": 0.25,
+        "avg_tokens": 780.85,
+        "avg_utility": 0.021235351562500022
+      }
+    },
+    {
+      "test_csv": "/workspace/nips-adathink/results/per_sample_math500_Qwen3.5_27B_20260320_065511.csv",
+      "test_size": 40,
+      "selected_mode": "first4",
+      "learned": {
+        "accuracy": 0.15,
+        "avg_tokens": 848.125,
+        "avg_utility": -0.09847412109374998,
+        "action_match_best_rate": 0.775,
+        "reuse_rate": 0.875
+      },
+      "fixed": {
+        "512": {
+          "accuracy": 0.0,
+          "avg_tokens": 512.0,
+          "avg_utility": -0.15
+        },
+        "1024": {
+          "accuracy": 0.025,
+          "avg_tokens": 1024.0,
+          "avg_utility": -0.27499999999999997
+        },
+        "2048": {
+          "accuracy": 0.275,
+          "avg_tokens": 2004.0,
+          "avg_utility": -0.3121093749999999
+        }
+      },
+      "oracle": {
+        "accuracy": 0.275,
+        "avg_tokens": 864.8,
+        "avg_utility": 0.021640625
+      }
+    },
+    {
+      "test_csv": "/workspace/nips-adathink/results/per_sample_math500_Qwen3.5_27B_20260320_065922.csv",
+      "test_size": 40,
+      "selected_mode": "first4",
+      "learned": {
+        "accuracy": 0.175,
+        "avg_tokens": 733.5,
+        "avg_utility": -0.039892578124999946,
+        "action_match_best_rate": 0.85,
+        "reuse_rate": 0.75
+      },
+      "fixed": {
+        "512": {
+          "accuracy": 0.025,
+          "avg_tokens": 512.0,
+          "avg_utility": -0.125
+        },
+        "1024": {
+          "accuracy": 0.1,
+          "avg_tokens": 1012.525,
+          "avg_utility": -0.19663818359375
+        },
+        "2048": {
+          "accuracy": 0.225,
+          "avg_tokens": 1912.3,
+          "avg_utility": -0.33524414062499996
+        }
+      },
+      "oracle": {
+        "accuracy": 0.225,
+        "avg_tokens": 719.575,
+        "avg_utility": 0.014187011718750026
+      }
+    },
+    {
+      "test_csv": "/workspace/nips-adathink/results/per_sample_math500_Qwen3.5_27B_20260320_070321.csv",
+      "test_size": 40,
+      "selected_mode": "first4",
+      "learned": {
+        "accuracy": 0.175,
+        "avg_tokens": 799.375,
+        "avg_utility": -0.059191894531249956,
+        "action_match_best_rate": 0.825,
+        "reuse_rate": 0.8
+      },
+      "fixed": {
+        "512": {
+          "accuracy": 0.0,
+          "avg_tokens": 512.0,
+          "avg_utility": -0.15
+        },
+        "1024": {
+          "accuracy": 0.025,
+          "avg_tokens": 1022.125,
+          "avg_utility": -0.27445068359374997
+        },
+        "2048": {
+          "accuracy": 0.275,
+          "avg_tokens": 1957.325,
+          "avg_utility": -0.29843505859374997
+        }
+      },
+      "oracle": {
+        "accuracy": 0.275,
+        "avg_tokens": 859.25,
+        "avg_utility": 0.02326660156250001
+      }
+    }
+  ],
+  "macro_mean": {
+    "learned": {
+      "accuracy": 0.1264705882352941,
+      "avg_tokens": 749.6617647058823,
+      "avg_utility": -0.09315688189338235,
+      "action_match_best_rate": 0.8073529411764706,
+      "reuse_rate": 0.748529411764706
+    },
+    "fixed": {
+      "512": {
+        "accuracy": 0.0029411764705882353,
+        "avg_tokens": 512.0,
+        "avg_utility": -0.14705882352941174
+      },
+      "1024": {
+        "accuracy": 0.06470588235294117,
+        "avg_tokens": 1021.6338235294119,
+        "avg_utility": -0.23460090188419117
+      },
+      "2048": {
+        "accuracy": 0.23529411764705888,
+        "avg_tokens": 1966.1588235294116,
+        "avg_utility": -0.34072897518382345
+      }
+    },
+    "oracle": {
+      "accuracy": 0.24117647058823533,
+      "avg_tokens": 776.8573529411765,
+      "avg_utility": 0.013581542968750011
+    }
+  }
+}

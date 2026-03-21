@@ -1,0 +1,48 @@
+{
+  "meta": {
+    "timestamp_utc": "20260320_125544",
+    "benchmark": "gsm8k",
+    "bbh_task": null,
+    "model": "Qwen/Qwen3-8B",
+    "n_samples": 40,
+    "seed": 42,
+    "data_seed": 505,
+    "budgets": [
+      128,
+      256,
+      512
+    ],
+    "enable_thinking": true,
+    "strict_final_only": true,
+    "engine": "vllm"
+  },
+  "fixed": {
+    "128": {
+      "accuracy": 0.0,
+      "avg_tokens": 128.0,
+      "avg_latency_s": 0.04684809362515807,
+      "final_rate": 0.0
+    },
+    "256": {
+      "accuracy": 0.0,
+      "avg_tokens": 255.975,
+      "avg_latency_s": 0.08042733432957896,
+      "final_rate": 0.0
+    },
+    "512": {
+      "accuracy": 0.05,
+      "avg_tokens": 473.775,
+      "avg_latency_s": 0.16386311009991925,
+      "final_rate": 0.05
+    }
+  },
+  "adaptive": {
+    "accuracy": 0.05,
+    "avg_tokens": 473.775,
+    "avg_latency_s": 0.16386311009991925,
+    "early_stop_rate": 0.0
+  },
+  "overthinking": {
+    "fixed_128_vs_fixed_512": 0.0
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "meta": {
+    "timestamp_utc": "20260320_165402",
+    "rows_csv": "/workspace/nips-adathink/results/param_controller_rows_bbh_27b_20260320_160051.csv",
+    "compare_budget": 2048,
+    "lambda_cost": 0.15,
+    "norm_tokens": 4096.0,
+    "n_bootstrap": 10000,
+    "bootstrap_seed": 20260228,
+    "n_samples": 680
+  },
+  "learned_mean": {
+    "accuracy": 0.5882352941176471,
+    "avg_tokens": 2029.6426470588235,
+    "avg_utility": 0.5139075604607092
+  },
+  "fixed_mean": {
+    "accuracy": 0.4823529411764706,
+    "avg_tokens": 1624.110294117647,
+    "avg_utility": 0.4228762458352505
+  },
+  "paired_delta_learned_minus_fixed": {
+    "accuracy": {
+      "mean": 0.10588235294117647,
+      "ci95": [
+        0.08235294117647059,
+        0.13088235294117648
+      ]
+    },
+    "avg_tokens": {
+      "mean": 405.5323529411765,
+      "ci95": [
+        351.13088235294117,
+        462.6411764705882
+      ]
+    },
+    "avg_utility": {
+      "mean": 0.09103131462545937,
+      "ci95": [
+        0.06657829733455879,
+        0.11554437973920027
+      ]
+    }
+  }
+}

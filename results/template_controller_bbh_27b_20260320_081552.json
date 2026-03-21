@@ -1,0 +1,651 @@
+{
+  "meta": {
+    "timestamp_utc": "20260320_081554",
+    "input_csvs": [
+      "/workspace/nips-adathink/results/per_sample_bbh_Qwen3.5_27B_20260320_071603.csv",
+      "/workspace/nips-adathink/results/per_sample_bbh_Qwen3.5_27B_20260320_071950.csv",
+      "/workspace/nips-adathink/results/per_sample_bbh_Qwen3.5_27B_20260320_072333.csv",
+      "/workspace/nips-adathink/results/per_sample_bbh_Qwen3.5_27B_20260320_072739.csv",
+      "/workspace/nips-adathink/results/per_sample_bbh_Qwen3.5_27B_20260320_073120.csv",
+      "/workspace/nips-adathink/results/per_sample_bbh_Qwen3.5_27B_20260320_073536.csv",
+      "/workspace/nips-adathink/results/per_sample_bbh_Qwen3.5_27B_20260320_073930.csv",
+      "/workspace/nips-adathink/results/per_sample_bbh_Qwen3.5_27B_20260320_074311.csv",
+      "/workspace/nips-adathink/results/per_sample_bbh_Qwen3.5_27B_20260320_074617.csv",
+      "/workspace/nips-adathink/results/per_sample_bbh_Qwen3.5_27B_20260320_074952.csv",
+      "/workspace/nips-adathink/results/per_sample_bbh_Qwen3.5_27B_20260320_075335.csv",
+      "/workspace/nips-adathink/results/per_sample_bbh_Qwen3.5_27B_20260320_075642.csv",
+      "/workspace/nips-adathink/results/per_sample_bbh_Qwen3.5_27B_20260320_075947.csv",
+      "/workspace/nips-adathink/results/per_sample_bbh_Qwen3.5_27B_20260320_080334.csv",
+      "/workspace/nips-adathink/results/per_sample_bbh_Qwen3.5_27B_20260320_080730.csv",
+      "/workspace/nips-adathink/results/per_sample_bbh_Qwen3.5_27B_20260320_081125.csv",
+      "/workspace/nips-adathink/results/per_sample_bbh_Qwen3.5_27B_20260320_081540.csv"
+    ],
+    "budgets": [
+      256,
+      512,
+      1024
+    ],
+    "lambda_cost": 0.15,
+    "norm_tokens": 512.0,
+    "modes": [
+      "first1",
+      "first2",
+      "first3",
+      "first4",
+      "first2_lenbin",
+      "first3_lenbin"
+    ],
+    "protocol": "leave-one-csv-out with inner mode selection"
+  },
+  "folds": [
+    {
+      "test_csv": "/workspace/nips-adathink/results/per_sample_bbh_Qwen3.5_27B_20260320_071603.csv",
+      "test_size": 40,
+      "selected_mode": "first1",
+      "learned": {
+        "accuracy": 0.275,
+        "avg_tokens": 621.2,
+        "avg_utility": 0.09300781250000001,
+        "action_match_best_rate": 0.7,
+        "reuse_rate": 1.0
+      },
+      "fixed": {
+        "256": {
+          "accuracy": 0.0,
+          "avg_tokens": 256.0,
+          "avg_utility": -0.075
+        },
+        "512": {
+          "accuracy": 0.025,
+          "avg_tokens": 512.0,
+          "avg_utility": -0.125
+        },
+        "1024": {
+          "accuracy": 0.3,
+          "avg_tokens": 985.15,
+          "avg_utility": 0.011381835937500029
+        }
+      },
+      "oracle": {
+        "accuracy": 0.3,
+        "avg_tokens": 434.75,
+        "avg_utility": 0.17263183593749995
+      }
+    },
+    {
+      "test_csv": "/workspace/nips-adathink/results/per_sample_bbh_Qwen3.5_27B_20260320_071950.csv",
+      "test_size": 40,
+      "selected_mode": "first1",
+      "learned": {
+        "accuracy": 0.4,
+        "avg_tokens": 714.75,
+        "avg_utility": 0.19060058593749998,
+        "action_match_best_rate": 0.7,
+        "reuse_rate": 1.0
+      },
+      "fixed": {
+        "256": {
+          "accuracy": 0.0,
+          "avg_tokens": 256.0,
+          "avg_utility": -0.075
+        },
+        "512": {
+          "accuracy": 0.025,
+          "avg_tokens": 512.0,
+          "avg_utility": -0.125
+        },
+        "1024": {
+          "accuracy": 0.425,
+          "avg_tokens": 983.55,
+          "avg_utility": 0.1368505859375
+        }
+      },
+      "oracle": {
+        "accuracy": 0.425,
+        "avg_tokens": 529.15,
+        "avg_utility": 0.26997558593749993
+      }
+    },
+    {
+      "test_csv": "/workspace/nips-adathink/results/per_sample_bbh_Qwen3.5_27B_20260320_072333.csv",
+      "test_size": 40,
+      "selected_mode": "first1",
+      "learned": {
+        "accuracy": 0.2,
+        "avg_tokens": 691.025,
+        "avg_utility": -0.002448730468750003,
+        "action_match_best_rate": 0.525,
+        "reuse_rate": 0.9
+      },
+      "fixed": {
+        "256": {
+          "accuracy": 0.0,
+          "avg_tokens": 256.0,
+          "avg_utility": -0.075
+        },
+        "512": {
+          "accuracy": 0.05,
+          "avg_tokens": 512.0,
+          "avg_utility": -0.09999999999999999
+        },
+        "1024": {
+          "accuracy": 0.25,
+          "avg_tokens": 1003.55,
+          "avg_utility": -0.0440087890625
+        }
+      },
+      "oracle": {
+        "accuracy": 0.25,
+        "avg_tokens": 404.05,
+        "avg_utility": 0.13162597656249989
+      }
+    },
+    {
+      "test_csv": "/workspace/nips-adathink/results/per_sample_bbh_Qwen3.5_27B_20260320_072739.csv",
+      "test_size": 40,
+      "selected_mode": "first1",
+      "learned": {
+        "accuracy": 0.1,
+        "avg_tokens": 689.825,
+        "avg_utility": -0.10209716796875001,
+        "action_match_best_rate": 0.475,
+        "reuse_rate": 1.0
+      },
+      "fixed": {
+        "256": {
+          "accuracy": 0.025,
+          "avg_tokens": 256.0,
+          "avg_utility": -0.049999999999999996
+        },
+        "512": {
+          "accuracy": 0.05,
+          "avg_tokens": 512.0,
+          "avg_utility": -0.09999999999999999
+        },
+        "1024": {
+          "accuracy": 0.125,
+          "avg_tokens": 1013.275,
+          "avg_utility": -0.17185791015624996
+        }
+      },
+      "oracle": {
+        "accuracy": 0.15,
+        "avg_tokens": 336.25,
+        "avg_utility": 0.0514892578124999
+      }
+    },
+    {
+      "test_csv": "/workspace/nips-adathink/results/per_sample_bbh_Qwen3.5_27B_20260320_073120.csv",
+      "test_size": 40,
+      "selected_mode": "first1",
+      "learned": {
+        "accuracy": 0.275,
+        "avg_tokens": 616.375,
+        "avg_utility": 0.09442138671875,
+        "action_match_best_rate": 0.6,
+        "reuse_rate": 1.0
+      },
+      "fixed": {
+        "256": {
+          "accuracy": 0.0,
+          "avg_tokens": 256.0,
+          "avg_utility": -0.075
+        },
+        "512": {
+          "accuracy": 0.1,
+          "avg_tokens": 510.35,
+          "avg_utility": -0.049516601562499984
+        },
+        "1024": {
+          "accuracy": 0.3,
+          "avg_tokens": 954.15,
+          "avg_utility": 0.020463867187499984
+        }
+      },
+      "oracle": {
+        "accuracy": 0.3,
+        "avg_tokens": 397.525,
+        "avg_utility": 0.18353759765624994
+      }
+    },
+    {
+      "test_csv": "/workspace/nips-adathink/results/per_sample_bbh_Qwen3.5_27B_20260320_073536.csv",
+      "test_size": 40,
+      "selected_mode": "first1",
+      "learned": {
+        "accuracy": 0.3,
+        "avg_tokens": 660.65,
+        "avg_utility": 0.10645019531250002,
+        "action_match_best_rate": 0.625,
+        "reuse_rate": 0.975
+      },
+      "fixed": {
+        "256": {
+          "accuracy": 0.025,
+          "avg_tokens": 256.0,
+          "avg_utility": -0.049999999999999996
+        },
+        "512": {
+          "accuracy": 0.075,
+          "avg_tokens": 512.0,
+          "avg_utility": -0.075
+        },
+        "1024": {
+          "accuracy": 0.325,
+          "avg_tokens": 979.125,
+          "avg_utility": 0.03814697265625
+        }
+      },
+      "oracle": {
+        "accuracy": 0.325,
+        "avg_tokens": 435.9,
+        "avg_utility": 0.19729492187499992
+      }
+    },
+    {
+      "test_csv": "/workspace/nips-adathink/results/per_sample_bbh_Qwen3.5_27B_20260320_073930.csv",
+      "test_size": 40,
+      "selected_mode": "first1",
+      "learned": {
+        "accuracy": 0.2,
+        "avg_tokens": 661.225,
+        "avg_utility": 0.006281738281250002,
+        "action_match_best_rate": 0.65,
+        "reuse_rate": 0.975
+      },
+      "fixed": {
+        "256": {
+          "accuracy": 0.0,
+          "avg_tokens": 256.0,
+          "avg_utility": -0.075
+        },
+        "512": {
+          "accuracy": 0.0,
+          "avg_tokens": 512.0,
+          "avg_utility": -0.15
+        },
+        "1024": {
+          "accuracy": 0.2,
+          "avg_tokens": 1006.825,
+          "avg_utility": -0.09496826171875
+        }
+      },
+      "oracle": {
+        "accuracy": 0.2,
+        "avg_tokens": 392.425,
+        "avg_utility": 0.08503173828124999
+      }
+    },
+    {
+      "test_csv": "/workspace/nips-adathink/results/per_sample_bbh_Qwen3.5_27B_20260320_074311.csv",
+      "test_size": 40,
+      "selected_mode": "first3_lenbin",
+      "learned": {
+        "accuracy": 0.175,
+        "avg_tokens": 601.925,
+        "avg_utility": -0.0013452148437499973,
+        "action_match_best_rate": 0.65,
+        "reuse_rate": 0.675
+      },
+      "fixed": {
+        "256": {
+          "accuracy": 0.0,
+          "avg_tokens": 256.0,
+          "avg_utility": -0.075
+        },
+        "512": {
+          "accuracy": 0.025,
+          "avg_tokens": 512.0,
+          "avg_utility": -0.125
+        },
+        "1024": {
+          "accuracy": 0.2,
+          "avg_tokens": 983.625,
+          "avg_utility": -0.08817138671874997
+        }
+      },
+      "oracle": {
+        "accuracy": 0.2,
+        "avg_tokens": 369.225,
+        "avg_utility": 0.09182861328124989
+      }
+    },
+    {
+      "test_csv": "/workspace/nips-adathink/results/per_sample_bbh_Qwen3.5_27B_20260320_074617.csv",
+      "test_size": 40,
+      "selected_mode": "first4",
+      "learned": {
+        "accuracy": 0.125,
+        "avg_tokens": 560.8,
+        "avg_utility": -0.039296874999999995,
+        "action_match_best_rate": 0.625,
+        "reuse_rate": 0.875
+      },
+      "fixed": {
+        "256": {
+          "accuracy": 0.0,
+          "avg_tokens": 256.0,
+          "avg_utility": -0.075
+        },
+        "512": {
+          "accuracy": 0.025,
+          "avg_tokens": 512.0,
+          "avg_utility": -0.125
+        },
+        "1024": {
+          "accuracy": 0.2,
+          "avg_tokens": 1010.775,
+          "avg_utility": -0.09612548828124995
+        }
+      },
+      "oracle": {
+        "accuracy": 0.2,
+        "avg_tokens": 386.675,
+        "avg_utility": 0.08671630859374993
+      }
+    },
+    {
+      "test_csv": "/workspace/nips-adathink/results/per_sample_bbh_Qwen3.5_27B_20260320_074952.csv",
+      "test_size": 40,
+      "selected_mode": "first1",
+      "learned": {
+        "accuracy": 0.2,
+        "avg_tokens": 646.675,
+        "avg_utility": 0.01054443359375001,
+        "action_match_best_rate": 0.55,
+        "reuse_rate": 1.0
+      },
+      "fixed": {
+        "256": {
+          "accuracy": 0.025,
+          "avg_tokens": 256.0,
+          "avg_utility": -0.049999999999999996
+        },
+        "512": {
+          "accuracy": 0.05,
+          "avg_tokens": 512.0,
+          "avg_utility": -0.09999999999999999
+        },
+        "1024": {
+          "accuracy": 0.275,
+          "avg_tokens": 1011.475,
+          "avg_utility": -0.021330566406249973
+        }
+      },
+      "oracle": {
+        "accuracy": 0.275,
+        "avg_tokens": 422.675,
+        "avg_utility": 0.15116943359374993
+      }
+    },
+    {
+      "test_csv": "/workspace/nips-adathink/results/per_sample_bbh_Qwen3.5_27B_20260320_075335.csv",
+      "test_size": 40,
+      "selected_mode": "first1",
+      "learned": {
+        "accuracy": 0.2,
+        "avg_tokens": 678.65,
+        "avg_utility": 0.0011767578124999944,
+        "action_match_best_rate": 0.55,
+        "reuse_rate": 1.0
+      },
+      "fixed": {
+        "256": {
+          "accuracy": 0.0,
+          "avg_tokens": 256.0,
+          "avg_utility": -0.075
+        },
+        "512": {
+          "accuracy": 0.025,
+          "avg_tokens": 512.0,
+          "avg_utility": -0.125
+        },
+        "1024": {
+          "accuracy": 0.25,
+          "avg_tokens": 998.275,
+          "avg_utility": -0.04246337890624996
+        }
+      },
+      "oracle": {
+        "accuracy": 0.25,
+        "avg_tokens": 410.125,
+        "avg_utility": 0.1298461914062499
+      }
+    },
+    {
+      "test_csv": "/workspace/nips-adathink/results/per_sample_bbh_Qwen3.5_27B_20260320_075642.csv",
+      "test_size": 40,
+      "selected_mode": "first3_lenbin",
+      "learned": {
+        "accuracy": 0.1,
+        "avg_tokens": 517.0,
+        "avg_utility": -0.05146484374999997,
+        "action_match_best_rate": 0.625,
+        "reuse_rate": 0.8
+      },
+      "fixed": {
+        "256": {
+          "accuracy": 0.0,
+          "avg_tokens": 256.0,
+          "avg_utility": -0.075
+        },
+        "512": {
+          "accuracy": 0.025,
+          "avg_tokens": 512.0,
+          "avg_utility": -0.125
+        },
+        "1024": {
+          "accuracy": 0.175,
+          "avg_tokens": 1007.625,
+          "avg_utility": -0.12020263671874998
+        }
+      },
+      "oracle": {
+        "accuracy": 0.175,
+        "avg_tokens": 363.25,
+        "avg_utility": 0.06857910156250002
+      }
+    },
+    {
+      "test_csv": "/workspace/nips-adathink/results/per_sample_bbh_Qwen3.5_27B_20260320_075947.csv",
+      "test_size": 40,
+      "selected_mode": "first1",
+      "learned": {
+        "accuracy": 0.175,
+        "avg_tokens": 603.95,
+        "avg_utility": -0.0019384765624999856,
+        "action_match_best_rate": 0.6,
+        "reuse_rate": 1.0
+      },
+      "fixed": {
+        "256": {
+          "accuracy": 0.0,
+          "avg_tokens": 256.0,
+          "avg_utility": -0.075
+        },
+        "512": {
+          "accuracy": 0.1,
+          "avg_tokens": 512.0,
+          "avg_utility": -0.04999999999999999
+        },
+        "1024": {
+          "accuracy": 0.175,
+          "avg_tokens": 979.8,
+          "avg_utility": -0.11205078125000001
+        }
+      },
+      "oracle": {
+        "accuracy": 0.2,
+        "avg_tokens": 343.85,
+        "avg_utility": 0.09926269531249997
+      }
+    },
+    {
+      "test_csv": "/workspace/nips-adathink/results/per_sample_bbh_Qwen3.5_27B_20260320_080334.csv",
+      "test_size": 40,
+      "selected_mode": "first1",
+      "learned": {
+        "accuracy": 0.175,
+        "avg_tokens": 811.75,
+        "avg_utility": -0.0628173828125,
+        "action_match_best_rate": 0.375,
+        "reuse_rate": 1.0
+      },
+      "fixed": {
+        "256": {
+          "accuracy": 0.0,
+          "avg_tokens": 256.0,
+          "avg_utility": -0.075
+        },
+        "512": {
+          "accuracy": 0.05,
+          "avg_tokens": 512.0,
+          "avg_utility": -0.09999999999999999
+        },
+        "1024": {
+          "accuracy": 0.175,
+          "avg_tokens": 1003.75,
+          "avg_utility": -0.11906738281250001
+        }
+      },
+      "oracle": {
+        "accuracy": 0.175,
+        "avg_tokens": 357.175,
+        "avg_utility": 0.07035888671874999
+      }
+    },
+    {
+      "test_csv": "/workspace/nips-adathink/results/per_sample_bbh_Qwen3.5_27B_20260320_080730.csv",
+      "test_size": 40,
+      "selected_mode": "first1",
+      "learned": {
+        "accuracy": 0.2,
+        "avg_tokens": 692.775,
+        "avg_utility": -0.002961425781250005,
+        "action_match_best_rate": 0.525,
+        "reuse_rate": 1.0
+      },
+      "fixed": {
+        "256": {
+          "accuracy": 0.025,
+          "avg_tokens": 256.0,
+          "avg_utility": -0.049999999999999996
+        },
+        "512": {
+          "accuracy": 0.05,
+          "avg_tokens": 512.0,
+          "avg_utility": -0.09999999999999999
+        },
+        "1024": {
+          "accuracy": 0.225,
+          "avg_tokens": 996.2,
+          "avg_utility": -0.06685546875000001
+        }
+      },
+      "oracle": {
+        "accuracy": 0.225,
+        "avg_tokens": 380.65,
+        "avg_utility": 0.11348144531249989
+      }
+    },
+    {
+      "test_csv": "/workspace/nips-adathink/results/per_sample_bbh_Qwen3.5_27B_20260320_081125.csv",
+      "test_size": 40,
+      "selected_mode": "first1",
+      "learned": {
+        "accuracy": 0.15,
+        "avg_tokens": 655.775,
+        "avg_utility": -0.04212158203125,
+        "action_match_best_rate": 0.6,
+        "reuse_rate": 0.95
+      },
+      "fixed": {
+        "256": {
+          "accuracy": 0.025,
+          "avg_tokens": 256.0,
+          "avg_utility": -0.049999999999999996
+        },
+        "512": {
+          "accuracy": 0.05,
+          "avg_tokens": 512.0,
+          "avg_utility": -0.09999999999999999
+        },
+        "1024": {
+          "accuracy": 0.15,
+          "avg_tokens": 1001.375,
+          "avg_utility": -0.14337158203124997
+        }
+      },
+      "oracle": {
+        "accuracy": 0.2,
+        "avg_tokens": 354.975,
+        "avg_utility": 0.09600341796874992
+      }
+    },
+    {
+      "test_csv": "/workspace/nips-adathink/results/per_sample_bbh_Qwen3.5_27B_20260320_081540.csv",
+      "test_size": 40,
+      "selected_mode": "first1",
+      "learned": {
+        "accuracy": 0.325,
+        "avg_tokens": 681.0,
+        "avg_utility": 0.12548828125000003,
+        "action_match_best_rate": 0.65,
+        "reuse_rate": 0.975
+      },
+      "fixed": {
+        "256": {
+          "accuracy": 0.0,
+          "avg_tokens": 256.0,
+          "avg_utility": -0.075
+        },
+        "512": {
+          "accuracy": 0.05,
+          "avg_tokens": 512.0,
+          "avg_utility": -0.09999999999999999
+        },
+        "1024": {
+          "accuracy": 0.325,
+          "avg_tokens": 958.95,
+          "avg_utility": 0.04405761718750001
+        }
+      },
+      "oracle": {
+        "accuracy": 0.325,
+        "avg_tokens": 444.05,
+        "avg_utility": 0.19490722656249998
+      }
+    }
+  ],
+  "macro_mean": {
+    "learned": {
+      "accuracy": 0.21029411764705883,
+      "avg_tokens": 653.2558823529412,
+      "avg_utility": 0.018910558363970594,
+      "action_match_best_rate": 0.5897058823529412,
+      "reuse_rate": 0.9485294117647058
+    },
+    "fixed": {
+      "256": {
+        "accuracy": 0.007352941176470588,
+        "avg_tokens": 256.0,
+        "avg_utility": -0.0676470588235294
+      },
+      "512": {
+        "accuracy": 0.04558823529411766,
+        "avg_tokens": 511.9029411764706,
+        "avg_utility": -0.1043833295036765
+      },
+      "1024": {
+        "accuracy": 0.23970588235294113,
+        "avg_tokens": 992.7926470588235,
+        "avg_utility": -0.051151338465073526
+      }
+    },
+    "oracle": {
+      "accuracy": 0.24558823529411763,
+      "avg_tokens": 397.80588235294124,
+      "avg_utility": 0.12904354319852931
+    }
+  }
+}

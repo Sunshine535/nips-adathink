@@ -1,0 +1,301 @@
+{
+  "meta": {
+    "timestamp_utc": "20260320_160056",
+    "input_csvs": [
+      "/workspace/nips-adathink/results/per_sample_bbh_Qwen3_8B_20260320_070503.csv",
+      "/workspace/nips-adathink/results/per_sample_bbh_Qwen3_8B_20260320_070637.csv",
+      "/workspace/nips-adathink/results/per_sample_bbh_Qwen3_8B_20260320_070804.csv",
+      "/workspace/nips-adathink/results/per_sample_bbh_Qwen3_8B_20260320_070936.csv",
+      "/workspace/nips-adathink/results/per_sample_bbh_Qwen3_8B_20260320_071052.csv",
+      "/workspace/nips-adathink/results/per_sample_bbh_Qwen3_8B_20260320_071202.csv",
+      "/workspace/nips-adathink/results/per_sample_bbh_Qwen3_8B_20260320_071310.csv"
+    ],
+    "budgets": [
+      256,
+      512,
+      1024
+    ],
+    "lambda_cost": 0.15,
+    "norm_tokens": 1024.0,
+    "modes": [
+      "first1",
+      "first2",
+      "first3",
+      "first4",
+      "first2_lenbin",
+      "first3_lenbin"
+    ],
+    "protocol": "leave-one-csv-out with inner mode selection"
+  },
+  "folds": [
+    {
+      "test_csv": "/workspace/nips-adathink/results/per_sample_bbh_Qwen3_8B_20260320_070503.csv",
+      "test_size": 40,
+      "selected_mode": "first3",
+      "learned": {
+        "accuracy": 0.25,
+        "avg_tokens": 598.775,
+        "avg_utility": 0.16228881835937495,
+        "action_match_best_rate": 0.45,
+        "reuse_rate": 0.925
+      },
+      "fixed": {
+        "256": {
+          "accuracy": 0.025,
+          "avg_tokens": 255.35,
+          "avg_utility": -0.012404785156249994
+        },
+        "512": {
+          "accuracy": 0.15,
+          "avg_tokens": 475.625,
+          "avg_utility": 0.080328369140625
+        },
+        "1024": {
+          "accuracy": 0.325,
+          "avg_tokens": 821.95,
+          "avg_utility": 0.20459716796875
+        }
+      },
+      "oracle": {
+        "accuracy": 0.35,
+        "avg_tokens": 402.05,
+        "avg_utility": 0.29110595703125014
+      }
+    },
+    {
+      "test_csv": "/workspace/nips-adathink/results/per_sample_bbh_Qwen3_8B_20260320_070637.csv",
+      "test_size": 40,
+      "selected_mode": "first4",
+      "learned": {
+        "accuracy": 0.325,
+        "avg_tokens": 512.4,
+        "avg_utility": 0.24994140624999997,
+        "action_match_best_rate": 0.45,
+        "reuse_rate": 0.8
+      },
+      "fixed": {
+        "256": {
+          "accuracy": 0.0,
+          "avg_tokens": 256.0,
+          "avg_utility": -0.0375
+        },
+        "512": {
+          "accuracy": 0.275,
+          "avg_tokens": 463.95,
+          "avg_utility": 0.20703857421875002
+        },
+        "1024": {
+          "accuracy": 0.375,
+          "avg_tokens": 718.225,
+          "avg_utility": 0.269791259765625
+        }
+      },
+      "oracle": {
+        "accuracy": 0.4,
+        "avg_tokens": 362.7,
+        "avg_utility": 0.34687011718750016
+      }
+    },
+    {
+      "test_csv": "/workspace/nips-adathink/results/per_sample_bbh_Qwen3_8B_20260320_070804.csv",
+      "test_size": 40,
+      "selected_mode": "first4",
+      "learned": {
+        "accuracy": 0.25,
+        "avg_tokens": 508.8,
+        "avg_utility": 0.17546875000000006,
+        "action_match_best_rate": 0.625,
+        "reuse_rate": 0.9
+      },
+      "fixed": {
+        "256": {
+          "accuracy": 0.025,
+          "avg_tokens": 255.075,
+          "avg_utility": -0.012364501953124996
+        },
+        "512": {
+          "accuracy": 0.15,
+          "avg_tokens": 485.925,
+          "avg_utility": 0.07881958007812499
+        },
+        "1024": {
+          "accuracy": 0.3,
+          "avg_tokens": 795.625,
+          "avg_utility": 0.183453369140625
+        }
+      },
+      "oracle": {
+        "accuracy": 0.325,
+        "avg_tokens": 346.775,
+        "avg_utility": 0.27420288085937516
+      }
+    },
+    {
+      "test_csv": "/workspace/nips-adathink/results/per_sample_bbh_Qwen3_8B_20260320_070936.csv",
+      "test_size": 40,
+      "selected_mode": "first4",
+      "learned": {
+        "accuracy": 0.325,
+        "avg_tokens": 631.8,
+        "avg_utility": 0.2324511718749999,
+        "action_match_best_rate": 0.4,
+        "reuse_rate": 0.75
+      },
+      "fixed": {
+        "256": {
+          "accuracy": 0.0,
+          "avg_tokens": 255.825,
+          "avg_utility": -0.037474365234374994
+        },
+        "512": {
+          "accuracy": 0.15,
+          "avg_tokens": 484.975,
+          "avg_utility": 0.07895874023437499
+        },
+        "1024": {
+          "accuracy": 0.325,
+          "avg_tokens": 761.925,
+          "avg_utility": 0.21338989257812502
+        }
+      },
+      "oracle": {
+        "accuracy": 0.325,
+        "avg_tokens": 368.625,
+        "avg_utility": 0.27100219726562513
+      }
+    },
+    {
+      "test_csv": "/workspace/nips-adathink/results/per_sample_bbh_Qwen3_8B_20260320_071052.csv",
+      "test_size": 40,
+      "selected_mode": "first4",
+      "learned": {
+        "accuracy": 0.3,
+        "avg_tokens": 661.025,
+        "avg_utility": 0.20317016601562496,
+        "action_match_best_rate": 0.25,
+        "reuse_rate": 0.725
+      },
+      "fixed": {
+        "256": {
+          "accuracy": 0.1,
+          "avg_tokens": 252.1,
+          "avg_utility": 0.06307128906250001
+        },
+        "512": {
+          "accuracy": 0.2,
+          "avg_tokens": 469.575,
+          "avg_utility": 0.131214599609375
+        },
+        "1024": {
+          "accuracy": 0.325,
+          "avg_tokens": 751.875,
+          "avg_utility": 0.214862060546875
+        }
+      },
+      "oracle": {
+        "accuracy": 0.35,
+        "avg_tokens": 345.525,
+        "avg_utility": 0.2993859863281252
+      }
+    },
+    {
+      "test_csv": "/workspace/nips-adathink/results/per_sample_bbh_Qwen3_8B_20260320_071202.csv",
+      "test_size": 40,
+      "selected_mode": "first2",
+      "learned": {
+        "accuracy": 0.35,
+        "avg_tokens": 591.925,
+        "avg_utility": 0.263292236328125,
+        "action_match_best_rate": 0.55,
+        "reuse_rate": 0.875
+      },
+      "fixed": {
+        "256": {
+          "accuracy": 0.075,
+          "avg_tokens": 253.3,
+          "avg_utility": 0.0378955078125
+        },
+        "512": {
+          "accuracy": 0.15,
+          "avg_tokens": 486.875,
+          "avg_utility": 0.078680419921875
+        },
+        "1024": {
+          "accuracy": 0.375,
+          "avg_tokens": 792.075,
+          "avg_utility": 0.258973388671875
+        }
+      },
+      "oracle": {
+        "accuracy": 0.425,
+        "avg_tokens": 416.65,
+        "avg_utility": 0.3639672851562501
+      }
+    },
+    {
+      "test_csv": "/workspace/nips-adathink/results/per_sample_bbh_Qwen3_8B_20260320_071310.csv",
+      "test_size": 40,
+      "selected_mode": "first4",
+      "learned": {
+        "accuracy": 0.25,
+        "avg_tokens": 589.725,
+        "avg_utility": 0.16361450195312496,
+        "action_match_best_rate": 0.5,
+        "reuse_rate": 0.725
+      },
+      "fixed": {
+        "256": {
+          "accuracy": 0.025,
+          "avg_tokens": 255.35,
+          "avg_utility": -0.012404785156249994
+        },
+        "512": {
+          "accuracy": 0.125,
+          "avg_tokens": 478.75,
+          "avg_utility": 0.05487060546875
+        },
+        "1024": {
+          "accuracy": 0.25,
+          "avg_tokens": 769.825,
+          "avg_utility": 0.137232666015625
+        }
+      },
+      "oracle": {
+        "accuracy": 0.25,
+        "avg_tokens": 333.825,
+        "avg_utility": 0.20109985351562498
+      }
+    }
+  ],
+  "macro_mean": {
+    "learned": {
+      "accuracy": 0.2928571428571428,
+      "avg_tokens": 584.9214285714285,
+      "avg_utility": 0.20717529296874998,
+      "action_match_best_rate": 0.4607142857142857,
+      "reuse_rate": 0.8142857142857142
+    },
+    "fixed": {
+      "256": {
+        "accuracy": 0.03571428571428572,
+        "avg_tokens": 254.7142857142857,
+        "avg_utility": -0.0015973772321428536
+      },
+      "512": {
+        "accuracy": 0.17142857142857143,
+        "avg_tokens": 477.95357142857137,
+        "avg_utility": 0.10141584123883929
+      },
+      "1024": {
+        "accuracy": 0.325,
+        "avg_tokens": 773.0714285714286,
+        "avg_utility": 0.21175711495535715
+      }
+    },
+    "oracle": {
+      "accuracy": 0.3464285714285714,
+      "avg_tokens": 368.0214285714286,
+      "avg_utility": 0.2925191824776787
+    }
+  }
+}
