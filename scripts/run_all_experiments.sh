@@ -86,87 +86,105 @@ for m in ['$MODEL_27B', '$MODEL_8B']:
 " 2>&1 | tee "$LOG_DIR/phase0_download.log"
 fi
 
-# Phase 1: Budget sweep
+# Phase 1: Budget sweep on GSM8K (27B model, multiple budgets per seed)
 if should_run 1; then
-    log_phase 1 "Budget sweep (64/128/256)"
-    for BUDGET in 64 128 256; do
-        for SEED in "${SEEDS[@]}"; do
-            echo "[Phase 1] Budget=$BUDGET Seed=$SEED"
-            $(get_torchrun_cmd) scripts/run_gsm8k_experiment.py \
-                --max_new_tokens "$BUDGET" \
-                --seed "$SEED" \
-                --output_dir "${RESULTS_DIR}/budget_sweep/budget${BUDGET}/seed${SEED}" \
-                2>&1 | tee "$LOG_DIR/phase1_b${BUDGET}_s${SEED}.log" || true
-        done
+    log_phase 1 "Budget sweep (64/128/256) on GSM8K"
+    for SEED in "${SEEDS[@]}"; do
+        echo "[Phase 1] Budgets=64,128,256 Seed=$SEED Model=$MODEL_27B"
+        $(get_torchrun_cmd) scripts/run_gsm8k_experiment.py \
+            --model "$MODEL_27B" \
+            --budgets 64 128 256 \
+            --seed "$SEED" \
+            --results_dir "${RESULTS_DIR}" \
+            --enable_thinking \
+            2>&1 | tee "$LOG_DIR/phase1_s${SEED}.log" || true
     done
 fi
 
 # Phase 2: Self-consistency baseline
 if should_run 2; then
-    log_phase 2 "Self-consistency baseline"
+    log_phase 2 "Self-consistency baseline (SC@8, SC@16)"
     for SC in 8 16; do
         for SEED in "${SEEDS[@]}"; do
-            echo "[Phase 2] SC@${SC} Seed=$SEED"
+            echo "[Phase 2] SC@${SC} Seed=$SEED Model=$MODEL_27B"
             $(get_torchrun_cmd) scripts/run_gsm8k_sc_baseline.py \
-                --num_samples "$SC" \
+                --model "$MODEL_27B" \
+                --sc_n "$SC" \
                 --seed "$SEED" \
-                --output_dir "${RESULTS_DIR}/sc_baseline/sc${SC}/seed${SEED}" \
+                --results_dir "${RESULTS_DIR}" \
+                --enable_thinking \
                 2>&1 | tee "$LOG_DIR/phase2_sc${SC}_s${SEED}.log" || true
         done
     done
 fi
 
-# Phase 3: Learned controller
+# Phase 3: Learned budget controller (post-processing, no GPU needed)
 if should_run 3; then
     log_phase 3 "Learned budget controller"
-    for SEED in "${SEEDS[@]}"; do
-        echo "[Phase 3] Learned controller Seed=$SEED"
-        $(get_torchrun_cmd) scripts/run_learned_budget_controller.py \
-            --seed "$SEED" \
-            --output_dir "${RESULTS_DIR}/learned_controller/seed${SEED}" \
-            2>&1 | tee "$LOG_DIR/phase3_learned_s${SEED}.log" || true
-    done
+    INPUT_CSVS=( $(ls ${RESULTS_DIR}/per_sample_*.csv 2>/dev/null) )
+    if [ ${#INPUT_CSVS[@]} -gt 0 ]; then
+        for SEED in "${SEEDS[@]}"; do
+            echo "[Phase 3] Learned controller Seed=$SEED (${#INPUT_CSVS[@]} input CSVs)"
+            python scripts/run_learned_budget_controller.py \
+                --input_csvs "${INPUT_CSVS[@]}" \
+                --seed "$SEED" \
+                --output_dir "${RESULTS_DIR}" \
+                2>&1 | tee "$LOG_DIR/phase3_learned_s${SEED}.log" || true
+        done
+    else
+        echo "[Phase 3] SKIPPED: no per_sample CSVs found in ${RESULTS_DIR}/"
+    fi
 fi
 
-# Phase 4: Value controller
+# Phase 4: Value-based budget controller (post-processing, no GPU needed)
 if should_run 4; then
     log_phase 4 "Value-based budget controller"
-    for SEED in "${SEEDS[@]}"; do
-        echo "[Phase 4] Value controller Seed=$SEED"
-        $(get_torchrun_cmd) scripts/run_value_budget_controller.py \
-            --seed "$SEED" \
-            --output_dir "${RESULTS_DIR}/value_controller/seed${SEED}" \
-            2>&1 | tee "$LOG_DIR/phase4_value_s${SEED}.log" || true
-    done
+    INPUT_CSVS=( $(ls ${RESULTS_DIR}/per_sample_*.csv 2>/dev/null) )
+    if [ ${#INPUT_CSVS[@]} -gt 0 ]; then
+        for SEED in "${SEEDS[@]}"; do
+            echo "[Phase 4] Value controller Seed=$SEED (${#INPUT_CSVS[@]} input CSVs)"
+            python scripts/run_value_budget_controller.py \
+                --input_csvs "${INPUT_CSVS[@]}" \
+                --seed "$SEED" \
+                2>&1 | tee "$LOG_DIR/phase4_value_s${SEED}.log" || true
+        done
+    else
+        echo "[Phase 4] SKIPPED: no per_sample CSVs found in ${RESULTS_DIR}/"
+    fi
 fi
 
-# Phase 5: Policy search
+# Phase 5: Policy search on GSM8K
 if should_run 5; then
     log_phase 5 "Policy search"
     for SEED in "${SEEDS[@]}"; do
-        echo "[Phase 5] Policy search Seed=$SEED"
+        echo "[Phase 5] Policy search Seed=$SEED Model=$MODEL_27B"
         $(get_torchrun_cmd) scripts/run_gsm8k_policy_search.py \
+            --model "$MODEL_27B" \
             --seed "$SEED" \
-            --output_dir "${RESULTS_DIR}/policy_search/seed${SEED}" \
+            --results_dir "${RESULTS_DIR}" \
+            --enable_thinking \
             2>&1 | tee "$LOG_DIR/phase5_policy_s${SEED}.log" || true
     done
 fi
 
-# Phase 6: 8B dual-scale
+# Phase 6: 8B dual-scale validation
 if should_run 6; then
     log_phase 6 "8B dual-scale validation"
     python scripts/run_8b_think_postprocess_after_seeds.py \
-        --output_dir "${RESULTS_DIR}/dual_scale_8b" \
+        --results_dir "${RESULTS_DIR}" \
         2>&1 | tee "$LOG_DIR/phase6_8b.log" || true
 fi
 
-# Phase 7: Significance tests + final figures
+# Phase 7: Significance tests
 if should_run 7; then
-    log_phase 7 "Significance tests + final figures"
-    $(get_torchrun_cmd) scripts/run_template_controller_significance.py \
-        --results_dir "${RESULTS_DIR}" \
-        --output_dir "${RESULTS_DIR}/figures" \
-        2>&1 | tee "$LOG_DIR/phase7_significance.log" || true
+    log_phase 7 "Significance tests"
+    for f in ${RESULTS_DIR}/template_controller_rows_*.csv; do
+        [ -f "$f" ] || continue
+        echo "[Phase 7] Significance: $f"
+        python scripts/run_template_controller_significance.py \
+            --rows_csv "$f" \
+            2>&1 | tee -a "$LOG_DIR/phase7_significance.log" || true
+    done
 fi
 
 echo ""
