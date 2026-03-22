@@ -63,7 +63,7 @@ log_phase() { echo ""; echo "=== Phase $1: $2 === [$(date '+%Y-%m-%d %H:%M:%S')]
 
 SEEDS=(42 123 456)
 MODEL_27B="Qwen/Qwen3.5-27B"
-MODEL_8B="Qwen/Qwen3.5-8B"
+MODEL_8B="Qwen/Qwen3-8B"
 
 echo "============================================================"
 echo " AdaThink — Full Experiment Pipeline"
