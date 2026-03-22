@@ -24,3 +24,15 @@ Thumbs.db
 # Large result logs (keep JSON/CSV summaries)
 results/bg_*.log
 results/fg_*.log
+
+# Large experiment artifacts (use collect_results.sh to archive)
+results_archive/*.tar.gz
+checkpoints/**/*.pt
+checkpoints/**/*.bin
+checkpoints/**/*.safetensors
+outputs/**/*.pt
+*.ckpt
+__pycache__/
+.venv/
+*.egg-info/
+wandb/
