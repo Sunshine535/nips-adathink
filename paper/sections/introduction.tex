@@ -1,0 +1,47 @@
+\section{Introduction}
+\label{sec:intro}
+
+Large language models (LLMs) increasingly rely on extended chain-of-thought (CoT) reasoning at inference time to solve complex tasks~\citep{wei2022chain,openai2024o1}.
+The prevailing paradigm is straightforward: allocate more tokens, produce longer reasoning traces, and achieve higher accuracy.
+Recent work on test-time compute scaling~\citep{snell2024scaling} has formalized this intuition, showing that accuracy often improves log-linearly with the number of generated tokens.
+
+However, this ``more is better'' assumption breaks down in practice.
+We identify a pervasive \emph{overthinking} phenomenon: for a substantial fraction of questions, extending the reasoning budget beyond a certain threshold yields no accuracy gain---and sometimes causes regressions as the model ``talks itself out of'' correct intermediate answers.
+On GSM8K with Qwen3.5-27B, increasing the budget from 256 to 512 tokens costs $2\times$ more compute but yields only $\Delta\text{Acc} = +2.5$\,pp---a marginal gain that does not justify doubling the cost.
+Conversely, many hard questions genuinely require extended reasoning and are severely harmed by premature truncation.
+
+This observation motivates a natural question: \emph{can we dynamically allocate reasoning tokens per question, spending more on hard problems and less on easy ones, to improve the quality--cost Pareto frontier?}
+
+We introduce \adathink{}, a framework for adaptive test-time compute allocation.
+Rather than applying a uniform budget across all inputs, \adathink{} uses a learned controller to predict the appropriate reasoning budget for each question based on difficulty features extracted from partial decoding traces.
+Our framework encompasses three controller variants of increasing sophistication:
+\begin{enumerate}[nosep,leftmargin=*]
+    \item A \textbf{template controller} that maps discrete difficulty features to budget tiers via a lookup table optimized through leave-one-subset-out cross-validation.
+    \item A \textbf{parametric controller} that uses a linear policy over continuous features with a constrained optimization objective.
+    \item A \textbf{value-based controller} that predicts per-budget correctness probabilities and selects budgets via a cost-aware decision rule.
+\end{enumerate}
+
+All controllers optimize a unified utility objective $U = \text{Accuracy} - \lambda \cdot \text{NormalizedCost}$ that explicitly trades off quality against compute, with $\lambda$ controlling the cost sensitivity.
+Training uses per-sample decoding traces from multi-seed replicated experiments, and evaluation follows a strict leave-one-subset-out protocol to prevent data leakage.
+
+We evaluate \adathink{} on three diverse benchmarks---GSM8K (mathematical reasoning), MATH500 (competition mathematics), and BIG-Bench Hard (mixed reasoning)---using two model scales (Qwen3-8B and Qwen3.5-27B).
+Our key findings are:
+\begin{itemize}[nosep,leftmargin=*]
+    \item \textbf{Large and statistically significant gains.}
+    The template controller achieves $+14.2$\,pp absolute accuracy on GSM8K-27B, $+12.1$\,pp on MATH500-27B, and $+11.3$\,pp on BBH-27B over the matched fixed-budget baseline, with all 95\% bootstrap CIs excluding zero.
+    \item \textbf{Cross-scale generalization.}
+    Gains persist on the smaller 8B model: $+28.9$\,pp on MATH500-8B and $+12.1$\,pp on BBH-8B, confirming that adaptive control is not limited to large models.
+    \item \textbf{Positive utility despite two-pass overhead.}
+    The two-pass procedure (probe at $b_1$ followed by generation at the selected budget) adds token overhead, but utility (accuracy minus normalized cost) improves across all five template-controller settings ($+7.4$ to $+23.1$\,pp) because accuracy gains consistently outweigh the additional cost.
+    \item \textbf{Component contributions validated.}
+    Ablation studies across five settings show that access to the highest budget tier is critical (removing it causes severe accuracy drops on 8B models), while the value of intermediate tiers is setting-dependent.
+    \item \textbf{Stronger baselines.}
+    We compare against fair self-consistency variants (SC@2$\times$256, SC@4$\times$128) and a continuation-from-$b_1$ baseline. All are substantially outperformed by the template controller, and multi-seed analysis confirms zero stochastic decoding variance under greedy generation.
+\end{itemize}
+
+Our central scientific finding is that \emph{fixed test-time compute creates structured heterogeneity}: it systematically overthinks easy questions and undercomputes hard ones, and the resulting difficulty landscape is so regular that a tiny binary-feature controller can exploit it.
+A lookup table over three binary features---requiring no gradient computation, no model modification, and $\leq 6561$ exhaustive evaluations---closes $76\%$ of the gap to an oracle budget selector on GSM8K-27B.
+Feature-stratified analysis reveals the mechanism: $\sim$13\% of questions are ``easy'' (correct at the lowest budget with 60\% overthinking rate at the highest), while $\sim$60\% are ``hard'' (zero accuracy at the lowest budget); routing each stratum to its optimal tier yields large gains with lower compute than any fixed budget.
+Cross-benchmark transfer confirms the pattern is general: templates learned on MATH500 transfer perfectly to BBH ($+13.6$\,pp, matching in-domain), indicating the controller captures a difficulty signature that transcends individual benchmarks.
+This establishes a strong, reproducible lower bound on what inference-only budget control can achieve \emph{without any model modification}, complementing training-time approaches~\citep{liu2025selfbudgeter,yang2025budgetthinker,han2025tale} that internalize budget decisions at higher compute cost.
+We validate across mathematical and logical reasoning with two Qwen model scales; extensions to other model families and task domains are natural next steps.

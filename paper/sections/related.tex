@@ -1,0 +1,35 @@
+\section{Related Work}
+\label{sec:related}
+
+\paragraph{Test-time compute scaling.}
+Recent work has demonstrated that allocating additional compute at inference time---through longer generation, multiple samples, or iterative refinement---can substantially improve LLM performance~\citep{snell2024scaling,openai2024o1,muennighoff2025s1}.
+\citet{snell2024scaling} show log-linear accuracy scaling with compute budget on mathematical reasoning.
+Models like o1~\citep{openai2024o1} and DeepSeek-R1~\citep{deepseek2025r1} are specifically trained for extended reasoning but apply uniform budgets, motivating per-instance adaptation.
+
+\paragraph{Adaptive reasoning budgets.}
+Our work is most directly related to a growing body of methods that adapt per-instance reasoning effort.
+\textbf{Training-time approaches} modify the model to produce difficulty-calibrated traces.
+TALE~\citep{han2025tale} includes a token budget in prompts and trains via SFT/DPO to compress reasoning with minimal accuracy loss.
+SelfBudgeter~\citep{liu2025selfbudgeter} predicts the required budget \emph{before} generation and enforces adherence via budget-guided GRPO, achieving $61\%$ average length compression.
+BudgetThinker~\citep{yang2025budgetthinker} inserts periodic control tokens to inform the model of remaining budget during inference, trained with curriculum RL.
+DRER~\citep{zhu2025drer} couples reward attribution to token-level reasoning quality with a dynamic length advantage.
+\textbf{Inference-time approaches} leave the base model unchanged.
+Plan-and-Budget~\citep{li2025planbudget} decomposes queries into sub-questions and allocates tokens via decay-based heuristics.
+Parallel-Probe~\citep{zheng2025parallelprobe} jointly optimizes width and depth in parallel reasoning via consensus-based early stopping and branch pruning.
+\citet{aggarwal2023let} explore heuristic stopping rules for adaptive token budgets.
+
+\adathink{} is an inference-time, training-free controller that differs from the above in two key ways:
+(i)~it requires no model modification or fine-tuning, operating purely on cached decoding traces;
+(ii)~it optimizes an explicit cost-aware utility via exhaustive search over a compact template space.
+Compared to SelfBudgeter (which trains the model for budget prediction), \adathink{} trades training cost for zero deployment friction.
+Compared to Plan-and-Budget (which uses handcrafted decay heuristics), \adathink{} learns the allocation from data.
+The approach is complementary to training-time methods: a SelfBudgeter-tuned model could use an \adathink{} controller as a post-hoc refinement layer.
+
+\paragraph{Self-consistency and verification.}
+Self-consistency~\citep{wang2023selfconsistency} improves accuracy via majority voting over multiple samples, uniformly multiplying compute.
+Verifier-based approaches~\citep{cobbe2021training,lightman2024lets} train separate models to score candidates.
+\adathink{} \emph{reallocates} compute across questions rather than uniformly increasing it, and can use consistency features as controller inputs.
+
+\paragraph{Complementary runtime controllers.}
+Cascade-style speculative decoding~\citep{chen2023accelerating} selects speculation length per step; KV-cache eviction controllers~\citep{zhang2024h2o} manage memory budgets.
+Both address different resources (latency, memory) but share the philosophy of lightweight, learned reallocation; \adathink{} targets per-question CoT budget and could compose with these for joint optimization.

@@ -1,0 +1,21 @@
+\section{Conclusion}
+\label{sec:conclusion}
+
+We presented \adathink{}, a training-free, inference-only framework for adaptive test-time compute allocation that exploits a fundamental property of LLM reasoning: \emph{fixed budgets create structured compute heterogeneity}, systematically overthinking easy questions and undercomputing hard ones.
+
+Our primary empirical contribution is demonstrating that this heterogeneity is so regular that a lookup table over three binary difficulty features---answer presence, token utilization, and answer consistency---closes $76\%$ of the gap to an oracle budget selector.
+The template controller achieves $+11.3$--$28.9$\,pp accuracy gains and $+7.4$--$23.1$\,pp utility gains across three benchmarks and two Qwen model scales, with all improvements statistically significant.
+Feature-stratified analysis reveals the mechanism: $\sim$13\% of questions are easy (with $\sim$60\% overthinking rate at $b_K$), while $\sim$60\% are hard and benefit from escalation.
+Cross-benchmark transfer (MATH500$\to$BBH: $+13.6$\,pp, matching in-domain) confirms the difficulty pattern generalizes across reasoning domains.
+
+\paragraph{Limitations.}
+(1)~All experiments use Qwen-family models; while the underlying phenomenon (overthinking) is well-documented across model families, we have not validated our specific controller on non-Qwen architectures.
+(2)~The two-pass design incurs overhead on $69.7\%$ of GSM8K-27B questions; naive prefix reuse underperforms fresh re-generation ($52.5\%$ vs.\ $60.4\%$), motivating smarter continuation strategies.
+(3)~Evaluation covers mathematical and logical reasoning; generalization to code generation and open-ended QA is untested.
+(4)~Direct comparison to training-time approaches (SelfBudgeter, BudgetThinker) requires fine-tuning outside our inference-only scope.
+
+\paragraph{Broader impact.}
+By reducing unnecessary compute in LLM reasoning, \adathink{} can lower inference costs and energy consumption at scale.
+
+\paragraph{Future work.}
+Key directions include cross-family validation (Llama, Mistral), lightweight difficulty classifiers (e.g., logprob trends) to eliminate the probe pass, partial-trace reuse via KV-cache prefix seeding, and integration with training-time approaches as a complementary post-hoc refinement layer.

@@ -16,10 +16,18 @@ checkpoints/
 # Editor
 .cursor/
 .vscode/
+.specstory/
 
 # OS
 .DS_Store
 Thumbs.db
+
+# Model weights
+*.safetensors
+*.bin
+*.pt
+*.ckpt
+*.cache/huggingface/
 
 # Large result logs (keep JSON/CSV summaries)
 results/bg_*.log
@@ -36,3 +44,4 @@ __pycache__/
 .venv/
 *.egg-info/
 wandb/
+skills/

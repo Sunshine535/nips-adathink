@@ -1,0 +1,76 @@
+\documentclass{article}
+
+\usepackage[final]{neurips_2025}
+\makeatletter\renewcommand{\@neuripsyear}{2026}\makeatother
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{nicefrac}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{colortbl}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{multirow}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{tablefootnote}
+\usepackage{enumitem}
+
+\definecolor{improve}{RGB}{0,128,0}
+\definecolor{decline}{RGB}{200,0,0}
+\newcommand{\up}[1]{\textcolor{improve}{\textbf{+#1}}}
+\newcommand{\down}[1]{\textcolor{decline}{\textbf{#1}}}
+\newcommand{\ci}[2]{\scriptsize[#1,\,#2]}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\newcommand{\adathink}{\textsc{AdaThink}}
+
+% NeurIPS checklist answer macros (only define if not already in .sty)
+\providecommand{\answerYes}[1]{\textbf{Yes.} #1}
+\providecommand{\answerNo}[1]{\textbf{No.} #1}
+\providecommand{\answerNA}[1]{\textbf{N/A.} #1}
+
+\title{\adathink{}: Adaptive Budget Allocation for\\Test-Time Compute in Large Language Models}
+
+\author{
+  Anonymous Author(s)
+}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Scaling test-time compute via extended chain-of-thought reasoning improves LLM accuracy on hard problems, but we show that this improvement is far from uniform: fixed budgets \emph{systematically overthink easy questions and undercompute hard ones}, creating structured heterogeneity that simple post-hoc controllers can exploit.
+We introduce \adathink{}, a training-free, inference-only framework that allocates per-question reasoning tokens based on difficulty signals extracted from a single low-budget probe pass---requiring no model modification or fine-tuning.
+Our primary controller is a lookup table over three binary features (answer presence, token utilization, answer consistency) optimized via leave-one-subset-out cross-validation.
+Despite its simplicity, this 3-bit template closes $76\%$ of the gap to an oracle budget selector on GSM8K-27B.
+Evaluated across three benchmarks (GSM8K, MATH500, BIG-Bench Hard) and two Qwen model scales (8B and 27B), the template controller achieves \textbf{+11.3--28.9}\,pp accuracy gains over matched fixed-budget baselines, with all CIs excluding zero.
+The two-pass overhead is offset by accuracy improvements, yielding positive utility gains ($+7.4$--$23.1$\,pp) across all settings.
+Feature-stratified analysis reveals the mechanism: $\sim$13\% of questions are ``easy'' (60\% overthinking rate at the max budget), while $\sim$60\% are ``hard'' and benefit from budget escalation.
+Cross-benchmark transfer shows the difficulty pattern generalizes: templates learned on MATH500 transfer perfectly to BBH.
+\end{abstract}
+
+\input{sections/introduction}
+\input{sections/related}
+\input{sections/method}
+\input{sections/experiments}
+\input{sections/conclusion}
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+\input{sections/checklist}
+
+\appendix
+\input{sections/appendix}
+
+\end{document}

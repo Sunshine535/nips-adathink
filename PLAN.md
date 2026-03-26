@@ -44,10 +44,16 @@
 - Go criterion:
   - achieve `>= +1.5` absolute accuracy at matched cost on at least 2 model scales.
 
-## Gate 4: Paper Packaging (Pending)
-- [ ] Main tables + Pareto plots + failure taxonomy.
-- [ ] Reproducibility appendix (commands, seeds, config hashes).
+## Gate 4: Paper Packaging (In Progress)
+- [x] Main tables + Pareto plots (Table 1-4, Figure 1-3).
+- [x] Cross-benchmark and cross-scale results (Table 2).
+- [x] Ablation study (Table 3).
+- [x] Latency analysis (Table 4).
+- [x] Statistical significance forest plot (Figure 2).
+- [x] Reproducibility appendix (seeds, hardware, parser details).
+- [ ] Failure taxonomy (per-question error analysis).
 - [ ] Artifact checklist and release script.
+- [ ] NeurIPS checklist completion.
 
 ## Kill Criteria
 - If learned controller cannot beat fixed-budget baseline at matched cost, pivot paper framing to:

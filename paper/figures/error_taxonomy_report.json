@@ -1,0 +1,120 @@
+{
+  "error_taxonomies": [
+    {
+      "benchmark": "GSM8K-27B",
+      "n_total": 920,
+      "n_correct": 556,
+      "n_incorrect": 364,
+      "accuracy": 0.6043,
+      "budget_distribution": {
+        "128": 279,
+        "256": 559,
+        "512": 82
+      },
+      "best_budget_distribution": {
+        "128": 528,
+        "256": 198,
+        "512": 194
+      },
+      "error_categories": {
+        "under_budget_wrong": 114,
+        "over_budget_wrong": 150,
+        "matched_budget_wrong": 100,
+        "matched_budget_right": 455
+      },
+      "error_fractions": {
+        "under_budget": 0.3132,
+        "over_budget": 0.4121,
+        "matched_wrong": 0.2747
+      }
+    },
+    {
+      "benchmark": "MATH500-27B",
+      "n_total": 680,
+      "n_correct": 334,
+      "n_incorrect": 346,
+      "accuracy": 0.4912,
+      "budget_distribution": {
+        "2048": 175,
+        "4096": 77,
+        "8192": 428
+      },
+      "error_categories": {
+        "under_budget_wrong": 38,
+        "over_budget_wrong": 192,
+        "matched_budget_wrong": 116
+      },
+      "error_fractions": {
+        "under_budget": 0.1098,
+        "over_budget": 0.5549,
+        "matched_wrong": 0.3353
+      }
+    },
+    {
+      "benchmark": "BBH-27B",
+      "n_total": 680,
+      "n_correct": 405,
+      "n_incorrect": 275,
+      "accuracy": 0.5956,
+      "budget_distribution": {
+        "1024": 177,
+        "2048": 37,
+        "4096": 466
+      },
+      "error_categories": {
+        "under_budget_wrong": 9,
+        "over_budget_wrong": 96,
+        "matched_budget_wrong": 170
+      },
+      "error_fractions": {
+        "under_budget": 0.0327,
+        "over_budget": 0.3491,
+        "matched_wrong": 0.6182
+      }
+    },
+    {
+      "benchmark": "MATH500-8B",
+      "n_total": 360,
+      "n_correct": 135,
+      "n_incorrect": 225,
+      "accuracy": 0.375,
+      "budget_distribution": {
+        "512": 110,
+        "1024": 21,
+        "2048": 229
+      },
+      "error_categories": {
+        "under_budget_wrong": 22,
+        "over_budget_wrong": 106,
+        "matched_budget_wrong": 97
+      },
+      "error_fractions": {
+        "under_budget": 0.0978,
+        "over_budget": 0.4711,
+        "matched_wrong": 0.4311
+      }
+    },
+    {
+      "benchmark": "BBH-8B",
+      "n_total": 280,
+      "n_correct": 82,
+      "n_incorrect": 198,
+      "accuracy": 0.2929,
+      "budget_distribution": {
+        "256": 83,
+        "512": 29,
+        "1024": 168
+      },
+      "error_categories": {
+        "under_budget_wrong": 11,
+        "over_budget_wrong": 107,
+        "matched_budget_wrong": 80
+      },
+      "error_fractions": {
+        "under_budget": 0.0556,
+        "over_budget": 0.5404,
+        "matched_wrong": 0.404
+      }
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "round": 4,
+  "threadId": null,
+  "status": "in_progress",
+  "last_score": 6.5,
+  "last_verdict": "almost",
+  "pending_experiments": [
+    "server1_deepseek_gsm8k_math500",
+    "server2_27b_fulltest_gsm8k_math500"
+  ],
+  "servers": {
+    "server1": {
+      "host": "216.81.151.3",
+      "port": 11839,
+      "task": "DeepSeek-R1-Distill-Llama-8B: GSM8K full + MATH500 full + 7-seed subsets",
+      "status": "running"
+    },
+    "server2": {
+      "host": "216.81.245.127",
+      "port": 15276,
+      "task": "Qwen3.5-27B: GSM8K full + MATH500 full",
+      "status": "running"
+    }
+  },
+  "timestamp": "2026-03-26T08:10:00"
+}

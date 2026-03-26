@@ -1,0 +1,110 @@
+\section{Method}
+\label{sec:method}
+
+\subsection{Problem Formulation}
+\label{sec:method:formulation}
+
+Consider an LLM $\mathcal{M}$ that generates a reasoning trace $y$ for a question $x$ under a token budget $b \in \mathcal{B} = \{b_1, b_2, \ldots, b_K\}$, where $b_1 < b_2 < \cdots < b_K$.
+Let $c(x, b) \in \{0, 1\}$ denote the correctness of the answer extracted from the trace generated under budget $b$, and let $t(x, b)$ denote the actual number of tokens consumed.
+
+A \emph{fixed-budget} policy $\pi_\text{fix}(x) = b_k$ assigns the same budget to all questions.
+We seek an \emph{adaptive} policy $\pi: \mathcal{X} \to \mathcal{B}$ that selects a per-question budget to maximize a cost-aware utility:
+\begin{equation}
+    \label{eq:utility}
+    U(\pi) = \mathbb{E}_{x}\left[ c\big(x, \pi(x)\big) - \lambda \cdot \frac{t\big(x, \pi(x)\big)}{b_K} \right],
+\end{equation}
+where $\lambda \geq 0$ controls the cost penalty and $b_K$ normalizes token counts so that a single full-budget pass has cost $\approx 1$.\footnote{Actual token counts $t(x,b)$ may slightly exceed $b$ due to answer-projection tokens; the normalization by $b_K$ keeps the cost term on an interpretable scale, though it can slightly exceed 1 for the maximum tier and exceeds 1 for two-pass questions.}
+We seek $\pi^*$ that improves the quality--cost trade-off relative to uniform fixed-budget decoding, as governed by~$\lambda$.
+
+\subsection{Template Budget Controller}
+\label{sec:method:template}
+
+Our primary controller uses a template-based approach that maps \emph{difficulty features} to budget tiers.
+
+\paragraph{Difficulty features.}
+From a partial decoding trace at the lowest budget $b_1$, we extract:
+\begin{itemize}[nosep,leftmargin=*]
+    \item \textbf{Answer presence}: whether a parseable final answer appears within $b_1$ tokens.
+    \item \textbf{Token utilization}: the fraction $t(x, b_1) / b_1$, binarized at threshold $0.95$ (``high'' if $\geq 0.95$, ``low'' otherwise).
+    \item \textbf{Answer consistency}: for models with thinking mode, whether the intermediate reasoning and final answer agree (binary).
+\end{itemize}
+All three features are binary, yielding at most $D = 2^3 = 8$ difficulty categories $d(x) \in \{1, \ldots, D\}$.
+Answer presence is determined by regex-based parsing: for GSM8K, we search for ``Final answer: $\langle$number$\rangle$'' or extract the last number; for MATH500, we extract \texttt{\textbackslash boxed\{\}} contents; for BBH, we match option letters or the ``The answer is'' pattern.
+When strict parsing fails and the budget is exhausted without a parseable answer, we optionally extend generation by up to 16 tokens (``projection''; Appendix~\ref{app:reproducibility}).
+
+We chose these three features because they are (i)~available from a single low-budget pass without additional model calls, (ii)~interpretable as difficulty proxies (questions answered quickly and consistently are likely easier), and (iii)~sufficient to produce a compact partition ($D \leq 8$) that avoids overfitting.
+Richer features such as token-level logprob trends or lightweight verifier scores could improve discrimination but would require additional inference-time computation; we leave this exploration to future work (Section~\ref{sec:conclusion}).
+
+\paragraph{Budget assignment.}
+The template controller maintains a mapping $T: \{1, \ldots, D\} \to \mathcal{B}$ that assigns each difficulty category to a budget tier.
+The policy is:
+\begin{equation}
+    \pi_\text{template}(x) = T\big(d(x)\big).
+\end{equation}
+
+\paragraph{Training via leave-one-subset-out cross-validation.}
+Given $N$ per-sample traces from replicated experiments (each drawing $n_s$ questions uniformly at random from the benchmark), we optimize $T$ by leave-one-subset-out cross-validation:
+\begin{enumerate}[nosep,leftmargin=*]
+    \item For each held-out subset $S_i$, compute the utility~\eqref{eq:utility} of every possible template assignment on the remaining $N - |S_i|$ samples.
+    \item Select the template $T_i^*$ that maximizes training utility.
+    \item Evaluate $T_i^*$ on the held-out $S_i$ to obtain an unbiased performance estimate.
+\end{enumerate}
+We report performance by pooling all held-out evaluations.
+Because subsets are independent random draws, a small fraction of questions may appear in multiple subsets (e.g., $\sim\!27\%$ of sample-appearances on GSM8K-27B).
+This does not compromise evaluation validity: the controller maps abstract difficulty features to budget tiers and cannot exploit question identity, and the held-out fold is never used during template selection for that fold.\footnote{We verified empirically that pairwise subset overlap is small (mean 1.6 out of 40 questions); removing overlapping questions from the training fold yields statistically indistinguishable results.}
+
+Algorithm~\ref{alg:adathink} summarizes the \adathink{} inference pipeline.
+
+\begin{algorithm}[t]
+\caption{\adathink{} Inference}
+\label{alg:adathink}
+\begin{algorithmic}[1]
+\REQUIRE Question $x$, LLM $\mathcal{M}$, budget tiers $\mathcal{B} = \{b_1, \ldots, b_K\}$, controller $\pi$
+\ENSURE Answer $a$, tokens consumed $t$
+\STATE Generate trace $y_1 \leftarrow \mathcal{M}(x, b_1)$ \hfill \COMMENT{Initial low-budget pass}
+\STATE Extract features $d(x) \leftarrow \textsc{Features}(x, y_1)$
+\STATE Select budget $b^* \leftarrow \pi(d(x))$ \hfill \COMMENT{Controller decision}
+\IF{$b^* = b_1$}
+    \STATE $a \leftarrow \textsc{ParseAnswer}(y_1)$; $t \leftarrow t(x, b_1)$
+\ELSE
+    \STATE Generate trace $y^* \leftarrow \mathcal{M}(x, b^*)$ \hfill \COMMENT{Fresh full-budget pass}
+    \STATE $a \leftarrow \textsc{ParseAnswer}(y^*)$; $t \leftarrow t(x, b_1) + t(x, b^*)$ \hfill \COMMENT{End-to-end cost}
+\ENDIF
+\RETURN $a, t$
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Value-Based Controller}
+\label{sec:method:value}
+
+For finer-grained cost control, we introduce a value-based controller that predicts \emph{per-budget correctness probabilities}.
+
+\paragraph{Value function.}
+For each budget $b_k$, we estimate $\hat{V}(x, b_k) = \hat{P}(c(x, b_k) = 1)$ using the empirical correctness rate within the difficulty category $d(x)$, computed from training traces.
+Specifically, $\hat{V}(x, b_k) = \frac{1}{|C_{d(x)}|}\sum_{x' \in C_{d(x)}} c(x', b_k)$, where $C_{d(x)}$ is the set of training questions sharing the same difficulty category.
+No additional smoothing is applied; categories with fewer than 5 training samples fall back to the corpus-wide mean to mitigate sparsity (see Appendix~\ref{app:value-calibration} for a calibration analysis).
+
+\paragraph{Cost-aware decision rule.}
+Given a penalty parameter $\rho \geq 0$, the controller selects:
+\begin{equation}
+    \label{eq:value-decision}
+    \pi_\text{value}(x) = \argmax_{b_k \in \mathcal{B}} \left[ \hat{V}(x, b_k) - \rho \cdot \frac{b_k}{b_K} \right].
+\end{equation}
+The penalty $\rho$ provides a continuous knob to trade off quality and cost: $\rho = 0$ maximizes accuracy regardless of cost, while large $\rho$ favors cheaper budgets.
+This enables practitioners to navigate the Pareto frontier by adjusting a single parameter.
+
+\subsection{Parametric Controller}
+\label{sec:method:parametric}
+
+As a middle ground, we also consider a parametric linear controller:
+\begin{equation}
+    \pi_\text{param}(x) = \argmax_{b_k \in \mathcal{B}} \left[ \mathbf{w}_k^\top \phi(x) + \beta_k \right],
+\end{equation}
+where $\phi(x) \in \mathbb{R}^p$ is a feature vector extracted from partial traces and $(\mathbf{w}_k, \beta_k)$ are per-budget parameters optimized via grid search with the utility objective~\eqref{eq:utility}.
+This controller can capture continuous difficulty gradients that the discrete template cannot represent, at the cost of a larger search space.
+
+\paragraph{Computational overhead.}
+When $b^* > b_1$, the $b_1$-pass trace is discarded after feature extraction and a fresh pass at $b^*$ is generated, so end-to-end cost is $t(x, b_1) + t(x, b^*)$.
+On GSM8K-27B, $30.3\%$ of questions are handled by $b_1$ alone; the remaining $69.7\%$ incur probe overhead, yielding 380.1 average tokens ($+93.8$ vs.\ Fixed-256).
+Despite this, utility improves by $+11.5$\,pp.
+Partial-trace reuse (KV-cache prefix seeding) could eliminate the overhead; see Appendix~\ref{app:two-pass} for a full two-pass quantification.
