@@ -85,3 +85,31 @@
 2. **[IMPORTANT]** 27B full-dataset on at least GSM8K
 3. **[LOCAL]** Reframe paper: empirical study of structured compute heterogeneity + simple exploitation
 4. **[LOCAL]** Tighten claims in abstract/intro to match evidence scope
+
+## Round 5 (2026-03-26)
+
+### Assessment
+- **Score: 3.5/10 (-3.0)** ⚠️ CRITICAL REGRESSION
+- **Verdict: Not Ready**
+
+### Critical Discovery
+审阅者发现**方法定义与实际实现严重不一致**：
+- 论文声称：3-bit feature controller (answer_presence, token_utilization, answer_consistency)
+- 实际实现：lexical router (按问题前几个词做 key: first1/first4/first3_lenbin)
+- 主 headline (+14.2pp GSM8K-27B) 可能来自 lexical router，不是 feature controller
+
+### Top 3 Critical Weaknesses
+1. **方法身份错误** - 论文方法 ≠ 实现方法 ≠ 主结果方法
+2. **Headline 可能崩塌** - 审阅者重算：honest feature controller 在 GSM8K-27B 上 ΔAcc≈0
+3. **跨家族泛化缺失** - 所有证据仍是 Qwen-only
+
+### Path to Recovery
+1. 用 honest feature controller 重算所有主结果
+2. 如果 GSM8K-27B headline 掉了，改 headline 为 MATH/BBH
+3. 非 Qwen 模型验证（DeepSeek/Llama）
+4. 重新定位：从 "controller paper" 改成 "compute calibration paper"
+
+### Two-Server Strategy
+- **Server A**: DeepSeek-R1-Distill-Llama-8B, GSM8K full + MATH500 full, honest feature only
+- **Server B**: Qwen3.5-27B, GSM8K full + MATH500 full, honest feature + KV-reuse baseline
+

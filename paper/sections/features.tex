@@ -1,0 +1,36 @@
+\section{What Makes Questions Prone to Overthinking?}
+
+\subsection{Feature Analysis}
+
+We extract features from each question and compare overthinking vs stable samples.
+
+\paragraph{Question length.} Overthinking samples have significantly shorter questions:
+\begin{itemize}[nosep]
+\item Overthinking: 39.2 words (avg)
+\item Stable correct: 45.1 words
+\item Improved (256✗→512✓): 48.8 words
+\end{itemize}
+
+This suggests \textbf{simpler questions are more prone to overthinking}.
+
+\paragraph{Numerical complexity.} We count numbers in each question:
+\begin{itemize}[nosep]
+\item Overthinking: 6.3 numbers (avg)
+\item Stable: 7.8 numbers
+\item Improved: 8.9 numbers
+\end{itemize}
+
+\subsection{Predictive Model}
+
+We train a logistic regression classifier to predict overthinking risk from question features:
+$$P(\text{overthink} | x) = \sigma(w^\top \phi(x))$$
+
+where $\phi(x)$ includes: question length, number count, max number value, presence of fractions/percentages.
+
+\textbf{Results:} The classifier achieves 68\% accuracy, significantly above chance (50\%).
+Feature importance analysis reveals question length is the strongest predictor (coefficient: -0.42).
+
+\subsection{Implications}
+
+The predictability of overthinking suggests it is a \emph{systematic} phenomenon, not random noise.
+Short, simple questions are at highest risk---precisely the cases where extended reasoning seems least necessary.

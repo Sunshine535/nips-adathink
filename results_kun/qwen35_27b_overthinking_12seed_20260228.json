@@ -1,0 +1,63 @@
+{
+  "meta": {
+    "input_csvs": [
+      "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260227_150649.csv",
+      "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260227_152431.csv",
+      "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260227_154356.csv",
+      "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260227_192225.csv",
+      "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260228_050913.csv",
+      "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260228_052641.csv",
+      "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260228_055128.csv",
+      "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260228_060842.csv",
+      "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260228_065843.csv",
+      "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260228_071554.csv",
+      "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260228_081708.csv",
+      "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260228_083415.csv"
+    ],
+    "n_samples": 480
+  },
+  "means": {
+    "fixed_128": {
+      "accuracy": 0.3333333333333333,
+      "avg_tokens": 158.49375
+    },
+    "fixed_256": {
+      "accuracy": 0.475,
+      "avg_tokens": 286.72083333333336
+    },
+    "fixed_512": {
+      "accuracy": 0.48333333333333334,
+      "avg_tokens": 542.46875
+    },
+    "adaptive": {
+      "accuracy": 0.5020833333333333,
+      "avg_tokens": 542.3020833333334
+    }
+  },
+  "paired_delta": {
+    "fixed256_minus_fixed512": {
+      "accuracy_mean": -0.008333333333333333,
+      "accuracy_ci95": [
+        -0.07291666666666667,
+        0.05416666666666667
+      ],
+      "avg_tokens_mean": -255.74791666666667,
+      "avg_tokens_ci95": [
+        -256.43125,
+        -255.05
+      ]
+    },
+    "adaptive_minus_fixed256": {
+      "accuracy_mean": 0.027083333333333334,
+      "accuracy_ci95": [
+        -0.0375,
+        0.09166666666666666
+      ],
+      "avg_tokens_mean": 255.58125,
+      "avg_tokens_ci95": [
+        254.93125,
+        256.25
+      ]
+    }
+  }
+}

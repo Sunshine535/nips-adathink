@@ -1,0 +1,236 @@
+% appendix_final.tex — Supplementary material
+
+\section{Experimental Details}
+\label{app:experimental_details}
+
+\subsection{Hardware and Software}
+All experiments are conducted on NVIDIA A100-80GB GPUs.
+We use PyTorch 2.10 with CUDA 12.8, HuggingFace Transformers (v4.44+),
+and bfloat16 precision.
+Greedy decoding ($\tau{=}0$) is used throughout; no sampling or
+nucleus filtering is applied.
+
+\subsection{Budget Control}
+Token budgets are controlled via the \texttt{max\_new\_tokens} parameter
+in HuggingFace \texttt{model.generate()}, which caps the \emph{total}
+number of newly generated tokens.
+For thinking mode (\texttt{enable\_thinking=True}), this budget is shared
+between the reasoning trace (\texttt{<think>...</think>}) and the final
+answer.
+For non-thinking mode (\texttt{enable\_thinking=False}), the entire budget
+is available for the answer.
+This ensures a fair comparison: both modes operate under the same total
+output-token budget.
+
+\subsection{Answer Extraction}
+We use a multi-level extraction pipeline:
+\begin{enumerate}[nosep,leftmargin=*]
+    \item Search for \texttt{\textbackslash boxed\{...\}} patterns
+    \item Search for \texttt{\#\#\#\#} markers (GSM8K convention)
+    \item Search for ``Final answer:'' patterns
+    \item Fall back to the last number in the output
+\end{enumerate}
+When thinking mode exhausts its budget without producing a final answer,
+we optionally apply a \emph{projection pass}: a short continuation
+(max 16 tokens) to extract a numerical answer from the truncated output.
+This is controlled by the \texttt{--projection\_on\_missing\_final} flag.
+
+\subsection{Dataset Details}
+\paragraph{GSM8K.} We use the standard test split ($n{=}1{,}319$ problems)~\citep{cobbe2021gsm8k}.
+A 200-sample subset (seed 42) is used for the budget sweep in
+Table~\ref{tab:thinking-tax}; all other analyses use the complete set
+unless otherwise noted.
+
+\paragraph{MATH-500.} We use a 500-problem subset of the MATH benchmark~\citep{hendrycks2021math},
+following the split used by~\citet{lightman2024lets}.
+Due to computational constraints, we evaluate 40-sample subsets
+across multiple data seeds (42, 404, 505, 606, 707) and report averages.
+
+% ============================================================================
+\section{Full Data Tables}
+\label{app:full-tables}
+
+\subsection{Qwen3-8B: 200-Sample Subset}
+
+Table~\ref{tab:thinking-tax} in the main text presents the complete
+200-sample subset results.
+All experiments use seed=42, temperature=0 (greedy decoding).
+Below we provide the complete data for all tested budgets:
+
+\begin{table}[h]
+\centering
+\small
+\caption{Complete budget sweep for Qwen3-8B on GSM8K 200-sample subset.}
+\label{tab:full-8b-200}
+\begin{tabular}{llrrrr}
+\toprule
+\textbf{Mode} & \textbf{Budget} & \textbf{Accuracy} & \textbf{Avg Tokens} & \textbf{Early Stop} & \textbf{Has Final} \\
+\midrule
+nothink & 32 & 3.0\% & 32 & 0.0\% & 0.0\% \\
+nothink & 64 & 12.0\% & 64 & 2.0\% & 0.0\% \\
+nothink & 128 & 54.5\% & 111 & 43.5\% & 0.0\% \\
+nothink & 256 & 89.0\% & 140 & 92.0\% & 1.5\% \\
+nothink & 512 & 94.0\% & 145 & 99.5\% & 1.5\% \\
+\midrule
+thinking & 128 & 2.0\% & 128 & 0.0\% & 0.0\% \\
+thinking & 256 & 22.0\% & 255 & 2.0\% & 0.5\% \\
+thinking & 512 & 66.5\% & 442 & 47.5\% & 5.5\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Qwen3-8B: Full GSM8K ($n$=1,319)}
+
+\begin{table}[h]
+\centering
+\small
+\caption{Key configurations for Qwen3-8B on full GSM8K ($n{=}1{,}319$).}
+\label{tab:full-8b-1319}
+\begin{tabular}{llrrrr}
+\toprule
+\textbf{Mode} & \textbf{Budget} & \textbf{Accuracy} & \textbf{Avg Tokens} & \textbf{Early Stop} & \textbf{Has Final} \\
+\midrule
+nothink & 128 & 50.8\% & 113 & --- & --- \\
+nothink & 256 & 87.5\% & 146 & 88.8\% & 0.6\% \\
+\midrule
+thinking & 128 & 3.0\% & 128 & --- & --- \\
+thinking & 256 & 18.0\% & 255 & --- & --- \\
+thinking & 512 & 65.2\% & 460 & 41.3\% & 6.1\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Qwen3.5-27B: Full GSM8K ($n$=1,319)}
+
+\begin{table}[h]
+\centering
+\small
+\caption{Qwen3.5-27B thinking mode results on full GSM8K.
+The model achieves dramatically lower accuracy than the 8B model at
+all budgets due to longer reasoning chains.}
+\label{tab:27b-full}
+\begin{tabular}{lrrrr}
+\toprule
+\textbf{Config} & \textbf{Accuracy} & \textbf{Avg Tokens} & \textbf{Has Final} & \textbf{Projection Rate} \\
+\midrule
+thinking@128 & 3.6\% & 144 & 0.0\% & 100.0\% \\
+thinking@256 & 7.9\% & 272 & 0.0\% & 100.0\% \\
+thinking@512 & 18.3\% & 528 & 0.7\% & 99.3\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% ============================================================================
+\section{DeepSeek-R1 Cross-Model Validation}
+\label{app:deepseek}
+
+We validate our findings on DeepSeek-R1-Distill-Llama-8B using MATH-500
+with multiple data seeds to ensure robustness.
+
+\begin{table}[h]
+\centering
+\small
+\caption{DeepSeek-R1-Distill-Llama-8B on MATH-500 subsets (40 samples per seed).
+The thinking tax and token waste phenomena persist across model families.}
+\label{tab:deepseek-math500}
+\begin{tabular}{lrrrr}
+\toprule
+\textbf{Budget} & \textbf{Accuracy} & \textbf{Avg Tokens} & \textbf{Final Rate} & \textbf{Utilization} \\
+\midrule
+1024 & 22.5\% & 936 & 27.5\% & 91.4\% \\
+2048 & 32.5\% & 1644 & 50.0\% & 80.3\% \\
+4096 & 47.5\% & 2599 & 72.5\% & 63.5\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Key findings that generalize from GSM8K:
+\begin{itemize}[nosep,leftmargin=*]
+    \item \textbf{Token utilization collapses with budget}: from 91.4\%
+      at $b{=}1024$ to 63.5\% at $b{=}4096$.
+    \item \textbf{Natural stop correlates with accuracy}: samples that
+      produce a final answer marker achieve consistently higher accuracy
+      than truncated samples.
+    \item \textbf{Diminishing returns}: accuracy gains from 2048$\to$4096
+      (+15.0pp) require 2$\times$ the tokens, yielding lower marginal
+      efficiency.
+\end{itemize}
+
+% ============================================================================
+\section{TOWN Simulation Details}
+\label{app:town-simulation}
+
+Our per-sample TOWN simulation uses the \textbf{full GSM8K test set}
+($n{=}1{,}319$) where we have matched nothink@256 and thinking@512
+results for each question.
+
+\paragraph{Routing statistics.}
+\begin{itemize}[nosep,leftmargin=*]
+    \item \textbf{Stage 1 accepted}: 1{,}171/1{,}319 (88.8\%) samples stop
+      before the $B_1{=}256$ budget. Among these, accuracy is
+      \textbf{94.4\%} (1{,}106/1{,}171 correct).
+    \item \textbf{Stage 2 routed}: 148/1{,}319 (11.2\%) samples exhaust the
+      Stage~1 budget. Among these, thinking@512 achieves \textbf{62.8\%}
+      accuracy (93/148 correct).
+    \item \textbf{Combined}: 1{,}199/1{,}319 = \textbf{90.9\%} accuracy at
+      \textbf{199} average tokens (including Stage~1 probe cost for
+      all samples).
+\end{itemize}
+
+\paragraph{Error analysis of routed samples.}
+Of the 148 samples routed to Stage~2:
+\begin{itemize}[nosep,leftmargin=*]
+    \item \textbf{64} were incorrectly answered by nothink but correctly recovered by thinking@512 (genuine wins)
+    \item \textbf{29} were correct in both modes (correctly answered despite routing)
+    \item \textbf{36} were incorrect in both modes (genuinely hard problems)
+    \item \textbf{19} were actually correct in nothink@256 (despite hitting budget)
+      but thinking@512 answered incorrectly (routing regret)
+\end{itemize}
+The 19 routing regret cases represent a small inefficiency (1.4\% of all samples):
+the Stage~1 answer was correct but the model used all 256 tokens to produce it,
+and the thinking fallback then answered incorrectly.
+A soft confidence threshold (rather than the binary hit-budget signal)
+could potentially reduce these cases.
+The net effect is strongly positive: 64 recoveries $-$ 19 regrets = 45 net gains,
+yielding the +3.4\,pp improvement over \texttt{nothink@256}.
+
+% ============================================================================
+\section{Thinking Efficiency Frontier}
+\label{app:frontier}
+
+We categorize GSM8K problems by the minimum thinking budget required
+for correct answers (see Table~\ref{tab:efficiency-frontier} in the
+main text).
+The 31.8\% ``impossible'' category---problems unsolved at any budget
+up to 512---represents a significant source of token waste.
+
+\paragraph{Oracle analysis.}
+An oracle that perfectly identifies problem difficulty and assigns
+the minimum sufficient budget to solvable questions achieves:
+\begin{itemize}[nosep,leftmargin=*]
+    \item \textbf{68.2\%} accuracy ($+3.0$pp over fixed-512)
+    \item \textbf{401} average tokens ($-21.7$\% vs.\ fixed-512)
+\end{itemize}
+The accuracy gain comes from avoiding ``overthinking'' cases where
+extended reasoning causes the model to revise a correct intermediate
+answer.
+
+% ============================================================================
+\section{Reproducibility}
+\label{app:reproducibility}
+
+\paragraph{Models.}
+\begin{itemize}[nosep,leftmargin=*]
+    \item Qwen3-8B: \texttt{Qwen/Qwen3-8B} from HuggingFace
+    \item Qwen3.5-27B: \texttt{Qwen/Qwen3.5-27B} from HuggingFace
+    \item DeepSeek-R1-8B: \texttt{deepseek-ai/DeepSeek-R1-Distill-Llama-8B}
+\end{itemize}
+
+\paragraph{Random seeds.}
+All experiments use seed 42 for reproducibility.
+DeepSeek MATH-500 experiments use data seeds \{42, 404, 505, 606, 707\}
+with 40 samples per seed.
+
+\paragraph{Compute.}
+Total compute budget: approximately 200 A100-GPU-hours across all
+experiments reported in this paper.

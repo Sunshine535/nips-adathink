@@ -1,0 +1,26 @@
+\section{Method}
+
+\subsection{Problem Formulation}
+
+Given a question $x$ and budget levels $\mathcal{B} = \{b_1, b_2, b_3\}$, we seek a policy $\pi$ that decides at each budget whether to STOP or CONTINUE.
+
+\subsection{Dynamic Halting Framework}
+
+\textbf{Progressive Reasoning:}
+\begin{enumerate}
+\item Generate output at $b_1 = 128$ tokens
+\item Extract state $s_1$ from reasoning process
+\item Policy decides: STOP or CONTINUE to $b_2$
+\item If CONTINUE, repeat for $b_2 = 256$ and $b_3 = 512$
+\end{enumerate}
+
+\textbf{State Features:}
+\begin{itemize}
+\item Token utilization: $u = \text{tokens\_used} / \text{budget}$
+\item Answer confidence: presence of definitive markers
+\item Reasoning coherence: unique word ratio
+\end{itemize}
+
+\textbf{Policy Learning:}
+Train Random Forest classifiers $\pi_{128}$ and $\pi_{256}$ on historical data.
+Label: STOP if continuing would cause overthinking.

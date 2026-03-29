@@ -1,0 +1,210 @@
+% ===========================================================================
+%  §4  TOWN: Think Only When Needed
+%  method_final.tex — NeurIPS 2026
+%  Loaded via \input{sections/method_final}
+% ===========================================================================
+
+The empirical findings in \S\ref{sec:thinking-tax} suggest a clear strategy:
+\textbf{default to non-thinking mode and reserve thinking for genuinely
+hard problems}.
+We formalize this intuition as \textsc{Town} (\textbf{T}hink
+\textbf{O}nly \textbf{W}hen \textbf{N}eeded), a training-free,
+two-stage inference cascade that requires no access to model internals
+and no auxiliary models.
+
+% ---------------------------------------------------------------------------
+\subsection{Key Insight: Early Stopping as a Difficulty Classifier}
+\label{sec:method:insight}
+% ---------------------------------------------------------------------------
+
+Our analysis reveals that non-thinking mode's early-stopping behavior
+provides a natural binary classifier for problem difficulty:
+
+\begin{observation}
+\label{obs:early-stop}
+For Qwen3-8B with \texttt{nothink@256} on GSM8K ($n{=}1{,}319$):
+\begin{itemize}[nosep,leftmargin=*]
+    \item \textbf{88.8\% of samples stop early} (avg 133 tokens),
+      achieving \textbf{94.4\%} accuracy among early-stopped samples
+      (87.5\% overall).
+    \item \textbf{11.2\% of samples hit the budget} (use all 256 tokens),
+      indicating the model struggled.
+\end{itemize}
+\end{observation}
+
+This dichotomy provides a zero-cost routing signal: if the model finishes
+quickly in non-thinking mode, the answer is likely correct; if it
+exhausts the budget, the problem is likely hard and may benefit from
+extended reasoning.
+Unlike soft confidence scores or logit-based uncertainty measures, this
+signal is \emph{binary}, \emph{endogenous}, and \emph{free}---it emerges
+as a byproduct of the generation process itself
+(Finding~2, \S\ref{sec:finding:natural-stop}).
+
+% ---------------------------------------------------------------------------
+\subsection{The \textsc{Town} Cascade}
+\label{sec:method:cascade}
+% ---------------------------------------------------------------------------
+
+\textsc{Town} operates in two stages, summarized in
+Algorithm~\ref{alg:town} and Figure~\ref{fig:town-pipeline}.
+
+\begin{algorithm}[t]
+\caption{\textsc{Town}: Think Only When Needed}
+\label{alg:town}
+\begin{algorithmic}[1]
+\REQUIRE Question $q$, model $\mathcal{M}$,
+  probe budget $B_1$ (non-thinking),
+  fallback budget $B_2$ (thinking, $B_2 > B_1$)
+\ENSURE Answer $\hat{a}$, total tokens consumed $T$
+
+\medskip
+\STATE \textbf{// Stage 1: Non-thinking probe}
+\STATE $y_1 \leftarrow \mathcal{M}_{\textrm{nt}}(q,\; B_1)$
+  \hfill\COMMENT{Generate without thinking}
+\STATE $T \leftarrow |y_1|$
+
+\medskip
+\IF{$|y_1| < B_1$}
+  \hfill\COMMENT{Natural stop $\Rightarrow$ high confidence}
+  \STATE $\hat{a} \leftarrow a(y_1)$
+  \hfill\COMMENT{Accept non-thinking answer}
+\ELSE
+  \hfill\COMMENT{Budget hit $\Rightarrow$ low confidence}
+  \STATE \textbf{// Stage 2: Thinking fallback}
+  \STATE $y_2 \leftarrow \mathcal{M}_{\textrm{th}}(q,\; B_2)$
+    \hfill\COMMENT{Generate with chain-of-thought}
+  \STATE $T \leftarrow T + |y_2|$
+  \STATE $\hat{a} \leftarrow a(y_2)$
+  \hfill\COMMENT{Use thinking answer}
+\ENDIF
+
+\medskip
+\RETURN $\hat{a},\; T$
+\end{algorithmic}
+\end{algorithm}
+
+\input{sections/fig_town_pipeline}
+
+\paragraph{Stage 1: Non-thinking probe.}
+We run the input through non-thinking mode with a moderate budget
+$B_1$ (default: 256 tokens).
+If the model produces a complete answer before exhausting $B_1$, we
+accept it immediately.
+This stage handles the vast majority of inputs---88.8\% on GSM8K---at
+minimal cost (${\sim}$133 tokens on average for early-stopped samples), exploiting Finding~1's
+observation that non-thinking mode is more token-efficient than thinking
+mode at matched budgets.
+
+\paragraph{Stage 2: Thinking fallback.}
+For the ${\sim}$11.2\% of inputs that exhaust the Stage~1 budget---indicating
+the model could not produce a confident answer quickly---we route to
+thinking mode with an extended budget $B_2$ (default: 512 tokens).
+These are precisely the ``hard'' problems where step-by-step reasoning
+chains are most likely to provide genuine benefit.
+The total cost for a fallback sample is $B_1 + |y_2|$, since the
+probe consumed its full budget.
+
+% ---------------------------------------------------------------------------
+\subsection{Cost and Accuracy Analysis}
+\label{sec:method:analysis}
+% ---------------------------------------------------------------------------
+
+\paragraph{Expected token cost.}
+Let $p$ denote the early-stop rate in Stage~1,
+$\bar{t}_1$ the average tokens for early-stopped samples, and
+$\bar{t}_2$ the average thinking-mode cost for fallback samples.
+The expected token cost per question is:
+\begin{equation}
+  \label{eq:town-cost}
+  \mathbb{E}[T] \;=\; p \cdot \bar{t}_1
+    \;+\; (1 - p) \cdot \big(B_1 + \bar{t}_2\big).
+\end{equation}
+With our GSM8K parameters ($p{=}0.888$, $\bar{t}_1{\approx}133$,
+$B_1{=}256$, $\bar{t}_2{\approx}469$) on the full test set ($n{=}1{,}319$):
+\begin{equation}
+  \label{eq:town-cost-concrete}
+  \mathbb{E}[T]
+    \;\approx\; 0.888 \times 133 \;+\; 0.112 \times (256 + 469)
+    \;\approx\; 118 + 81
+    \;=\; \mathbf{\sim\!199\text{ tokens}}.
+\end{equation}
+This is \textbf{2.4$\times$} cheaper than \texttt{think@512} alone
+(460~tokens), representing a \textbf{57\%} reduction in average token
+consumption.  Note that the Stage~1 probe budget $B_1$ is ``spent''
+even for routed samples---it serves as the cost of difficulty
+classification.
+
+\paragraph{Projected accuracy.}
+\textsc{Town}'s accuracy decomposes as:
+\begin{equation}
+  \label{eq:town-acc}
+  \textrm{Acc}_{\textsc{Town}}
+    \;=\; p \cdot \textrm{Acc}_{\textrm{nt}}^{\textrm{early}}
+    \;+\; (1 - p) \cdot \textrm{Acc}_{\textrm{th}}^{\textrm{hard}},
+\end{equation}
+where $\textrm{Acc}_{\textrm{nt}}^{\textrm{early}}$ is the
+accuracy of early-stop non-thinking samples and
+$\textrm{Acc}_{\textrm{th}}^{\textrm{hard}}$ is the thinking-mode
+accuracy on the hard subset routed to Stage~2.
+On the full GSM8K test set ($n{=}1{,}319$),
+\textsc{Town} achieves \textbf{90.9\%} accuracy at only \textbf{199
+average tokens} (including the Stage~1 probe cost for routed samples):
+\begin{equation}
+  \textrm{Acc}_{\textsc{Town}}
+    \;=\; \underbrace{0.888 \times 94.4\%}_{\text{Stage 1: early-stop}}
+    \;+\; \underbrace{0.112 \times 62.8\%}_{\text{Stage 2: thinking fallback}}
+    \;=\; 83.8\% + 7.0\%
+    \;=\; \mathbf{90.9\%}.
+\end{equation}
+This exceeds \texttt{think@512} (65.2\%) by \textbf{+25.7\,pp}
+while using \textbf{2.4$\times$ fewer tokens}, and surpasses
+\texttt{nothink@256} (87.5\%) by \textbf{+3.4\,pp} by recovering
+hard cases through Stage~2.
+Full evaluation results are in \S\ref{sec:town-eval}.
+
+% ---------------------------------------------------------------------------
+\subsection{Comparison with Alternative Strategies}
+\label{sec:method:comparison}
+% ---------------------------------------------------------------------------
+
+\paragraph{vs.\ \texttt{think@512} only.}
+\textsc{Town} achieves substantially higher accuracy at
+${\sim}$2.4$\times$ fewer tokens.
+The advantage comes from avoiding thinking mode's truncation waste on the
+88.8\% of problems where it is unnecessary.
+
+\paragraph{vs.\ \texttt{nothink@256} only.}
+\textsc{Town} adds a thinking fallback for the $\sim$11.2\% of hard
+problems, recovering accuracy on cases where direct answering
+fails.
+The additional cost is modest: $\sim$53 extra tokens on average
+over the entire dataset (199 vs.\ 146 for \texttt{nothink@256}).
+
+\paragraph{vs.\ Self-consistency~\cite{wang2023selfconsistency}.}
+SC@$K$ generates $K$ full-budget reasoning traces and majority-votes,
+consuming $K \times B$ tokens unconditionally.
+\textsc{Town} uses a \emph{single} non-thinking probe and a binary
+routing decision, yielding lower latency (one generation call for easy
+questions vs.\ $K$), lower token cost ($\sim$146 tokens for easy
+questions vs.\ $K \times B$), and a simpler implementation (no consensus
+computation, no threshold tuning).
+
+\paragraph{vs.\ Oracle routing.}
+An oracle that knows each problem's difficulty \emph{a priori}
+achieves 68.2\% accuracy at 401 average tokens
+(Table~\ref{tab:efficiency-frontier}).
+\textsc{Town}'s early-stop signal approximates this oracle using a
+training-free heuristic, with the gap determined primarily by the
+signal's precision on the routed subset.
+
+\paragraph{Hyperparameters.}
+\textsc{Town} introduces exactly \emph{two} hyperparameters beyond the
+base model: $B_1$ (probe budget) and $B_2$ (thinking fallback budget).
+Both have intuitive interpretations: $B_1$ should be large enough for
+the model to produce a complete non-thinking answer on most easy
+questions (256 tokens suffices for GSM8K), and $B_2$ should be large
+enough for a complete reasoning chain on hard questions (512+ for
+GSM8K).
+No routing thresholds, consensus weights, or learned parameters are
+required.

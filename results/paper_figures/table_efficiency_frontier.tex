@@ -1,0 +1,24 @@
+% Table 3: Thinking Efficiency Frontier
+% Key result: 31.8% of questions are "impossible" at any tested budget
+\begin{table}[t]
+\centering
+\caption{\textbf{Thinking Efficiency Frontier: difficulty distribution.}
+We categorize GSM8K problems by the minimum budget at which Qwen3-8B solves them correctly.
+31.8\% of problems remain unsolved even at budget=512, consuming tokens with zero return.
+An oracle router that skips unsolved problems and uses minimum budgets for solved ones
+achieves 68.2\% accuracy ($+$3.0pp over fixed-512) while using only 401 avg tokens (21.7\% savings).}
+\label{tab:efficiency-frontier}
+\small
+\begin{tabular}{lrrrrr}
+\toprule
+\textbf{Category} & \textbf{Min Budget} & \textbf{Count} & \textbf{\%} & \textbf{Cumul. Acc} & \textbf{$\Delta$ Acc} \\
+\midrule
+Easy       & $\leq$128 & 155  & 11.8 & 11.8 & +11.8 \\
+Medium     & $\leq$256 & 340  & 25.8 & 37.5 & +25.8 \\
+Hard       & $\leq$512 & 405  & 30.7 & 68.2 & +30.7 \\
+Impossible & ---       & 419  & 31.8 & ---  & --- \\
+\midrule
+\multicolumn{2}{l}{\textbf{Total}} & \textbf{1319} & 100 & & \\
+\bottomrule
+\end{tabular}
+\end{table}

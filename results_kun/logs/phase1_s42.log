@@ -1,0 +1,90 @@
+Loading model: Qwen/Qwen3.5-27B
+Runtime: cuda=True, world_size=1, rank=0, local_rank=0
+Fetching 11 files:   0%|          | 0/11 [00:00<?, ?it/s]Fetching 11 files: 100%|██████████| 11/11 [00:00<00:00, 991.99it/s]
+The fast path is not available because one of the required library is not installed. Falling back to torch implementation. To install follow https://github.com/fla-org/flash-linear-attention#installation and https://github.com/Dao-AILab/causal-conv1d
+Loading weights:   0%|          | 0/851 [00:00<?, ?it/s]Loading weights:  71%|███████   | 601/851 [00:00<00:00, 6008.43it/s]Loading weights: 100%|██████████| 851/851 [00:00<00:00, 6327.69it/s]
+Loading GSM8K...
+Generating train split:   0%|          | 0/7473 [00:00<?, ? examples/s]Generating train split:  13%|█▎        | 1000/7473 [00:00<00:00, 6610.10 examples/s]Generating train split: 100%|██████████| 7473/7473 [00:00<00:00, 26216.50 examples/s]
+Generating test split:   0%|          | 0/1319 [00:00<?, ? examples/s]Generating test split: 100%|██████████| 1319/1319 [00:00<00:00, 8566.21 examples/s]
+[rank 0] Processed 5/50
+[rank 0] Processed 10/50
+[rank 0] Processed 15/50
+[rank 0] Processed 20/50
+[rank 0] Processed 25/50
+[rank 0] Processed 30/50
+[rank 0] Processed 35/50
+[rank 0] Processed 40/50
+[rank 0] Processed 45/50
+[rank 0] Processed 50/50
+=== Summary ===
+{
+  "meta": {
+    "timestamp_utc": "20260322_130424",
+    "model": "Qwen/Qwen3.5-27B",
+    "n_samples": 50,
+    "seed": 42,
+    "data_seed": 42,
+    "world_size": 1,
+    "distributed": false,
+    "budgets": [
+      64,
+      128,
+      256
+    ],
+    "adaptive_chunks": [
+      64,
+      64,
+      128
+    ],
+    "adaptive_max_total": 256,
+    "use_verifier": true,
+    "prompt_format": "chat",
+    "direct_answer": false,
+    "enable_thinking": true,
+    "strict_final_only": false,
+    "projection_on_missing_final": false,
+    "projection_max_tokens": 16
+  },
+  "fixed": {
+    "64": {
+      "accuracy": 0.04,
+      "avg_tokens": 64.0,
+      "avg_latency_s": 3.9633412432763726,
+      "final_rate": 0.0,
+      "projection_rate": 0.0,
+      "avg_projection_tokens": 0.0
+    },
+    "128": {
+      "accuracy": 0.0,
+      "avg_tokens": 128.0,
+      "avg_latency_s": 7.7286374251917005,
+      "final_rate": 0.0,
+      "projection_rate": 0.0,
+      "avg_projection_tokens": 0.0
+    },
+    "256": {
+      "accuracy": 0.02,
+      "avg_tokens": 256.0,
+      "avg_latency_s": 15.298344682524911,
+      "final_rate": 0.0,
+      "projection_rate": 0.0,
+      "avg_projection_tokens": 0.0
+    }
+  },
+  "adaptive": {
+    "accuracy": 0.0,
+    "avg_tokens": 256.0,
+    "avg_latency_s": 15.691345394183882,
+    "avg_verifier_calls": 3.0,
+    "early_stop_rate": 0.0,
+    "final_rate": 0.0,
+    "projection_rate": 0.0,
+    "avg_projection_tokens": 0.0
+  },
+  "overthinking": {
+    "fixed_64_vs_fixed_256": 0.04,
+    "fixed_64_vs_adaptive": 0.04
+  }
+}
+Saved: results/summary_Qwen3.5_27B_20260322_130424.json
+Saved: results/per_sample_Qwen3.5_27B_20260322_130424.csv

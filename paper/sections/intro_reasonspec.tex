@@ -1,0 +1,71 @@
+% intro_reasonspec.tex — Introduction for the Reasoning Speculation paper
+% Loaded by main_reasonspec.tex via \input{sections/intro_reasonspec}
+
+Large language models equipped with chain-of-thought reasoning have achieved remarkable progress on complex tasks by ``thinking longer''---generating extended reasoning traces before committing to an answer.
+This paradigm, exemplified by OpenAI o1~\cite{openai2024o1}, QwQ~\cite{qwq2024}, and DeepSeek-R1~\cite{deepseekr1}, frames test-time performance as a scaling problem: allocate more tokens, and accuracy improves.
+Yet the gains from extended reasoning are far from uniform across problem instances.
+Easy problems are \emph{overthought}: the model wastes hundreds of tokens re-deriving trivial facts or, worse, ``talks itself out of'' a correct intermediate answer through unnecessary self-revision.
+Hard problems are \emph{underthought}: a fixed budget truncates reasoning before the model reaches the critical insight.
+The fundamental mismatch between uniform compute allocation and heterogeneous problem difficulty leaves substantial accuracy and efficiency gains on the table.
+
+\paragraph{The overthinking problem is pervasive.}
+Through systematic experiments across GSM8K with Qwen3-8B, we quantify the extent of this mismatch.
+When the reasoning budget is increased from a short to a long allocation, \textbf{XX.X\%} of samples exhibit \emph{accuracy degradation}---they were answered correctly at a lower budget but incorrectly at a higher one.
+This is not an isolated edge case; it is a structured phenomenon affecting roughly one-third of all instances.
+The ideal solution is clear in principle: allocate compute adaptively, spending little on easy problems and much on hard ones.
+An oracle that selects the optimal budget per instance achieves \textbf{XX.X\%} accuracy---far above any fixed budget---demonstrating the enormous headroom for adaptive methods.
+
+\paragraph{Existing adaptive approaches fail in the black-box setting.}
+If the gains from adaptive allocation are so large, why has no practical method captured them?
+We conducted what is, to our knowledge, the first comprehensive evaluation of black-box adaptive budget controllers for reasoning LLMs.
+We tested all major categories of single-path difficulty signals:
+(i)~\emph{honest features} extracted from a partial reasoning trace (token utilization, answer presence, lexical coherence), yielding controllers at $-6.5$\,pp below the fixed baseline;
+(ii)~\emph{uncertainty-based routing} using answer entropy or self-reported confidence, at $-6.4$\,pp;
+and (iii)~\emph{MCTS-style exploration--refinement}, at $-5.6$\,pp.
+\textbf{All single-path controllers failed}, often performing \emph{worse} than the na\"ive fixed budget they were designed to improve.
+The root cause is informational: a single reasoning trace is fundamentally impoverished as a difficulty signal.
+The model's own confidence is poorly calibrated, token-level statistics are noisy, and partial traces reveal little about whether the \emph{final} answer will be correct.
+In short, one witness is not enough to judge whether a problem is easy or hard.
+
+\paragraph{Key insight: change the computation structure.}
+Rather than trying to extract a weak difficulty signal from a single reasoning path, we propose to \emph{restructure the computation itself} to produce a fundamentally richer signal.
+The core idea is simple: instead of running one long chain of thought, first run $K$ short, independent reasoning paths in parallel.
+The \emph{cross-path consensus}---the degree to which these $K$ independent ``witnesses'' agree on an answer---provides a difficulty signal that is categorically stronger than anything extractable from a single trace.
+Intuitively, if $K$ independent short explorations all converge to the same answer, the problem is almost certainly easy; if they scatter across many answers, it is hard and warrants extended deliberation.
+This is analogous in spirit to how speculative decoding~\cite{leviathan2023fast} changed the \emph{structure} of the generation process (small model drafts, large model verifies) without changing the model itself---here, we change the structure of reasoning (parallel exploration, consensus-based routing) without changing the model or its training.
+We show in \S\ref{sec:theory} that multi-path agreement provides an information-theoretically optimal difficulty estimator: when each path has independent error probability $\varepsilon$, the consensus signal concentrates exponentially in $K$, yielding a Spearman correlation with true difficulty of $\rho = -0.51$ ($p < 10^{-88}$)---far stronger than any single-path feature we tested.
+
+\paragraph{The \method{} framework.}
+We introduce \textbf{\fullmethod{}} (\method{}), a training-free, model-agnostic framework for adaptive test-time compute that operates in three phases:
+\begin{enumerate}[nosep,leftmargin=*]
+    \item \textbf{Explore.} Given a question $x$, generate $K$ short reasoning paths $\{r_1, \ldots, r_K\}$, each with a small token budget $b_{\text{explore}}$. These paths are independent and can be parallelized.
+    \item \textbf{Decide.} Extract the answer from each path and compute a consensus score $c(x) = \max_a \frac{1}{K} \sum_{k=1}^{K} \mathbf{1}[a_k = a]$. Route the problem based on $c(x)$: high consensus $\rightarrow$ accept the majority answer immediately (easy); partial consensus $\rightarrow$ extend the most promising path with additional tokens (medium); low consensus $\rightarrow$ invoke full deliberation with all $K$ paths as context (hard).
+    \item \textbf{Resolve.} For medium and hard problems, generate extended reasoning conditioned on the exploration paths, using a budget calibrated to the estimated difficulty tier.
+\end{enumerate}
+\method{} requires no training, no access to model internals, and no modification to the underlying LLM.
+It operates entirely at the API level and is compatible with any reasoning model that supports temperature-based sampling.
+The total compute budget is controlled by $K$, $b_{\text{explore}}$, and the per-tier continuation budgets, yielding a flexible accuracy--cost tradeoff.
+
+\paragraph{Contributions.}
+Our work makes the following contributions:
+\begin{itemize}[nosep,leftmargin=*]
+    \item \textbf{A new computation paradigm for adaptive test-time compute.}
+    We introduce parallel exploration with consensus-based routing as an alternative to single-path budget allocation.
+    Unlike prior adaptive methods that extract features from one reasoning trace, \method{} restructures the computation to produce a multi-path consensus signal that is fundamentally more informative about problem difficulty.
+
+    \item \textbf{Information-theoretic justification.}
+    We prove that multi-path consensus dominates any single-path difficulty feature in the black-box setting (\S\ref{sec:theory}).
+    The consensus signal concentrates exponentially in $K$, explaining both why single-path controllers fail and why even modest $K$ (e.g., $K=5$) suffices.
+
+    \item \textbf{Comprehensive empirical evaluation.}
+    On GSM8K with Qwen3-8B, \method{} achieves \textbf{XX.X\%} accuracy at \textbf{XX\%} of the token cost of a fixed high-budget baseline, representing a \textbf{+X.X\,pp} improvement at matched compute and \textbf{XX\%} token savings at matched accuracy.
+    We provide full ablations over $K$, $b_{\text{explore}}$, consensus thresholds, and continuation strategies.
+
+    \item \textbf{First systematic negative results for black-box controllers.}
+    We show that \emph{all} major categories of single-path adaptive controllers (honest features, uncertainty routing, MCTS refinement) fail to outperform fixed budgets, with degradations of $5$--$7$\,pp.
+    These negative results are themselves a contribution, delimiting what is achievable without structural changes to the computation.
+
+    \item \textbf{Training-free and model-agnostic.}
+    \method{} requires no fine-tuning, no reward models, and no access to logits or hidden states.
+    It works with any LLM API that supports standard generation and is immediately deployable.
+\end{itemize}

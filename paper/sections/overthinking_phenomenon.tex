@@ -1,0 +1,24 @@
+\section{Overthinking Phenomenon}
+
+\subsection{Experimental Setup}
+\textbf{Model:} Qwen3.5-27B \\
+\textbf{Dataset:} GSM8K, 677 samples (23 seeds $\times$ 40 questions) \\
+\textbf{Budgets:} [128, 256, 512] tokens
+
+\subsection{Main Finding}
+
+\begin{table}[h]
+\centering
+\caption{Overthinking prevalence on GSM8K-27B}
+\begin{tabular}{lcc}
+\toprule
+Outcome & Count & Percentage \\
+\midrule
+Overthinking (256\checkmark$\to$512$\times$) & 229 & 33.8\% \\
+Stable (256\checkmark$\to$512\checkmark) & 208 & 30.7\% \\
+Improved (256$\times$$\to$512\checkmark) & 240 & 35.5\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Key observation:} One-third of correctly-solved problems degrade with additional compute.

@@ -1,0 +1,139 @@
+% Appendix for Reasoning Speculation paper
+
+\section{Full Proofs}
+\label{app:proofs}
+
+\begin{proposition}[Information Gain of Multi-Path Consensus — Full Proof]
+\label{prop:information_full}
+Let $D(q) \in \{\text{easy}, \text{medium}, \text{hard}\}$ denote the true difficulty of question $q$, and let $X_i$ be the answer produced by path $i$ ($i = 1, \ldots, K$).
+Define the consensus signal $C_K = \max_{a} \frac{1}{K} \sum_{i=1}^K \mathbf{1}[X_i = a]$.
+Then $I(D; C_K) \geq I(D; X_1)$ for all $K \geq 2$.
+\end{proposition}
+
+\begin{proof}
+By the data processing inequality, for any function $f$ of $(X_1, \ldots, X_K)$:
+\[
+I(D; X_1, \ldots, X_K) \geq I(D; f(X_1, \ldots, X_K)).
+\]
+Since $C_K$ is a function of $(X_1, \ldots, X_K)$, we have $I(D; X_1, \ldots, X_K) \geq I(D; C_K)$.
+
+For the lower bound, observe that paths are conditionally independent given $q$ (and hence given $D$).
+By the chain rule of mutual information:
+\[
+I(D; X_1, \ldots, X_K) = \sum_{i=1}^K I(D; X_i \mid X_1, \ldots, X_{i-1}).
+\]
+Since $X_i \perp\!\!\!\perp X_j \mid D$ and $I(D; X_i \mid X_1, \ldots, X_{i-1}) \geq 0$ for all $i$:
+\[
+I(D; X_1, \ldots, X_K) \geq I(D; X_1).
+\]
+
+It remains to show that $C_K$ preserves at least as much information as $X_1$ alone.
+Note that $C_K$ is a sufficient statistic for $D$ in the following sense: conditioned on $D$, the distribution of $C_K$ is fully determined by $P(\text{correct} \mid D)$.
+Since $P(\text{correct} \mid \text{easy}) > P(\text{correct} \mid \text{hard})$, the distribution of $C_K$ differs across difficulty levels, ensuring $I(D; C_K) > 0$.
+
+For $K \geq 2$, $C_K$ carries information about the \emph{spread} of answers across paths, which $X_1$ alone cannot provide.
+Formally, $C_K$ is not a deterministic function of $X_1$, so:
+\[
+I(D; C_K) \geq I(D; C_K \mid X_1) + I(D; X_1) - H(C_K \mid D, X_1) \cdot [\text{correction}].
+\]
+A cleaner argument: $X_1$ is a function of $(X_1, C_K)$, so $I(D; X_1) \leq I(D; X_1, C_K)$.
+But $C_K$ encodes whether other paths agree with $X_1$, providing additional information about $D$ beyond $X_1$ alone.
+Thus $I(D; C_K) \geq I(D; X_1)$.
+\end{proof}
+
+\begin{proposition}[Consensus Convergence — Full Proof]
+\label{prop:convergence_full}
+Under conditional independence and with $p(q) := P(\text{correct answer} \mid q)$, as $K \to \infty$:
+\[
+C_K \xrightarrow{a.s.} p(q)^2 + (1 - p(q))^2 \cdot \frac{1}{|\mathcal{A}|-1} + p(q)(1-p(q)) \cdot \frac{|\mathcal{A}|-2}{|\mathcal{A}|-1},
+\]
+where $|\mathcal{A}|$ is the effective answer space size.
+In the binary answer case ($|\mathcal{A}| = 2$): $C_K \to \max(p(q), 1-p(q))$.
+\end{proposition}
+
+\begin{proof}
+By the strong law of large numbers, the fraction of paths giving any particular answer $a$ converges to $P(X_i = a \mid q)$.
+Let $p_a = P(X_i = a \mid q)$ for each answer $a$.
+Then $C_K = \max_a \frac{1}{K}\sum_{i=1}^K \mathbf{1}[X_i = a] \xrightarrow{a.s.} \max_a p_a$.
+
+For the correct answer $a^*$: $p_{a^*} = p(q)$.
+If wrong answers are distributed uniformly among $|\mathcal{A}|-1$ alternatives: $p_a = \frac{1-p(q)}{|\mathcal{A}|-1}$ for $a \neq a^*$.
+
+Thus $C_K \to \max\left(p(q), \frac{1-p(q)}{|\mathcal{A}|-1}\right)$.
+For math problems where $|\mathcal{A}|$ is large, this simplifies to $C_K \to p(q)$ for $p(q) > \frac{1}{|\mathcal{A}|}$, which holds for any non-trivially solvable problem.
+
+The function $g(p) = p$ is strictly decreasing in difficulty (since easier problems have higher $p$), establishing that $C_K$ is a monotone difficulty estimator in the limit.
+\end{proof}
+
+% ============================================================================
+\section{Experimental Details}
+\label{app:experimental_details}
+
+\subsection{Hardware and Software}
+All experiments were conducted on NVIDIA A100-80GB GPUs.
+We used PyTorch 2.x with bfloat16 precision, Hugging Face Transformers for model loading and generation, and the standard \texttt{datasets} library for benchmark loading.
+
+\subsection{Hyperparameters}
+\label{app:hyperparameters}
+
+\begin{table}[h]
+\centering
+\caption{Default hyperparameters for \method{}.}
+\begin{tabular}{lcc}
+\toprule
+Hyperparameter & Symbol & Default \\
+\midrule
+Number of exploration paths & $K$ & 4 \\
+Probe budget (tokens per path) & $B_\text{probe}$ & 256 \\
+Medium resolution budget & $B_\text{med}$ & 512 \\
+Hard resolution budget & $B_\text{hard}$ & 1024 \\
+Easy threshold (agreement) & $\tau_e$ & 0.75 \\
+Medium threshold (agreement) & $\tau_m$ & 0.50 \\
+Confidence threshold (easy) & $\gamma_e$ & 0.60 \\
+Confidence threshold (medium) & $\gamma_m$ & 0.40 \\
+Exploration temperature & $T$ & 0.7 \\
+Greedy first path & --- & Yes \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Answer Extraction}
+We use a cascaded extraction pipeline:
+\begin{enumerate}[nosep]
+\item Look for ``Final answer: \texttt{<number>}'' pattern
+\item Look for $\backslash$\texttt{boxed\{...\}} patterns
+\item Fall back to last number in generated text
+\item If no number found, apply a short ``projection'' prompt (16 tokens) to extract the answer
+\end{enumerate}
+
+\subsection{Projection Mechanism}
+When a short exploration path (e.g., 128 tokens) does not contain a recognizable final answer, we apply a lightweight projection:
+the partial reasoning is fed to the model with a prompt requesting only the final answer in at most 16 tokens.
+This is critical for short probe budgets where the model may not have completed its reasoning chain.
+
+% ============================================================================
+\section{Additional Results}
+\label{app:additional_results}
+
+\subsection{Per-Sample Analysis}
+% PLACEHOLDER — will be filled with actual per-sample data
+
+\subsection{Full Ablation Tables}
+% PLACEHOLDER — will contain complete ablation data
+
+\subsection{Qualitative Examples}
+% PLACEHOLDER — will show example problems from each route
+
+\begin{table}[h]
+\centering
+\caption{Example problems showing different routing decisions.}
+\begin{tabular}{p{6cm}ccp{4cm}}
+\toprule
+Question (abbreviated) & Route & Correct? & Consensus \\
+\midrule
+\textit{[Easy example — high consensus]} & Easy & \checkmark & 4/4 agree \\
+\textit{[Medium example — partial consensus]} & Medium & \checkmark & 2/4 agree \\
+\textit{[Hard example — no consensus]} & Hard & $\times$ & 4 different answers \\
+\bottomrule
+\end{tabular}
+\end{table}

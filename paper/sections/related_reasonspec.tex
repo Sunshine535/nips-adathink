@@ -1,0 +1,70 @@
+% related_reasonspec.tex — Related Work for the Reasoning Speculation paper
+% Loaded by main_reasonspec.tex via \input{sections/related_reasonspec}
+
+% ---------------------------------------------------------------------------
+\subsection{Test-Time Compute Scaling}
+\label{sec:related:ttc}
+% ---------------------------------------------------------------------------
+
+The observation that ``thinking longer'' improves accuracy has motivated a new class of reasoning-specialized LLMs.
+OpenAI o1~\citep{openai2024o1} first demonstrated that training models for extended chain-of-thought generation yields substantial gains on mathematical and scientific benchmarks.
+QwQ~\citep{qwq2024} and DeepSeek-R1~\citep{deepseekr1} further showed that reinforcement-learning-based training for long reasoning produces strong open-weight reasoners.
+\citet{snell2024scaling} formalized this as a \emph{test-time compute scaling law}: accuracy improves log-linearly with token budget on mathematical tasks.
+However, this scaling is far from free---\citet{chen2024overthinking} and our own analysis (\S\ref{sec:intro}) show that accuracy \emph{degrades} on a non-trivial fraction of instances when the budget is increased, a phenomenon termed ``overthinking.''
+Budget forcing~\citep{muennighoff2025s1} represents an early attempt at controlling reasoning length by truncating the thinking trace at a fixed token limit and appending a wrap-up prompt.
+While effective as a diagnostic tool, budget forcing applies a uniform budget to all instances and thus cannot exploit the heterogeneity of problem difficulty---precisely the gap \method{} is designed to fill.
+The ``sweet spot'' analysis of~\citet{chen2024overthinking} confirms that every instance has an optimal budget, but no fixed allocation can simultaneously serve easy and hard problems.
+
+% ---------------------------------------------------------------------------
+\subsection{Adaptive Budget Allocation}
+\label{sec:related:adaptive}
+% ---------------------------------------------------------------------------
+
+A growing literature seeks to allocate reasoning compute \emph{per instance}, which we organize into three families.
+
+\paragraph{Training-based methods.}
+Several approaches modify the model or its training objective to produce difficulty-calibrated traces.
+AdaThink~\citep{adathink2025} shapes rewards via GRPO to encourage the model to terminate reasoning early when confident, achieving budget savings without retraining from scratch.
+AdaToken~\citep{adatoken2025} frames budget allocation as an online bandit problem and provides regret bounds, but requires online interaction during inference.
+SelfBudgeter~\citep{liu2025selfbudgeter} trains the model to predict its own required budget before generation, enforcing adherence via budget-guided GRPO.
+TALE~\citep{han2025tale} includes the target token budget in the prompt and trains via SFT/DPO to compress reasoning.
+While these methods can be effective, they require model fine-tuning and are thus coupled to specific model weights and training data---a significant deployment constraint that \method{} avoids entirely.
+
+\paragraph{Confidence-based methods.}
+An alternative family uses the model's self-reported or estimated confidence to trigger early exit.
+Satisficing Reasoning~\citep{luo2025satisficing} applies a confidence threshold to halt generation when the model deems its current answer sufficient.
+Certaindex~\citep{luo2025certaindex} and Dynasor~\citep{fu2025dynasor} monitor uncertainty during generation and route to shorter or longer reasoning accordingly.
+These methods are training-free but rely on a \emph{single-path} confidence signal, which we show is fundamentally limited: the model's self-assessed confidence is poorly calibrated, and single-trace uncertainty estimates achieve Spearman $|\rho| < 0.2$ with true problem difficulty (\S\ref{sec:theory}).
+
+\paragraph{Training-free injection methods.}
+RTB~\citep{hou2025thinkless} and Think Less Think Better~\citep{hou2025thinkless} inject wrap-up tokens (e.g., ``\texttt{Wait, let me reconsider\ldots}'') into the reasoning trace to steer the model toward shorter or longer deliberation without any training.
+In our comprehensive evaluation (\S\ref{sec:intro}), we tested all major categories of single-path controllers---including feature-based, uncertainty-based, and injection-based methods---and found that \textbf{none outperformed the fixed-budget baseline}, with degradations of 5--7\,pp.
+The root cause is informational: \emph{any} difficulty signal extracted from a single reasoning trace is bounded in mutual information with problem difficulty by $I(D; X_1)$ (Proposition~\ref{prop:single-path}), which is strictly less than the consensus signal $I(D; C_K)$ for $K \ge 2$.
+This negative result motivates \method{}'s fundamental departure: rather than extracting a weak signal from one path, restructure the computation to produce a multi-path signal.
+
+% ---------------------------------------------------------------------------
+\subsection{Self-Consistency and Multi-Path Reasoning}
+\label{sec:related:sc}
+% ---------------------------------------------------------------------------
+
+Self-consistency~\citep{wang2023selfconsistency} improves accuracy by generating $K$ complete reasoning traces and returning the majority-vote answer.
+Best-of-$N$ with reward models~\citep{cobbe2021gsm8k,lightman2023prm} samples $N$ solutions and selects the highest-scoring one according to a learned verifier.
+MCTS-based reasoning methods~\citep{hao2023reasoning,xie2024selfevaluation,qi2024mutual} build search trees over reasoning steps, using rollout-based value estimates to guide expansion.
+These approaches all use multiple paths to improve \emph{answer quality}---but they allocate compute \emph{uniformly} across instances, spending the same $K$ full-budget traces on every question regardless of difficulty.
+\method{} draws on the same insight that multi-path agreement correlates with correctness, but uses consensus as a \emph{difficulty signal for adaptive routing}, not merely as an aggregation mechanism.
+Concretely, \method{} runs $K$ \emph{short} probes (not full-budget traces), uses the agreement pattern to \emph{decide} whether additional compute is warranted, and invests that compute \emph{selectively} on hard instances.
+This yields a fundamentally different cost profile: self-consistency pays $K \times B_{\mathrm{full}}$ tokens per question; \method{} pays $K \times B_{\mathrm{probe}}$ for easy questions and scales up only where consensus indicates difficulty.
+
+% ---------------------------------------------------------------------------
+\subsection{Speculative Decoding}
+\label{sec:related:spec}
+% ---------------------------------------------------------------------------
+
+Speculative decoding~\citep{leviathan2023fast,chen2023accelerating} accelerates autoregressive generation by using a small, fast draft model to propose token sequences that a larger target model then verifies in parallel.
+The key insight is that \emph{restructuring the computation}---from sequential single-model generation to a draft-then-verify pipeline---can reduce latency without changing the output distribution.
+This paradigm has been extended to tree-structured speculation~\citep{miao2024specinfer}, self-speculation within a single model~\citep{zhang2024draft}, and cascade routing across model sizes~\citep{chen2023frugalgpt}.
+
+\method{} draws a deliberate analogy to speculative decoding, applied at the level of \emph{reasoning} rather than token generation.
+Where speculative decoding uses a cheap draft model to identify tokens the target model would likely accept, \method{} uses cheap parallel probes to identify questions the model can likely answer without extended deliberation.
+Where speculative decoding falls back to the target model for tokens the draft model gets wrong, \method{} falls back to full deliberation for questions where the probes disagree.
+In both cases, the approach exploits a structural asymmetry---most tokens are easy to predict, most questions are easy to solve---to reduce expected cost while preserving or improving quality, without modifying the underlying model.

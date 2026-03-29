@@ -1,0 +1,28 @@
+{
+  "meta": {
+    "model": "Qwen/Qwen3-8B",
+    "benchmark": "bbh",
+    "n_samples": 6511,
+    "sc_k": 4,
+    "sc_budget": 256,
+    "greedy_budget": 1024,
+    "temperature": 0.7,
+    "seed": 42,
+    "data_seed": 303,
+    "timestamp": "20260320_190839"
+  },
+  "greedy": {
+    "accuracy": 0.32959606819229,
+    "avg_tokens": 906.7691598832745,
+    "total_time_s": 984.3195700645447
+  },
+  "sc": {
+    "accuracy": 0.08616187989556136,
+    "avg_total_tokens": 1023.7395177392106,
+    "total_time_s": 817.2934410572052
+  },
+  "delta": {
+    "accuracy": -0.24343418829672864,
+    "tokens": 116.97035785593607
+  }
+}

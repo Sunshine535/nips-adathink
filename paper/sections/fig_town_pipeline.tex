@@ -1,0 +1,67 @@
+% fig_town_pipeline.tex — TikZ pipeline diagram for TOWN method
+% Include in method_final.tex via \input{sections/fig_town_pipeline}
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}[
+    node distance=1.2cm and 1.5cm,
+    box/.style={rectangle, draw, rounded corners=3pt, minimum width=2.2cm,
+                minimum height=0.8cm, align=center, font=\small},
+    decision/.style={diamond, draw, aspect=2.5, inner sep=1pt,
+                     align=center, font=\small},
+    arrow/.style={->, thick, >=stealth},
+    label/.style={font=\scriptsize, text=gray},
+]
+
+% Input
+\node[box, fill=gray!15] (input) {Input $q$};
+
+% Stage 1
+\node[box, fill=nothinkblue!20, right=1.5cm of input] (s1)
+    {\textbf{Stage 1}\\Nothink@$B_1$};
+
+% Decision
+\node[decision, fill=yellow!15, right=1.5cm of s1] (dec)
+    {$|y_1|<B_1$?};
+
+% Accept
+\node[box, fill=easycolor!25, above right=0.6cm and 1.5cm of dec] (accept)
+    {\textbf{Accept}\\$\hat{a}=a(y_1)$};
+
+% Stage 2
+\node[box, fill=thinkorange!25, below right=0.6cm and 1.5cm of dec] (s2)
+    {\textbf{Stage 2}\\Think@$B_2$};
+
+% Final
+\node[box, fill=thinkorange!15, right=1.2cm of s2] (final2)
+    {\textbf{Accept}\\$\hat{a}=a(y_2)$};
+
+% Arrows
+\draw[arrow] (input) -- (s1);
+\draw[arrow] (s1) -- (dec);
+\draw[arrow] (dec) -- node[label, above left=-2pt] {Yes (88.8\%)} (accept);
+\draw[arrow] (dec) -- node[label, below left=-2pt] {No (11.2\%)} (s2);
+\draw[arrow] (s2) -- (final2);
+
+% Annotations
+\node[below=0.15cm of s1, font=\scriptsize, text=nothinkblue]
+    {$\sim$133 tokens};
+\node[above=0.15cm of accept, font=\scriptsize, text=easycolor!80!black]
+    {94.4\% acc};
+\node[below=0.15cm of s2, font=\scriptsize, text=thinkorange!80!black]
+    {$\sim$469 tokens};
+\node[above=0.15cm of final2, font=\scriptsize, text=thinkorange!80!black]
+    {62.8\% acc};
+
+\end{tikzpicture}
+\caption{%
+    \textbf{\method{} inference pipeline.}
+    Stage~1 probes with non-thinking mode at budget $B_1$.
+    If the model stops early (88.8\% of GSM8K), the answer is accepted
+    at ${\sim}$133 tokens (94.4\% accuracy).
+    Otherwise, Stage~2 routes to thinking mode at budget $B_2$,
+    recovering additional correct answers on hard problems.
+    Overall: \textbf{90.9\%} accuracy at \textbf{199} average tokens on the full test set ($n{=}1{,}319$).
+}
+\label{fig:town-pipeline}
+\end{figure}

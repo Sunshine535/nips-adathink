@@ -1,0 +1,261 @@
+{
+  "meta": {
+    "timestamp_utc": "20260303_135111",
+    "input_csvs": [
+      "methods/01_adathink/results/per_sample_Qwen3_8B_20260228_164451.csv",
+      "methods/01_adathink/results/per_sample_Qwen3_8B_20260228_165122.csv",
+      "methods/01_adathink/results/per_sample_Qwen3_8B_20260228_165750.csv",
+      "methods/01_adathink/results/per_sample_Qwen3_8B_20260303_134742.csv"
+    ],
+    "budgets": [
+      128,
+      256,
+      512
+    ],
+    "eval_lambda": 0.15,
+    "norm_tokens": 512.0,
+    "target_budget": 256,
+    "budget_penalty": 0.6,
+    "hash_dim_question": 2048,
+    "hash_dim_raw": 1024,
+    "epochs_grid": [
+      20,
+      40
+    ],
+    "lr_grid": [
+      0.05,
+      0.15
+    ],
+    "l2_grid": [
+      1e-05,
+      0.0001
+    ],
+    "decision_lambda_grid": [
+      0.0,
+      0.05,
+      0.1,
+      0.15,
+      0.2,
+      0.3,
+      0.4,
+      0.5,
+      0.6,
+      0.7
+    ],
+    "seed": 11,
+    "protocol": "leave-one-csv-out with inner hyperparam selection",
+    "objective": "predict per-budget correctness then select by value-cost score"
+  },
+  "folds": [
+    {
+      "test_csv": "methods/01_adathink/results/per_sample_Qwen3_8B_20260228_164451.csv",
+      "test_size": 40,
+      "selected_hparams": {
+        "epochs": 20,
+        "lr": 0.05,
+        "l2": 0.0001,
+        "decision_lambda": 0.7
+      },
+      "target_budget": 256,
+      "budget_penalty": 0.6,
+      "mean_tokens_train": {
+        "128": 144.625,
+        "256": 272.6,
+        "512": 472.0
+      },
+      "learned": {
+        "accuracy": 0.7,
+        "avg_tokens": 266.325,
+        "avg_utility": 0.6219750976562499,
+        "action_match_best_rate": 0.5
+      },
+      "fixed": {
+        "128": {
+          "accuracy": 0.35,
+          "avg_tokens": 147.8,
+          "avg_utility": 0.30669921874999995
+        },
+        "256": {
+          "accuracy": 0.675,
+          "avg_tokens": 271.35,
+          "avg_utility": 0.5955029296875001
+        },
+        "512": {
+          "accuracy": 0.85,
+          "avg_tokens": 469.25,
+          "avg_utility": 0.7125244140625
+        }
+      },
+      "oracle": {
+        "accuracy": 0.925,
+        "avg_tokens": 279.625,
+        "avg_utility": 0.84307861328125
+      }
+    },
+    {
+      "test_csv": "methods/01_adathink/results/per_sample_Qwen3_8B_20260228_165122.csv",
+      "test_size": 40,
+      "selected_hparams": {
+        "epochs": 20,
+        "lr": 0.05,
+        "l2": 0.0001,
+        "decision_lambda": 0.6
+      },
+      "target_budget": 256,
+      "budget_penalty": 0.6,
+      "mean_tokens_train": {
+        "128": 145.63333333333333,
+        "256": 272.45,
+        "512": 467.73333333333335
+      },
+      "learned": {
+        "accuracy": 0.575,
+        "avg_tokens": 309.9,
+        "avg_utility": 0.48420898437500004,
+        "action_match_best_rate": 0.2
+      },
+      "fixed": {
+        "128": {
+          "accuracy": 0.4,
+          "avg_tokens": 144.775,
+          "avg_utility": 0.35758544921875
+        },
+        "256": {
+          "accuracy": 0.525,
+          "avg_tokens": 271.8,
+          "avg_utility": 0.44537109375
+        },
+        "512": {
+          "accuracy": 0.8,
+          "avg_tokens": 482.05,
+          "avg_utility": 0.6587744140625
+        }
+      },
+      "oracle": {
+        "accuracy": 0.825,
+        "avg_tokens": 261.875,
+        "avg_utility": 0.7482788085937501
+      }
+    },
+    {
+      "test_csv": "methods/01_adathink/results/per_sample_Qwen3_8B_20260228_165750.csv",
+      "test_size": 40,
+      "selected_hparams": {
+        "epochs": 40,
+        "lr": 0.15,
+        "l2": 0.0001,
+        "decision_lambda": 0.7
+      },
+      "target_budget": 256,
+      "budget_penalty": 0.6,
+      "mean_tokens_train": {
+        "128": 145.79166666666666,
+        "256": 272.05,
+        "512": 473.43333333333334
+      },
+      "learned": {
+        "accuracy": 0.65,
+        "avg_tokens": 279.925,
+        "avg_utility": 0.5679907226562498,
+        "action_match_best_rate": 0.425
+      },
+      "fixed": {
+        "128": {
+          "accuracy": 0.425,
+          "avg_tokens": 144.3,
+          "avg_utility": 0.38272460937499997
+        },
+        "256": {
+          "accuracy": 0.625,
+          "avg_tokens": 273.0,
+          "avg_utility": 0.54501953125
+        },
+        "512": {
+          "accuracy": 0.825,
+          "avg_tokens": 464.95,
+          "avg_utility": 0.6887841796874999
+        }
+      },
+      "oracle": {
+        "accuracy": 0.85,
+        "avg_tokens": 248.775,
+        "avg_utility": 0.7771166992187498
+      }
+    },
+    {
+      "test_csv": "methods/01_adathink/results/per_sample_Qwen3_8B_20260303_134742.csv",
+      "test_size": 40,
+      "selected_hparams": {
+        "epochs": 20,
+        "lr": 0.15,
+        "l2": 1e-05,
+        "decision_lambda": 0.5
+      },
+      "target_budget": 256,
+      "budget_penalty": 0.6,
+      "mean_tokens_train": {
+        "128": 145.625,
+        "256": 272.05,
+        "512": 472.0833333333333
+      },
+      "learned": {
+        "accuracy": 0.775,
+        "avg_tokens": 389.075,
+        "avg_utility": 0.6610131835937499,
+        "action_match_best_rate": 0.325
+      },
+      "fixed": {
+        "128": {
+          "accuracy": 0.4,
+          "avg_tokens": 144.8,
+          "avg_utility": 0.357578125
+        },
+        "256": {
+          "accuracy": 0.675,
+          "avg_tokens": 273.0,
+          "avg_utility": 0.5950195312500001
+        },
+        "512": {
+          "accuracy": 0.775,
+          "avg_tokens": 469.0,
+          "avg_utility": 0.6375976562500001
+        }
+      },
+      "oracle": {
+        "accuracy": 0.8,
+        "avg_tokens": 229.1,
+        "avg_utility": 0.732880859375
+      }
+    }
+  ],
+  "macro_mean": {
+    "learned": {
+      "accuracy": 0.675,
+      "avg_tokens": 311.30625,
+      "avg_utility": 0.5837969970703124,
+      "action_match_best_rate": 0.3625
+    },
+    "fixed": {
+      "128": {
+        "accuracy": 0.39375,
+        "avg_tokens": 145.41875000000002,
+        "avg_utility": 0.3511468505859375
+      },
+      "256": {
+        "accuracy": 0.625,
+        "avg_tokens": 272.2875,
+        "avg_utility": 0.545228271484375
+      },
+      "512": {
+        "accuracy": 0.8125,
+        "avg_tokens": 471.3125,
+        "avg_utility": 0.674420166015625
+      }
+    },
+    "oracle": {
+      "accuracy": 0.85,
+      "avg_tokens": 254.84375,
+      "avg_utility": 0.7753387451171875
+    }
+  }
+}

@@ -1,0 +1,207 @@
+{
+  "meta": {
+    "timestamp_utc": "20260303_120847",
+    "input_csvs": [
+      "methods/01_adathink/results/per_sample_Qwen3_8B_20260228_164451.csv",
+      "methods/01_adathink/results/per_sample_Qwen3_8B_20260228_165122.csv",
+      "methods/01_adathink/results/per_sample_Qwen3_8B_20260228_165750.csv"
+    ],
+    "budgets": [
+      128,
+      256,
+      512
+    ],
+    "lambda_cost": 0.4,
+    "norm_tokens": 512.0,
+    "target_budget": 256,
+    "hash_dim_question": 2048,
+    "hash_dim_raw": 1024,
+    "epochs_grid": [
+      30,
+      50,
+      80,
+      120
+    ],
+    "lr_grid": [
+      0.03,
+      0.05,
+      0.1,
+      0.2
+    ],
+    "l2_grid": [
+      1e-06,
+      1e-05,
+      0.0001,
+      0.0005
+    ],
+    "cost_weight_grid": [
+      0.0,
+      2.0,
+      4.0,
+      8.0,
+      16.0,
+      32.0,
+      64.0,
+      128.0,
+      256.0
+    ],
+    "seed": 11,
+    "protocol": "leave-one-csv-out with inner hyperparam selection",
+    "objective": "maximize expected utility with soft budget-constraint penalty"
+  },
+  "folds": [
+    {
+      "test_csv": "methods/01_adathink/results/per_sample_Qwen3_8B_20260228_164451.csv",
+      "test_size": 40,
+      "selected_hparams": {
+        "epochs": 30,
+        "lr": 0.03,
+        "l2": 1e-06,
+        "cost_weight": 0.0
+      },
+      "target_budget": 256,
+      "target_tokens_train": 272.4,
+      "learned": {
+        "accuracy": 0.85,
+        "avg_tokens": 469.25,
+        "avg_utility": 0.4833984375000001,
+        "action_match_best_rate": 0.25
+      },
+      "fixed": {
+        "128": {
+          "accuracy": 0.35,
+          "avg_tokens": 147.8,
+          "avg_utility": 0.23453124999999997
+        },
+        "256": {
+          "accuracy": 0.675,
+          "avg_tokens": 271.35,
+          "avg_utility": 0.4630078125
+        },
+        "512": {
+          "accuracy": 0.85,
+          "avg_tokens": 469.25,
+          "avg_utility": 0.48339843749999994
+        }
+      },
+      "oracle": {
+        "accuracy": 0.925,
+        "avg_tokens": 279.625,
+        "avg_utility": 0.7065429687500001
+      }
+    },
+    {
+      "test_csv": "methods/01_adathink/results/per_sample_Qwen3_8B_20260228_165122.csv",
+      "test_size": 40,
+      "selected_hparams": {
+        "epochs": 120,
+        "lr": 0.1,
+        "l2": 0.0001,
+        "cost_weight": 0.0
+      },
+      "target_budget": 256,
+      "target_tokens_train": 272.175,
+      "learned": {
+        "accuracy": 0.675,
+        "avg_tokens": 395.025,
+        "avg_utility": 0.36638671874999995,
+        "action_match_best_rate": 0.15
+      },
+      "fixed": {
+        "128": {
+          "accuracy": 0.4,
+          "avg_tokens": 144.775,
+          "avg_utility": 0.28689453125000003
+        },
+        "256": {
+          "accuracy": 0.525,
+          "avg_tokens": 271.8,
+          "avg_utility": 0.31265624999999997
+        },
+        "512": {
+          "accuracy": 0.8,
+          "avg_tokens": 482.05,
+          "avg_utility": 0.4233984375
+        }
+      },
+      "oracle": {
+        "accuracy": 0.825,
+        "avg_tokens": 261.875,
+        "avg_utility": 0.6204101562500001
+      }
+    },
+    {
+      "test_csv": "methods/01_adathink/results/per_sample_Qwen3_8B_20260228_165750.csv",
+      "test_size": 40,
+      "selected_hparams": {
+        "epochs": 50,
+        "lr": 0.2,
+        "l2": 1e-06,
+        "cost_weight": 2.0
+      },
+      "target_budget": 256,
+      "target_tokens_train": 271.575,
+      "learned": {
+        "accuracy": 0.625,
+        "avg_tokens": 282.4,
+        "avg_utility": 0.40437500000000004,
+        "action_match_best_rate": 0.225
+      },
+      "fixed": {
+        "128": {
+          "accuracy": 0.425,
+          "avg_tokens": 144.3,
+          "avg_utility": 0.312265625
+        },
+        "256": {
+          "accuracy": 0.625,
+          "avg_tokens": 273.0,
+          "avg_utility": 0.41171875
+        },
+        "512": {
+          "accuracy": 0.825,
+          "avg_tokens": 464.95,
+          "avg_utility": 0.4617578124999999
+        }
+      },
+      "oracle": {
+        "accuracy": 0.85,
+        "avg_tokens": 248.775,
+        "avg_utility": 0.6556445312499999
+      }
+    }
+  ],
+  "macro_mean": {
+    "learned": {
+      "accuracy": 0.7166666666666667,
+      "avg_tokens": 382.22499999999997,
+      "avg_utility": 0.41805338541666676,
+      "action_match_best_rate": 0.20833333333333334
+    },
+    "fixed": {
+      "128": {
+        "accuracy": 0.39166666666666666,
+        "avg_tokens": 145.625,
+        "avg_utility": 0.27789713541666666
+      },
+      "256": {
+        "accuracy": 0.6083333333333334,
+        "avg_tokens": 272.05,
+        "avg_utility": 0.39579427083333335
+      },
+      "512": {
+        "accuracy": 0.8250000000000001,
+        "avg_tokens": 472.0833333333333,
+        "avg_utility": 0.45618489583333327
+      }
+    },
+    "oracle": {
+      "accuracy": 0.8666666666666667,
+      "avg_tokens": 263.425,
+      "avg_utility": 0.6608658854166667
+    }
+  }
+}
+Saved: methods/01_adathink/results/param_controller_qwen3_8b_think_lamtrain0p40_t256_gridB_20260303.json
+Saved: methods/01_adathink/results/param_controller_rows_qwen3_8b_think_lamtrain0p40_t256_gridB_20260303.csv
+Running: /home/kemove/miniconda3/bin/python methods/01_adathink/scripts/run_parametric_budget_controller.py --input_csvs methods/01_adathink/results/per_sample_Qwen3_8B_20260228_164451.csv methods/01_adathink/results/per_sample_Qwen3_8B_20260228_165122.csv methods/01_adathink/results/per_sample_Qwen3_8B_20260228_165750.csv --lambda_cost 0.4 ... (args=26)

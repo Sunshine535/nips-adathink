@@ -1,0 +1,50 @@
+usage: run_gsm8k_experiment.py [-h] [--model_tier {low_cost,main}]
+                               [--model MODEL] [--split SPLIT]
+                               [--n_samples N_SAMPLES] [--seed SEED]
+                               [--data_seed DATA_SEED]
+                               [--budgets BUDGETS [BUDGETS ...]]
+                               [--adaptive_chunks ADAPTIVE_CHUNKS [ADAPTIVE_CHUNKS ...]]
+                               [--adaptive_max_total ADAPTIVE_MAX_TOTAL]
+                               [--no_verifier] [--allow_cpu]
+                               [--single_process_device_map_auto]
+                               [--skip_local_model_check]
+                               [--prompt_format {plain,chat}]
+                               [--direct_answer] [--enable_thinking]
+                               [--strict_final_only]
+                               [--projection_on_missing_final]
+                               [--projection_max_tokens PROJECTION_MAX_TOKENS]
+                               [--results_dir RESULTS_DIR]
+run_gsm8k_experiment.py: error: unrecognized arguments: --max_new_tokens 256 --output_dir results/budget_sweep/budget256/seed123
+E0322 12:21:57.720000 125780463055488 torch/distributed/elastic/multiprocessing/api.py:833] failed (exitcode: 2) local_rank: 0 (pid: 7004) of binary: /usr/bin/python
+Traceback (most recent call last):
+  File "/usr/local/bin/torchrun", line 8, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 348, in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/torch/distributed/run.py", line 901, in main
+    run(args)
+  File "/usr/local/lib/python3.11/dist-packages/torch/distributed/run.py", line 892, in run
+    elastic_launch(
+  File "/usr/local/lib/python3.11/dist-packages/torch/distributed/launcher/api.py", line 133, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/torch/distributed/launcher/api.py", line 264, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+scripts/run_gsm8k_experiment.py FAILED
+------------------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2026-03-22_12:21:57
+  host      : 3e027249177d
+  rank      : 0 (local_rank: 0)
+  exitcode  : 2 (pid: 7004)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================

@@ -1,0 +1,77 @@
+{
+  "meta": {
+    "timestamp_utc": "20260320_165332",
+    "input_csvs": [
+      "/workspace/nips-adathink/results/per_sample_bbh_Qwen3.5_27B_20260320_110108.csv",
+      "/workspace/nips-adathink/results/per_sample_bbh_Qwen3.5_27B_20260320_110700.csv",
+      "/workspace/nips-adathink/results/per_sample_bbh_Qwen3.5_27B_20260320_111301.csv",
+      "/workspace/nips-adathink/results/per_sample_bbh_Qwen3.5_27B_20260320_111920.csv",
+      "/workspace/nips-adathink/results/per_sample_bbh_Qwen3.5_27B_20260320_112512.csv",
+      "/workspace/nips-adathink/results/per_sample_bbh_Qwen3.5_27B_20260320_113128.csv",
+      "/workspace/nips-adathink/results/per_sample_bbh_Qwen3.5_27B_20260320_113749.csv",
+      "/workspace/nips-adathink/results/per_sample_bbh_Qwen3.5_27B_20260320_114409.csv",
+      "/workspace/nips-adathink/results/per_sample_bbh_Qwen3.5_27B_20260320_115001.csv",
+      "/workspace/nips-adathink/results/per_sample_bbh_Qwen3.5_27B_20260320_115602.csv",
+      "/workspace/nips-adathink/results/per_sample_bbh_Qwen3.5_27B_20260320_120216.csv",
+      "/workspace/nips-adathink/results/per_sample_bbh_Qwen3.5_27B_20260320_120801.csv",
+      "/workspace/nips-adathink/results/per_sample_bbh_Qwen3.5_27B_20260320_121439.csv",
+      "/workspace/nips-adathink/results/per_sample_bbh_Qwen3.5_27B_20260320_122038.csv",
+      "/workspace/nips-adathink/results/per_sample_bbh_Qwen3.5_27B_20260320_122624.csv",
+      "/workspace/nips-adathink/results/per_sample_bbh_Qwen3.5_27B_20260320_123158.csv",
+      "/workspace/nips-adathink/results/per_sample_bbh_Qwen3.5_27B_20260320_123715.csv"
+    ],
+    "n_samples": 680,
+    "budgets": [
+      1024,
+      2048,
+      4096
+    ],
+    "n_bootstrap": 10000,
+    "bootstrap_seed": 20260228,
+    "alpha": 0.05
+  },
+  "means": {
+    "fixed_1024": {
+      "accuracy": 0.24705882352941178,
+      "avg_tokens": 988.8985294117647
+    },
+    "fixed_2048": {
+      "accuracy": 0.4823529411764706,
+      "avg_tokens": 1624.110294117647
+    },
+    "fixed_4096": {
+      "accuracy": 0.6,
+      "avg_tokens": 2239.035294117647
+    },
+    "adaptive": {
+      "accuracy": 0.5147058823529411,
+      "avg_tokens": 1792.8911764705883
+    }
+  },
+  "paired_delta": {
+    "fixed2048_minus_fixed4096": {
+      "accuracy_mean": -0.11764705882352941,
+      "accuracy_ci95": [
+        -0.14411764705882352,
+        -0.09264705882352942
+      ],
+      "avg_tokens_mean": -614.925,
+      "avg_tokens_ci95": [
+        -681.925,
+        -551.3220588235295
+      ]
+    },
+    "adaptive_minus_fixed2048": {
+      "accuracy_mean": 0.03235294117647059,
+      "accuracy_ci95": [
+        0.0,
+        0.06470588235294118
+      ],
+      "avg_tokens_mean": 168.78088235294118,
+      "avg_tokens_ci95": [
+        96.1029411764706,
+        241.94264705882352
+      ]
+    }
+  }
+}

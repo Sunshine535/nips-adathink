@@ -1,0 +1,352 @@
+{
+  "meta": {
+    "timestamp_utc": "20260320_063913",
+    "benchmark": "math500",
+    "bbh_task": null,
+    "model": "Qwen/Qwen3.5-27B",
+    "n_samples": 40,
+    "seed": 42,
+    "data_seed": 1103,
+    "budgets": [
+      512,
+      1024,
+      2048
+    ],
+    "enable_thinking": true,
+    "strict_final_only": true,
+    "engine": "vllm"
+  },
+  "fixed": {
+    "512": {
+      "accuracy": 0.0,
+      "avg_tokens": 512.0,
+      "avg_latency_s": 0.6517404831014569,
+      "final_rate": 0.05
+    },
+    "1024": {
+      "accuracy": 0.075,
+      "avg_tokens": 1023.3,
+      "avg_latency_s": 0.7047964898520149,
+      "final_rate": 0.2
+    },
+    "2048": {
+      "accuracy": 0.225,
+      "avg_tokens": 1988.725,
+      "avg_latency_s": 1.410548267851119,
+      "final_rate": 0.325
+    }
+  },
+  "adaptive": {
+    "accuracy": 0.2,
+    "avg_tokens": 1939.4,
+    "avg_latency_s": 1.3726078786136358,
+    "early_stop_rate": 0.05
+  },
+  "overthinking": {
+    "fixed_512_vs_fixed_2048": 0.0
+  },
+  "per_math_subject": {
+    "Algebra": {
+      "n": 13,
+      "fixed": {
+        "512": {
+          "accuracy": 0.0,
+          "avg_tokens": 512.0,
+          "avg_latency_s": 0.6517404831014575
+        },
+        "1024": {
+          "accuracy": 0.23076923076923078,
+          "avg_tokens": 1021.8461538461538,
+          "avg_latency_s": 0.7047964898520149
+        },
+        "2048": {
+          "accuracy": 0.3076923076923077,
+          "avg_tokens": 1892.6153846153845,
+          "avg_latency_s": 1.410548267851118
+        }
+      },
+      "adaptive": {
+        "accuracy": 0.23076923076923078,
+        "avg_tokens": 1740.8461538461538,
+        "avg_latency_s": 1.2938086086588625
+      }
+    },
+    "Counting & Probability": {
+      "n": 3,
+      "fixed": {
+        "512": {
+          "accuracy": 0.0,
+          "avg_tokens": 512.0,
+          "avg_latency_s": 0.6517404831014574
+        },
+        "1024": {
+          "accuracy": 0.0,
+          "avg_tokens": 1024.0,
+          "avg_latency_s": 0.7047964898520149
+        },
+        "2048": {
+          "accuracy": 0.0,
+          "avg_tokens": 2048.0,
+          "avg_latency_s": 1.4105482678511183
+        }
+      },
+      "adaptive": {
+        "accuracy": 0.0,
+        "avg_tokens": 2048.0,
+        "avg_latency_s": 1.4105482678511183
+      }
+    },
+    "Geometry": {
+      "n": 4,
+      "fixed": {
+        "512": {
+          "accuracy": 0.0,
+          "avg_tokens": 512.0,
+          "avg_latency_s": 0.6517404831014574
+        },
+        "1024": {
+          "accuracy": 0.0,
+          "avg_tokens": 1024.0,
+          "avg_latency_s": 0.7047964898520149
+        },
+        "2048": {
+          "accuracy": 0.25,
+          "avg_tokens": 2048.0,
+          "avg_latency_s": 1.410548267851118
+        }
+      },
+      "adaptive": {
+        "accuracy": 0.25,
+        "avg_tokens": 2048.0,
+        "avg_latency_s": 1.410548267851118
+      }
+    },
+    "Intermediate Algebra": {
+      "n": 7,
+      "fixed": {
+        "512": {
+          "accuracy": 0.0,
+          "avg_tokens": 512.0,
+          "avg_latency_s": 0.6517404831014574
+        },
+        "1024": {
+          "accuracy": 0.0,
+          "avg_tokens": 1024.0,
+          "avg_latency_s": 0.7047964898520149
+        },
+        "2048": {
+          "accuracy": 0.14285714285714285,
+          "avg_tokens": 2048.0,
+          "avg_latency_s": 1.4105482678511179
+        }
+      },
+      "adaptive": {
+        "accuracy": 0.14285714285714285,
+        "avg_tokens": 2048.0,
+        "avg_latency_s": 1.4105482678511179
+      }
+    },
+    "Number Theory": {
+      "n": 9,
+      "fixed": {
+        "512": {
+          "accuracy": 0.0,
+          "avg_tokens": 512.0,
+          "avg_latency_s": 0.6517404831014574
+        },
+        "1024": {
+          "accuracy": 0.0,
+          "avg_tokens": 1024.0,
+          "avg_latency_s": 0.7047964898520149
+        },
+        "2048": {
+          "accuracy": 0.1111111111111111,
+          "avg_tokens": 2030.0,
+          "avg_latency_s": 1.4105482678511179
+        }
+      },
+      "adaptive": {
+        "accuracy": 0.1111111111111111,
+        "avg_tokens": 2030.0,
+        "avg_latency_s": 1.4105482678511179
+      }
+    },
+    "Prealgebra": {
+      "n": 2,
+      "fixed": {
+        "512": {
+          "accuracy": 0.0,
+          "avg_tokens": 512.0,
+          "avg_latency_s": 0.6517404831014574
+        },
+        "1024": {
+          "accuracy": 0.0,
+          "avg_tokens": 1024.0,
+          "avg_latency_s": 0.7047964898520149
+        },
+        "2048": {
+          "accuracy": 1.0,
+          "avg_tokens": 1953.5,
+          "avg_latency_s": 1.410548267851118
+        }
+      },
+      "adaptive": {
+        "accuracy": 1.0,
+        "avg_tokens": 1953.5,
+        "avg_latency_s": 1.410548267851118
+      }
+    },
+    "Precalculus": {
+      "n": 2,
+      "fixed": {
+        "512": {
+          "accuracy": 0.0,
+          "avg_tokens": 512.0,
+          "avg_latency_s": 0.6517404831014574
+        },
+        "1024": {
+          "accuracy": 0.0,
+          "avg_tokens": 1024.0,
+          "avg_latency_s": 0.7047964898520149
+        },
+        "2048": {
+          "accuracy": 0.0,
+          "avg_tokens": 2048.0,
+          "avg_latency_s": 1.410548267851118
+        }
+      },
+      "adaptive": {
+        "accuracy": 0.0,
+        "avg_tokens": 2048.0,
+        "avg_latency_s": 1.410548267851118
+      }
+    }
+  },
+  "per_math_level": {
+    "1": {
+      "n": 3,
+      "fixed": {
+        "512": {
+          "accuracy": 0.0,
+          "avg_tokens": 512.0,
+          "avg_latency_s": 0.6517404831014574
+        },
+        "1024": {
+          "accuracy": 0.3333333333333333,
+          "avg_tokens": 1014.6666666666666,
+          "avg_latency_s": 0.7047964898520149
+        },
+        "2048": {
+          "accuracy": 0.6666666666666666,
+          "avg_tokens": 1681.6666666666667,
+          "avg_latency_s": 1.4105482678511183
+        }
+      },
+      "adaptive": {
+        "accuracy": 0.3333333333333333,
+        "avg_tokens": 1536.0,
+        "avg_latency_s": 1.1576123396012312
+      }
+    },
+    "2": {
+      "n": 5,
+      "fixed": {
+        "512": {
+          "accuracy": 0.0,
+          "avg_tokens": 512.0,
+          "avg_latency_s": 0.6517404831014574
+        },
+        "1024": {
+          "accuracy": 0.2,
+          "avg_tokens": 1024.0,
+          "avg_latency_s": 0.7047964898520149
+        },
+        "2048": {
+          "accuracy": 0.4,
+          "avg_tokens": 1826.0,
+          "avg_latency_s": 1.410548267851118
+        }
+      },
+      "adaptive": {
+        "accuracy": 0.4,
+        "avg_tokens": 1826.0,
+        "avg_latency_s": 1.410548267851118
+      }
+    },
+    "3": {
+      "n": 5,
+      "fixed": {
+        "512": {
+          "accuracy": 0.0,
+          "avg_tokens": 512.0,
+          "avg_latency_s": 0.6517404831014574
+        },
+        "1024": {
+          "accuracy": 0.0,
+          "avg_tokens": 1024.0,
+          "avg_latency_s": 0.7047964898520149
+        },
+        "2048": {
+          "accuracy": 0.4,
+          "avg_tokens": 2015.6,
+          "avg_latency_s": 1.410548267851118
+        }
+      },
+      "adaptive": {
+        "accuracy": 0.4,
+        "avg_tokens": 2015.6,
+        "avg_latency_s": 1.410548267851118
+      }
+    },
+    "4": {
+      "n": 14,
+      "fixed": {
+        "512": {
+          "accuracy": 0.0,
+          "avg_tokens": 512.0,
+          "avg_latency_s": 0.6517404831014575
+        },
+        "1024": {
+          "accuracy": 0.0,
+          "avg_tokens": 1024.0,
+          "avg_latency_s": 0.7047964898520149
+        },
+        "2048": {
+          "accuracy": 0.07142857142857142,
+          "avg_tokens": 2048.0,
+          "avg_latency_s": 1.410548267851118
+        }
+      },
+      "adaptive": {
+        "accuracy": 0.07142857142857142,
+        "avg_tokens": 1938.2857142857142,
+        "avg_latency_s": 1.3563477117975709
+      }
+    },
+    "5": {
+      "n": 13,
+      "fixed": {
+        "512": {
+          "accuracy": 0.0,
+          "avg_tokens": 512.0,
+          "avg_latency_s": 0.6517404831014575
+        },
+        "1024": {
+          "accuracy": 0.07692307692307693,
+          "avg_tokens": 1024.0,
+          "avg_latency_s": 0.7047964898520149
+        },
+        "2048": {
+          "accuracy": 0.15384615384615385,
+          "avg_tokens": 2048.0,
+          "avg_latency_s": 1.410548267851118
+        }
+      },
+      "adaptive": {
+        "accuracy": 0.15384615384615385,
+        "avg_tokens": 2048.0,
+        "avg_latency_s": 1.410548267851118
+      }
+    }
+  }
+}

@@ -1,0 +1,22 @@
+\documentclass{article}
+\usepackage[final]{neurips_2025}
+\makeatletter\renewcommand{\@neuripsyear}{2026}\makeatother
+\usepackage[utf8]{inputenc}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{booktabs}
+
+\title{Why Does More Compute Hurt? A Mechanistic Study of Overthinking in LLM Reasoning}
+
+\author{Anonymous}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We discover that 33.8\% of reasoning problems exhibit \emph{overthinking}: accuracy decreases when compute budget increases from 256 to 512 tokens. Through systematic analysis of 677 samples, we identify three failure modes and prove conditions under which extended reasoning is guaranteed to hurt. Our findings challenge the assumption that more test-time compute always helps.
+\end{abstract}
+
+\section{Introduction}
+Test-time compute scaling is assumed to monotonically improve LLM reasoning. We challenge this assumption with a surprising finding: \textbf{33.8\% of problems get worse with more compute}.
+\end{document}

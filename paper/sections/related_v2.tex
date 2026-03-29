@@ -1,0 +1,15 @@
+\section{Related Work}
+
+\paragraph{Test-time compute scaling.}
+Chain-of-thought prompting~\cite{wei2022chain} and self-consistency~\cite{wang2022self} improve reasoning by allocating more compute.
+Tree-of-thoughts~\cite{yao2024tree} explores multiple reasoning paths.
+Our work reveals the limits of this paradigm.
+
+\paragraph{Adaptive compute.}
+Early exit methods~\cite{schuster2022confident} and adaptive depth~\cite{elbayad2020depth} adjust compute per sample.
+Unlike prior work focusing on efficiency, we study when more compute \emph{hurts}.
+
+\paragraph{Error propagation in reasoning.}
+\citet{stechly2024self} study self-correction failures.
+\citet{huang2023large} analyze reasoning errors.
+We provide the first systematic study of compute-induced degradation.

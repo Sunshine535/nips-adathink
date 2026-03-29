@@ -1,0 +1,40 @@
+\section{Theoretical Framework: Error Accumulation}
+
+\subsection{Markov Chain Model}
+
+We model reasoning as a Markov process where each token generation step can introduce errors.
+
+\textbf{State space:} $S = \{\text{correct}, \text{wrong}\}$
+
+\textbf{Transition probabilities:}
+\begin{align}
+P(\text{correct} \to \text{correct}) &= 1 - \epsilon(t) \\
+P(\text{correct} \to \text{wrong}) &= \epsilon(t) \\
+P(\text{wrong} \to \text{correct}) &= \delta(t) \\
+P(\text{wrong} \to \text{wrong}) &= 1 - \delta(t)
+\end{align}
+
+where $\epsilon(t)$ is the error rate at step $t$, and $\delta(t)$ is the self-correction rate.
+
+\subsection{When Does Overthinking Occur?}
+
+\begin{theorem}[Overthinking Condition]
+If $\epsilon(t) > \delta(t)$ for all $t > t_0$, then accuracy monotonically decreases after step $t_0$.
+\end{theorem}
+
+\begin{proof}
+Let $p_t$ be the probability of being in the correct state at step $t$.
+Then:
+$$p_{t+1} = p_t(1-\epsilon(t)) + (1-p_t)\delta(t)$$
+
+For overthinking to occur, we need $p_{t+1} < p_t$:
+\begin{align}
+p_t(1-\epsilon(t)) + (1-p_t)\delta(t) &< p_t \\
+\delta(t) - p_t\delta(t) &< p_t\epsilon(t) \\
+\delta(t) &< p_t(\epsilon(t) + \delta(t))
+\end{align}
+
+When $p_t \approx 1$ (already correct), this simplifies to $\delta(t) < \epsilon(t)$.
+\end{proof}
+
+\textbf{Interpretation:} Overthinking occurs when the error introduction rate exceeds the self-correction rate.

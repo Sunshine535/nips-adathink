@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "model": "Qwen/Qwen3.5-27B",
+    "benchmark": "gsm8k",
+    "n_samples": 1319,
+    "seed": 11,
+    "data_seed": 42,
+    "budgets": [
+      128,
+      256,
+      512
+    ],
+    "enable_thinking": true
+  },
+  "fixed": {
+    "128": {
+      "accuracy": 0.0356,
+      "avg_tokens": 144.0,
+      "final_rate": 0.0,
+      "projection_rate": 1.0
+    },
+    "256": {
+      "accuracy": 0.0788,
+      "avg_tokens": 272.0,
+      "final_rate": 0.0,
+      "projection_rate": 1.0
+    },
+    "512": {
+      "accuracy": 0.1835,
+      "avg_tokens": 527.6,
+      "final_rate": 0.0068,
+      "projection_rate": 0.993
+    }
+  },
+  "adaptive": {
+    "accuracy": 0.1296,
+    "avg_tokens": 400.0,
+    "early_stop_rate": 0.0,
+    "final_rate": 0.0015
+  }
+}

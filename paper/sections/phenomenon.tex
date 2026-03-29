@@ -1,0 +1,56 @@
+\section{Overthinking: Definition and Prevalence}
+
+\subsection{Problem Setup}
+
+We study reasoning tasks where a language model $M$ generates a solution $y$ given a question $x$ and a token budget $b$.
+Let $\text{Acc}(M, x, b)$ denote whether the model produces a correct answer under budget $b$.
+
+\begin{definition}[Overthinking]
+A question $x$ exhibits \textbf{overthinking} at budgets $(b_1, b_2)$ with $b_1 < b_2$ if:
+$$\text{Acc}(M, x, b_1) = 1 \quad \text{and} \quad \text{Acc}(M, x, b_2) = 0$$
+\end{definition}
+
+Intuitively, overthinking occurs when a model solves a problem correctly with limited compute but fails when given more resources.
+
+\subsection{Experimental Setup}
+
+\paragraph{Models.} We evaluate two Qwen models: Qwen3-8B and Qwen3.5-27B~\cite{qwen2024}.
+
+\paragraph{Benchmarks.}
+\begin{itemize}[nosep]
+\item \textbf{GSM8K}~\cite{cobbe2021gsm8k}: Grade-school math (1,319 problems)
+\item \textbf{MATH500}~\cite{hendrycks2021math}: Competition math (500 problems)
+\item \textbf{BIG-Bench Hard}~\cite{suzgun2022bbh}: Multi-domain reasoning (6,511 problems)
+\end{itemize}
+
+\paragraph{Budgets.} We test three token budgets: $b \in \{128, 256, 512\}$ for GSM8K, and $\{512, 1024, 2048\}$ for MATH500.
+
+\paragraph{Evaluation protocol.} For each $(model, benchmark, budget)$ combination, we run multiple random seeds and aggregate results.
+GSM8K-27B uses 23 seeds (920 samples), GSM8K-8B uses 7 seeds (280 samples).
+
+\subsection{Main Findings}
+
+Table~\ref{tab:overthinking_rates} shows overthinking rates across settings.
+
+\begin{table}[h]
+\centering
+\caption{Overthinking prevalence: percentage of samples correct at lower budget but wrong at higher budget.}
+\label{tab:overthinking_rates}
+\begin{tabular}{lccc}
+\toprule
+Setting & Correct@256 & Overthinking & Rate \\
+\midrule
+GSM8K-27B & 425/920 & 229/425 & 33.8\% \\
+GSM8K-8B & 173/280 & 58/173 & 33.5\% \\
+\midrule
+MATH500-8B & 90/500 & 31/90 & 34.4\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Key observations:}
+\begin{enumerate}[nosep]
+\item Overthinking is \emph{common}: 30-40\% of correctly-solved problems degrade with more compute
+\item The phenomenon is \emph{consistent} across model scales (8B vs 27B)
+\item It generalizes across task types (math word problems vs competition math)
+\end{enumerate}

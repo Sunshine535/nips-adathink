@@ -1,0 +1,45 @@
+{
+  "meta": {
+    "timestamp_utc": "20260303_120638",
+    "rows_csv": "methods/01_adathink/results/value_controller_rows_qwen3_8b_think_pen0p50_20260303.csv",
+    "compare_budget": 256,
+    "lambda_cost": 0.15,
+    "norm_tokens": 512.0,
+    "n_bootstrap": 10000,
+    "bootstrap_seed": 20260228,
+    "n_samples": 120
+  },
+  "learned_mean": {
+    "accuracy": 0.6166666666666667,
+    "avg_tokens": 283.0833333333333,
+    "avg_utility": 0.5337320963541666
+  },
+  "fixed_mean": {
+    "accuracy": 0.6083333333333333,
+    "avg_tokens": 272.05,
+    "avg_utility": 0.5286311848958333
+  },
+  "paired_delta_learned_minus_fixed": {
+    "accuracy": {
+      "mean": 0.008333333333333333,
+      "ci95": [
+        -0.058333333333333334,
+        0.075
+      ]
+    },
+    "avg_tokens": {
+      "mean": 11.033333333333333,
+      "ci95": [
+        -10.658333333333333,
+        33.69166666666667
+      ]
+    },
+    "avg_utility": {
+      "mean": 0.005100911458333343,
+      "ci95": [
+        -0.06412760416666669,
+        0.07559407552083335
+      ]
+    }
+  }
+}

@@ -1,0 +1,132 @@
+\documentclass{article}
+
+\usepackage[final]{neurips_2025}
+\makeatletter\renewcommand{\@neuripsyear}{2026}\makeatother
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{nicefrac}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{colortbl}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{multirow}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{tablefootnote}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,positioning,fit,calc}
+
+\definecolor{improve}{RGB}{0,128,0}
+\definecolor{decline}{RGB}{200,0,0}
+\definecolor{easycolor}{RGB}{76,175,80}
+\definecolor{medcolor}{RGB}{255,152,0}
+\definecolor{hardcolor}{RGB}{244,67,54}
+\newcommand{\up}[1]{\textcolor{improve}{\textbf{+#1}}}
+\newcommand{\down}[1]{\textcolor{decline}{\textbf{#1}}}
+\newcommand{\ci}[2]{\scriptsize[#1,\,#2]}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\newcommand{\method}{\textsc{ReasonSpec}}
+\newcommand{\fullmethod}{Reasoning Speculation}
+
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+% NeurIPS checklist
+\providecommand{\answerYes}[1]{\textbf{Yes.} #1}
+\providecommand{\answerNo}[1]{\textbf{No.} #1}
+\providecommand{\answerNA}[1]{\textbf{N/A.} #1}
+
+\title{\fullmethod{}: Parallel Exploration with Cross-Path\\Consensus for Adaptive Test-Time Compute}
+
+\author{
+  Anonymous Author(s)
+}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+% PLACEHOLDER — will be finalized after experiments complete
+Scaling test-time compute via chain-of-thought reasoning improves accuracy but wastes tokens on easy problems and underallocates on hard ones.
+Existing adaptive methods rely on single-path difficulty signals (answer presence, uncertainty, learned features) which we show are fundamentally unreliable: all such black-box controllers fail to outperform fixed budgets.
+We introduce \method{}, a training-free framework that restructures the computation of reasoning itself.
+Instead of allocating a single token budget and hoping it matches problem difficulty, \method{} generates $K$ short parallel exploration paths, computes a \emph{cross-path consensus signal}, and adaptively routes each problem:
+high consensus $\rightarrow$ accept the majority answer (easy); partial consensus $\rightarrow$ extend the most promising path (medium); low consensus $\rightarrow$ full deliberation with all paths as context (hard).
+The key insight is that multi-path agreement is a far more reliable difficulty signal than any feature extractable from a single reasoning trace (Spearman $\rho = -0.51$ vs.\ difficulty, $p < 10^{-88}$).
+On GSM8K with Qwen3-8B, \method{} achieves \textbf{XX.X\%} accuracy using only \textbf{XXX} average tokens, compared to \textbf{XX.X\%} for a fixed budget using the same total compute, representing a \textbf{+X.X\,pp} improvement at \textbf{XX\%} token savings.
+\method{} is model-agnostic, requires no training, and works at the API level with any reasoning LLM.
+\end{abstract}
+
+% ============================================================================
+\section{Introduction}
+\label{sec:intro}
+% ============================================================================
+
+\input{sections/intro_reasonspec}
+
+% ============================================================================
+\section{Related Work}
+\label{sec:related}
+% ============================================================================
+
+\input{sections/related_reasonspec}
+
+% ============================================================================
+\section{Method: \fullmethod{}}
+\label{sec:method}
+% ============================================================================
+
+\input{sections/method_reasonspec}
+
+% ============================================================================
+\section{Theoretical Analysis}
+\label{sec:theory}
+% ============================================================================
+
+\input{sections/theory_reasonspec}
+
+% ============================================================================
+\section{Experiments}
+\label{sec:experiments}
+% ============================================================================
+
+\input{sections/experiments_reasonspec}
+
+% ============================================================================
+\section{Analysis}
+\label{sec:analysis}
+% ============================================================================
+
+\input{sections/analysis_reasonspec}
+
+% ============================================================================
+\section{Conclusion}
+\label{sec:conclusion}
+% ============================================================================
+
+\input{sections/conclusion_reasonspec}
+
+
+\bibliographystyle{plain}
+\bibliography{references}
+
+% ============================================================================
+\appendix
+\input{sections/appendix_reasonspec}
+
+\end{document}

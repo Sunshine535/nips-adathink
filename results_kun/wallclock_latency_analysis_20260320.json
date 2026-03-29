@@ -1,0 +1,142 @@
+{
+  "GSM8K-27B": {
+    "n_samples": 921,
+    "n_seeds": 24,
+    "budgets": {
+      "128": {
+        "mean_latency_s": 10.357,
+        "p50_latency_s": 10.399,
+        "p95_latency_s": 10.982,
+        "throughput_tok_per_s": 15.3
+      },
+      "256": {
+        "mean_latency_s": 18.341,
+        "p50_latency_s": 18.42,
+        "p95_latency_s": 18.873,
+        "throughput_tok_per_s": 15.6
+      },
+      "512": {
+        "mean_latency_s": 34.472,
+        "p50_latency_s": 34.501,
+        "p95_latency_s": 35.286,
+        "throughput_tok_per_s": 15.7
+      }
+    },
+    "adaptive": {
+      "mean_latency_s": 34.918,
+      "throughput_tok_per_s": 15.5
+    }
+  },
+  "MATH500-27B": {
+    "n_samples": 680,
+    "n_seeds": 17,
+    "budgets": {
+      "2048": {
+        "mean_latency_s": 1.704,
+        "p50_latency_s": 1.704,
+        "p95_latency_s": 1.721,
+        "throughput_tok_per_s": 1157.6
+      },
+      "4096": {
+        "mean_latency_s": 2.846,
+        "p50_latency_s": 2.848,
+        "p95_latency_s": 2.876,
+        "throughput_tok_per_s": 1254.5
+      },
+      "8192": {
+        "mean_latency_s": 5.738,
+        "p50_latency_s": 5.751,
+        "p95_latency_s": 5.94,
+        "throughput_tok_per_s": 1041.6
+      }
+    },
+    "adaptive": {
+      "mean_latency_s": 4.163,
+      "throughput_tok_per_s": 1217.2
+    }
+  },
+  "BBH-27B": {
+    "n_samples": 680,
+    "n_seeds": 17,
+    "budgets": {
+      "1024": {
+        "mean_latency_s": 1.002,
+        "p50_latency_s": 1.001,
+        "p95_latency_s": 1.026,
+        "throughput_tok_per_s": 987.3
+      },
+      "2048": {
+        "mean_latency_s": 1.374,
+        "p50_latency_s": 1.377,
+        "p95_latency_s": 1.398,
+        "throughput_tok_per_s": 1181.8
+      },
+      "4096": {
+        "mean_latency_s": 2.607,
+        "p50_latency_s": 2.613,
+        "p95_latency_s": 2.682,
+        "throughput_tok_per_s": 858.9
+      }
+    },
+    "adaptive": {
+      "mean_latency_s": 1.703,
+      "throughput_tok_per_s": 1053.0
+    }
+  },
+  "MATH500-8B": {
+    "n_samples": 360,
+    "n_seeds": 9,
+    "budgets": {
+      "512": {
+        "mean_latency_s": 1.795,
+        "p50_latency_s": 0.173,
+        "p95_latency_s": 14.632,
+        "throughput_tok_per_s": 289.2
+      },
+      "1024": {
+        "mean_latency_s": 3.37,
+        "p50_latency_s": 0.356,
+        "p95_latency_s": 27.385,
+        "throughput_tok_per_s": 305.7
+      },
+      "2048": {
+        "mean_latency_s": 6.358,
+        "p50_latency_s": 0.804,
+        "p95_latency_s": 52.153,
+        "throughput_tok_per_s": 310.2
+      }
+    },
+    "adaptive": {
+      "mean_latency_s": 6.507,
+      "throughput_tok_per_s": 302.4
+    }
+  },
+  "BBH-8B": {
+    "n_samples": 280,
+    "n_seeds": 7,
+    "budgets": {
+      "256": {
+        "mean_latency_s": 0.088,
+        "p50_latency_s": 0.088,
+        "p95_latency_s": 0.09,
+        "throughput_tok_per_s": 2883.8
+      },
+      "512": {
+        "mean_latency_s": 0.167,
+        "p50_latency_s": 0.167,
+        "p95_latency_s": 0.168,
+        "throughput_tok_per_s": 2865.3
+      },
+      "1024": {
+        "mean_latency_s": 0.337,
+        "p50_latency_s": 0.337,
+        "p95_latency_s": 0.343,
+        "throughput_tok_per_s": 2293.5
+      }
+    },
+    "adaptive": {
+      "mean_latency_s": 0.325,
+      "throughput_tok_per_s": 2365.7
+    }
+  }
+}

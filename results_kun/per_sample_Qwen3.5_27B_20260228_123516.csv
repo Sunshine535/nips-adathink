@@ -1,0 +1,134 @@
+adaptive_correct,adaptive_has_final,adaptive_latency_s,adaptive_pred,adaptive_pred_source,adaptive_projection_latency_s,adaptive_projection_tokens,adaptive_projection_used,adaptive_raw,adaptive_stopped_early,adaptive_tokens,adaptive_verifier_calls,fixed_128_correct,fixed_128_has_final,fixed_128_latency_s,fixed_128_pred,fixed_128_pred_source,fixed_128_projection_latency_s,fixed_128_projection_tokens,fixed_128_projection_used,fixed_128_raw,fixed_128_tokens,fixed_256_correct,fixed_256_has_final,fixed_256_latency_s,fixed_256_pred,fixed_256_pred_source,fixed_256_projection_latency_s,fixed_256_projection_tokens,fixed_256_projection_used,fixed_256_raw,fixed_256_tokens,fixed_512_correct,fixed_512_has_final,fixed_512_latency_s,fixed_512_pred,fixed_512_pred_source,fixed_512_projection_latency_s,fixed_512_projection_tokens,fixed_512_projection_used,fixed_512_raw,fixed_512_tokens,gold,idx,question
+0,0,35.87002557906089,1,projection,2.404472374008037,32,1,"Thinking Process:
+
+1.  **Analyze the Request:**
+    *   **Problem:** Shiela bought 5 cell phones at $150 each.
+    *   **Terms:** 3-month installment plan.
+    *   **Interest:** 2% interest charged for each unit.
+    *   **Goal:** Calculate the monthly payment for 3 months.
+    *   **Format:** Step-by-step solution, brief, ending with ""Final answer: <number>"".
+
+2.  **Break Down the Problem:**
+    *   Step 1: Calculate the total cost of the phones (principal).
+    *   Step 2: Calculate the interest amount.
+    *   Step 3: Calculate the total amount to be paid (Principal + Interest).
+    *   Step 4: Divide the total amount by the number of months (3) to find the monthly payment.
+
+3.  **Step-by-Step Calculation:**
+
+    *   *Step 1: Total Cost (Principal)*
+        *   Number of phones = 5
+        *   Price per phone = $150
+        *   Total Cost = $5 \times 150 = 750$
+
+    *   *Step 2: Interest Calculation*
+        *   Interest rate = 2%
+        *   The problem says ""2% interest will be charged for each unit"". This usually implies 2% of the total cost or 2% per unit. Since the total cost is the sum of the units, calculating 2% of the total cost is mathematically equivalent to calculating 2% of each unit and summing them up.
+        *   Interest = $2\% \text{ of } 750$
+        *   Interest = $0.02 \times 750$
+        *   Calculation: $2 \times 7.5 = 15$
+        *   Interest = $15$
+
+    *   *Step 3: Total Amount to Pay*
+        *   Total Amount = Total Cost + Interest
+        *   Total Amount = $750 + 15 = 765$
+
+    *   *Step 4: Monthly Payment*
+        *   Duration = 3 months
+        *   Monthly Payment = Total Amount / 3
+        *   Monthly Payment = $765 / 3
+
+[projection]
+ 255
+</think>
+
+1.  **Calculate the total cost of the cell phones:**
+    Shiela bought 5 cell phones at $1",0,544,0,0,0,10.897520966012962,260,projection,2.2656586559605785,32,1,"Thinking Process:
+
+1.  **Analyze the Request:**
+    *   **Problem:** Shiela bought 5 cell phones at $150 each.
+    *   **Terms:** 3-month installment plan.
+    *   **Interest:** 2% interest charged for each unit.
+    *   **Goal:** Calculate the monthly payment for 3 months.
+    *   **Format:** Step-by-step solution, brief, ending with ""Final answer: <number>"".
+
+2.  **Break Down the Problem:**
+    *   Step 1: Calculate the total cost of the phones (
+
+[projection]
+ 260
+</think>
+
+Final answer: 260user
+Read the question and draft solution. Output exactly one line in this format",160,1,0,18.9687823340646,255,projection,2.3067025120253675,32,1,"Thinking Process:
+
+1.  **Analyze the Request:**
+    *   **Problem:** Shiela bought 5 cell phones at $150 each.
+    *   **Terms:** 3-month installment plan.
+    *   **Interest:** 2% interest charged for each unit.
+    *   **Goal:** Calculate the monthly payment for 3 months.
+    *   **Format:** Step-by-step solution, brief, ending with ""Final answer: <number>"".
+
+2.  **Break Down the Problem:**
+    *   Step 1: Calculate the total cost of the phones (principal).
+    *   Step 2: Calculate the interest amount.
+    *   Step 3: Calculate the total amount to be paid (Principal + Interest).
+    *   Step 4: Divide the total amount by the number of months (3) to find the monthly payment.
+
+3.  **Step-by-Step Calculation:**
+
+    *   *Step 1: Total Cost (Principal)*
+        *   Number of phones = 5
+        *   Price per phone = $150
+        *   Total Cost = $5 \times 150 = 750
+
+[projection]
+ 255
+</think>
+
+Final answer: 255user
+Read the question and draft solution. Output exactly one line in this format",288,0,0,35.384287863911595,1,projection,2.414463974942919,32,1,"Thinking Process:
+
+1.  **Analyze the Request:**
+    *   **Problem:** Shiela bought 5 cell phones at $150 each.
+    *   **Terms:** 3-month installment plan.
+    *   **Interest:** 2% interest charged for each unit.
+    *   **Goal:** Calculate the monthly payment for 3 months.
+    *   **Format:** Step-by-step solution, brief, ending with ""Final answer: <number>"".
+
+2.  **Break Down the Problem:**
+    *   Step 1: Calculate the total cost of the phones (principal).
+    *   Step 2: Calculate the interest amount.
+    *   Step 3: Calculate the total amount to be paid (Principal + Interest).
+    *   Step 4: Divide the total amount by the number of months (3) to find the monthly payment.
+
+3.  **Step-by-Step Calculation:**
+
+    *   *Step 1: Total Cost (Principal)*
+        *   Number of phones = 5
+        *   Price per phone = $150
+        *   Total Cost = $5 \times 150 = 750$
+
+    *   *Step 2: Interest Calculation*
+        *   Interest rate = 2%
+        *   The problem says ""2% interest will be charged for each unit"". This usually implies 2% of the total cost or 2% per unit. Since the total cost is the sum of the units, calculating 2% of the total cost is mathematically equivalent to calculating 2% of each unit and summing them up.
+        *   Interest = $2\% \text{ of } 750$
+        *   Interest = $0.02 \times 750$
+        *   Calculation: $2 \times 7.5 = 15$
+        *   Interest = $15$
+
+    *   *Step 3: Total Amount to Pay*
+        *   Total Amount = Total Cost + Interest
+        *   Total Amount = $750 + 15 = 765$
+
+    *   *Step 4: Monthly Payment*
+        *   Duration = 3 months
+        *   Monthly Payment = Total Amount / 3
+        *   Monthly Payment = $765 / 3
+
+[projection]
+ 255
+</think>
+
+1.  **Calculate the total cost of the cell phones:**
+    Shiela bought 5 cell phones at $1",544,255,0,Shiela bought five cell phones for $150 each for a 3-month installment. A 2% interest will be charged for each unit. How much will Shiela pay each month for 3 months?

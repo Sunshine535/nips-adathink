@@ -1,0 +1,261 @@
+{
+  "timestamp": "20260320_170606",
+  "lambda_cost": 0.15,
+  "results": {
+    "gsm8k_27b": {
+      "full": {
+        "allowed_budgets": [
+          128,
+          256,
+          512
+        ],
+        "accuracy": 0.6208333333333335,
+        "avg_tokens": 271.3125,
+        "avg_utility": 0.5413472493489583,
+        "n_folds": 24
+      },
+      "halting_only": {
+        "allowed_budgets": [
+          128,
+          512
+        ],
+        "accuracy": 0.5572916666666667,
+        "avg_tokens": 399.0020833333333,
+        "avg_utility": 0.44039652506510407,
+        "n_folds": 24
+      },
+      "no_branch": {
+        "allowed_budgets": [
+          128,
+          256
+        ],
+        "accuracy": 0.5364583333333334,
+        "avg_tokens": 237.14374999999995,
+        "avg_utility": 0.4669826253255209,
+        "n_folds": 24
+      },
+      "max_only": {
+        "allowed_budgets": [
+          512
+        ],
+        "accuracy": 0.46666666666666673,
+        "avg_tokens": 542.7104166666667,
+        "avg_utility": 0.3076694742838541,
+        "n_folds": 24
+      },
+      "mid_only": {
+        "allowed_budgets": [
+          256
+        ],
+        "accuracy": 0.48437499999999994,
+        "avg_tokens": 286.36666666666673,
+        "avg_utility": 0.4004785156250001,
+        "n_folds": 24
+      }
+    },
+    "math500_27b": {
+      "full": {
+        "allowed_budgets": [
+          2048,
+          4096,
+          8192
+        ],
+        "accuracy": 0.488235294117647,
+        "avg_tokens": 4339.780882352941,
+        "avg_utility": 0.4087715328440947,
+        "n_folds": 17
+      },
+      "halting_only": {
+        "allowed_budgets": [
+          2048,
+          8192
+        ],
+        "accuracy": 0.5073529411764705,
+        "avg_tokens": 4363.8117647058825,
+        "avg_utility": 0.42744916130514704,
+        "n_folds": 17
+      },
+      "no_branch": {
+        "allowed_budgets": [
+          2048,
+          4096
+        ],
+        "accuracy": 0.3455882352941176,
+        "avg_tokens": 2834.244117647059,
+        "avg_utility": 0.29369167552274833,
+        "n_folds": 17
+      },
+      "max_only": {
+        "allowed_budgets": [
+          8192
+        ],
+        "accuracy": 0.5411764705882353,
+        "avg_tokens": 5976.441176470588,
+        "avg_utility": 0.4317445642807905,
+        "n_folds": 17
+      },
+      "mid_only": {
+        "allowed_budgets": [
+          4096
+        ],
+        "accuracy": 0.3705882352941176,
+        "avg_tokens": 3570.361764705882,
+        "avg_utility": 0.3052129588407629,
+        "n_folds": 17
+      }
+    },
+    "bbh_27b": {
+      "full": {
+        "allowed_budgets": [
+          1024,
+          2048,
+          4096
+        ],
+        "accuracy": 0.5897058823529412,
+        "avg_tokens": 1787.5279411764707,
+        "avg_utility": 0.5242446540383731,
+        "n_folds": 17
+      },
+      "halting_only": {
+        "allowed_budgets": [
+          1024,
+          4096
+        ],
+        "accuracy": 0.5955882352941176,
+        "avg_tokens": 1790.694117647059,
+        "avg_utility": 0.5300110581341911,
+        "n_folds": 17
+      },
+      "no_branch": {
+        "allowed_budgets": [
+          1024,
+          2048
+        ],
+        "accuracy": 0.46617647058823536,
+        "avg_tokens": 1378.6544117647059,
+        "avg_utility": 0.4156886381261491,
+        "n_folds": 17
+      },
+      "max_only": {
+        "allowed_budgets": [
+          4096
+        ],
+        "accuracy": 0.6,
+        "avg_tokens": 2239.0352941176466,
+        "avg_utility": 0.5180040785845588,
+        "n_folds": 17
+      },
+      "mid_only": {
+        "allowed_budgets": [
+          2048
+        ],
+        "accuracy": 0.48235294117647065,
+        "avg_tokens": 1624.110294117647,
+        "avg_utility": 0.4228762458352482,
+        "n_folds": 17
+      }
+    },
+    "math500_8b": {
+      "full": {
+        "allowed_budgets": [
+          512,
+          1024,
+          2048
+        ],
+        "accuracy": 0.37777777777777777,
+        "avg_tokens": 1472.0416666666665,
+        "avg_utility": 0.2699622260199652,
+        "n_folds": 9
+      },
+      "halting_only": {
+        "allowed_budgets": [
+          512,
+          2048
+        ],
+        "accuracy": 0.4027777777777778,
+        "avg_tokens": 1519.2333333333331,
+        "avg_utility": 0.2915058051215278,
+        "n_folds": 9
+      },
+      "no_branch": {
+        "allowed_budgets": [
+          512,
+          1024
+        ],
+        "accuracy": 0.04722222222222223,
+        "avg_tokens": 709.3333333333334,
+        "avg_utility": -0.004730902777777774,
+        "n_folds": 9
+      },
+      "max_only": {
+        "allowed_budgets": [
+          2048
+        ],
+        "accuracy": 0.4361111111111111,
+        "avg_tokens": 1972.0777777777778,
+        "avg_utility": 0.2916718207465278,
+        "n_folds": 9
+      },
+      "mid_only": {
+        "allowed_budgets": [
+          1024
+        ],
+        "accuracy": 0.08611111111111112,
+        "avg_tokens": 1030.002777777778,
+        "avg_utility": 0.010671454535590284,
+        "n_folds": 9
+      }
+    },
+    "bbh_8b": {
+      "full": {
+        "allowed_budgets": [
+          256,
+          512,
+          1024
+        ],
+        "accuracy": 0.29642857142857143,
+        "avg_tokens": 570.05,
+        "avg_utility": 0.21292515345982138,
+        "n_folds": 7
+      },
+      "halting_only": {
+        "allowed_budgets": [
+          256,
+          1024
+        ],
+        "accuracy": 0.31428571428571433,
+        "avg_tokens": 605.2714285714285,
+        "avg_utility": 0.22562290736607138,
+        "n_folds": 7
+      },
+      "no_branch": {
+        "allowed_budgets": [
+          256,
+          512
+        ],
+        "accuracy": 0.1285714285714286,
+        "avg_tokens": 354.15357142857147,
+        "avg_utility": 0.0766934640066964,
+        "n_folds": 7
+      },
+      "max_only": {
+        "allowed_budgets": [
+          1024
+        ],
+        "accuracy": 0.325,
+        "avg_tokens": 773.0714285714286,
+        "avg_utility": 0.21175711495535715,
+        "n_folds": 7
+      },
+      "mid_only": {
+        "allowed_budgets": [
+          512
+        ],
+        "accuracy": 0.17142857142857143,
+        "avg_tokens": 477.95357142857137,
+        "avg_utility": 0.10141584123883929,
+        "n_folds": 7
+      }
+    }
+  }
+}

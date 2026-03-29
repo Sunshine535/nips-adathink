@@ -1,0 +1,33 @@
+% Table 2: Token Utilization Decreases at Higher Budgets
+% Key result: utilization drops from 100% to 38% as budget increases
+\begin{table}[t]
+\centering
+\caption{\textbf{Token utilization ratio decreases with budget.}
+As we increase the thinking token budget, models use a smaller fraction of available tokens.
+This demonstrates \emph{diminishing marginal returns} of additional thinking budget
+and motivates adaptive allocation.
+Utilization = avg tokens used / budget.}
+\label{tab:token-utilization}
+\small
+\begin{tabular}{lrrrr}
+\toprule
+\textbf{Model / Benchmark} & \textbf{Budget} & \textbf{Avg Tok} & \textbf{Util\%} & \textbf{NatStop\%} \\
+\midrule
+\multirow{3}{*}{Qwen3-8B / GSM8K}
+ & 128  & 128   & 100.0 &  0.0 \\
+ & 256  & 255   &  99.7 &  1.4 \\
+ & 512  & 460   &  89.8 & 37.4 \\
+\midrule
+\multirow{3}{*}{DeepSeek-R1 / GSM8K}
+ & 256  & 264   & 103.0 & 15.0 \\
+ & 512  & 376   &  73.5 & 85.0 \\
+ & 1024 & 393   &  \textbf{38.3} & 97.5 \\
+\midrule
+\multirow{3}{*}{DeepSeek-R1 / MATH500}
+ & 1024 & 910   &  88.8 & 31.2 \\
+ & 2048 & 1551  &  75.7 & 55.0 \\
+ & 4096 & 2353  &  57.4 & 76.2 \\
+\bottomrule
+\end{tabular}
+\vspace{-2mm}
+\end{table}

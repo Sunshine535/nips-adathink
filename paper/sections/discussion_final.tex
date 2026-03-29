@@ -1,0 +1,82 @@
+% discussion_final.tex — §7 Discussion
+
+\paragraph{Is the thinking tax obvious in hindsight?}
+One might argue that the thinking tax is a tautological consequence of
+output format: thinking mode must generate a reasoning chain
+\emph{before} its answer, so of course it fails when given
+too few tokens.
+We make three responses.
+First, while the \emph{mechanism} may be unsurprising \emph{post hoc},
+the \emph{magnitude} is not: at budget 256, thinking mode achieves only
+18.0\% accuracy on the full GSM8K set---a
+\textbf{69.5\,pp} gap behind non-thinking at the same budget.
+Prior to our study, the conventional wisdom held that ``more thinking is
+always better''~\citep{snell2024scaling}; quantifying just how badly this
+assumption can fail at finite budgets is a necessary empirical
+contribution.
+Second, the inverse scaling with model size
+(\S\ref{sec:finding:model-size}) is genuinely counterintuitive:
+larger, more capable models become \emph{worse} at thinking mode under
+the same budget, not better.
+Third, the natural-stop oracle
+(\S\ref{sec:finding:natural-stop}) is a \emph{novel signal} that
+emerges from the interaction between chain length and budget
+constraints---it is not predicted by the truncation narrative alone and
+has immediate practical utility for routing decisions.
+
+\paragraph{Why does non-thinking work so well?}
+For well-trained reasoning models, the knowledge required to solve grade-school math problems is sufficiently internalized that explicit chain-of-thought is unnecessary---the model can ``jump to the answer'' much as a skilled human can solve simple arithmetic without writing out each step.
+The thinking mode forces the model to show its work, which at low budgets means it runs out of space before reaching the answer.
+
+\paragraph{When \emph{should} one think?}
+Our results do not argue against thinking mode \emph{in general}.
+At sufficiently large budgets, thinking mode recovers and
+eventually surpasses non-thinking performance.
+The issue is that at practical token budgets---defined here as
+$b \leq 512$ tokens, corresponding to the regime where generation
+latency is below ${\sim}$2 seconds per query on consumer hardware
+and output costs remain under \$0.001 per query at typical API
+pricing---thinking mode's overhead
+significantly outweighs its benefit.
+This regime is relevant whenever latency or cost constraints dominate
+(e.g., real-time chatbots, high-throughput batch processing, or
+edge deployment with limited memory bandwidth).
+The \method{} approach resolves this tension: think only when you must,
+and default to the efficient non-thinking path otherwise.
+
+\paragraph{Why not simply use \texttt{nothink@512}?}
+On GSM8K, \texttt{nothink@512} may achieve slightly higher accuracy than
+\method{} at comparable average token cost.
+Two factors argue that \method{} remains the principled solution.
+First, \method{} addresses a failure mode that
+\texttt{nothink@512} cannot: for genuinely hard problems where
+non-thinking produces an incorrect answer within budget, Stage~2's
+thinking fallback provides an additional chance at the correct answer.
+On the full test set ($n{=}1{,}319$), 64 of the 148 routed samples are genuine recoveries---problems where nothink was wrong but thinking produced the correct answer---yielding a net gain of 45 samples (64 recoveries $-$ 19 routing regrets; Error Analysis, \S\ref{sec:town-eval}).
+Second, and most importantly, the value of \method{} increases as task difficulty rises.
+On GSM8K, where non-thinking accuracy is already high (${\sim}$87.5\%), the marginal benefit of thinking fallback is modest (+3.4\,pp).
+On harder benchmarks where non-thinking accuracy drops substantially (e.g., MATH-500), the recovery mechanism becomes critical, and \method{}'s advantage over pure nothink grows.
+The principled contribution of \method{} is a \emph{general framework} for adaptive mode selection: it provides a floor on performance by matching each problem to the most efficient inference mode for its difficulty, with the early-stop signal as a zero-cost difficulty classifier.
+
+\paragraph{Implications for scaling test-time compute.}
+The inverse scaling of the thinking tax with model size (Finding~4, \S\ref{sec:finding:model-size}) has concerning implications for the roadmap of scaling test-time compute.
+As models grow larger and more capable, their thinking chains become longer and more elaborate, exacerbating the budget-truncation problem.
+This suggests that simply increasing model size will not ``solve'' the thinking tax---instead, complementary approaches (budget-aware training, adaptive routing, or non-thinking fallbacks) will become increasingly important.
+
+\paragraph{Generalization beyond GSM8K.}
+Our primary experiments focus on mathematical reasoning (GSM8K with
+Qwen3-8B/27B, validated on MATH-500 with DeepSeek-R1-8B).
+The thinking tax may manifest differently on tasks where
+chain-of-thought is more structurally essential (e.g., multi-hop QA,
+planning, code generation)---particularly tasks where non-thinking
+accuracy is substantially lower.
+We view systematic evaluation on harder benchmarks as an important
+direction for future work.
+However, the \emph{mechanism} we identify---truncation waste due to
+verbose reasoning chains under constrained budgets---is fundamental
+and model-agnostic.
+It applies whenever (i)~the model's typical reasoning-chain length
+exceeds the allocated budget, and (ii)~the answer appears at the
+end of the chain rather than incrementally.
+Our cross-model validation with DeepSeek-R1 confirms that the
+phenomenon generalizes across both model families and benchmarks.

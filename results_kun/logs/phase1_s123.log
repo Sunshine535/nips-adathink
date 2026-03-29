@@ -1,0 +1,89 @@
+Loading model: Qwen/Qwen3.5-27B
+Runtime: cuda=True, world_size=1, rank=0, local_rank=0
+Fetching 11 files:   0%|          | 0/11 [00:00<?, ?it/s]Fetching 11 files: 100%|██████████| 11/11 [00:00<00:00, 134.08it/s]
+The fast path is not available because one of the required library is not installed. Falling back to torch implementation. To install follow https://github.com/fla-org/flash-linear-attention#installation and https://github.com/Dao-AILab/causal-conv1d
+Loading weights:   0%|          | 0/851 [00:00<?, ?it/s]Loading weights:  67%|██████▋   | 566/851 [00:00<00:00, 5627.99it/s]Loading weights: 100%|██████████| 851/851 [00:00<00:00, 5785.98it/s]
+Loading GSM8K...
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[rank 0] Processed 5/50
+[rank 0] Processed 10/50
+[rank 0] Processed 15/50
+[rank 0] Processed 20/50
+[rank 0] Processed 25/50
+[rank 0] Processed 30/50
+[rank 0] Processed 35/50
+[rank 0] Processed 40/50
+[rank 0] Processed 45/50
+[rank 0] Processed 50/50
+=== Summary ===
+{
+  "meta": {
+    "timestamp_utc": "20260322_134132",
+    "model": "Qwen/Qwen3.5-27B",
+    "n_samples": 50,
+    "seed": 123,
+    "data_seed": 123,
+    "world_size": 1,
+    "distributed": false,
+    "budgets": [
+      64,
+      128,
+      256
+    ],
+    "adaptive_chunks": [
+      64,
+      64,
+      128
+    ],
+    "adaptive_max_total": 256,
+    "use_verifier": true,
+    "prompt_format": "chat",
+    "direct_answer": false,
+    "enable_thinking": true,
+    "strict_final_only": false,
+    "projection_on_missing_final": false,
+    "projection_max_tokens": 16
+  },
+  "fixed": {
+    "64": {
+      "accuracy": 0.06,
+      "avg_tokens": 64.0,
+      "avg_latency_s": 3.968151384019293,
+      "final_rate": 0.0,
+      "projection_rate": 0.0,
+      "avg_projection_tokens": 0.0
+    },
+    "128": {
+      "accuracy": 0.04,
+      "avg_tokens": 128.0,
+      "avg_latency_s": 7.738324180981144,
+      "final_rate": 0.0,
+      "projection_rate": 0.0,
+      "avg_projection_tokens": 0.0
+    },
+    "256": {
+      "accuracy": 0.08,
+      "avg_tokens": 256.0,
+      "avg_latency_s": 15.3137422862323,
+      "final_rate": 0.0,
+      "projection_rate": 0.0,
+      "avg_projection_tokens": 0.0
+    }
+  },
+  "adaptive": {
+    "accuracy": 0.08,
+    "avg_tokens": 256.0,
+    "avg_latency_s": 15.708248105291277,
+    "avg_verifier_calls": 3.0,
+    "early_stop_rate": 0.0,
+    "final_rate": 0.0,
+    "projection_rate": 0.0,
+    "avg_projection_tokens": 0.0
+  },
+  "overthinking": {
+    "fixed_64_vs_fixed_256": 0.06,
+    "fixed_64_vs_adaptive": 0.06
+  }
+}
+Saved: results/summary_Qwen3.5_27B_20260322_134132.json
+Saved: results/per_sample_Qwen3.5_27B_20260322_134132.csv

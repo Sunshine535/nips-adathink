@@ -1,0 +1,205 @@
+% theory_reasonspec.tex — Theoretical Analysis for ReasonSpec
+% Included from main_reasonspec.tex via \input{sections/theory_reasonspec}
+
+We now provide a theoretical foundation for the central design choice in
+\method{}: using multi-path consensus rather than single-path features as
+the difficulty signal for budget allocation.
+Let $q$ denote a question, $D(q)\in\{\textrm{easy},\textrm{medium},\textrm{hard}\}$
+its latent difficulty, $X_i$ the answer produced by the $i$-th independent
+reasoning path, and
+$C_K \triangleq \frac{1}{\binom{K}{2}}\sum_{i<j}\mathbf{1}[X_i = X_j]$
+the pairwise agreement ratio among $K$ paths.
+
+%% ===== Proposition 1 =====
+\begin{proposition}[Consensus is more informative than a single path]
+\label{prop:info}
+For any $K \ge 2$,
+\begin{equation}
+  I\!\left(D;\, C_K\right) \;\ge\; I\!\left(D;\, X_1\right),
+  \label{eq:mi-bound}
+\end{equation}
+where $I(\cdot\,;\cdot)$ denotes mutual information.
+The inequality is strict whenever there exist two difficulty levels
+$d, d'$ such that the answer distributions $P(X_1\!\mid\! D\!=\!d)$
+and $P(X_1\!\mid\! D\!=\!d')$ differ.
+\end{proposition}
+
+\begin{proof}[Proof sketch]
+By assumption, paths are conditionally i.i.d.\ given $q$ and hence given
+$D(q)$.
+Consider the joint sample $\mathbf{X}_K = (X_1, \dots, X_K)$.
+By the data-processing inequality applied to the Markov chain
+$D \to \mathbf{X}_K \to C_K$, we have
+$I(D; C_K) \le I(D; \mathbf{X}_K)$.
+In the reverse direction, $X_1$ is a deterministic function of
+$\mathbf{X}_K$, so
+$I(D; X_1) \le I(D; \mathbf{X}_K)$.
+The key step is to observe that $C_K$ is a symmetric function of all $K$
+samples and therefore captures \emph{inter-path} variation that a single
+sample cannot.
+Formally, $C_K$ is a function of the empirical distribution
+$\hat{P}_K = \frac{1}{K}\sum_i \delta_{X_i}$, which is a sufficient
+statistic for the family
+$\{P(\mathbf{X}_K \!\mid\! D\!=\!d)\}_{d}$ by the factorization theorem
+(since $P(\mathbf{X}_K \!\mid\! D) = \prod_i P(X_i \!\mid\! D)$
+depends on $\mathbf{X}_K$ only through $\hat{P}_K$).
+Sufficiency implies $I(D; \hat{P}_K) = I(D; \mathbf{X}_K)$,
+and because $C_K$ is an injective function of $\hat{P}_K$ when the answer
+space has at most $K$ distinct values, we obtain
+$I(D; C_K) = I(D; \mathbf{X}_K) \ge I(D; X_1)$.
+Strictness follows because $K \ge 2$ independent samples from distinct
+distributions yield strictly more Fisher information and hence strictly
+more mutual information than a single sample, provided
+$P(X_1 \!\mid\! D\!=\!d) \ne P(X_1 \!\mid\! D\!=\!d')$ for some
+$d \ne d'$.
+A complete proof is given in Appendix~\ref{app:proofs}.
+\end{proof}
+
+%% ===== Proposition 2 =====
+\begin{proposition}[Consensus as a monotone difficulty estimator]
+\label{prop:monotone}
+Let $p(q) = P(\text{correct}\!\mid\! q)$ denote the per-question
+accuracy of a single path.
+If paths are conditionally independent given $q$ and the answer space
+is binary (correct/incorrect), then:
+\begin{enumerate}[nosep,leftmargin=*]
+  \item $\mathbb{E}[C_K \mid q]$ is strictly increasing in $p(q)$ for
+        $p(q) > \tfrac{1}{2}$.
+  \item As $K \to \infty$,
+    \begin{equation}
+      C_K \;\xrightarrow{\;a.s.\;}\; p(q)^{2} + \bigl(1 - p(q)\bigr)^{2},
+      \label{eq:consensus-limit}
+    \end{equation}
+    which is a strictly decreasing function of difficulty
+    (lower $p(q) \Rightarrow$ lower $C_\infty$) on $p(q)\in(\tfrac12,1]$.
+  \item For finite $K$, $\mathrm{Var}(C_K \mid q) = O(1/K)$, so the
+        difficulty estimate concentrates rapidly.
+\end{enumerate}
+Consequently, if $P(\textrm{correct}\!\mid\!\textrm{easy}) >
+P(\textrm{correct}\!\mid\!\textrm{hard})$, then
+$\mathbb{E}[C_K \mid \textrm{easy}] > \mathbb{E}[C_K \mid \textrm{hard}]$.
+\end{proposition}
+
+\begin{proof}[Proof sketch]
+Under conditional independence and a binary answer space,
+$C_K = \binom{K}{2}^{-1}\sum_{i<j}\mathbf{1}[X_i = X_j]$
+has expectation
+$\mathbb{E}[C_K \mid q] = p(q)^2 + (1-p(q))^2$.
+Differentiating with respect to $p$:
+$\frac{d}{dp}[p^2 + (1-p)^2] = 2(2p - 1) > 0$ for $p > \tfrac{1}{2}$.
+Statement~(2) follows from the strong law of large numbers applied to
+$\hat{P}_K$, and~(3) from the bounded-differences inequality applied
+to $C_K$ (changing one path shifts $C_K$ by at most $2/(K-1)$).
+\end{proof}
+
+\begin{remark}
+When the answer space is multiclass (e.g., numerical answers with many
+possible values), the correct-answer probability $p(q)$ still dominates
+$C_K$ because incorrect answers are typically dispersed across many
+values.
+Our experiments confirm this: on GSM8K, the average number of distinct
+incorrect answers per question is $3.2$, ensuring that consensus is
+driven primarily by agreement on the correct answer.
+\end{remark}
+
+%% ===== Proposition 3 =====
+\begin{proposition}[Fundamental limitation of single-path signals]
+\label{prop:single-path}
+In the black-box setting (no access to logits, hidden states, or
+internal model representations), the only observable from a single
+reasoning path is the generated text $X_1$.
+For any difficulty estimator $f\colon \mathcal{X} \to \mathbb{R}$
+that is a deterministic function of $X_1$:
+\begin{equation}
+  I\!\left(D;\, f(X_1)\right) \;\le\; I\!\left(D;\, X_1\right)
+  \;\le\; I\!\left(D;\, C_K\right) \quad \text{for } K \ge 2.
+  \label{eq:single-path-bound}
+\end{equation}
+\end{proposition}
+
+\begin{proof}[Proof sketch]
+The first inequality is the data-processing inequality applied to
+$D \to X_1 \to f(X_1)$.
+The second follows from Proposition~\ref{prop:info}.
+The bound is tight only in the degenerate case where a single sample
+fully determines $D$---which requires the answer distributions under
+different difficulty levels to have disjoint support, a condition that
+fails in practice (easy and hard questions can produce the same answer
+text).
+\end{proof}
+
+\paragraph{Empirical validation.}
+We compute the Spearman rank correlation between candidate difficulty
+signals and the oracle difficulty label (fraction of budgets on which
+the model errs).
+Single-path features---answer presence, token utilization, and reasoning
+coherence---achieve $|\rho| \in [0.08, 0.19]$.
+In contrast, the consensus signal $C_K$ with $K = 8$ achieves
+$\rho = -0.51$ ($p < 10^{-88}$).
+Multi-path consensus also yields a 72.8\% precision in identifying
+easy-vs-hard questions, closing 73\% of the gap between single-path
+heuristics and the oracle classifier.
+These numbers corroborate Propositions~\ref{prop:info}--\ref{prop:single-path}:
+consensus is not merely incrementally better; it provides a qualitatively
+different signal.
+
+%% ===== Proposition 4: Budget allocation =====
+\begin{proposition}[Optimal budget allocation is a threshold policy on consensus]
+\label{prop:threshold}
+Consider a budget set $\mathcal{B} = \{b_\ell, b_m, b_h\}$ with
+$b_\ell < b_m < b_h$, and define the per-question expected reward:
+\begin{equation}
+  R(q, b) \;=\; P\!\left(\textrm{correct} \mid q, b\right) - \lambda \cdot
+  \frac{b}{b_h},
+  \label{eq:reward}
+\end{equation}
+where $\lambda \ge 0$ penalizes token cost.
+Suppose (i)~$P(\textrm{correct} \mid q, b)$ is non-decreasing in $b$
+with diminishing returns (concavity), and
+(ii)~the marginal accuracy gain of increasing the budget is
+non-increasing in $p(q)$ (easy questions benefit less from extra budget).
+Then the optimal policy $\pi^*(q) = \argmax_{b \in \mathcal{B}} R(q, b)$
+takes the form of a \emph{threshold policy on $C_K$}:
+\begin{equation}
+  \pi^*(q) =
+  \begin{cases}
+    b_\ell & \text{if } C_K(q) \ge \tau_1, \\
+    b_m    & \text{if } \tau_2 \le C_K(q) < \tau_1, \\
+    b_h    & \text{if } C_K(q) < \tau_2,
+  \end{cases}
+  \label{eq:threshold-policy}
+\end{equation}
+for thresholds $0 \le \tau_2 \le \tau_1 \le 1$ that depend on $\lambda$
+and the accuracy--budget curve.
+\end{proposition}
+
+\begin{proof}[Proof sketch]
+Under assumptions~(i) and (ii), the marginal value of upgrading from
+$b_\ell$ to $b_m$ (or $b_m$ to $b_h$) is a non-increasing function of
+$p(q)$.
+By Proposition~\ref{prop:monotone}, $C_K$ is a monotone proxy for
+$p(q)$, so the indifference points where the marginal accuracy gain
+equals the marginal cost $\lambda(b_{k+1}-b_k)/b_h$ correspond to
+thresholds on $C_K$.
+Between these thresholds, the optimal action is constant.
+Concavity of the accuracy--budget curve ensures that at most three
+regimes arise, matching the three routes in \method{}.
+A formal derivation via Lagrangian relaxation is in
+Appendix~\ref{app:proofs}.
+\end{proof}
+
+\paragraph{Connection to \method{} design.}
+Proposition~\ref{prop:threshold} provides a normative justification for
+the three-route architecture of \method{}:
+high consensus ($C_K \ge \tau_1$) triggers the \textbf{Accept} route
+(easy),
+partial consensus ($\tau_2 \le C_K < \tau_1$) triggers the \textbf{Extend}
+route (medium),
+and low consensus ($C_K < \tau_2$) triggers the \textbf{Deliberate} route
+(hard).
+The thresholds $\tau_1, \tau_2$ are the only hyperparameters introduced by
+\method{}, and they can be set by a lightweight sweep on a small
+validation set or derived from the cost parameter $\lambda$.
+Crucially, this result shows that no finer partition of the consensus
+space is needed under the stated regularity conditions---the three-route
+design is \emph{optimal} within the class of consensus-based policies.

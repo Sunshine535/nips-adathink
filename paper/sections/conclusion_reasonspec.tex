@@ -1,0 +1,27 @@
+% conclusion_reasonspec.tex — Conclusion for the Reasoning Speculation paper
+% Included from main_reasonspec.tex via \input{sections/conclusion_reasonspec}
+
+We introduced \textbf{\fullmethod{}} (\method{}), a training-free framework that restructures test-time reasoning compute via parallel exploration and consensus-based routing.
+Rather than allocating a single token budget and relying on weak single-path signals to judge difficulty, \method{} generates $K$ short exploration paths, computes a cross-path consensus score, and adaptively routes each problem through one of three resolution strategies---accept, extend, or deliberate.
+The key insight underlying our approach is that multi-path consensus is a \emph{fundamentally richer} difficulty signal than any feature extractable from a single reasoning trace: it captures inter-path variation that is information-theoretically inaccessible to single-path methods.
+
+\paragraph{Key findings.}
+Our work yields both negative and positive results of independent interest.
+On the negative side, we conducted a comprehensive evaluation of all major categories of single-path adaptive budget controllers---honest features, uncertainty-based routing, and MCTS-style refinement---and found that \emph{every} controller degrades accuracy by 5--7\,pp relative to a fixed budget, demonstrating a fundamental limitation of single-path difficulty estimation in the black-box setting.
+These systematic negative results motivate the shift to multi-path computation.
+On the positive side, we showed that the consensus signal achieves a Spearman correlation of $\rho = -0.51$ with oracle difficulty ($p < 10^{-88}$), far exceeding any single-path feature ($|\rho| \le 0.19$).
+We proved that the optimal budget-allocation policy under standard regularity conditions is a threshold policy on consensus, and that the three-route design of \method{} naturally emerges from this optimality structure (Proposition~\ref{prop:threshold}).
+
+\paragraph{Limitations.}
+Several limitations of the current work deserve acknowledgment.
+First, even though the $K$ exploration paths are embarrassingly parallel and wall-clock latency remains comparable to a single full-budget pass, the \emph{total token count} increases by a factor of up to $K$ for easy questions---a cost that matters when billing is per-token rather than per-second.
+Second, the consensus mechanism currently operates only on final extracted answers and does not exploit agreement or divergence in intermediate reasoning steps, potentially discarding useful signal.
+Third, our evaluation focuses primarily on mathematical reasoning (GSM8K); generalization to other reasoning domains---code generation, commonsense reasoning, scientific problem-solving---remains to be validated.
+Finally, the hyperparameters $K$, $\theta_{\mathrm{E}}$, and $\theta_{\mathrm{M}}$ were tuned on a held-out validation split of GSM8K, and may require task-specific adjustment for new domains.
+
+\paragraph{Future directions.}
+The \method{} framework opens several avenues for future work.
+A natural extension is \emph{semantic consensus}: comparing not just final answers but intermediate reasoning steps across paths, enabling finer-grained difficulty estimation and earlier detection of divergent reasoning strategies.
+Second, the hand-crafted consensus function (Eq.~\ref{eq:confidence}) could be replaced by a lightweight \emph{learned consensus model} that aggregates multi-path signals with minimal overhead, potentially improving routing accuracy without sacrificing the training-free spirit for the base reasoner.
+Third, integrating \method{} with \emph{process reward models}~\citep{lightman2024lets} could enable richer path evaluation during the resolve phase, combining the strengths of consensus-based routing with step-level verification.
+Finally, extending parallel exploration to \emph{latent-space reasoning}---where ``thinking tokens'' are processed in a continuous representation rather than as discrete text~\citep{hao2024training}---could reduce the per-path cost of exploration and make the framework viable for settings where token budgets are tightly constrained.

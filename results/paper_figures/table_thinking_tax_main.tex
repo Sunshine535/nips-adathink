@@ -1,0 +1,36 @@
+% Table 1: The Thinking Tax — Comprehensive comparison at matched budgets
+\begin{table}[t]
+\centering
+\caption{\textbf{The Thinking Tax: Non-thinking mode dramatically outperforms thinking mode at matched token budgets.}
+Results on GSM8K with Qwen3-8B.
+Rows without a marker use the 200-sample subset (seed=42); starred ($\star$) rows use the full test set ($n{=}1{,}319$).
+Qwen3.5-27B results use the full set.
+\textbf{At every budget, non-thinking achieves higher accuracy while using fewer tokens.}}
+\label{tab:thinking-tax}
+\small
+\begin{tabular}{ll rrrr}
+\toprule
+\textbf{Model} & \textbf{Config} & \textbf{Budget} & \textbf{Accuracy} & \textbf{Avg Tok} & \textbf{Early Stop} \\
+\midrule
+\multirow{10}{*}{\textbf{Qwen3-8B}}
+& \texttt{nothink@128}      & 128 & 54.5\%  & 111 & 43.5\% \\
+& \texttt{nothink@128$\star$} & 128 & 50.8\%  & 113 & --- \\
+& \texttt{nothink@256}      & 256 & 89.0\%  & 140 & 92.0\% \\
+& \texttt{nothink@256$\star$} & 256 & \textbf{87.5\%}  & \textbf{146} & 88.8\% \\
+& \texttt{nothink@512}      & 512 & 94.0\%  & 145 & 99.5\% \\
+\cmidrule{2-6}
+& \texttt{think@128}        & 128 & 2.0\%   & 128 & 0.0\% \\
+& \texttt{think@128$\star$}  & 128 & 3.0\%   & 128 & --- \\
+& \texttt{think@256}        & 256 & 22.0\%  & 255 & 2.0\% \\
+& \texttt{think@256$\star$}  & 256 & 18.0\%  & 255 & --- \\
+& \texttt{think@512}        & 512 & 66.5\%  & 442 & 47.5\% \\
+& \texttt{think@512$\star$}  & 512 & 65.2\%  & 460 & 37.4\% \\
+\midrule
+\multirow{3}{*}{\textbf{Qwen3.5-27B$\star$}}
+& \texttt{think@128}        & 128 & 3.6\%   & 144 & 0.0\% \\
+& \texttt{think@256}        & 256 & 7.9\%   & 272 & 0.0\% \\
+& \texttt{think@512}        & 512 & 18.3\%  & 528 & 0.7\% \\
+\bottomrule
+\end{tabular}
+\vspace{-2mm}
+\end{table}

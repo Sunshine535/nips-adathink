@@ -1,0 +1,25 @@
+% conclusion_final.tex — loaded by main_final.tex
+
+We have presented a systematic study of the \emph{thinking tax}---the accuracy penalty imposed by chain-of-thought reasoning under realistic token budgets.
+Our findings challenge the prevailing assumption that thinking modes universally improve LLM reasoning:
+
+\begin{enumerate}[nosep,leftmargin=*]
+    \item \textbf{Non-thinking dominates at matched budgets.} Across all tested budgets (128--512 tokens), non-thinking mode achieves dramatically higher accuracy than thinking mode on both Qwen3-8B and Qwen3.5-27B. The headline result---non-thinking@256 (87.5\%) vs.\ thinking@512 (65.2\%) on full GSM8K---represents a \textbf{4.2$\times$ token efficiency improvement}.
+
+    \item \textbf{The tax scales with model size.} Larger models produce longer reasoning chains, making truncation more devastating. The 27B model's thinking tax at budget=512 is \textbf{2.6$\times$ larger} than the 8B model's, achieving only 18.3\% accuracy.
+
+    \item \textbf{Natural stopping is a free oracle.} Samples that terminate before their budget achieve 96.3\% accuracy, providing a zero-cost confidence signal for routing decisions.
+\end{enumerate}
+
+Based on these findings, we propose \textbf{TOWN (Think Only When Needed)}, a simple cascade that defaults to non-thinking mode and escalates to thinking only for the minority of hard problems identified by the early-stopping signal.
+\method{} achieves \textbf{90.9\%} accuracy at 199 average tokens on the full GSM8K test set ($n{=}1{,}319$)---\textbf{+25.7pp} over thinking@512 at 2.4$\times$ fewer tokens---demonstrating that the right question is not \emph{how long} to think, but \emph{whether} to think at all.
+
+\paragraph{Limitations.}
+Our study focuses on mathematical reasoning benchmarks (GSM8K, MATH-500).
+The thinking tax may manifest differently on tasks where chain-of-thought is more essential (e.g., multi-hop reasoning, planning).
+Additionally, our TOWN method uses a simple binary routing signal; more sophisticated confidence estimation could further improve efficiency.
+
+\paragraph{Broader Impact.}
+Our results have immediate practical implications for LLM deployment:
+at constrained inference budgets---which is the norm in production settings---practitioners should \emph{default to non-thinking mode} and reserve thinking for genuinely hard inputs.
+This simple change can simultaneously improve accuracy and reduce computational cost, benefiting both model providers and end users.

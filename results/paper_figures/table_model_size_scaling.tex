@@ -1,0 +1,30 @@
+% Table 2: Thinking Tax scales with model size
+\begin{table}[t]
+\centering
+\caption{\textbf{The Thinking Tax scales inversely with model size.}
+At budget=512, the 27B model achieves only 18.3\% accuracy in thinking mode
+(vs.\ 8B's 65.2\%), because its longer reasoning chains are more severely truncated.
+The ``Thinking Tax'' measures the accuracy gap between non-thinking and thinking modes at matched budgets (using 8B non-thinking as reference).}
+\label{tab:model-size-scaling}
+\small
+\begin{tabular}{l rr r}
+\toprule
+\textbf{Budget} & \textbf{8B Think Acc} & \textbf{27B Think Acc} & \textbf{27B vs 8B} \\
+\midrule
+128 & 2.0\%  & 3.6\%  & $+$1.6pp \\
+256 & 22.0\% & 7.9\%  & $-$14.1pp \\
+512 & 65.2\% & 18.3\% & $-$46.9pp \\
+\midrule
+\multicolumn{4}{l}{\textit{Thinking Tax (Nothink$_\text{8B}$ $-$ Think)}} \\
+\midrule
+128 & +52.5pp & +50.9pp & --- \\
+256 & +65.5pp & +79.6pp & \textbf{1.2$\times$ larger} \\
+512 & +28.8pp & +75.7pp & \textbf{2.6$\times$ larger} \\
+\bottomrule
+\end{tabular}
+\vspace{1mm}
+\footnotesize
+\textit{Root cause}: 27B natural-stop rate at budget=512 is only 0.7\% (vs.\ 8B's 37.4\%),
+meaning 99.3\% of 27B responses are truncated projections.
+\vspace{-3mm}
+\end{table}

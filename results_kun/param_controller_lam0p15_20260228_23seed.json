@@ -1,0 +1,1011 @@
+{
+  "meta": {
+    "timestamp_utc": "20260228_164220",
+    "input_csvs": [
+      "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260227_150649.csv",
+      "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260227_152431.csv",
+      "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260227_154356.csv",
+      "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260227_192225.csv",
+      "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260228_050913.csv",
+      "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260228_052641.csv",
+      "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260228_055128.csv",
+      "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260228_060842.csv",
+      "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260228_065843.csv",
+      "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260228_071554.csv",
+      "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260228_081708.csv",
+      "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260228_083415.csv",
+      "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260228_100413.csv",
+      "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260228_102125.csv",
+      "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260228_104506.csv",
+      "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260228_112037.csv",
+      "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260228_114200.csv",
+      "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260228_122430.csv",
+      "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260228_125252.csv",
+      "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260228_135728.csv",
+      "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260228_141822.csv",
+      "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260228_150620.csv",
+      "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260228_152825.csv"
+    ],
+    "budgets": [
+      128,
+      256,
+      512
+    ],
+    "lambda_cost": 0.15,
+    "norm_tokens": 512.0,
+    "target_budget": 256,
+    "hash_dim_question": 2048,
+    "hash_dim_raw": 1024,
+    "epochs_grid": [
+      30,
+      50
+    ],
+    "lr_grid": [
+      0.1,
+      0.2
+    ],
+    "l2_grid": [
+      0.0001,
+      0.0005
+    ],
+    "cost_weight_grid": [
+      0.0,
+      0.5
+    ],
+    "seed": 11,
+    "protocol": "leave-one-csv-out with inner hyperparam selection",
+    "objective": "maximize expected utility with soft budget-constraint penalty"
+  },
+  "folds": [
+    {
+      "test_csv": "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260227_150649.csv",
+      "test_size": 40,
+      "selected_hparams": {
+        "epochs": 50,
+        "lr": 0.2,
+        "l2": 0.0001,
+        "cost_weight": 0.5
+      },
+      "target_budget": 256,
+      "target_tokens_train": 286.3,
+      "learned": {
+        "accuracy": 0.725,
+        "avg_tokens": 362.325,
+        "avg_utility": 0.6188500976562497,
+        "action_match_best_rate": 0.375
+      },
+      "fixed": {
+        "128": {
+          "accuracy": 0.4,
+          "avg_tokens": 158.75,
+          "avg_utility": 0.3534912109375
+        },
+        "256": {
+          "accuracy": 0.55,
+          "avg_tokens": 286.2,
+          "avg_utility": 0.46615234375000003
+        },
+        "512": {
+          "accuracy": 0.425,
+          "avg_tokens": 542.15,
+          "avg_utility": 0.2661669921875
+        }
+      },
+      "oracle": {
+        "accuracy": 0.825,
+        "avg_tokens": 255.475,
+        "avg_utility": 0.7501538085937498
+      }
+    },
+    {
+      "test_csv": "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260227_152431.csv",
+      "test_size": 40,
+      "selected_hparams": {
+        "epochs": 50,
+        "lr": 0.2,
+        "l2": 0.0005,
+        "cost_weight": 0.0
+      },
+      "target_budget": 256,
+      "target_tokens_train": 286.2409090909091,
+      "learned": {
+        "accuracy": 0.575,
+        "avg_tokens": 414.8,
+        "avg_utility": 0.45347656249999996,
+        "action_match_best_rate": 0.225
+      },
+      "fixed": {
+        "128": {
+          "accuracy": 0.325,
+          "avg_tokens": 159.35,
+          "avg_utility": 0.2783154296875
+        },
+        "256": {
+          "accuracy": 0.5,
+          "avg_tokens": 287.5,
+          "avg_utility": 0.415771484375
+        },
+        "512": {
+          "accuracy": 0.475,
+          "avg_tokens": 542.8,
+          "avg_utility": 0.3159765625
+        }
+      },
+      "oracle": {
+        "accuracy": 0.725,
+        "avg_tokens": 242.05,
+        "avg_utility": 0.6540869140624997
+      }
+    },
+    {
+      "test_csv": "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260227_154356.csv",
+      "test_size": 40,
+      "selected_hparams": {
+        "epochs": 50,
+        "lr": 0.2,
+        "l2": 0.0001,
+        "cost_weight": 0.5
+      },
+      "target_budget": 256,
+      "target_tokens_train": 286.25113636363636,
+      "learned": {
+        "accuracy": 0.55,
+        "avg_tokens": 351.35,
+        "avg_utility": 0.44706542968749996,
+        "action_match_best_rate": 0.275
+      },
+      "fixed": {
+        "128": {
+          "accuracy": 0.275,
+          "avg_tokens": 160.0,
+          "avg_utility": 0.22812500000000002
+        },
+        "256": {
+          "accuracy": 0.45,
+          "avg_tokens": 287.275,
+          "avg_utility": 0.36583740234375
+        },
+        "512": {
+          "accuracy": 0.55,
+          "avg_tokens": 544.0,
+          "avg_utility": 0.39062500000000006
+        }
+      },
+      "oracle": {
+        "accuracy": 0.8,
+        "avg_tokens": 296.875,
+        "avg_utility": 0.7130249023437496
+      }
+    },
+    {
+      "test_csv": "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260227_192225.csv",
+      "test_size": 40,
+      "selected_hparams": {
+        "epochs": 50,
+        "lr": 0.1,
+        "l2": 0.0001,
+        "cost_weight": 0.0
+      },
+      "target_budget": 256,
+      "target_tokens_train": 286.2715909090909,
+      "learned": {
+        "accuracy": 0.775,
+        "avg_tokens": 409.6,
+        "avg_utility": 0.6549999999999996,
+        "action_match_best_rate": 0.275
+      },
+      "fixed": {
+        "128": {
+          "accuracy": 0.4,
+          "avg_tokens": 158.275,
+          "avg_utility": 0.35363037109375
+        },
+        "256": {
+          "accuracy": 0.625,
+          "avg_tokens": 286.825,
+          "avg_utility": 0.54096923828125
+        },
+        "512": {
+          "accuracy": 0.625,
+          "avg_tokens": 543.2,
+          "avg_utility": 0.46585937499999996
+        }
+      },
+      "oracle": {
+        "accuracy": 0.825,
+        "avg_tokens": 263.25,
+        "avg_utility": 0.7478759765624998
+      }
+    },
+    {
+      "test_csv": "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260228_050913.csv",
+      "test_size": 40,
+      "selected_hparams": {
+        "epochs": 30,
+        "lr": 0.1,
+        "l2": 0.0005,
+        "cost_weight": 0.5
+      },
+      "target_budget": 256,
+      "target_tokens_train": 286.2772727272727,
+      "learned": {
+        "accuracy": 0.3,
+        "avg_tokens": 318.175,
+        "avg_utility": 0.20678466796875003,
+        "action_match_best_rate": 0.15
+      },
+      "fixed": {
+        "128": {
+          "accuracy": 0.25,
+          "avg_tokens": 158.725,
+          "avg_utility": 0.20349853515625
+        },
+        "256": {
+          "accuracy": 0.325,
+          "avg_tokens": 286.7,
+          "avg_utility": 0.24100585937500002
+        },
+        "512": {
+          "accuracy": 0.425,
+          "avg_tokens": 542.2,
+          "avg_utility": 0.26615234374999996
+        }
+      },
+      "oracle": {
+        "accuracy": 0.6,
+        "avg_tokens": 252.825,
+        "avg_utility": 0.52593017578125
+      }
+    },
+    {
+      "test_csv": "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260228_052641.csv",
+      "test_size": 40,
+      "selected_hparams": {
+        "epochs": 30,
+        "lr": 0.1,
+        "l2": 0.0001,
+        "cost_weight": 0.5
+      },
+      "target_budget": 256,
+      "target_tokens_train": 286.2772727272727,
+      "learned": {
+        "accuracy": 0.55,
+        "avg_tokens": 381.375,
+        "avg_utility": 0.4382690429687499,
+        "action_match_best_rate": 0.275
+      },
+      "fixed": {
+        "128": {
+          "accuracy": 0.275,
+          "avg_tokens": 158.7,
+          "avg_utility": 0.22850585937500004
+        },
+        "256": {
+          "accuracy": 0.45,
+          "avg_tokens": 286.7,
+          "avg_utility": 0.366005859375
+        },
+        "512": {
+          "accuracy": 0.45,
+          "avg_tokens": 541.275,
+          "avg_utility": 0.29142333984375
+        }
+      },
+      "oracle": {
+        "accuracy": 0.725,
+        "avg_tokens": 271.8,
+        "avg_utility": 0.6453710937499999
+      }
+    },
+    {
+      "test_csv": "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260228_055128.csv",
+      "test_size": 40,
+      "selected_hparams": {
+        "epochs": 30,
+        "lr": 0.2,
+        "l2": 0.0001,
+        "cost_weight": 0.0
+      },
+      "target_budget": 256,
+      "target_tokens_train": 286.3181818181818,
+      "learned": {
+        "accuracy": 0.575,
+        "avg_tokens": 433.125,
+        "avg_utility": 0.44810791015624984,
+        "action_match_best_rate": 0.25
+      },
+      "fixed": {
+        "128": {
+          "accuracy": 0.35,
+          "avg_tokens": 157.0,
+          "avg_utility": 0.30400390624999996
+        },
+        "256": {
+          "accuracy": 0.375,
+          "avg_tokens": 285.8,
+          "avg_utility": 0.29126953125
+        },
+        "512": {
+          "accuracy": 0.45,
+          "avg_tokens": 542.375,
+          "avg_utility": 0.29110107421875
+        }
+      },
+      "oracle": {
+        "accuracy": 0.775,
+        "avg_tokens": 273.2,
+        "avg_utility": 0.6949609374999998
+      }
+    },
+    {
+      "test_csv": "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260228_060842.csv",
+      "test_size": 40,
+      "selected_hparams": {
+        "epochs": 30,
+        "lr": 0.2,
+        "l2": 0.0005,
+        "cost_weight": 0.5
+      },
+      "target_budget": 256,
+      "target_tokens_train": 286.3034090909091,
+      "learned": {
+        "accuracy": 0.625,
+        "avg_tokens": 381.55,
+        "avg_utility": 0.5132177734374997,
+        "action_match_best_rate": 0.325
+      },
+      "fixed": {
+        "128": {
+          "accuracy": 0.325,
+          "avg_tokens": 157.15,
+          "avg_utility": 0.27895996093750003
+        },
+        "256": {
+          "accuracy": 0.4,
+          "avg_tokens": 286.125,
+          "avg_utility": 0.31617431640625004
+        },
+        "512": {
+          "accuracy": 0.375,
+          "avg_tokens": 542.175,
+          "avg_utility": 0.21615966796875002
+        }
+      },
+      "oracle": {
+        "accuracy": 0.725,
+        "avg_tokens": 271.75,
+        "avg_utility": 0.6453857421874998
+      }
+    },
+    {
+      "test_csv": "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260228_065843.csv",
+      "test_size": 40,
+      "selected_hparams": {
+        "epochs": 50,
+        "lr": 0.2,
+        "l2": 0.0005,
+        "cost_weight": 0.5
+      },
+      "target_budget": 256,
+      "target_tokens_train": 286.275,
+      "learned": {
+        "accuracy": 0.5,
+        "avg_tokens": 331.1,
+        "avg_utility": 0.40299804687500007,
+        "action_match_best_rate": 0.325
+      },
+      "fixed": {
+        "128": {
+          "accuracy": 0.225,
+          "avg_tokens": 158.1,
+          "avg_utility": 0.178681640625
+        },
+        "256": {
+          "accuracy": 0.4,
+          "avg_tokens": 286.75,
+          "avg_utility": 0.31599121093750004
+        },
+        "512": {
+          "accuracy": 0.5,
+          "avg_tokens": 543.025,
+          "avg_utility": 0.34091064453125
+        }
+      },
+      "oracle": {
+        "accuracy": 0.7,
+        "avg_tokens": 281.825,
+        "avg_utility": 0.6174340820312498
+      }
+    },
+    {
+      "test_csv": "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260228_071554.csv",
+      "test_size": 40,
+      "selected_hparams": {
+        "epochs": 30,
+        "lr": 0.2,
+        "l2": 0.0005,
+        "cost_weight": 0.5
+      },
+      "target_budget": 256,
+      "target_tokens_train": 286.2386363636364,
+      "learned": {
+        "accuracy": 0.45,
+        "avg_tokens": 363.125,
+        "avg_utility": 0.34361572265625007,
+        "action_match_best_rate": 0.15
+      },
+      "fixed": {
+        "128": {
+          "accuracy": 0.4,
+          "avg_tokens": 158.375,
+          "avg_utility": 0.35360107421875003
+        },
+        "256": {
+          "accuracy": 0.35,
+          "avg_tokens": 287.55,
+          "avg_utility": 0.2657568359375
+        },
+        "512": {
+          "accuracy": 0.4,
+          "avg_tokens": 542.15,
+          "avg_utility": 0.24116699218750004
+        }
+      },
+      "oracle": {
+        "accuracy": 0.7,
+        "avg_tokens": 247.975,
+        "avg_utility": 0.6273510742187499
+      }
+    },
+    {
+      "test_csv": "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260228_081708.csv",
+      "test_size": 40,
+      "selected_hparams": {
+        "epochs": 50,
+        "lr": 0.1,
+        "l2": 0.0001,
+        "cost_weight": 0.5
+      },
+      "target_budget": 256,
+      "target_tokens_train": 286.2875,
+      "learned": {
+        "accuracy": 0.725,
+        "avg_tokens": 331.775,
+        "avg_utility": 0.6278002929687496,
+        "action_match_best_rate": 0.225
+      },
+      "fixed": {
+        "128": {
+          "accuracy": 0.475,
+          "avg_tokens": 158.775,
+          "avg_utility": 0.42848388671875
+        },
+        "256": {
+          "accuracy": 0.775,
+          "avg_tokens": 286.475,
+          "avg_utility": 0.69107177734375
+        },
+        "512": {
+          "accuracy": 0.6,
+          "avg_tokens": 542.2,
+          "avg_utility": 0.44115234375
+        }
+      },
+      "oracle": {
+        "accuracy": 0.9,
+        "avg_tokens": 231.15,
+        "avg_utility": 0.8322802734374998
+      }
+    },
+    {
+      "test_csv": "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260228_083415.csv",
+      "test_size": 40,
+      "selected_hparams": {
+        "epochs": 30,
+        "lr": 0.2,
+        "l2": 0.0005,
+        "cost_weight": 0.5
+      },
+      "target_budget": 256,
+      "target_tokens_train": 286.275,
+      "learned": {
+        "accuracy": 0.6,
+        "avg_tokens": 336.65,
+        "avg_utility": 0.5013720703124998,
+        "action_match_best_rate": 0.325
+      },
+      "fixed": {
+        "128": {
+          "accuracy": 0.3,
+          "avg_tokens": 158.725,
+          "avg_utility": 0.25349853515625
+        },
+        "256": {
+          "accuracy": 0.5,
+          "avg_tokens": 286.75,
+          "avg_utility": 0.4159912109375
+        },
+        "512": {
+          "accuracy": 0.525,
+          "avg_tokens": 542.075,
+          "avg_utility": 0.36618896484375
+        }
+      },
+      "oracle": {
+        "accuracy": 0.775,
+        "avg_tokens": 274.575,
+        "avg_utility": 0.6945581054687497
+      }
+    },
+    {
+      "test_csv": "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260228_100413.csv",
+      "test_size": 40,
+      "selected_hparams": {
+        "epochs": 50,
+        "lr": 0.2,
+        "l2": 0.0005,
+        "cost_weight": 0.0
+      },
+      "target_budget": 256,
+      "target_tokens_train": 286.3068181818182,
+      "learned": {
+        "accuracy": 0.425,
+        "avg_tokens": 427.55,
+        "avg_utility": 0.2997412109374999,
+        "action_match_best_rate": 0.2
+      },
+      "fixed": {
+        "128": {
+          "accuracy": 0.325,
+          "avg_tokens": 157.45,
+          "avg_utility": 0.2788720703125
+        },
+        "256": {
+          "accuracy": 0.3,
+          "avg_tokens": 286.05,
+          "avg_utility": 0.2161962890625
+        },
+        "512": {
+          "accuracy": 0.45,
+          "avg_tokens": 542.8,
+          "avg_utility": 0.29097656250000004
+        }
+      },
+      "oracle": {
+        "accuracy": 0.7,
+        "avg_tokens": 275.85,
+        "avg_utility": 0.6191845703124998
+      }
+    },
+    {
+      "test_csv": "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260228_102125.csv",
+      "test_size": 40,
+      "selected_hparams": {
+        "epochs": 50,
+        "lr": 0.2,
+        "l2": 0.0005,
+        "cost_weight": 0.5
+      },
+      "target_budget": 256,
+      "target_tokens_train": 286.34886363636366,
+      "learned": {
+        "accuracy": 0.7,
+        "avg_tokens": 374.5,
+        "avg_utility": 0.5902832031249997,
+        "action_match_best_rate": 0.25
+      },
+      "fixed": {
+        "128": {
+          "accuracy": 0.4,
+          "avg_tokens": 156.4,
+          "avg_utility": 0.3541796875
+        },
+        "256": {
+          "accuracy": 0.6,
+          "avg_tokens": 285.125,
+          "avg_utility": 0.51646728515625
+        },
+        "512": {
+          "accuracy": 0.525,
+          "avg_tokens": 541.45,
+          "avg_utility": 0.3663720703125
+        }
+      },
+      "oracle": {
+        "accuracy": 0.775,
+        "avg_tokens": 242.2,
+        "avg_utility": 0.7040429687499999
+      }
+    },
+    {
+      "test_csv": "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260228_104506.csv",
+      "test_size": 40,
+      "selected_hparams": {
+        "epochs": 30,
+        "lr": 0.1,
+        "l2": 0.0001,
+        "cost_weight": 0.5
+      },
+      "target_budget": 256,
+      "target_tokens_train": 286.3602272727273,
+      "learned": {
+        "accuracy": 0.475,
+        "avg_tokens": 323.9,
+        "avg_utility": 0.38010742187500024,
+        "action_match_best_rate": 0.25
+      },
+      "fixed": {
+        "128": {
+          "accuracy": 0.3,
+          "avg_tokens": 158.9,
+          "avg_utility": 0.253447265625
+        },
+        "256": {
+          "accuracy": 0.375,
+          "avg_tokens": 284.875,
+          "avg_utility": 0.29154052734375
+        },
+        "512": {
+          "accuracy": 0.55,
+          "avg_tokens": 544.0,
+          "avg_utility": 0.39062500000000006
+        }
+      },
+      "oracle": {
+        "accuracy": 0.8,
+        "avg_tokens": 311.1,
+        "avg_utility": 0.7088574218749998
+      }
+    },
+    {
+      "test_csv": "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260228_112037.csv",
+      "test_size": 40,
+      "selected_hparams": {
+        "epochs": 50,
+        "lr": 0.2,
+        "l2": 0.0005,
+        "cost_weight": 0.5
+      },
+      "target_budget": 256,
+      "target_tokens_train": 286.32613636363635,
+      "learned": {
+        "accuracy": 0.525,
+        "avg_tokens": 355.875,
+        "avg_utility": 0.42073974609375,
+        "action_match_best_rate": 0.3
+      },
+      "fixed": {
+        "128": {
+          "accuracy": 0.325,
+          "avg_tokens": 159.475,
+          "avg_utility": 0.27827880859375004
+        },
+        "256": {
+          "accuracy": 0.425,
+          "avg_tokens": 285.625,
+          "avg_utility": 0.34132080078125
+        },
+        "512": {
+          "accuracy": 0.45,
+          "avg_tokens": 541.975,
+          "avg_utility": 0.29121826171875
+        }
+      },
+      "oracle": {
+        "accuracy": 0.7,
+        "avg_tokens": 243.95,
+        "avg_utility": 0.6285302734375
+      }
+    },
+    {
+      "test_csv": "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260228_114200.csv",
+      "test_size": 40,
+      "selected_hparams": {
+        "epochs": 50,
+        "lr": 0.2,
+        "l2": 0.0005,
+        "cost_weight": 0.5
+      },
+      "target_budget": 256,
+      "target_tokens_train": 286.26704545454544,
+      "learned": {
+        "accuracy": 0.7,
+        "avg_tokens": 375.875,
+        "avg_utility": 0.5898803710937496,
+        "action_match_best_rate": 0.175
+      },
+      "fixed": {
+        "128": {
+          "accuracy": 0.6,
+          "avg_tokens": 156.625,
+          "avg_utility": 0.55411376953125
+        },
+        "256": {
+          "accuracy": 0.575,
+          "avg_tokens": 286.925,
+          "avg_utility": 0.49093994140624997
+        },
+        "512": {
+          "accuracy": 0.4,
+          "avg_tokens": 543.35,
+          "avg_utility": 0.24081542968750003
+        }
+      },
+      "oracle": {
+        "accuracy": 0.825,
+        "avg_tokens": 216.775,
+        "avg_utility": 0.7614916992187499
+      }
+    },
+    {
+      "test_csv": "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260228_122430.csv",
+      "test_size": 40,
+      "selected_hparams": {
+        "epochs": 30,
+        "lr": 0.1,
+        "l2": 0.0005,
+        "cost_weight": 0.5
+      },
+      "target_budget": 256,
+      "target_tokens_train": 286.3193181818182,
+      "learned": {
+        "accuracy": 0.525,
+        "avg_tokens": 322.95,
+        "avg_utility": 0.43038574218750014,
+        "action_match_best_rate": 0.325
+      },
+      "fixed": {
+        "128": {
+          "accuracy": 0.25,
+          "avg_tokens": 158.75,
+          "avg_utility": 0.2034912109375
+        },
+        "256": {
+          "accuracy": 0.425,
+          "avg_tokens": 285.775,
+          "avg_utility": 0.34127685546875
+        },
+        "512": {
+          "accuracy": 0.6,
+          "avg_tokens": 541.65,
+          "avg_utility": 0.4413134765625
+        }
+      },
+      "oracle": {
+        "accuracy": 0.8,
+        "avg_tokens": 304.2,
+        "avg_utility": 0.7108789062499998
+      }
+    },
+    {
+      "test_csv": "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260228_125252.csv",
+      "test_size": 40,
+      "selected_hparams": {
+        "epochs": 50,
+        "lr": 0.2,
+        "l2": 0.0001,
+        "cost_weight": 0.5
+      },
+      "target_budget": 256,
+      "target_tokens_train": 286.3340909090909,
+      "learned": {
+        "accuracy": 0.625,
+        "avg_tokens": 349.45,
+        "avg_utility": 0.5226220703125,
+        "action_match_best_rate": 0.475
+      },
+      "fixed": {
+        "128": {
+          "accuracy": 0.3,
+          "avg_tokens": 156.925,
+          "avg_utility": 0.25402587890625
+        },
+        "256": {
+          "accuracy": 0.475,
+          "avg_tokens": 285.45,
+          "avg_utility": 0.3913720703125
+        },
+        "512": {
+          "accuracy": 0.6,
+          "avg_tokens": 543.35,
+          "avg_utility": 0.4408154296875
+        }
+      },
+      "oracle": {
+        "accuracy": 0.9,
+        "avg_tokens": 282.875,
+        "avg_utility": 0.8171264648437498
+      }
+    },
+    {
+      "test_csv": "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260228_135728.csv",
+      "test_size": 40,
+      "selected_hparams": {
+        "epochs": 50,
+        "lr": 0.2,
+        "l2": 0.0005,
+        "cost_weight": 0.0
+      },
+      "target_budget": 256,
+      "target_tokens_train": 286.3306818181818,
+      "learned": {
+        "accuracy": 0.55,
+        "avg_tokens": 440.35,
+        "avg_utility": 0.42099121093749997,
+        "action_match_best_rate": 0.3
+      },
+      "fixed": {
+        "128": {
+          "accuracy": 0.2,
+          "avg_tokens": 158.175,
+          "avg_utility": 0.15365966796875002
+        },
+        "256": {
+          "accuracy": 0.45,
+          "avg_tokens": 285.525,
+          "avg_utility": 0.36635009765625004
+        },
+        "512": {
+          "accuracy": 0.525,
+          "avg_tokens": 542.75,
+          "avg_utility": 0.36599121093750003
+        }
+      },
+      "oracle": {
+        "accuracy": 0.75,
+        "avg_tokens": 290.05,
+        "avg_utility": 0.6650244140624999
+      }
+    },
+    {
+      "test_csv": "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260228_141822.csv",
+      "test_size": 40,
+      "selected_hparams": {
+        "epochs": 30,
+        "lr": 0.1,
+        "l2": 0.0005,
+        "cost_weight": 0.5
+      },
+      "target_budget": 256,
+      "target_tokens_train": 286.29318181818184,
+      "learned": {
+        "accuracy": 0.5,
+        "avg_tokens": 311.95,
+        "avg_utility": 0.40860839843750013,
+        "action_match_best_rate": 0.2
+      },
+      "fixed": {
+        "128": {
+          "accuracy": 0.45,
+          "avg_tokens": 159.525,
+          "avg_utility": 0.40326416015625
+        },
+        "256": {
+          "accuracy": 0.475,
+          "avg_tokens": 286.35,
+          "avg_utility": 0.3911083984375
+        },
+        "512": {
+          "accuracy": 0.375,
+          "avg_tokens": 543.375,
+          "avg_utility": 0.21580810546875
+        }
+      },
+      "oracle": {
+        "accuracy": 0.75,
+        "avg_tokens": 228.275,
+        "avg_utility": 0.6831225585937499
+      }
+    },
+    {
+      "test_csv": "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260228_150620.csv",
+      "test_size": 40,
+      "selected_hparams": {
+        "epochs": 50,
+        "lr": 0.2,
+        "l2": 0.0001,
+        "cost_weight": 0.5
+      },
+      "target_budget": 256,
+      "target_tokens_train": 286.3102272727273,
+      "learned": {
+        "accuracy": 0.6,
+        "avg_tokens": 388.375,
+        "avg_utility": 0.48621826171875,
+        "action_match_best_rate": 0.475
+      },
+      "fixed": {
+        "128": {
+          "accuracy": 0.2,
+          "avg_tokens": 158.35,
+          "avg_utility": 0.15360839843750002
+        },
+        "256": {
+          "accuracy": 0.375,
+          "avg_tokens": 285.975,
+          "avg_utility": 0.29121826171875
+        },
+        "512": {
+          "accuracy": 0.525,
+          "avg_tokens": 543.375,
+          "avg_utility": 0.36580810546875003
+        }
+      },
+      "oracle": {
+        "accuracy": 0.775,
+        "avg_tokens": 320.25,
+        "avg_utility": 0.6811767578124998
+      }
+    },
+    {
+      "test_csv": "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260228_152825.csv",
+      "test_size": 40,
+      "selected_hparams": {
+        "epochs": 50,
+        "lr": 0.2,
+        "l2": 0.0005,
+        "cost_weight": 0.0
+      },
+      "target_budget": 256,
+      "target_tokens_train": 286.2875,
+      "learned": {
+        "accuracy": 0.575,
+        "avg_tokens": 408.95,
+        "avg_utility": 0.4551904296874999,
+        "action_match_best_rate": 0.25
+      },
+      "fixed": {
+        "128": {
+          "accuracy": 0.4,
+          "avg_tokens": 157.225,
+          "avg_utility": 0.35393798828125
+        },
+        "256": {
+          "accuracy": 0.45,
+          "avg_tokens": 286.475,
+          "avg_utility": 0.36607177734375
+        },
+        "512": {
+          "accuracy": 0.4,
+          "avg_tokens": 543.35,
+          "avg_utility": 0.24081542968750003
+        }
+      },
+      "oracle": {
+        "accuracy": 0.7,
+        "avg_tokens": 227.6,
+        "avg_utility": 0.6333203124999998
+      }
+    }
+  ],
+  "macro_mean": {
+    "learned": {
+      "accuracy": 0.5717391304347826,
+      "avg_tokens": 369.3336956521739,
+      "avg_utility": 0.4635358992866847,
+      "action_match_best_rate": 0.27717391304347827
+    },
+    "fixed": {
+      "128": {
+        "accuracy": 0.33695652173913043,
+        "avg_tokens": 158.24891304347827,
+        "avg_utility": 0.29059453549592396
+      },
+      "256": {
+        "accuracy": 0.46195652173913043,
+        "avg_tokens": 286.295652173913,
+        "avg_utility": 0.37808084239130435
+      },
+      "512": {
+        "accuracy": 0.4869565217391304,
+        "avg_tokens": 542.6543478260869,
+        "avg_utility": 0.32797575577445653
+      }
+    },
+    "oracle": {
+      "accuracy": 0.7630434782608696,
+      "avg_tokens": 265.4728260869565,
+      "avg_utility": 0.6852682362432063
+    }
+  }
+}

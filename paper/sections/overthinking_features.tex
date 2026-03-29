@@ -1,0 +1,27 @@
+\section{What Predicts Overthinking?}
+
+\subsection{Question Features}
+
+We extract features from each question and compare overthinking vs stable samples.
+
+\textbf{Question Length:}
+\begin{itemize}
+\item Overthinking: 39.2 words (avg)
+\item Stable: 45.1 words
+\item Improved: 48.8 words
+\end{itemize}
+
+\textbf{Statistical significance:} $p < 0.001$ (t-test)
+
+\textbf{Interpretation:} Shorter, simpler questions are more prone to overthinking.
+
+\subsection{Predictive Model}
+
+Logistic regression on question features achieves 62.5\% accuracy (vs 50\% random baseline).
+
+\textbf{Top features:}
+\begin{itemize}
+\item has\_fraction: -0.582 (protective)
+\item has\_percent: -0.344 (protective)
+\item question\_length: -0.026
+\end{itemize}

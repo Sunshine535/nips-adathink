@@ -1,0 +1,1274 @@
+{
+  "meta": {
+    "timestamp": "20260327_032040",
+    "method": "uncertainty_based_controller",
+    "probe_budget": 128,
+    "budgets": [
+      128,
+      256,
+      512
+    ],
+    "n_bins": 4,
+    "lambda_cost": 0.15,
+    "n_total": 161
+  },
+  "aggregate": {
+    "accuracy": 0.39751552795031053,
+    "avg_tokens": 391.2360248447205,
+    "avg_utility": 0.3388301242236025,
+    "budget_distribution": {
+      "128": 0.09937888198757763,
+      "256": 0.4409937888198758,
+      "512": 0.45962732919254656
+    }
+  },
+  "per_fold": [
+    {
+      "accuracy": 0.425,
+      "avg_tokens": 542.15,
+      "avg_utility": 0.3436775000000001,
+      "budget_distribution": {
+        "128": 0.0,
+        "256": 0.0,
+        "512": 1.0
+      },
+      "rows": [
+        {
+          "idx": "0",
+          "uncertainty": 0.2822,
+          "chosen_budget": 512,
+          "correct": 0,
+          "tokens": 544.0
+        },
+        {
+          "idx": "1",
+          "uncertainty": 0.4926,
+          "chosen_budget": 512,
+          "correct": 0,
+          "tokens": 544.0
+        },
+        {
+          "idx": "2",
+          "uncertainty": 0.5202,
+          "chosen_budget": 512,
+          "correct": 0,
+          "tokens": 544.0
+        },
+        {
+          "idx": "3",
+          "uncertainty": 0.2865,
+          "chosen_budget": 512,
+          "correct": 0,
+          "tokens": 544.0
+        },
+        {
+          "idx": "4",
+          "uncertainty": 0.2554,
+          "chosen_budget": 512,
+          "correct": 1,
+          "tokens": 544.0
+        },
+        {
+          "idx": "5",
+          "uncertainty": 0.395,
+          "chosen_budget": 512,
+          "correct": 1,
+          "tokens": 544.0
+        },
+        {
+          "idx": "6",
+          "uncertainty": 0.255,
+          "chosen_budget": 512,
+          "correct": 1,
+          "tokens": 544.0
+        },
+        {
+          "idx": "7",
+          "uncertainty": 0.258,
+          "chosen_budget": 512,
+          "correct": 1,
+          "tokens": 544.0
+        },
+        {
+          "idx": "8",
+          "uncertainty": 0.2748,
+          "chosen_budget": 512,
+          "correct": 1,
+          "tokens": 544.0
+        },
+        {
+          "idx": "9",
+          "uncertainty": 0.508,
+          "chosen_budget": 512,
+          "correct": 1,
+          "tokens": 544.0
+        },
+        {
+          "idx": "10",
+          "uncertainty": 0.2848,
+          "chosen_budget": 512,
+          "correct": 0,
+          "tokens": 544.0
+        },
+        {
+          "idx": "11",
+          "uncertainty": 0.368,
+          "chosen_budget": 512,
+          "correct": 0,
+          "tokens": 544.0
+        },
+        {
+          "idx": "12",
+          "uncertainty": 0.501,
+          "chosen_budget": 512,
+          "correct": 1,
+          "tokens": 544.0
+        },
+        {
+          "idx": "13",
+          "uncertainty": 0.2847,
+          "chosen_budget": 512,
+          "correct": 0,
+          "tokens": 544.0
+        },
+        {
+          "idx": "14",
+          "uncertainty": 0.2732,
+          "chosen_budget": 512,
+          "correct": 0,
+          "tokens": 544.0
+        },
+        {
+          "idx": "15",
+          "uncertainty": 0.269,
+          "chosen_budget": 512,
+          "correct": 0,
+          "tokens": 544.0
+        },
+        {
+          "idx": "16",
+          "uncertainty": 0.2547,
+          "chosen_budget": 512,
+          "correct": 0,
+          "tokens": 544.0
+        },
+        {
+          "idx": "17",
+          "uncertainty": 0.5029,
+          "chosen_budget": 512,
+          "correct": 0,
+          "tokens": 544.0
+        },
+        {
+          "idx": "18",
+          "uncertainty": 0.4728,
+          "chosen_budget": 512,
+          "correct": 1,
+          "tokens": 544.0
+        },
+        {
+          "idx": "19",
+          "uncertainty": 0.4712,
+          "chosen_budget": 512,
+          "correct": 1,
+          "tokens": 520.0
+        },
+        {
+          "idx": "20",
+          "uncertainty": 0.2574,
+          "chosen_budget": 512,
+          "correct": 1,
+          "tokens": 544.0
+        },
+        {
+          "idx": "21",
+          "uncertainty": 0.2676,
+          "chosen_budget": 512,
+          "correct": 0,
+          "tokens": 544.0
+        },
+        {
+          "idx": "22",
+          "uncertainty": 0.265,
+          "chosen_budget": 512,
+          "correct": 1,
+          "tokens": 544.0
+        },
+        {
+          "idx": "23",
+          "uncertainty": 0.483,
+          "chosen_budget": 512,
+          "correct": 0,
+          "tokens": 544.0
+        },
+        {
+          "idx": "24",
+          "uncertainty": 0.2698,
+          "chosen_budget": 512,
+          "correct": 0,
+          "tokens": 544.0
+        },
+        {
+          "idx": "25",
+          "uncertainty": 0.4866,
+          "chosen_budget": 512,
+          "correct": 1,
+          "tokens": 544.0
+        },
+        {
+          "idx": "26",
+          "uncertainty": 0.3906,
+          "chosen_budget": 512,
+          "correct": 0,
+          "tokens": 544.0
+        },
+        {
+          "idx": "27",
+          "uncertainty": 0.2717,
+          "chosen_budget": 512,
+          "correct": 0,
+          "tokens": 544.0
+        },
+        {
+          "idx": "28",
+          "uncertainty": 0.3198,
+          "chosen_budget": 512,
+          "correct": 0,
+          "tokens": 544.0
+        },
+        {
+          "idx": "29",
+          "uncertainty": 0.2574,
+          "chosen_budget": 512,
+          "correct": 0,
+          "tokens": 544.0
+        },
+        {
+          "idx": "30",
+          "uncertainty": 0.2687,
+          "chosen_budget": 512,
+          "correct": 0,
+          "tokens": 544.0
+        },
+        {
+          "idx": "31",
+          "uncertainty": 0.2722,
+          "chosen_budget": 512,
+          "correct": 0,
+          "tokens": 544.0
+        },
+        {
+          "idx": "32",
+          "uncertainty": 0.265,
+          "chosen_budget": 512,
+          "correct": 1,
+          "tokens": 544.0
+        },
+        {
+          "idx": "33",
+          "uncertainty": 0.2675,
+          "chosen_budget": 512,
+          "correct": 0,
+          "tokens": 544.0
+        },
+        {
+          "idx": "34",
+          "uncertainty": 0.2697,
+          "chosen_budget": 512,
+          "correct": 1,
+          "tokens": 518.0
+        },
+        {
+          "idx": "35",
+          "uncertainty": 0.2672,
+          "chosen_budget": 512,
+          "correct": 1,
+          "tokens": 544.0
+        },
+        {
+          "idx": "36",
+          "uncertainty": 0.4898,
+          "chosen_budget": 512,
+          "correct": 0,
+          "tokens": 544.0
+        },
+        {
+          "idx": "37",
+          "uncertainty": 0.2522,
+          "chosen_budget": 512,
+          "correct": 0,
+          "tokens": 544.0
+        },
+        {
+          "idx": "38",
+          "uncertainty": 0.2698,
+          "chosen_budget": 512,
+          "correct": 1,
+          "tokens": 544.0
+        },
+        {
+          "idx": "39",
+          "uncertainty": 0.2548,
+          "chosen_budget": 512,
+          "correct": 1,
+          "tokens": 520.0
+        }
+      ],
+      "test_csv": "results/per_sample_Qwen3.5_27B_20260227_150649.csv",
+      "thresholds": [
+        0.2694444444444445,
+        0.288,
+        0.47944444444444445
+      ],
+      "budget_mapping": [
+        512,
+        512,
+        512,
+        512
+      ]
+    },
+    {
+      "accuracy": 0.0,
+      "avg_tokens": 544.0,
+      "avg_utility": -0.0816,
+      "budget_distribution": {
+        "128": 0.0,
+        "256": 0.0,
+        "512": 1.0
+      },
+      "rows": [
+        {
+          "idx": "0",
+          "uncertainty": 0.2524,
+          "chosen_budget": 512,
+          "correct": 0,
+          "tokens": 544.0
+        }
+      ],
+      "test_csv": "results/per_sample_Qwen3.5_27B_20260228_123516.csv",
+      "thresholds": [
+        0.26771268925739006,
+        0.28462443197006143,
+        0.47368405712620226
+      ],
+      "budget_mapping": [
+        512,
+        256,
+        256,
+        512
+      ]
+    },
+    {
+      "accuracy": 0.375,
+      "avg_tokens": 310.475,
+      "avg_utility": 0.3284287499999999,
+      "budget_distribution": {
+        "128": 0.0,
+        "256": 0.9,
+        "512": 0.1
+      },
+      "rows": [
+        {
+          "idx": "0",
+          "uncertainty": 0.2555,
+          "chosen_budget": 512,
+          "correct": 0,
+          "tokens": 544.0
+        },
+        {
+          "idx": "1",
+          "uncertainty": 0.4818,
+          "chosen_budget": 256,
+          "correct": 0,
+          "tokens": 288.0
+        },
+        {
+          "idx": "2",
+          "uncertainty": 0.5165,
+          "chosen_budget": 256,
+          "correct": 0,
+          "tokens": 288.0
+        },
+        {
+          "idx": "3",
+          "uncertainty": 0.2919,
+          "chosen_budget": 256,
+          "correct": 1,
+          "tokens": 288.0
+        },
+        {
+          "idx": "4",
+          "uncertainty": 0.2675,
+          "chosen_budget": 256,
+          "correct": 1,
+          "tokens": 288.0
+        },
+        {
+          "idx": "5",
+          "uncertainty": 0.4928,
+          "chosen_budget": 256,
+          "correct": 0,
+          "tokens": 288.0
+        },
+        {
+          "idx": "6",
+          "uncertainty": 0.4952,
+          "chosen_budget": 256,
+          "correct": 0,
+          "tokens": 288.0
+        },
+        {
+          "idx": "7",
+          "uncertainty": 0.255,
+          "chosen_budget": 512,
+          "correct": 1,
+          "tokens": 544.0
+        },
+        {
+          "idx": "8",
+          "uncertainty": 0.2929,
+          "chosen_budget": 256,
+          "correct": 0,
+          "tokens": 288.0
+        },
+        {
+          "idx": "9",
+          "uncertainty": 0.2849,
+          "chosen_budget": 256,
+          "correct": 1,
+          "tokens": 288.0
+        },
+        {
+          "idx": "10",
+          "uncertainty": 0.2687,
+          "chosen_budget": 256,
+          "correct": 1,
+          "tokens": 264.0
+        },
+        {
+          "idx": "11",
+          "uncertainty": 0.2789,
+          "chosen_budget": 256,
+          "correct": 0,
+          "tokens": 288.0
+        },
+        {
+          "idx": "12",
+          "uncertainty": 0.4333,
+          "chosen_budget": 256,
+          "correct": 0,
+          "tokens": 263.0
+        },
+        {
+          "idx": "13",
+          "uncertainty": 0.5117,
+          "chosen_budget": 256,
+          "correct": 0,
+          "tokens": 288.0
+        },
+        {
+          "idx": "14",
+          "uncertainty": 0.2546,
+          "chosen_budget": 512,
+          "correct": 0,
+          "tokens": 544.0
+        },
+        {
+          "idx": "15",
+          "uncertainty": 0.4192,
+          "chosen_budget": 256,
+          "correct": 0,
+          "tokens": 288.0
+        },
+        {
+          "idx": "16",
+          "uncertainty": 0.3661,
+          "chosen_budget": 256,
+          "correct": 0,
+          "tokens": 288.0
+        },
+        {
+          "idx": "17",
+          "uncertainty": 0.2722,
+          "chosen_budget": 256,
+          "correct": 0,
+          "tokens": 288.0
+        },
+        {
+          "idx": "18",
+          "uncertainty": 0.3811,
+          "chosen_budget": 256,
+          "correct": 1,
+          "tokens": 288.0
+        },
+        {
+          "idx": "19",
+          "uncertainty": 0.2749,
+          "chosen_budget": 256,
+          "correct": 1,
+          "tokens": 288.0
+        },
+        {
+          "idx": "20",
+          "uncertainty": 0.4139,
+          "chosen_budget": 256,
+          "correct": 1,
+          "tokens": 288.0
+        },
+        {
+          "idx": "21",
+          "uncertainty": 0.2726,
+          "chosen_budget": 256,
+          "correct": 1,
+          "tokens": 288.0
+        },
+        {
+          "idx": "22",
+          "uncertainty": 0.2722,
+          "chosen_budget": 256,
+          "correct": 0,
+          "tokens": 288.0
+        },
+        {
+          "idx": "23",
+          "uncertainty": 0.2527,
+          "chosen_budget": 512,
+          "correct": 0,
+          "tokens": 544.0
+        },
+        {
+          "idx": "24",
+          "uncertainty": 0.5003,
+          "chosen_budget": 256,
+          "correct": 1,
+          "tokens": 288.0
+        },
+        {
+          "idx": "25",
+          "uncertainty": 0.2698,
+          "chosen_budget": 256,
+          "correct": 0,
+          "tokens": 263.0
+        },
+        {
+          "idx": "26",
+          "uncertainty": 0.4267,
+          "chosen_budget": 256,
+          "correct": 0,
+          "tokens": 288.0
+        },
+        {
+          "idx": "27",
+          "uncertainty": 0.4244,
+          "chosen_budget": 256,
+          "correct": 1,
+          "tokens": 288.0
+        },
+        {
+          "idx": "28",
+          "uncertainty": 0.2721,
+          "chosen_budget": 256,
+          "correct": 0,
+          "tokens": 288.0
+        },
+        {
+          "idx": "29",
+          "uncertainty": 0.2745,
+          "chosen_budget": 256,
+          "correct": 0,
+          "tokens": 288.0
+        },
+        {
+          "idx": "30",
+          "uncertainty": 0.4918,
+          "chosen_budget": 256,
+          "correct": 0,
+          "tokens": 288.0
+        },
+        {
+          "idx": "31",
+          "uncertainty": 0.2699,
+          "chosen_budget": 256,
+          "correct": 1,
+          "tokens": 288.0
+        },
+        {
+          "idx": "32",
+          "uncertainty": 0.4883,
+          "chosen_budget": 256,
+          "correct": 1,
+          "tokens": 262.0
+        },
+        {
+          "idx": "33",
+          "uncertainty": 0.4838,
+          "chosen_budget": 256,
+          "correct": 0,
+          "tokens": 288.0
+        },
+        {
+          "idx": "34",
+          "uncertainty": 0.5096,
+          "chosen_budget": 256,
+          "correct": 1,
+          "tokens": 263.0
+        },
+        {
+          "idx": "35",
+          "uncertainty": 0.4794,
+          "chosen_budget": 256,
+          "correct": 0,
+          "tokens": 288.0
+        },
+        {
+          "idx": "36",
+          "uncertainty": 0.4975,
+          "chosen_budget": 256,
+          "correct": 0,
+          "tokens": 288.0
+        },
+        {
+          "idx": "37",
+          "uncertainty": 0.2718,
+          "chosen_budget": 256,
+          "correct": 0,
+          "tokens": 288.0
+        },
+        {
+          "idx": "38",
+          "uncertainty": 0.3121,
+          "chosen_budget": 256,
+          "correct": 0,
+          "tokens": 288.0
+        },
+        {
+          "idx": "39",
+          "uncertainty": 0.2694,
+          "chosen_budget": 256,
+          "correct": 1,
+          "tokens": 288.0
+        }
+      ],
+      "test_csv": "results/per_sample_Qwen3.5_27B_20260228_104506.csv",
+      "thresholds": [
+        0.265,
+        0.2826666666666666,
+        0.4711111111111111
+      ],
+      "budget_mapping": [
+        512,
+        256,
+        256,
+        256
+      ]
+    },
+    {
+      "accuracy": 0.3,
+      "avg_tokens": 357.725,
+      "avg_utility": 0.24634125,
+      "budget_distribution": {
+        "128": 0.0,
+        "256": 0.725,
+        "512": 0.275
+      },
+      "rows": [
+        {
+          "idx": "0",
+          "uncertainty": 0.4642,
+          "chosen_budget": 256,
+          "correct": 1,
+          "tokens": 288.0
+        },
+        {
+          "idx": "1",
+          "uncertainty": 0.4561,
+          "chosen_budget": 256,
+          "correct": 0,
+          "tokens": 288.0
+        },
+        {
+          "idx": "2",
+          "uncertainty": 0.4711,
+          "chosen_budget": 256,
+          "correct": 0,
+          "tokens": 288.0
+        },
+        {
+          "idx": "3",
+          "uncertainty": 0.2527,
+          "chosen_budget": 256,
+          "correct": 0,
+          "tokens": 288.0
+        },
+        {
+          "idx": "4",
+          "uncertainty": 0.4117,
+          "chosen_budget": 256,
+          "correct": 1,
+          "tokens": 288.0
+        },
+        {
+          "idx": "5",
+          "uncertainty": 0.2599,
+          "chosen_budget": 256,
+          "correct": 0,
+          "tokens": 288.0
+        },
+        {
+          "idx": "6",
+          "uncertainty": 0.2628,
+          "chosen_budget": 256,
+          "correct": 0,
+          "tokens": 288.0
+        },
+        {
+          "idx": "7",
+          "uncertainty": 0.4844,
+          "chosen_budget": 512,
+          "correct": 0,
+          "tokens": 544.0
+        },
+        {
+          "idx": "8",
+          "uncertainty": 0.2754,
+          "chosen_budget": 256,
+          "correct": 1,
+          "tokens": 288.0
+        },
+        {
+          "idx": "9",
+          "uncertainty": 0.4851,
+          "chosen_budget": 512,
+          "correct": 1,
+          "tokens": 544.0
+        },
+        {
+          "idx": "10",
+          "uncertainty": 0.508,
+          "chosen_budget": 512,
+          "correct": 0,
+          "tokens": 544.0
+        },
+        {
+          "idx": "11",
+          "uncertainty": 0.2551,
+          "chosen_budget": 256,
+          "correct": 0,
+          "tokens": 288.0
+        },
+        {
+          "idx": "12",
+          "uncertainty": 0.4192,
+          "chosen_budget": 256,
+          "correct": 0,
+          "tokens": 288.0
+        },
+        {
+          "idx": "13",
+          "uncertainty": 0.4995,
+          "chosen_budget": 512,
+          "correct": 0,
+          "tokens": 544.0
+        },
+        {
+          "idx": "14",
+          "uncertainty": 0.2571,
+          "chosen_budget": 256,
+          "correct": 0,
+          "tokens": 288.0
+        },
+        {
+          "idx": "15",
+          "uncertainty": 0.2578,
+          "chosen_budget": 256,
+          "correct": 0,
+          "tokens": 288.0
+        },
+        {
+          "idx": "16",
+          "uncertainty": 0.2728,
+          "chosen_budget": 256,
+          "correct": 0,
+          "tokens": 288.0
+        },
+        {
+          "idx": "17",
+          "uncertainty": 0.291,
+          "chosen_budget": 256,
+          "correct": 0,
+          "tokens": 288.0
+        },
+        {
+          "idx": "18",
+          "uncertainty": 0.5492,
+          "chosen_budget": 512,
+          "correct": 0,
+          "tokens": 544.0
+        },
+        {
+          "idx": "19",
+          "uncertainty": 0.2698,
+          "chosen_budget": 256,
+          "correct": 0,
+          "tokens": 288.0
+        },
+        {
+          "idx": "20",
+          "uncertainty": 0.265,
+          "chosen_budget": 256,
+          "correct": 0,
+          "tokens": 288.0
+        },
+        {
+          "idx": "21",
+          "uncertainty": 0.25,
+          "chosen_budget": 256,
+          "correct": 1,
+          "tokens": 288.0
+        },
+        {
+          "idx": "22",
+          "uncertainty": 0.2884,
+          "chosen_budget": 256,
+          "correct": 0,
+          "tokens": 288.0
+        },
+        {
+          "idx": "23",
+          "uncertainty": 0.2698,
+          "chosen_budget": 256,
+          "correct": 1,
+          "tokens": 288.0
+        },
+        {
+          "idx": "24",
+          "uncertainty": 0.5078,
+          "chosen_budget": 512,
+          "correct": 0,
+          "tokens": 544.0
+        },
+        {
+          "idx": "25",
+          "uncertainty": 0.4676,
+          "chosen_budget": 256,
+          "correct": 0,
+          "tokens": 288.0
+        },
+        {
+          "idx": "26",
+          "uncertainty": 0.2755,
+          "chosen_budget": 256,
+          "correct": 0,
+          "tokens": 288.0
+        },
+        {
+          "idx": "27",
+          "uncertainty": 0.2661,
+          "chosen_budget": 256,
+          "correct": 0,
+          "tokens": 288.0
+        },
+        {
+          "idx": "28",
+          "uncertainty": 0.3203,
+          "chosen_budget": 256,
+          "correct": 0,
+          "tokens": 288.0
+        },
+        {
+          "idx": "29",
+          "uncertainty": 0.4885,
+          "chosen_budget": 512,
+          "correct": 1,
+          "tokens": 517.0
+        },
+        {
+          "idx": "30",
+          "uncertainty": 0.5056,
+          "chosen_budget": 512,
+          "correct": 0,
+          "tokens": 544.0
+        },
+        {
+          "idx": "31",
+          "uncertainty": 0.2549,
+          "chosen_budget": 256,
+          "correct": 1,
+          "tokens": 288.0
+        },
+        {
+          "idx": "32",
+          "uncertainty": 0.255,
+          "chosen_budget": 256,
+          "correct": 1,
+          "tokens": 288.0
+        },
+        {
+          "idx": "33",
+          "uncertainty": 0.5317,
+          "chosen_budget": 512,
+          "correct": 0,
+          "tokens": 544.0
+        },
+        {
+          "idx": "34",
+          "uncertainty": 0.5458,
+          "chosen_budget": 512,
+          "correct": 1,
+          "tokens": 544.0
+        },
+        {
+          "idx": "35",
+          "uncertainty": 0.2802,
+          "chosen_budget": 256,
+          "correct": 0,
+          "tokens": 288.0
+        },
+        {
+          "idx": "36",
+          "uncertainty": 0.2789,
+          "chosen_budget": 256,
+          "correct": 0,
+          "tokens": 288.0
+        },
+        {
+          "idx": "37",
+          "uncertainty": 0.2764,
+          "chosen_budget": 256,
+          "correct": 1,
+          "tokens": 288.0
+        },
+        {
+          "idx": "38",
+          "uncertainty": 0.5161,
+          "chosen_budget": 512,
+          "correct": 0,
+          "tokens": 544.0
+        },
+        {
+          "idx": "39",
+          "uncertainty": 0.2596,
+          "chosen_budget": 256,
+          "correct": 1,
+          "tokens": 288.0
+        }
+      ],
+      "test_csv": "results/per_sample_Qwen3.5_27B_20260228_050913.csv",
+      "thresholds": [
+        0.26875,
+        0.28459770114942523,
+        0.47123595505617977
+      ],
+      "budget_mapping": [
+        256,
+        256,
+        256,
+        512
+      ]
+    },
+    {
+      "accuracy": 0.5,
+      "avg_tokens": 350.775,
+      "avg_utility": 0.44738375,
+      "budget_distribution": {
+        "128": 0.4,
+        "256": 0.15,
+        "512": 0.45
+      },
+      "rows": [
+        {
+          "idx": "0",
+          "uncertainty": 0.5002,
+          "chosen_budget": 512,
+          "correct": 0,
+          "tokens": 544.0
+        },
+        {
+          "idx": "1",
+          "uncertainty": 0.2728,
+          "chosen_budget": 256,
+          "correct": 0,
+          "tokens": 288.0
+        },
+        {
+          "idx": "2",
+          "uncertainty": 0.4929,
+          "chosen_budget": 512,
+          "correct": 1,
+          "tokens": 521.0
+        },
+        {
+          "idx": "3",
+          "uncertainty": 0.265,
+          "chosen_budget": 512,
+          "correct": 1,
+          "tokens": 544.0
+        },
+        {
+          "idx": "4",
+          "uncertainty": 0.3558,
+          "chosen_budget": 128,
+          "correct": 0,
+          "tokens": 160.0
+        },
+        {
+          "idx": "5",
+          "uncertainty": 0.2549,
+          "chosen_budget": 512,
+          "correct": 0,
+          "tokens": 544.0
+        },
+        {
+          "idx": "6",
+          "uncertainty": 0.25,
+          "chosen_budget": 512,
+          "correct": 1,
+          "tokens": 544.0
+        },
+        {
+          "idx": "7",
+          "uncertainty": 0.2702,
+          "chosen_budget": 256,
+          "correct": 1,
+          "tokens": 288.0
+        },
+        {
+          "idx": "8",
+          "uncertainty": 0.4764,
+          "chosen_budget": 128,
+          "correct": 0,
+          "tokens": 160.0
+        },
+        {
+          "idx": "9",
+          "uncertainty": 0.5056,
+          "chosen_budget": 512,
+          "correct": 0,
+          "tokens": 544.0
+        },
+        {
+          "idx": "10",
+          "uncertainty": 0.2954,
+          "chosen_budget": 128,
+          "correct": 0,
+          "tokens": 160.0
+        },
+        {
+          "idx": "11",
+          "uncertainty": 0.288,
+          "chosen_budget": 128,
+          "correct": 0,
+          "tokens": 160.0
+        },
+        {
+          "idx": "12",
+          "uncertainty": 0.2847,
+          "chosen_budget": 128,
+          "correct": 1,
+          "tokens": 160.0
+        },
+        {
+          "idx": "13",
+          "uncertainty": 0.2827,
+          "chosen_budget": 128,
+          "correct": 0,
+          "tokens": 160.0
+        },
+        {
+          "idx": "14",
+          "uncertainty": 0.2677,
+          "chosen_budget": 256,
+          "correct": 1,
+          "tokens": 288.0
+        },
+        {
+          "idx": "15",
+          "uncertainty": 0.2549,
+          "chosen_budget": 512,
+          "correct": 1,
+          "tokens": 544.0
+        },
+        {
+          "idx": "16",
+          "uncertainty": 0.5585,
+          "chosen_budget": 512,
+          "correct": 0,
+          "tokens": 544.0
+        },
+        {
+          "idx": "17",
+          "uncertainty": 0.2746,
+          "chosen_budget": 256,
+          "correct": 1,
+          "tokens": 288.0
+        },
+        {
+          "idx": "18",
+          "uncertainty": 0.2543,
+          "chosen_budget": 512,
+          "correct": 1,
+          "tokens": 544.0
+        },
+        {
+          "idx": "19",
+          "uncertainty": 0.507,
+          "chosen_budget": 512,
+          "correct": 0,
+          "tokens": 544.0
+        },
+        {
+          "idx": "20",
+          "uncertainty": 0.4923,
+          "chosen_budget": 512,
+          "correct": 0,
+          "tokens": 544.0
+        },
+        {
+          "idx": "21",
+          "uncertainty": 0.5007,
+          "chosen_budget": 512,
+          "correct": 0,
+          "tokens": 544.0
+        },
+        {
+          "idx": "22",
+          "uncertainty": 0.4326,
+          "chosen_budget": 128,
+          "correct": 1,
+          "tokens": 160.0
+        },
+        {
+          "idx": "23",
+          "uncertainty": 0.2601,
+          "chosen_budget": 512,
+          "correct": 1,
+          "tokens": 544.0
+        },
+        {
+          "idx": "24",
+          "uncertainty": 0.2845,
+          "chosen_budget": 128,
+          "correct": 1,
+          "tokens": 160.0
+        },
+        {
+          "idx": "25",
+          "uncertainty": 0.2571,
+          "chosen_budget": 512,
+          "correct": 1,
+          "tokens": 544.0
+        },
+        {
+          "idx": "26",
+          "uncertainty": 0.2718,
+          "chosen_budget": 256,
+          "correct": 1,
+          "tokens": 288.0
+        },
+        {
+          "idx": "27",
+          "uncertainty": 0.2751,
+          "chosen_budget": 256,
+          "correct": 0,
+          "tokens": 288.0
+        },
+        {
+          "idx": "28",
+          "uncertainty": 0.2551,
+          "chosen_budget": 512,
+          "correct": 1,
+          "tokens": 544.0
+        },
+        {
+          "idx": "29",
+          "uncertainty": 0.2846,
+          "chosen_budget": 128,
+          "correct": 0,
+          "tokens": 160.0
+        },
+        {
+          "idx": "30",
+          "uncertainty": 0.3119,
+          "chosen_budget": 128,
+          "correct": 0,
+          "tokens": 160.0
+        },
+        {
+          "idx": "31",
+          "uncertainty": 0.2845,
+          "chosen_budget": 128,
+          "correct": 1,
+          "tokens": 160.0
+        },
+        {
+          "idx": "32",
+          "uncertainty": 0.3592,
+          "chosen_budget": 128,
+          "correct": 0,
+          "tokens": 160.0
+        },
+        {
+          "idx": "33",
+          "uncertainty": 0.4692,
+          "chosen_budget": 128,
+          "correct": 0,
+          "tokens": 160.0
+        },
+        {
+          "idx": "34",
+          "uncertainty": 0.4047,
+          "chosen_budget": 128,
+          "correct": 0,
+          "tokens": 160.0
+        },
+        {
+          "idx": "35",
+          "uncertainty": 0.2928,
+          "chosen_budget": 128,
+          "correct": 1,
+          "tokens": 160.0
+        },
+        {
+          "idx": "36",
+          "uncertainty": 0.4431,
+          "chosen_budget": 128,
+          "correct": 1,
+          "tokens": 134.0
+        },
+        {
+          "idx": "37",
+          "uncertainty": 0.2672,
+          "chosen_budget": 512,
+          "correct": 1,
+          "tokens": 544.0
+        },
+        {
+          "idx": "38",
+          "uncertainty": 0.4987,
+          "chosen_budget": 512,
+          "correct": 1,
+          "tokens": 544.0
+        },
+        {
+          "idx": "39",
+          "uncertainty": 0.2573,
+          "chosen_budget": 512,
+          "correct": 0,
+          "tokens": 544.0
+        }
+      ],
+      "test_csv": "results/per_sample_Qwen3.5_27B_20260227_152431.csv",
+      "thresholds": [
+        0.26763157894736844,
+        0.2822471910112359,
+        0.47944444444444445
+      ],
+      "budget_mapping": [
+        512,
+        256,
+        128,
+        512
+      ]
+    }
+  ]
+}

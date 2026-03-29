@@ -1,0 +1,10 @@
+\section{Conclusion}
+
+We have presented the first systematic study of overthinking in LLM reasoning: the phenomenon where additional compute degrades rather than improves accuracy.
+Through analysis of 1,700+ samples across three benchmarks and two model scales, we show that overthinking affects 30-40\% of correctly-solved problems and is predictable from question features.
+
+Our theoretical framework formalizes overthinking as error accumulation in a Markov process, proving conditions under which extended reasoning is guaranteed to hurt.
+These findings challenge the assumption that more test-time compute is always beneficial and suggest that future systems should adapt compute allocation based on problem characteristics.
+
+\paragraph{Future work.}
+Key open questions include: (1) Can we develop principled stopping criteria to prevent overthinking? (2) Do attention patterns reveal early warning signs? (3) How do different prompting strategies affect overthinking rates?

@@ -1,0 +1,77 @@
+{
+  "meta": {
+    "timestamp_utc": "20260320_165326",
+    "input_csvs": [
+      "/workspace/nips-adathink/results/per_sample_math500_Qwen3.5_27B_20260320_083038.csv",
+      "/workspace/nips-adathink/results/per_sample_math500_Qwen3.5_27B_20260320_083932.csv",
+      "/workspace/nips-adathink/results/per_sample_math500_Qwen3.5_27B_20260320_084756.csv",
+      "/workspace/nips-adathink/results/per_sample_math500_Qwen3.5_27B_20260320_085615.csv",
+      "/workspace/nips-adathink/results/per_sample_math500_Qwen3.5_27B_20260320_090443.csv",
+      "/workspace/nips-adathink/results/per_sample_math500_Qwen3.5_27B_20260320_091403.csv",
+      "/workspace/nips-adathink/results/per_sample_math500_Qwen3.5_27B_20260320_092319.csv",
+      "/workspace/nips-adathink/results/per_sample_math500_Qwen3.5_27B_20260320_093229.csv",
+      "/workspace/nips-adathink/results/per_sample_math500_Qwen3.5_27B_20260320_094140.csv",
+      "/workspace/nips-adathink/results/per_sample_math500_Qwen3.5_27B_20260320_095118.csv",
+      "/workspace/nips-adathink/results/per_sample_math500_Qwen3.5_27B_20260320_100031.csv",
+      "/workspace/nips-adathink/results/per_sample_math500_Qwen3.5_27B_20260320_101011.csv",
+      "/workspace/nips-adathink/results/per_sample_math500_Qwen3.5_27B_20260320_101912.csv",
+      "/workspace/nips-adathink/results/per_sample_math500_Qwen3.5_27B_20260320_102756.csv",
+      "/workspace/nips-adathink/results/per_sample_math500_Qwen3.5_27B_20260320_103704.csv",
+      "/workspace/nips-adathink/results/per_sample_math500_Qwen3.5_27B_20260320_104555.csv",
+      "/workspace/nips-adathink/results/per_sample_math500_Qwen3.5_27B_20260320_105451.csv"
+    ],
+    "n_samples": 680,
+    "budgets": [
+      2048,
+      4096,
+      8192
+    ],
+    "n_bootstrap": 10000,
+    "bootstrap_seed": 20260228,
+    "alpha": 0.05
+  },
+  "means": {
+    "fixed_2048": {
+      "accuracy": 0.22647058823529412,
+      "avg_tokens": 1972.479411764706
+    },
+    "fixed_4096": {
+      "accuracy": 0.37058823529411766,
+      "avg_tokens": 3570.3617647058823
+    },
+    "fixed_8192": {
+      "accuracy": 0.5411764705882353,
+      "avg_tokens": 5976.441176470588
+    },
+    "adaptive": {
+      "accuracy": 0.4852941176470588,
+      "avg_tokens": 5066.6338235294115
+    }
+  },
+  "paired_delta": {
+    "fixed4096_minus_fixed8192": {
+      "accuracy_mean": -0.17058823529411765,
+      "accuracy_ci95": [
+        -0.20588235294117646,
+        -0.13529411764705881
+      ],
+      "avg_tokens_mean": -2406.079411764706,
+      "avg_tokens_ci95": [
+        -2554.741176470588,
+        -2254.958823529412
+      ]
+    },
+    "adaptive_minus_fixed4096": {
+      "accuracy_mean": 0.11470588235294117,
+      "accuracy_ci95": [
+        0.07794117647058824,
+        0.1514705882352941
+      ],
+      "avg_tokens_mean": 1496.2720588235295,
+      "avg_tokens_ci95": [
+        1319.7367647058823,
+        1676.0264705882353
+      ]
+    }
+  }
+}

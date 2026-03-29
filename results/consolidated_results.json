@@ -1,0 +1,101 @@
+{
+  "generated_at": "2026-03-29T19:33:55.604576",
+  "n_records": 9,
+  "crossover": {
+    "model": "8B",
+    "exact_budget": null,
+    "interpolated_budget": null
+  },
+  "records": [
+    {
+      "model": "27B",
+      "mode": "thinking",
+      "budget": 128,
+      "accuracy": 0.0356,
+      "avg_tokens": 144.0,
+      "early_stop_rate": null,
+      "n_samples": 1319,
+      "source_file": "/Users/niewenhua/Desktop/aicoding/github_repos/nips-adathink/results_kun/fulltest_27b/summary_gsm8k_Qwen3.5_27B_20260328_213534.json"
+    },
+    {
+      "model": "27B",
+      "mode": "thinking",
+      "budget": 256,
+      "accuracy": 0.0788,
+      "avg_tokens": 272.0,
+      "early_stop_rate": null,
+      "n_samples": 1319,
+      "source_file": "/Users/niewenhua/Desktop/aicoding/github_repos/nips-adathink/results_kun/fulltest_27b/summary_gsm8k_Qwen3.5_27B_20260328_213534.json"
+    },
+    {
+      "model": "27B",
+      "mode": "thinking",
+      "budget": 512,
+      "accuracy": 0.1835,
+      "avg_tokens": 527.6,
+      "early_stop_rate": null,
+      "n_samples": 1319,
+      "source_file": "/Users/niewenhua/Desktop/aicoding/github_repos/nips-adathink/results_kun/fulltest_27b/summary_gsm8k_Qwen3.5_27B_20260328_213534.json"
+    },
+    {
+      "model": "8B",
+      "mode": "nothink",
+      "budget": 128,
+      "accuracy": 0.5079605761940864,
+      "avg_tokens": 113.20545868081881,
+      "early_stop_rate": 0.39423805913570886,
+      "n_samples": 1319,
+      "source_file": "/Users/niewenhua/Desktop/aicoding/github_repos/nips-adathink/results_kun/nothink_baseline_fullset_128.json"
+    },
+    {
+      "model": "8B",
+      "mode": "nothink",
+      "budget": 256,
+      "accuracy": 0.8749052312357847,
+      "avg_tokens": 146.3055344958302,
+      "early_stop_rate": 0.8877937831690674,
+      "n_samples": 1319,
+      "source_file": "/Users/niewenhua/Desktop/aicoding/github_repos/nips-adathink/results_kun/nothink_baseline_fullset_complete.json"
+    },
+    {
+      "model": "8B",
+      "mode": "nothink",
+      "budget": 512,
+      "accuracy": 0.94,
+      "avg_tokens": 145.31,
+      "early_stop_rate": 0.995,
+      "n_samples": 200,
+      "source_file": "/Users/niewenhua/Desktop/aicoding/github_repos/nips-adathink/results_kun/nothink_baseline_Qwen3-8B_gsm8k_fullset.json"
+    },
+    {
+      "model": "8B",
+      "mode": "thinking",
+      "budget": 128,
+      "accuracy": 0.030326004548900682,
+      "avg_tokens": 128.0,
+      "early_stop_rate": 0.0,
+      "n_samples": 1319,
+      "source_file": "/Users/niewenhua/Desktop/aicoding/github_repos/nips-adathink/results_kun/nothink_baseline_fullset_128.json"
+    },
+    {
+      "model": "8B",
+      "mode": "thinking",
+      "budget": 256,
+      "accuracy": 0.18043972706595907,
+      "avg_tokens": 255.3373768006065,
+      "early_stop_rate": 0.014404852160727824,
+      "n_samples": 1319,
+      "source_file": "/Users/niewenhua/Desktop/aicoding/github_repos/nips-adathink/results_kun/nothink_baseline_fullset_complete.json"
+    },
+    {
+      "model": "8B",
+      "mode": "thinking",
+      "budget": 512,
+      "accuracy": 0.6520090978013646,
+      "avg_tokens": 477.3260045489007,
+      "early_stop_rate": null,
+      "n_samples": 1319,
+      "source_file": "/Users/niewenhua/Desktop/aicoding/github_repos/nips-adathink/results_kun/fulltest/summary_gsm8k_Qwen3_8B_20260324_120316.json"
+    }
+  ]
+}

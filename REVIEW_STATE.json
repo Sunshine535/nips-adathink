@@ -1,26 +1,32 @@
 {
-  "round": 4,
-  "threadId": null,
+  "round": 5,
+  "threadId": "019d2b4b-bf47-7e70-aa97-dad557791c85",
   "status": "in_progress",
-  "last_score": 6.5,
-  "last_verdict": "almost",
-  "pending_experiments": [
-    "server1_deepseek_gsm8k_math500",
-    "server2_27b_fulltest_gsm8k_math500"
-  ],
-  "servers": {
-    "server1": {
-      "host": "216.81.151.3",
-      "port": 11839,
-      "task": "DeepSeek-R1-Distill-Llama-8B: GSM8K full + MATH500 full + 7-seed subsets",
-      "status": "running"
-    },
-    "server2": {
-      "host": "216.81.245.127",
-      "port": 15276,
-      "task": "Qwen3.5-27B: GSM8K full + MATH500 full",
-      "status": "running"
+  "last_score": 3.5,
+  "last_verdict": "not ready",
+  "crisis": "headline_collapse_confirmed",
+  "honest_feature_result": {
+    "gsm8k_27b": {
+      "accuracy": 0.397,
+      "vs_fixed256": -0.065,
+      "conclusion": "negative gain"
     }
   },
-  "timestamp": "2026-03-26T08:10:00"
+  "pending_experiments": [
+    "serverA_deepseek",
+    "serverB_27b_full"
+  ],
+  "servers": {
+    "serverA": {
+      "host": "216.81.151.3",
+      "port": 11839,
+      "script": "scripts/deploy_serverA_deepseek.sh"
+    },
+    "serverB": {
+      "host": "216.81.245.127",
+      "port": 15276,
+      "script": "scripts/deploy_serverB_qwen27b.sh"
+    }
+  },
+  "timestamp": "2026-03-27T01:11:34Z"
 }

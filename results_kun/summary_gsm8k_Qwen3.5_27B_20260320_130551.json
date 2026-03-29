@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "timestamp_utc": "20260320_130551",
+    "benchmark": "gsm8k",
+    "bbh_task": null,
+    "model": "Qwen/Qwen3.5-27B",
+    "n_samples": 40,
+    "seed": 42,
+    "data_seed": 42004,
+    "budgets": [
+      512
+    ],
+    "enable_thinking": true,
+    "strict_final_only": true,
+    "engine": "vllm"
+  },
+  "fixed": {
+    "512": {
+      "accuracy": 0.0,
+      "avg_tokens": 512.0,
+      "avg_latency_s": 0.6532129914965485,
+      "final_rate": 0.025
+    }
+  },
+  "adaptive": {
+    "accuracy": 0.0,
+    "avg_tokens": 512.0,
+    "avg_latency_s": 0.6532129914965485,
+    "early_stop_rate": 0.025
+  },
+  "overthinking": {}
+}

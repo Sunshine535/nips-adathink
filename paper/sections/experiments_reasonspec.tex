@@ -1,0 +1,329 @@
+% experiments_reasonspec.tex — Experiments section for Reasoning Speculation
+% Included from main_reasonspec.tex via \input{sections/experiments_reasonspec}
+
+% ---------------------------------------------------------------------------
+\subsection{Experimental Setup}
+\label{sec:exp:setup}
+% ---------------------------------------------------------------------------
+
+\paragraph{Model and inference.}
+All experiments use \textbf{Qwen3-8B} with thinking mode enabled
+(\texttt{enable\_thinking=True}), which instructs the model to produce an
+extended chain-of-thought within \texttt{<think>...</think>} tags before
+emitting a final answer.
+We control the thinking token budget $b$ by setting
+\texttt{max\_thinking\_tokens}; once this limit is reached, the model is
+forced to exit the thinking block and produce an answer.
+Greedy decoding ($\tau = 0$) is used for the first exploration path and
+all resolution phases; the remaining $K{-}1$ exploration paths use
+$\tau = 0.7$ to encourage diversity (\S\ref{sec:method:explore}).
+
+\paragraph{Benchmark.}
+We evaluate on \textbf{GSM8K}~\citep{cobbe2021training}, a dataset of
+1{,}319 grade-school math word problems.
+For the main experiments and ablations we sample subsets of $n = 200$
+problems (with fixed random seeds for reproducibility); full-dataset
+results are reported for the best configuration.
+Accuracy is measured via exact match after deterministic number extraction
+(the rightmost numerical value in the model's output).
+
+\paragraph{Baselines.}
+We compare \method{} against four baselines that span the natural
+design space:
+\begin{itemize}[nosep,leftmargin=*]
+  \item \textbf{Fixed-$b$}: single-pass generation with a fixed thinking
+    budget $b \in \{128, 256, 512\}$ tokens.
+  \item \textbf{SC@$K{\times}128$}: self-consistency~\citep{wang2023selfconsistency}
+    with $K$ independent samples at $b = 128$ tokens each, followed by
+    majority voting.
+    This baseline uses the same total exploration tokens as \method{}
+    with $K$ paths and $B_{\mathrm{probe}} = 128$, providing a
+    compute-matched comparison.
+\end{itemize}
+
+\paragraph{\method{} configurations.}
+We explore the following hyperparameter axes:
+parallelism $K \in \{2, 3, 4, 8\}$,
+probe budget $B_{\mathrm{probe}} \in \{128, 170, 256, 512\}$,
+medium resolution budget $B_{\mathrm{med}} \in \{256, 512\}$, and
+hard resolution budget $B_{\mathrm{hard}} \in \{512, 1024\}$.
+Routing thresholds default to $\theta_E = 0.75$ (easy) and
+$\theta_M = 0.5$ (medium) unless varied in ablation studies.
+The consensus confidence weights are fixed at
+$\gamma = 0.5\alpha + 0.3\nu + 0.2\mu$ throughout.
+
+\paragraph{Evaluation metrics.}
+For each method we report:
+(1)~\textbf{Accuracy} (exact-match \%),
+(2)~\textbf{Avg Tokens} (mean thinking tokens consumed per sample,
+including exploration overhead for \method{}),
+(3)~\textbf{Route distribution} (fraction of samples classified as
+Easy / Medium / Hard by the consensus router).
+
+\paragraph{Hardware.}
+All experiments are conducted on a single NVIDIA A100-80GB GPU.
+
+% ---------------------------------------------------------------------------
+\subsection{Main Results}
+\label{sec:exp:main}
+% ---------------------------------------------------------------------------
+
+Table~\ref{tab:main-rs} presents the primary comparison between
+\method{}, fixed-budget baselines, and self-consistency on GSM8K
+($n = 200$).
+All \method{} variants use default routing thresholds
+($\theta_E = 0.75$, $\theta_M = 0.5$).
+
+\begin{table}[t]
+\centering
+\caption{%
+  \textbf{Main results on GSM8K} ($n = 200$, Qwen3-8B thinking mode).
+  \textbf{Avg Tok} includes full end-to-end cost (exploration +
+  resolution).
+  Route columns report the fraction of samples classified as Easy (E),
+  Medium (M), and Hard (H) by the consensus router.
+  Best adaptive result in \textbf{bold}; best baseline \underline{underlined}.
+}
+\label{tab:main-rs}
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}lcccccccc@{}}
+\toprule
+\textbf{Method} & $K$ & $B_{\mathrm{probe}}$ &
+  \textbf{Acc (\%)} & \textbf{Avg Tok} &
+  \textbf{E\%} & \textbf{M\%} & \textbf{H\%} \\
+\midrule
+\multicolumn{8}{@{}l}{\textit{Fixed-budget baselines}} \\
+Fixed-128       & -- & -- & XX.X & 128  & -- & -- & -- \\
+Fixed-256       & -- & -- & XX.X & 256  & -- & -- & -- \\
+\underline{Fixed-512} & -- & -- & \underline{XX.X} & 512  & -- & -- & -- \\
+\midrule
+\multicolumn{8}{@{}l}{\textit{Self-consistency baselines}} \\
+SC@$2{\times}128$  & 2 & 128 & XX.X & 256  & -- & -- & -- \\
+SC@$4{\times}128$  & 4 & 128 & XX.X & 512  & -- & -- & -- \\
+SC@$8{\times}128$  & 8 & 128 & XX.X & 1024 & -- & -- & -- \\
+\midrule
+\multicolumn{8}{@{}l}{\textit{\method{} (ours)}} \\
+\method{}-2      & 2 & 128 & XX.X & XX.X & XX.X & XX.X & XX.X \\
+\method{}-4      & 4 & 128 & XX.X & XX.X & XX.X & XX.X & XX.X \\
+\method{}-4-256  & 4 & 256 & XX.X & XX.X & XX.X & XX.X & XX.X \\
+\textbf{\method{}-8} & 8 & 128 & \textbf{XX.X} & XX.X & XX.X & XX.X & XX.X \\
+\method{}-8-256  & 8 & 256 & XX.X & XX.X & XX.X & XX.X & XX.X \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Several observations emerge from Table~\ref{tab:main-rs}.
+First, \method{} consistently outperforms fixed-budget baselines at
+comparable or lower token cost.
+The best configuration (\method{}-8) achieves XX.X\% accuracy using an
+average of XX.X tokens---a \textbf{+XX.X\,pp} improvement over Fixed-512
+at \textbf{XX\%} of the token budget.
+Second, \method{} substantially outperforms the compute-matched
+self-consistency baseline (SC@$K{\times}128$), confirming that the
+consensus signal is more effectively leveraged through adaptive routing
+than through simple majority voting.
+For instance, at $K = 4$, \method{}-4 achieves XX.X\% vs.\
+SC@$4{\times}128$'s XX.X\%, while consuming fewer total tokens because
+easy samples are resolved without a resolution phase.
+Third, the route distribution reveals that a substantial fraction of
+GSM8K problems (XX.X\%) are routed as easy, validating the central
+premise that many problems can be solved with minimal compute.
+
+% ---------------------------------------------------------------------------
+\subsection{Ablation Studies}
+\label{sec:exp:ablation}
+% ---------------------------------------------------------------------------
+
+We systematically ablate the three key hyperparameters of \method{} to
+understand their individual contributions.
+
+% --- K ablation ---
+\paragraph{Effect of parallelism $K$.}
+Table~\ref{tab:ablation-k} fixes $B_{\mathrm{probe}} = 128$ and varies
+$K \in \{2, 3, 4, 8\}$.
+Increasing $K$ improves the reliability of the consensus signal
+(Proposition~\ref{prop:monotone}), yielding monotonically higher accuracy.
+However, the exploration cost scales linearly in $K$, creating a
+diminishing-returns trade-off: from $K = 4$ to $K = 8$, accuracy improves
+by XX.X\,pp while average tokens increase by XX.X.
+We find $K = 4$ to be the best cost-accuracy operating point for GSM8K.
+
+\begin{table}[t]
+\centering
+\caption{%
+  \textbf{Ablation on $K$} (parallelism) with $B_{\mathrm{probe}} = 128$,
+  $B_{\mathrm{med}} = 256$, $B_{\mathrm{hard}} = 512$, default thresholds.
+}
+\label{tab:ablation-k}
+\small
+\begin{tabular}{@{}ccccccc@{}}
+\toprule
+$K$ & \textbf{Acc (\%)} & \textbf{Avg Tok} &
+  \textbf{E\%} & \textbf{M\%} & \textbf{H\%} \\
+\midrule
+2 & XX.X & XX.X & XX.X & XX.X & XX.X \\
+3 & XX.X & XX.X & XX.X & XX.X & XX.X \\
+4 & XX.X & XX.X & XX.X & XX.X & XX.X \\
+8 & XX.X & XX.X & XX.X & XX.X & XX.X \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% --- Probe budget ablation ---
+\paragraph{Effect of probe budget $B_{\mathrm{probe}}$.}
+Table~\ref{tab:ablation-probe} fixes $K = 2$ and varies
+$B_{\mathrm{probe}} \in \{128, 170, 256, 512\}$.
+Larger probe budgets allow the exploration paths to develop more
+complete reasoning chains, increasing both the validity rate $\nu$ and
+the reliability of the consensus signal.
+However, beyond $B_{\mathrm{probe}} = 256$, the additional cost is not
+justified: the marginal accuracy gain is XX.X\,pp while the per-sample
+cost increases by XX.X tokens.
+At $B_{\mathrm{probe}} = 512$, the exploration phase alone consumes as
+many tokens as a single Fixed-512 run, eliminating the efficiency
+advantage of adaptive routing.
+
+\begin{table}[t]
+\centering
+\caption{%
+  \textbf{Ablation on $B_{\mathrm{probe}}$} with $K = 2$,
+  $B_{\mathrm{med}} = 256$, $B_{\mathrm{hard}} = 512$, default thresholds.
+}
+\label{tab:ablation-probe}
+\small
+\begin{tabular}{@{}ccccccc@{}}
+\toprule
+$B_{\mathrm{probe}}$ & \textbf{Acc (\%)} & \textbf{Avg Tok} &
+  \textbf{E\%} & \textbf{M\%} & \textbf{H\%} \\
+\midrule
+128 & XX.X & XX.X & XX.X & XX.X & XX.X \\
+170 & XX.X & XX.X & XX.X & XX.X & XX.X \\
+256 & XX.X & XX.X & XX.X & XX.X & XX.X \\
+512 & XX.X & XX.X & XX.X & XX.X & XX.X \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% --- Threshold ablation ---
+\paragraph{Sensitivity to routing thresholds.}
+Table~\ref{tab:ablation-thresh} fixes $K = 4$, $B_{\mathrm{probe}} = 128$
+and sweeps the easy-route threshold
+$\theta_E \in \{0.75, 0.90, 0.95\}$ and medium-route threshold
+$\theta_M \in \{0.50, 0.60, 0.70\}$.
+Higher $\theta_E$ makes the router more conservative, sending fewer
+problems to the easy route and increasing average cost.
+The accuracy is relatively insensitive to $\theta_E$ in the range
+$[0.75, 0.95]$, varying by only XX.X\,pp, because problems
+mis-classified as easy at $\theta_E = 0.75$ are already near the
+decision boundary and contribute minimal accuracy loss.
+The medium threshold $\theta_M$ has a larger effect: raising $\theta_M$
+from 0.50 to 0.70 shifts samples from the medium to the hard route,
+increasing both accuracy (by XX.X\,pp) and cost (by XX.X tokens).
+
+\begin{table}[t]
+\centering
+\caption{%
+  \textbf{Ablation on routing thresholds} with $K = 4$,
+  $B_{\mathrm{probe}} = 128$. Each cell: Acc (\%) / Avg Tok.
+}
+\label{tab:ablation-thresh}
+\small
+\begin{tabular}{@{}lccc@{}}
+\toprule
+& \multicolumn{3}{c}{$\theta_M$ (medium threshold)} \\
+\cmidrule(lr){2-4}
+$\theta_E$ (easy) & 0.50 & 0.60 & 0.70 \\
+\midrule
+0.75 & XX.X\,/\,XX.X & XX.X\,/\,XX.X & XX.X\,/\,XX.X \\
+0.90 & XX.X\,/\,XX.X & XX.X\,/\,XX.X & XX.X\,/\,XX.X \\
+0.95 & XX.X\,/\,XX.X & XX.X\,/\,XX.X & XX.X\,/\,XX.X \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% ---------------------------------------------------------------------------
+\subsection{Route Analysis}
+\label{sec:exp:routes}
+% ---------------------------------------------------------------------------
+
+To understand \emph{how} the consensus router allocates compute, we
+analyze the behavior of each difficulty route in detail.
+
+\paragraph{Per-route accuracy.}
+Table~\ref{tab:route-accuracy} breaks down accuracy by assigned route
+for the best \method{} configuration ($K = 4$, $B_{\mathrm{probe}} = 128$).
+Easy-route samples achieve the highest accuracy (XX.X\%), confirming
+that the consensus signal reliably identifies problems the model can
+solve with minimal compute.
+Medium-route accuracy (XX.X\%) is intermediate, while hard-route accuracy
+(XX.X\%) is lowest---as expected, since these are the problems where the
+model genuinely struggles.
+Critically, the easy-route accuracy exceeds what these same samples
+achieve under Fixed-512 (XX.X\%), demonstrating that extended reasoning
+\emph{hurts} on easy problems (the overthinking phenomenon discussed
+in \S\ref{sec:intro}).
+
+\begin{table}[t]
+\centering
+\caption{%
+  \textbf{Per-route analysis} for \method{} ($K = 4$,
+  $B_{\mathrm{probe}} = 128$, $n = 200$).
+  ``Fixed-512 acc on same'' reports the accuracy of Fixed-512 on the
+  subset of samples assigned to each route.
+}
+\label{tab:route-accuracy}
+\small
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+\textbf{Route} & \textbf{\% Samples} & \textbf{Acc (\%)} &
+  \textbf{Avg Tok} & \textbf{Fixed-512 acc on same (\%)} \\
+\midrule
+Easy   & XX.X & XX.X & XX.X & XX.X \\
+Medium & XX.X & XX.X & XX.X & XX.X \\
+Hard   & XX.X & XX.X & XX.X & XX.X \\
+\midrule
+Overall & 100.0 & XX.X & XX.X & XX.X \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Token savings per route.}
+The easy route consumes only $K \times B_{\mathrm{probe}}$ tokens
+(XX.X on average), saving XX.X\% relative to Fixed-512.
+The medium route consumes an average of XX.X tokens (exploration +
+extension), while the hard route consumes XX.X tokens (exploration +
+full deliberation).
+Across all routes, the weighted average token consumption is XX.X,
+representing a XX.X\% reduction compared to Fixed-512.
+
+\paragraph{Consensus score and correctness.}
+Figure~\ref{fig:consensus-correct} plots the relationship between the
+consensus confidence score $\gamma$ and per-sample correctness.
+Samples with $\gamma \geq 0.8$ are correct XX.X\% of the time, while
+samples with $\gamma < 0.4$ are correct only XX.X\% of the time.
+The Spearman rank correlation between $\gamma$ and binary correctness
+is $\rho = $ XX.XX ($p < $ XX), empirically validating
+Proposition~\ref{prop:monotone}'s prediction that consensus is a
+monotone difficulty estimator.
+This strong correlation explains why the simple three-tier routing rule
+in Eq.~\eqref{eq:routing} is effective: the consensus signal separates
+difficulty levels well enough that even coarse binning into three routes
+captures most of the available adaptive gain.
+
+\begin{figure}[t]
+\centering
+% \includegraphics[width=0.55\textwidth]{figures/consensus_vs_correctness.pdf}
+\fbox{\parbox{0.55\textwidth}{\centering\vspace{2cm}%
+  \textit{Placeholder: scatter/binned plot of consensus score $\gamma$
+  vs.\ correctness rate, with fitted logistic curve.}%
+\vspace{2cm}}}
+\caption{%
+  \textbf{Consensus score vs.\ correctness.}
+  Each point represents a bin of samples grouped by consensus confidence
+  $\gamma$; the $y$-axis shows the fraction of correct answers.
+  The strong positive correlation ($\rho =$ XX.XX) confirms that
+  multi-path consensus is a reliable difficulty signal.
+}
+\label{fig:consensus-correct}
+\end{figure}

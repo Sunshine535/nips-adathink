@@ -1,0 +1,57 @@
+{
+  "meta": {
+    "input_csvs": [
+      "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260227_150649.csv",
+      "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260227_152431.csv",
+      "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260227_154356.csv",
+      "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260227_192225.csv",
+      "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260228_050913.csv",
+      "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260228_052641.csv"
+    ],
+    "n_samples": 240
+  },
+  "means": {
+    "fixed_128": {
+      "accuracy": 0.32083333333333336,
+      "avg_tokens": 158.96666666666667
+    },
+    "fixed_256": {
+      "accuracy": 0.48333333333333334,
+      "avg_tokens": 286.8666666666667
+    },
+    "fixed_512": {
+      "accuracy": 0.49166666666666664,
+      "avg_tokens": 542.6041666666666
+    },
+    "adaptive": {
+      "accuracy": 0.5208333333333334,
+      "avg_tokens": 542.1208333333333
+    }
+  },
+  "paired_delta": {
+    "fixed256_minus_fixed512": {
+      "accuracy_mean": -0.008333333333333333,
+      "accuracy_ci95": [
+        -0.09583333333333334,
+        0.075
+      ],
+      "avg_tokens_mean": -255.7375,
+      "avg_tokens_ci95": [
+        -256.7625,
+        -254.72916666666666
+      ]
+    },
+    "adaptive_minus_fixed256": {
+      "accuracy_mean": 0.0375,
+      "accuracy_ci95": [
+        -0.05,
+        0.125
+      ],
+      "avg_tokens_mean": 255.25416666666666,
+      "avg_tokens_ci95": [
+        254.24166666666667,
+        256.24583333333334
+      ]
+    }
+  }
+}

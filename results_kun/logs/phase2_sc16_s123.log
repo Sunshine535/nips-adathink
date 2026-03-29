@@ -1,0 +1,44 @@
+usage: run_gsm8k_sc_baseline.py [-h] [--model MODEL] [--split SPLIT]
+                                [--n_samples N_SAMPLES] [--seed SEED]
+                                [--data_seed DATA_SEED]
+                                [--greedy_budget GREEDY_BUDGET]
+                                [--sc_budget SC_BUDGET] [--sc_n SC_N]
+                                [--sc_temperature SC_TEMPERATURE]
+                                [--prompt_format {plain,chat}]
+                                [--direct_answer] [--enable_thinking]
+                                [--results_dir RESULTS_DIR] [--allow_cpu]
+                                [--skip_local_model_check]
+run_gsm8k_sc_baseline.py: error: unrecognized arguments: --num_samples 16 --output_dir results/sc_baseline/sc16/seed123
+E0322 12:22:21.943000 123895619457664 torch/distributed/elastic/multiprocessing/api.py:833] failed (exitcode: 2) local_rank: 0 (pid: 7155) of binary: /usr/bin/python
+Traceback (most recent call last):
+  File "/usr/local/bin/torchrun", line 8, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 348, in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/torch/distributed/run.py", line 901, in main
+    run(args)
+  File "/usr/local/lib/python3.11/dist-packages/torch/distributed/run.py", line 892, in run
+    elastic_launch(
+  File "/usr/local/lib/python3.11/dist-packages/torch/distributed/launcher/api.py", line 133, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/torch/distributed/launcher/api.py", line 264, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+scripts/run_gsm8k_sc_baseline.py FAILED
+------------------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2026-03-22_12:22:21
+  host      : 3e027249177d
+  rank      : 0 (local_rank: 0)
+  exitcode  : 2 (pid: 7155)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================

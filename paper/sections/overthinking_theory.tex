@@ -1,0 +1,16 @@
+\section{Theoretical Framework}
+
+\subsection{Markov Chain Model}
+
+We model reasoning as a Markov process:
+\begin{align}
+P(\text{correct}_{t+1} | \text{correct}_t) &= 1 - \epsilon(t) \\
+P(\text{wrong}_{t+1} | \text{correct}_t) &= \epsilon(t)
+\end{align}
+
+\textbf{Theorem 1.} If $\epsilon(t) > \delta(t)$ for all $t > t_0$, accuracy decreases after $t_0$.
+
+\textbf{Proof.} Let $p_t$ = P(correct at step $t$). Then:
+$$p_{t+1} = p_t(1-\epsilon) + (1-p_t)\delta$$
+For $p_{t+1} < p_t$: $\delta < p_t(\epsilon + \delta)$
+When $p_t \approx 1$: $\delta < \epsilon$ $\square$

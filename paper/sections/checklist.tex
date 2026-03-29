@@ -5,77 +5,77 @@
 \item {\bf Claims}
     \begin{enumerate}
         \item Do the main claims made in the abstract and introduction accurately reflect the paper's contributions and scope?
-        \answerYes{All accuracy claims in Tables~\ref{tab:main-gsm8k}--\ref{tab:cross} are supported by paired bootstrap confidence intervals. Utility claims use corrected end-to-end token costs (Section~\ref{sec:exp:setup}). The ablation study (Table~\ref{tab:ablation}) uses second-pass utility for relative comparison, as noted in the caption. Claims about generality are scoped to the validated benchmarks and models (Section~\ref{sec:conclusion}).}
+        \answerYes{All accuracy and token-cost claims are derived from reproducible experiments with fixed seeds (Appendix~\ref{app:reproducibility}). The thinking tax is demonstrated across two model scales (8B/27B) and two benchmarks (GSM8K/MATH-500). TOWN evaluation uses per-sample matched data (Table~\ref{tab:town-comparison}). Claims about generality are scoped to the validated models and benchmarks (\S\ref{sec:discussion}).}
     \end{enumerate}
 
 \item {\bf Limitations}
     \begin{enumerate}
         \item Does the paper discuss the limitations of the work performed by the authors?
-        \answerYes{Section~5 discusses limitations including the restriction to mathematical/logical tasks, the requirement of an initial low-budget pass, and the lack of iterative refinement.}
+        \answerYes{The conclusion (\S\ref{sec:conclusion}) discusses limitations including the focus on mathematical reasoning benchmarks, the binary routing signal (vs.\ soft confidence), and the need for evaluation on tasks where CoT is more essential. The ``Generalization beyond GSM8K'' paragraph in \S\ref{sec:discussion} further discusses scope limitations.}
     \end{enumerate}
 
 \item {\bf Theory}
     \begin{enumerate}
         \item Does the paper include theoretical results?
-        \answerNo{This is primarily an empirical contribution. The utility formulation in \eqref{eq:utility} provides a formal objective but we do not prove theoretical guarantees.}
+        \answerNo{This is primarily an empirical contribution. The cost analysis in Eqs.~\eqref{eq:town-cost}--\eqref{eq:town-acc} provides formal decompositions but we do not prove theoretical guarantees.}
     \end{enumerate}
 
 \item {\bf Experiments}
     \begin{enumerate}
         \item Does the paper include experiments?
-        \answerYes{Section~4 reports comprehensive experiments across 3 benchmarks and 2 model scales.}
+        \answerYes{Sections~\ref{sec:thinking-tax} and \ref{sec:experiments} report comprehensive experiments across GSM8K (full set, $n{=}1{,}319$) and MATH-500, with two model families (Qwen3, DeepSeek-R1).}
         \item Does the paper report error bars or confidence intervals?
-        \answerYes{All accuracy and utility comparisons include 95\% paired bootstrap confidence intervals (10,000 resamples) in Table~\ref{tab:cross}. All CIs exclude zero.}
+        \answerNo{We report exact accuracy on fixed test sets with deterministic (greedy) decoding, so there is no sampling variance. Cross-seed validation for DeepSeek-R1 uses 5 data seeds (Appendix~\ref{app:deepseek}).}
         \item Does the paper report the number of parameters, FLOPs, or other computational cost?
-        \answerYes{Table~\ref{tab:latency} reports wall-clock latency and throughput. Token counts are reported in all tables.}
+        \answerYes{Average token counts are reported in all tables. Model sizes (8B, 27B) are specified throughout.}
         \item Does the paper report the computational cost of the experiments?
-        \answerYes{All experiments were conducted on a single NVIDIA A100-80GB GPU. Appendix~A reports full hardware and software details.}
+        \answerYes{Appendix~\ref{app:reproducibility} reports approximately 200 A100-GPU-hours total compute.}
     \end{enumerate}
 
 \item {\bf Reproducibility}
     \begin{enumerate}
         \item Does the paper include the code, data, and instructions needed to reproduce the main experimental results?
-        \answerYes{Appendix~A provides complete seed protocols, parser details, and training hyperparameters. The codebase and result artifacts will be released.}
+        \answerYes{Appendix~\ref{app:experimental_details} provides complete hardware, software, budget control mechanism, and answer extraction pipeline details. The codebase and per-sample result files will be released upon acceptance.}
         \item Does the paper report all the main experimental details needed to understand the results?
-        \answerYes{Budget tiers, $\lambda$ values, bootstrap parameters, and leave-one-subset-out protocols are fully specified.}
+        \answerYes{Budget control via \texttt{max\_new\_tokens}, greedy decoding ($\tau{=}0$), answer extraction pipeline, dataset splits, and random seeds are fully specified in Appendix~\ref{app:experimental_details}.}
     \end{enumerate}
 
 \item {\bf Open access to data and code}
     \begin{enumerate}
         \item Does the paper promise to release code and/or data?
-        \answerYes{We will release the complete codebase, per-sample result CSVs, and controller training scripts.}
+        \answerYes{We will release the complete codebase, per-sample result CSVs, and TOWN implementation scripts.}
     \end{enumerate}
 
 \item {\bf Experimental Setting/Details}
     \begin{enumerate}
         \item Does the paper specify the computing infrastructure used for running the experiments?
-        \answerYes{NVIDIA A100-80GB, Python 3.10, PyTorch 2.5.1 (CUDA 12.4), HuggingFace Transformers 4.46.0.}
+        \answerYes{NVIDIA A100-80GB GPUs, PyTorch 2.10 (CUDA 12.8), HuggingFace Transformers (v4.44+), bfloat16 precision (Appendix~\ref{app:experimental_details}).}
         \item Does the paper specify all the training and test details necessary to reproduce the results?
-        \answerYes{Appendix~A provides seed protocols, replication counts, parser details, and training hyperparameters.}
+        \answerYes{No training is performed---TOWN is a training-free inference method. All inference parameters (budget, decoding strategy, model versions, dataset splits) are fully specified.}
     \end{enumerate}
 
 \item {\bf Broader Impacts}
     \begin{enumerate}
         \item Does the paper discuss potential broader impacts of their work?
-        \answerYes{Reducing compute waste for LLM reasoning has positive environmental and cost implications. We do not identify specific negative societal impacts beyond those inherent to LLM deployment.}
+        \answerYes{The conclusion discusses practical implications for LLM deployment: defaulting to non-thinking mode at constrained budgets can simultaneously improve accuracy and reduce computational cost, benefiting both providers and users. Reducing unnecessary compute has positive environmental implications.}
     \end{enumerate}
 
 \item {\bf Safeguards}
     \begin{enumerate}
         \item Does the paper describe safeguards for responsible use?
-        \answerNA{Our work optimizes inference efficiency for standard reasoning benchmarks and does not introduce new capabilities that require specific safeguards.}
+        \answerNA{Our work optimizes inference efficiency for standard reasoning benchmarks and does not introduce new capabilities requiring specific safeguards.}
     \end{enumerate}
 
 \item {\bf Licenses}
     \begin{enumerate}
         \item Are the creators of assets used in the paper properly credited?
-        \answerYes{GSM8K, MATH, and BIG-Bench Hard are cited. Qwen3 models are publicly available under their respective licenses.}
+        \answerYes{GSM8K~\citep{cobbe2021gsm8k}, MATH~\citep{hendrycks2021math}, Qwen3~\citep{qwen3_2025}, and DeepSeek-R1~\citep{deepseek2025r1} are properly cited. All models are publicly available under their respective licenses.}
     \end{enumerate}
 
 \item {\bf New Assets}
     \begin{enumerate}
         \item Are new assets introduced in the paper well documented?
-        \answerYes{The controller training scripts and per-sample result files will be released with documentation.}
+        \answerYes{The TOWN inference scripts and per-sample result files will be released with documentation.}
     \end{enumerate}
 
 \item {\bf Human Subjects}

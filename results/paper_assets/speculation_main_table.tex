@@ -1,0 +1,19 @@
+\begin{table}[t]
+\centering
+\caption{Reasoning Speculation vs Baselines on GSM8K (Qwen3-8B, $n=200$).}
+\label{tab:main_results}
+\begin{tabular}{lcccccc}
+\toprule
+Method & K & Probe & Accuracy (\%) & Avg Tokens & Easy (\%) & Hard (\%) \\
+\midrule
+fixed-128 & -- & -- & 35.0 & 142 & -- & -- \\
+fixed-256 & -- & -- & 57.0 & 268 & -- & -- \\
+sc-2x128 & -- & -- & 35.0 & 284 & -- & -- \\
+fixed-512 & -- & -- & 83.5 & 466 & -- & -- \\
+sc-4x128 & -- & -- & 39.0 & 568 & -- & -- \\
+\midrule
+RS(K=2,p=128) & 2 & 128 & \textbf{50.5} & 345 & 52 & 0 \\
+RS(K=4,p=128) & 4 & 128 & 48.5 & 617 & 62 & 0 \\
+\bottomrule
+\end{tabular}
+\end{table}

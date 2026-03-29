@@ -1,0 +1,67 @@
+{
+  "meta": {
+    "timestamp_utc": "20260320_165338",
+    "input_csvs": [
+      "/workspace/nips-adathink/results/per_sample_bbh_Qwen3_8B_20260320_070503.csv",
+      "/workspace/nips-adathink/results/per_sample_bbh_Qwen3_8B_20260320_070637.csv",
+      "/workspace/nips-adathink/results/per_sample_bbh_Qwen3_8B_20260320_070804.csv",
+      "/workspace/nips-adathink/results/per_sample_bbh_Qwen3_8B_20260320_070936.csv",
+      "/workspace/nips-adathink/results/per_sample_bbh_Qwen3_8B_20260320_071052.csv",
+      "/workspace/nips-adathink/results/per_sample_bbh_Qwen3_8B_20260320_071202.csv",
+      "/workspace/nips-adathink/results/per_sample_bbh_Qwen3_8B_20260320_071310.csv"
+    ],
+    "n_samples": 280,
+    "budgets": [
+      256,
+      512,
+      1024
+    ],
+    "n_bootstrap": 10000,
+    "bootstrap_seed": 20260228,
+    "alpha": 0.05
+  },
+  "means": {
+    "fixed_256": {
+      "accuracy": 0.03571428571428571,
+      "avg_tokens": 254.71428571428572
+    },
+    "fixed_512": {
+      "accuracy": 0.17142857142857143,
+      "avg_tokens": 477.9535714285714
+    },
+    "fixed_1024": {
+      "accuracy": 0.325,
+      "avg_tokens": 773.0714285714286
+    },
+    "adaptive": {
+      "accuracy": 0.32142857142857145,
+      "avg_tokens": 767.9285714285714
+    }
+  },
+  "paired_delta": {
+    "fixed512_minus_fixed1024": {
+      "accuracy_mean": -0.15357142857142858,
+      "accuracy_ci95": [
+        -0.20357142857142857,
+        -0.10714285714285714
+      ],
+      "avg_tokens_mean": -295.11785714285713,
+      "avg_tokens_ci95": [
+        -322.85,
+        -267.34285714285716
+      ]
+    },
+    "adaptive_minus_fixed512": {
+      "accuracy_mean": 0.15,
+      "accuracy_ci95": [
+        0.1,
+        0.2
+      ],
+      "avg_tokens_mean": 289.975,
+      "avg_tokens_ci95": [
+        261.48571428571427,
+        318.20714285714286
+      ]
+    }
+  }
+}

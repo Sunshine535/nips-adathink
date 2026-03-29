@@ -1,0 +1,37 @@
+\section{Introduction}
+
+Scaling test-time compute has emerged as a promising approach to improve large language model (LLM) performance on complex reasoning tasks~\cite{wei2022chain,yao2024tree}.
+The intuition is straightforward: allocating more computational budget---typically measured in generated tokens---allows models to explore deeper reasoning chains, verify intermediate steps, and self-correct errors.
+Recent work has demonstrated substantial gains from extended chain-of-thought (CoT) reasoning~\cite{kojima2022large}, self-consistency with multiple samples~\cite{wang2022self}, and tree-based search methods~\cite{yao2024tree}.
+
+However, a critical assumption underlies this paradigm: \emph{more compute is always better}.
+In this work, we challenge this assumption through systematic empirical analysis across three reasoning benchmarks (GSM8K, MATH500, BIG-Bench Hard) and two model scales (Qwen 8B and 27B).
+Our central finding is surprising: \textbf{for a substantial fraction of problems (33.8\% on GSM8K-27B), increasing the reasoning budget from 256 to 512 tokens causes accuracy to \emph{decrease}}.
+
+We term this phenomenon \textbf{overthinking}: when additional compute hurts rather than helps.
+Figure~\ref{fig:overthinking_curve} illustrates this effect---while some problems benefit from extended reasoning (blue), others exhibit accuracy collapse at higher budgets (red).
+This heterogeneity suggests that the relationship between compute and performance is fundamentally non-monotonic.
+
+\paragraph{Why does overthinking happen?}
+Through detailed analysis of 229 overthinking samples, we identify three key mechanisms:
+\begin{enumerate}[leftmargin=*,nosep]
+    \item \textbf{Error propagation}: Longer reasoning chains accumulate small errors that compound over time
+    \item \textbf{Self-contradiction}: Models override correct intermediate answers with incorrect revisions
+    \item \textbf{Attention dilution}: Extended sequences cause attention to disperse, losing focus on critical information
+\end{enumerate}
+
+Critically, we find that overthinking is \emph{predictable}: shorter, simpler questions are significantly more prone to accuracy degradation (39.2 vs 48.8 average words, $p < 0.001$).
+This suggests that overthinking is not random noise, but a systematic failure mode that can be characterized and potentially mitigated.
+
+\paragraph{Contributions.}
+Our work makes three primary contributions:
+\begin{itemize}[leftmargin=*,nosep]
+    \item \textbf{Empirical characterization}: We provide the first systematic quantification of overthinking across multiple benchmarks and model scales, revealing that 30-40\% of correctly-solved problems degrade with additional compute.
+
+    \item \textbf{Mechanistic analysis}: Through token-level analysis and case studies, we identify the failure modes that cause overthinking and show they are predictable from question features.
+
+    \item \textbf{Theoretical framework}: We formalize overthinking as a Markov process with error accumulation, proving conditions under which extended reasoning is guaranteed to hurt performance.
+\end{itemize}
+
+Our findings have important implications for test-time compute scaling: rather than uniformly allocating large budgets, future systems should adapt compute based on problem characteristics.
+More broadly, understanding \emph{when} and \emph{why} more compute hurts is essential for building reliable reasoning systems.

@@ -1,0 +1,132 @@
+{
+  "fulltest_8b_gsm8k": {
+    "n_samples": 1319,
+    "budgets": [
+      128,
+      256,
+      512
+    ],
+    "csv_path": "results_kun/fulltest/per_sample_gsm8k_Qwen3_8B_20260324_120316.csv",
+    "allocation_simulation": {
+      "consensus_allocation": {
+        "accuracy": 0.5784685367702805,
+        "avg_tokens": 366.8741470811221,
+        "budget_distribution": {
+          "128": 0.10993176648976498,
+          "256": 0.4670204700530705,
+          "512": 0.4230477634571645
+        }
+      },
+      "fixed_baselines": {
+        "128": {
+          "accuracy": 0.11751326762699014,
+          "avg_tokens": 158.5754359363154
+        },
+        "256": {
+          "accuracy": 0.3479909021986353,
+          "avg_tokens": 282.9696739954511
+        },
+        "512": {
+          "accuracy": 0.6520090978013646,
+          "avg_tokens": 477.3260045489007
+        }
+      },
+      "oracle": {
+        "accuracy": 0.6823351023502654,
+        "avg_tokens": 414.3131159969674
+      },
+      "n_samples": 1319
+    },
+    "difficulty_buckets": {
+      "easy (all budgets correct)": {
+        "count": 116,
+        "fraction": 0.08794541319181198,
+        "avg_consensus": 1.0,
+        "std_consensus": 0.0,
+        "avg_difficulty": 0.0
+      },
+      "hard (some budgets correct)": {
+        "count": 442,
+        "fraction": 0.33510235026535257,
+        "avg_consensus": 0.40422322775263947,
+        "std_consensus": 0.1422623442930686,
+        "avg_difficulty": 0.6666666666666667
+      },
+      "impossible (no budget correct)": {
+        "count": 419,
+        "fraction": 0.31766489764973466,
+        "avg_consensus": 0.5123309466984884,
+        "std_consensus": 0.23354156578311183,
+        "avg_difficulty": 1.0
+      },
+      "medium (most budgets correct)": {
+        "count": 342,
+        "fraction": 0.25928733889310085,
+        "avg_consensus": 0.6754385964912281,
+        "std_consensus": 0.053357566055247545,
+        "avg_difficulty": 0.3333333333333334
+      }
+    },
+    "correlation": {
+      "consensus_vs_difficulty": {
+        "spearman_rho": -0.5098113187920958,
+        "p_value": 3.618466412580468e-88,
+        "interpretation": "STRONG negative"
+      },
+      "consensus_vs_n_correct": {
+        "spearman_rho": 0.5098113187920958,
+        "p_value": 3.618466412580468e-88
+      },
+      "note": "Negative rho means higher consensus → lower difficulty (easier questions). This is what we WANT for Reasoning Speculation to work."
+    },
+    "information_gain": {
+      "full_consensus_correct": 134,
+      "full_consensus_wrong": 50,
+      "partial_consensus": 1126,
+      "no_consensus": 9,
+      "total": 1319,
+      "consensus_precision": 0.7282608695652174,
+      "note": "When all budgets fully agree, 72.8% of the time the question is actually correct (oracle). This is the precision of consensus as a difficulty signal. Higher = better for Reasoning Speculation."
+    }
+  },
+  "cross_seed_27b": {
+    "n_overlap_questions": 207,
+    "n_total_observations": 621,
+    "avg_seeds_per_question": 2.3285024154589373,
+    "consensus_accuracy_correlation": {
+      "spearman_rho": 0.0838830494576537,
+      "p_value": 0.03663329385509264
+    },
+    "summary_by_budget": {
+      "128": {
+        "n": 207,
+        "high_agreement_accuracy": 0.39267015706806285,
+        "low_agreement_accuracy": 0.0
+      },
+      "256": {
+        "n": 207,
+        "high_agreement_accuracy": 0.4787234042553192,
+        "low_agreement_accuracy": 0.0
+      },
+      "512": {
+        "n": 207,
+        "high_agreement_accuracy": 0.47181964573268914,
+        "low_agreement_accuracy": null
+      }
+    }
+  },
+  "verdict": {
+    "hypothesis": "Multi-path consensus correlates with question difficulty",
+    "timestamp": "20260327_175056",
+    "cross_budget_spearman_rho": -0.5098113187920958,
+    "consensus_accuracy": 0.5784685367702805,
+    "best_fixed_accuracy": 0.6520090978013646,
+    "oracle_accuracy": 0.6823351023502654,
+    "consensus_avg_tokens": 366.8741470811221,
+    "signal_strength": "STRONG",
+    "allocation_beats_fixed": false,
+    "delta_acc": -0.07354056103108408,
+    "proceed_to_phase1": true,
+    "recommendation": "✅ PROCEED: Consensus signal is informative. Implement multi-path generation."
+  }
+}

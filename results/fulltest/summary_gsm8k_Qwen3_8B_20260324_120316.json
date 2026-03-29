@@ -1,0 +1,67 @@
+{
+  "meta": {
+    "timestamp_utc": "20260324_120316",
+    "benchmark": "gsm8k",
+    "bbh_task": null,
+    "model": "Qwen/Qwen3-8B",
+    "n_samples": 1319,
+    "seed": 11,
+    "data_seed": 0,
+    "world_size": 1,
+    "distributed": false,
+    "budgets": [
+      128,
+      256,
+      512
+    ],
+    "adaptive_chunks": [
+      128,
+      128,
+      128
+    ],
+    "adaptive_max_total": 512,
+    "use_verifier": true,
+    "prompt_format": "chat",
+    "direct_answer": false,
+    "enable_thinking": true,
+    "strict_final_only": true,
+    "projection_on_missing_final": true,
+    "projection_max_tokens": 32,
+    "ablation_halting_only": false,
+    "ablation_no_branch": false
+  },
+  "fixed": {
+    "128": {
+      "accuracy": 0.11751326762699014,
+      "avg_tokens": 158.5754359363154,
+      "avg_latency_s": 3.194698013495188,
+      "final_rate": 0.000758150113722517,
+      "projection_rate": 1.0
+    },
+    "256": {
+      "accuracy": 0.3479909021986353,
+      "avg_tokens": 282.9696739954511,
+      "avg_latency_s": 5.703131411543753,
+      "final_rate": 0.004548900682335102,
+      "projection_rate": 0.9962092494313874
+    },
+    "512": {
+      "accuracy": 0.6520090978013646,
+      "avg_tokens": 477.3260045489007,
+      "avg_latency_s": 9.62345493186076,
+      "final_rate": 0.06141015921152388,
+      "projection_rate": 0.9431387414708112
+    }
+  },
+  "adaptive": {
+    "accuracy": 0.5276724791508719,
+    "avg_tokens": 394.01137225170584,
+    "avg_latency_s": 7.978377909948195,
+    "avg_verifier_calls": 0.028051554207733132,
+    "early_stop_rate": 0.002274450341167551,
+    "final_rate": 0.03184230477634572
+  },
+  "overthinking": {
+    "fixed_128_vs_fixed_512": 0.01061410159211524
+  }
+}

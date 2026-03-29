@@ -1,0 +1,81 @@
+Loading model: Qwen/Qwen3.5-27B
+Fetching 11 files:   0%|          | 0/11 [00:00<?, ?it/s]Fetching 11 files: 100%|██████████| 11/11 [00:00<00:00, 1016.82it/s]
+The fast path is not available because one of the required library is not installed. Falling back to torch implementation. To install follow https://github.com/fla-org/flash-linear-attention#installation and https://github.com/Dao-AILab/causal-conv1d
+Loading weights:   0%|          | 0/851 [00:00<?, ?it/s]Loading weights:  63%|██████▎   | 533/851 [00:00<00:00, 5322.92it/s]Loading weights: 100%|██████████| 851/851 [00:00<00:00, 6594.43it/s]
+The following generation flags are not valid and may be ignored: ['temperature', 'top_p', 'top_k']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+[rank 0] Processed 5/200
+[rank 0] Processed 10/200
+[rank 0] Processed 15/200
+[rank 0] Processed 20/200
+[rank 0] Processed 25/200
+[rank 0] Processed 30/200
+[rank 0] Processed 35/200
+[rank 0] Processed 40/200
+[rank 0] Processed 45/200
+[rank 0] Processed 50/200
+[rank 0] Processed 55/200
+[rank 0] Processed 60/200
+[rank 0] Processed 65/200
+[rank 0] Processed 70/200
+[rank 0] Processed 75/200
+[rank 0] Processed 80/200
+[rank 0] Processed 85/200
+[rank 0] Processed 90/200
+[rank 0] Processed 95/200
+[rank 0] Processed 100/200
+[rank 0] Processed 105/200
+[rank 0] Processed 110/200
+[rank 0] Processed 115/200
+[rank 0] Processed 120/200
+[rank 0] Processed 125/200
+[rank 0] Processed 130/200
+[rank 0] Processed 135/200
+[rank 0] Processed 140/200
+[rank 0] Processed 145/200
+[rank 0] Processed 150/200
+[rank 0] Processed 155/200
+[rank 0] Processed 160/200
+[rank 0] Processed 165/200
+[rank 0] Processed 170/200
+[rank 0] Processed 175/200
+[rank 0] Processed 180/200
+[rank 0] Processed 185/200
+[rank 0] Processed 190/200
+[rank 0] Processed 195/200
+[rank 0] Processed 200/200
+=== SC Baseline Summary ===
+{
+  "meta": {
+    "timestamp_utc": "20260322_170122",
+    "model": "Qwen/Qwen3.5-27B",
+    "split": "test",
+    "n_samples": 200,
+    "seed": 42,
+    "data_seed": 303,
+    "world_size": 1,
+    "greedy_budget": 256,
+    "sc_budget": 64,
+    "sc_n": 8,
+    "sc_temperature": 0.7,
+    "prompt_format": "chat",
+    "direct_answer": false,
+    "enable_thinking": true
+  },
+  "greedy": {
+    "accuracy": 0.045,
+    "avg_tokens": 256.0,
+    "avg_latency_s": 15.697467611619505
+  },
+  "self_consistency": {
+    "accuracy": 0.035,
+    "avg_tokens": 512.0,
+    "avg_latency_s": 32.89285540274228
+  },
+  "delta_sc_minus_greedy": {
+    "accuracy": -0.009999999999999995,
+    "avg_tokens": 256.0,
+    "avg_latency_s": 17.195387791122773
+  }
+}
+Saved: results/sc_baseline_Qwen3.5_27B_20260322_170122.json
+Saved: results/sc_baseline_per_sample_Qwen3.5_27B_20260322_170122.csv

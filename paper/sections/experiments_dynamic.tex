@@ -1,0 +1,32 @@
+\section{Experiments}
+
+\subsection{Setup}
+\textbf{Model:} Qwen3.5-27B \\
+\textbf{Dataset:} GSM8K (677 samples from 23 seeds) \\
+\textbf{Budgets:} [128, 256, 512] tokens \\
+\textbf{Baseline:} Fixed256 (acc=0.462)
+
+\subsection{Results}
+
+\begin{table}[h]
+\centering
+\caption{Main results on GSM8K-27B}
+\begin{tabular}{lcc}
+\toprule
+Method & Accuracy & $\Delta$ vs Fixed256 \\
+\midrule
+Fixed128 & 0.337 & -12.5pp \\
+Fixed256 & 0.462 & baseline \\
+Fixed512 & 0.487 & +2.5pp \\
+\midrule
+Dynamic Halting & \textbf{0.558} & \textbf{+9.6pp} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Key findings:}
+\begin{itemize}
+\item Dynamic Halting achieves +9.6pp improvement
+\item Uses 334.5 avg tokens (comparable to Fixed256)
+\item Learns to stop before overthinking occurs
+\end{itemize}

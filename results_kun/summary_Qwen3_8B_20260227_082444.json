@@ -1,0 +1,42 @@
+{
+  "meta": {
+    "timestamp_utc": "20260227_082444",
+    "model": "Qwen/Qwen3-8B",
+    "n_samples": 4,
+    "world_size": 4,
+    "distributed": true,
+    "budgets": [
+      32,
+      64
+    ],
+    "adaptive_chunks": [
+      32,
+      32
+    ],
+    "adaptive_max_total": 64,
+    "use_verifier": true
+  },
+  "fixed": {
+    "32": {
+      "accuracy": 0.0,
+      "avg_tokens": 32.0,
+      "avg_latency_s": 1.2982751977615408
+    },
+    "64": {
+      "accuracy": 0.0,
+      "avg_tokens": 64.0,
+      "avg_latency_s": 1.6148668304958846
+    }
+  },
+  "adaptive": {
+    "accuracy": 0.0,
+    "avg_tokens": 64.0,
+    "avg_latency_s": 1.6021183089978877,
+    "avg_verifier_calls": 1.5,
+    "early_stop_rate": 0.0
+  },
+  "overthinking": {
+    "fixed_32_vs_fixed_64": 0.0,
+    "fixed_32_vs_adaptive": 0.0
+  }
+}

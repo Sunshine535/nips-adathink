@@ -1,0 +1,38 @@
+\documentclass{article}
+\usepackage[final]{neurips_2025}
+\makeatletter\renewcommand{\@neuripsyear}{2026}\makeatother
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{graphicx}
+
+\title{Dynamic Compute Allocation via Learned Halting for LLM Reasoning}
+
+\author{Anonymous}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Test-time compute scaling improves LLM reasoning but exhibits systematic heterogeneity: 33.8\% of problems experience accuracy degradation with increased budgets (overthinking).
+We propose Dynamic Halting, a learned controller that decides when to stop reasoning based on process dynamics rather than question features.
+Our method achieves +9.6pp accuracy improvement over fixed baselines on GSM8K while using comparable compute.
+\end{abstract}
+
+\section{Introduction}
+Scaling test-time compute via extended reasoning improves LLM performance, but we find this improvement is non-uniform.
+Our analysis reveals 33.8\% of problems get worse with more compute (overthinking phenomenon).
+
+We propose Dynamic Halting: a progressive reasoning framework with learned stopping criteria based on reasoning dynamics.
+
+\section{Method}
+See sections/method_dynamic.tex
+
+\section{Experiments}
+See sections/experiments_dynamic.tex
+
+\end{document}

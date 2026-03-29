@@ -1,0 +1,150 @@
+\documentclass{article}
+
+\usepackage{neurips_2026}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{nicefrac}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{colortbl}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{multirow}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{tablefootnote}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,positioning,fit,calc}
+\usepackage{wrapfig}
+
+% ---------- Custom colors and commands ----------
+\definecolor{improve}{RGB}{0,128,0}
+\definecolor{decline}{RGB}{200,0,0}
+\definecolor{easycolor}{RGB}{76,175,80}
+\definecolor{medcolor}{RGB}{255,152,0}
+\definecolor{hardcolor}{RGB}{244,67,54}
+\definecolor{nothinkblue}{RGB}{31,119,180}
+\definecolor{thinkorange}{RGB}{255,127,14}
+
+\newcommand{\up}[1]{\textcolor{improve}{\textbf{+#1}}}
+\newcommand{\down}[1]{\textcolor{decline}{\textbf{#1}}}
+\newcommand{\ci}[2]{\scriptsize[#1,\,#2]}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\newcommand{\method}{\textsc{TOWN}}
+\newcommand{\fullmethod}{Think Only When Needed}
+\newcommand{\thinkingtax}{\emph{thinking tax}}
+
+% ---------- Theorem environments ----------
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+\newtheorem{observation}{Observation}
+
+% ---------- Figure path ----------
+\graphicspath{{../results/paper_figures/}}
+
+% ---------- Title ----------
+\title{The Thinking Tax: When Chain-of-Thought Costs More Than It Saves}
+
+\author{
+  Anonymous Author(s)
+}
+
+\begin{document}
+
+\maketitle
+
+% ============================================================================
+% ABSTRACT
+% ============================================================================
+\begin{abstract}
+Chain-of-thought (CoT) reasoning is widely believed to improve LLM accuracy by allowing models to ``think longer.''
+We challenge this assumption by revealing the \emph{thinking tax}: at practical token budgets, thinking mode dramatically \emph{underperforms} non-thinking mode.
+On GSM8K with Qwen3-8B, non-thinking at a 256-token budget achieves \textbf{87.5\%} accuracy using only 146 average tokens, while thinking at a 512-token budget reaches just \textbf{65.2\%} with 460 tokens---a +22.3 percentage-point gap at 3.2$\times$ fewer tokens.
+The root cause is \emph{truncation waste}: thinking mode generates verbose reasoning chains that exceed the budget, producing truncated, answerless outputs.
+This tax \emph{scales with model size}: the 27B model achieves only 18.3\% accuracy in thinking mode at budget 512 (vs.\ 8B's 65.2\%), because its longer chains are more severely truncated (0.7\% answer-completion rate vs.\ 6.1\%).
+We further show that natural stopping serves as a confidence oracle---samples that finish reasoning within budget achieve 96.3\% accuracy.
+Building on these insights, we propose \method{} (\fullmethod{}), a two-stage cascade that defaults to non-thinking mode and routes only hard problems to extended thinking.
+\method{} achieves \textbf{90.9\%} accuracy at only 199 average tokens---+25.7pp over thinking@512 at 2.4$\times$ fewer tokens---on the full GSM8K test set ($n{=}1{,}319$).
+Our findings suggest that for budget-constrained deployment, the question is not \emph{how long} to think, but \emph{whether} to think at all.
+\end{abstract}
+
+% ============================================================================
+\section{Introduction}
+\label{sec:intro}
+% ============================================================================
+
+\input{sections/introduction_final}
+
+% ============================================================================
+\section{Background and Related Work}
+\label{sec:related}
+% ============================================================================
+
+\input{sections/related_final}
+
+% ============================================================================
+\section{The Thinking Tax: An Empirical Study}
+\label{sec:thinking-tax}
+% ============================================================================
+
+\input{sections/analysis_final}
+
+% ============================================================================
+\section{\method{}: \fullmethod{}}
+\label{sec:method}
+% ============================================================================
+
+\input{sections/method_final}
+
+% ============================================================================
+\section{Experiments}
+\label{sec:experiments}
+% ============================================================================
+
+\input{sections/experiments_final}
+
+% ============================================================================
+\section{Discussion}
+\label{sec:discussion}
+% ============================================================================
+
+\input{sections/discussion_final}
+
+% ============================================================================
+\section{Conclusion}
+\label{sec:conclusion}
+% ============================================================================
+
+\input{sections/conclusion_final}
+
+% ============================================================================
+% REFERENCES
+% ============================================================================
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+% ============================================================================
+\appendix
+\input{sections/appendix_final}
+
+% ============================================================================
+% NeurIPS Paper Checklist
+% ============================================================================
+\input{sections/checklist}
+
+\end{document}
