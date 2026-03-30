@@ -54,8 +54,26 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
+PHASE_MARKERS="${RESULTS_DIR}/.phase_markers"
+mkdir -p "$PHASE_MARKERS"
+
+phase_done() {
+    local phase=$1
+    [ -f "$PHASE_MARKERS/phase${phase}.done" ] && [ "${FORCE_RERUN:-0}" != "1" ]
+}
+
+mark_phase_done() {
+    local phase=$1
+    echo "{\"phase\":$phase,\"completed\":\"$(date -u '+%Y-%m-%dT%H:%M:%SZ')\",\"hostname\":\"$(hostname)\"}" \
+        > "$PHASE_MARKERS/phase${phase}.done"
+}
+
 should_run() {
     local phase=$1
+    if phase_done "$phase"; then
+        echo "[SKIP] Phase $phase already completed (marker: $PHASE_MARKERS/phase${phase}.done)"
+        return 1
+    fi
     if [[ $ONLY_PHASE -ge 0 ]]; then [[ $phase -eq $ONLY_PHASE ]]; else [[ $phase -ge $FROM_PHASE ]]; fi
 }
 
@@ -84,6 +102,7 @@ for m in ['$MODEL_27B', '$MODEL_8B']:
     print(f'  OK: {sum(p.numel() for p in model.parameters())/1e9:.1f}B params')
     del model; gc.collect()
 " 2>&1 | tee "$LOG_DIR/phase0_download.log"
+    mark_phase_done 0
 fi
 
 # Phase 1: Budget sweep on GSM8K (27B model, multiple budgets per seed)
@@ -99,6 +118,7 @@ if should_run 1; then
             --enable_thinking \
             2>&1 | tee "$LOG_DIR/phase1_s${SEED}.log" || true
     done
+    mark_phase_done 1
 fi
 
 # Phase 2: Self-consistency baseline
@@ -116,6 +136,7 @@ if should_run 2; then
                 2>&1 | tee "$LOG_DIR/phase2_sc${SC}_s${SEED}.log" || true
         done
     done
+    mark_phase_done 2
 fi
 
 # Phase 3: Learned budget controller (post-processing, no GPU needed)
@@ -131,6 +152,7 @@ if should_run 3; then
                 --output_dir "${RESULTS_DIR}" \
                 2>&1 | tee "$LOG_DIR/phase3_learned_s${SEED}.log" || true
         done
+        mark_phase_done 3
     else
         echo "[Phase 3] SKIPPED: no per_sample CSVs found in ${RESULTS_DIR}/"
     fi
@@ -148,6 +170,7 @@ if should_run 4; then
                 --seed "$SEED" \
                 2>&1 | tee "$LOG_DIR/phase4_value_s${SEED}.log" || true
         done
+        mark_phase_done 4
     else
         echo "[Phase 4] SKIPPED: no per_sample CSVs found in ${RESULTS_DIR}/"
     fi
@@ -165,6 +188,7 @@ if should_run 5; then
             --enable_thinking \
             2>&1 | tee "$LOG_DIR/phase5_policy_s${SEED}.log" || true
     done
+    mark_phase_done 5
 fi
 
 # Phase 6: 8B dual-scale validation
@@ -173,6 +197,7 @@ if should_run 6; then
     python scripts/run_8b_think_postprocess_after_seeds.py \
         --results_dir "${RESULTS_DIR}" \
         2>&1 | tee "$LOG_DIR/phase6_8b.log" || true
+    mark_phase_done 6
 fi
 
 # Phase 7: Significance tests
@@ -185,6 +210,7 @@ if should_run 7; then
             --rows_csv "$f" \
             2>&1 | tee -a "$LOG_DIR/phase7_significance.log" || true
     done
+    mark_phase_done 7
 fi
 
 echo ""
