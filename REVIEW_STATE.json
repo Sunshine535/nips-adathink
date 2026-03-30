@@ -1,9 +1,22 @@
 {
-  "round": 5,
+  "round": 7,
   "threadId": "019d2b4b-bf47-7e70-aa97-dad557791c85",
-  "status": "in_progress",
-  "last_score": 3.5,
+  "status": "completed",
+  "last_score": 4.0,
   "last_verdict": "not ready",
+  "review_type": "code_artifact_review",
+  "review_focus": [
+    "code_quality_and_completeness",
+    "multi_gpu_support",
+    "checkpoint_resume_support",
+    "experimental_readiness"
+  ],
+  "artifact_subscores": {
+    "code_quality_and_completeness": 4.0,
+    "multi_gpu_support": 5.0,
+    "checkpoint_resume_support": 2.0,
+    "experimental_readiness": 3.0
+  },
   "crisis": "headline_collapse_confirmed",
   "honest_feature_result": {
     "gsm8k_27b": {
@@ -28,5 +41,5 @@
       "script": "scripts/deploy_serverB_qwen27b.sh"
     }
   },
-  "timestamp": "2026-03-27T01:11:34Z"
+  "timestamp": "2026-03-30T18:52:21Z"
 }

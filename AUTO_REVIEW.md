@@ -113,3 +113,94 @@
 - **Server A**: DeepSeek-R1-Distill-Llama-8B, GSM8K full + MATH500 full, honest feature only
 - **Server B**: Qwen3.5-27B, GSM8K full + MATH500 full, honest feature + KV-reuse baseline
 
+## Round 6 (2026-03-31)
+
+### Assessment
+- **Score: 4.0/10**
+- **Verdict: Not ready to reproduce experimental results from the code release alone**
+
+### Summary
+The repository contains working components, but it is not yet artifact-ready in the NeurIPS sense. The strongest positive signal is that the core post-processing/controller scripts do execute on existing `per_sample_*.csv` files, and `python -m compileall scripts` passes. The negative signal is stronger: the main orchestration path can silently mark failed phases as complete, the long-running experiment scripts have no sample-level checkpoint/resume support, the multi-GPU story is limited to replicated-per-rank inference rather than true model sharding, and the repo still contains stale paths and partially implemented entrypoints.
+
+### Strengths
+1. The core inference runners share a reasonably consistent structure and produce standardized JSON/CSV outputs.
+2. There is real distributed data sharding for inference with `torchrun` in the main experiment scripts (`scripts/run_experiment.py`, `scripts/run_gsm8k_experiment.py`).
+3. The controller scripts are not purely aspirational: `run_template_budget_controller.py`, `run_learned_budget_controller.py`, and `run_value_budget_controller.py` all ran successfully when given explicit existing CSV inputs.
+4. The codebase is at least syntactically coherent: `python -m compileall scripts` completed successfully.
+
+### Major Weaknesses
+1. **The pipeline can report success after failed experiments.** In `scripts/run_all_experiments.sh:113-121`, `130-139`, `149-155`, `168-173`, `184-191`, `197-200`, and `209-210`, expensive stages are wrapped with `|| true`, and the phase is then marked done anyway. This is a serious reproducibility bug. A failed run can be recorded as completed and skipped on the next invocation.
+2. **Checkpoint/resume support is only phase-level, not experiment-level.** The actual runners (`scripts/run_experiment.py:469-665`, similarly `scripts/run_gsm8k_experiment.py`) keep all records in memory and only write outputs at the end. If a 6-hour run dies at sample 498/500, there is no mechanism to resume from partial state; the whole run must restart.
+3. **Multi-GPU support is limited and inconsistently documented.** The distributed path in `scripts/run_experiment.py:432-442` loads a full model replica per rank and moves it to a single local GPU. That is data-parallel inference sharding over samples, not model-parallel support. For large models, each GPU must still fit the whole model. Separately, `scripts/run_gsm8k_torchrun_4gpu.sh:21` is named "4gpu" but hardcodes `--nproc_per_node=8`, which undermines confidence in the launch instructions.
+4. **The repository contains stale or conflicting entrypoints.** `README_RUN.md:20-205` and several script defaults still reference `methods/01_adathink/...`, which does not exist in this checkout. `scripts/run_template_budget_controller.py:183-189` and `scripts/run_learned_budget_controller.py:268-285` also default to these stale paths. Running `python scripts/run_template_budget_controller.py` with defaults fails immediately with `FileNotFoundError`.
+5. **Some “full pipeline” code is incomplete or misleading.** `scripts/run_full_pipeline.py:12-13` claims it skips existing outputs, but `find_existing_result()` is never used. `scripts/run_full_pipeline.py:163-170` leaves significance testing effectively unimplemented, and `scripts/run_full_pipeline.py:244-245` explicitly notes that the self-consistency baseline is not generalized beyond GSM8K.
+6. **There is no real validation harness.** I did not find automated tests. That means there is no fast way to distinguish “research code that once ran on the author machine” from “artifact that a reviewer can trust.”
+
+### Focused Scores
+- **Code quality and completeness:** 4.5/10
+- **Multi-GPU support:** 5.0/10
+- **Checkpoint resume support:** 2.0/10
+- **Ready to produce experimental results:** 3.0/10
+
+### Actionable Feedback
+1. Remove all `|| true` from the main pipeline and only write phase markers after explicit success checks.
+2. Add resumable per-run state:
+   - Append rows incrementally to a temp CSV/JSONL every `N` samples.
+   - Store an args/config hash beside the partial outputs.
+   - On restart, load completed indices and continue from the remaining subset.
+3. Make one canonical launcher path and delete or quarantine stale ones. Right now `run.sh`, `scripts/run_all_experiments.sh`, `scripts/run_full_pipeline.py`, and `run_full_pipeline.sh` imply different pipelines.
+4. Fix all hard-coded `methods/01_adathink` and `/workspace/...` defaults, or make them opt-in via environment variables.
+5. Make the multi-GPU story honest and explicit:
+   - If the intended mode is sample-parallel replication, document the per-GPU memory requirement clearly.
+   - If true large-model support is required, add FSDP / tensor-parallel / vLLM-based execution and test it.
+6. Add a lightweight artifact CI/smoke suite:
+   - `compileall`
+   - controller smoke tests on bundled small CSVs
+   - `--help` / import checks for all main entrypoints
+   - path validation for README commands
+7. Ship one clean reproduction manifest with exact commands, expected runtime, expected output filenames, and pass/fail checksums for at least one small benchmark slice.
+
+### Bottom Line
+This is promising research code with some functioning experimental components, but it still behaves like an active lab workspace rather than a reproducible NeurIPS artifact. The most important fixes are not algorithmic: fail-fast orchestration, true resume support, path cleanup, and one trustworthy end-to-end runner.
+
+## Round 7 (2026-03-31)
+
+### Assessment
+- **Score: 4.0/10**
+- **Verdict: Not ready as a NeurIPS-reproducible code release**
+
+### Basis
+This review is based on static inspection of the repository, launcher/runbook consistency checks, and syntax validation of the main runners/controllers via `python -m py_compile`. I did not rerun the full GPU experiments in this environment.
+
+### Focused Scores
+- **Code quality and completeness:** 4.0/10
+- **Multi-GPU support:** 5.0/10
+- **Checkpoint resume support:** 2.0/10
+- **Ready to produce experimental results:** 3.0/10
+
+### Main Findings
+1. **Code quality/completeness is below artifact-ready level.** The repo contains a cleaner generalized path (`scripts/run_experiment.py`, `scripts/benchmarks.py`), but it coexists with older GSM8K-specific runners that duplicate substantial logic instead of reusing shared utilities. Several entrypoints are incomplete or misleading: `scripts/run_full_pipeline.py:12-13` claims it skips existing runs, but `find_existing_result()` is never used (`scripts/run_full_pipeline.py:55-67`), significance testing is only a stub (`scripts/run_full_pipeline.py:163-170`), and the self-consistency phase explicitly only works for GSM8K (`scripts/run_full_pipeline.py:239-259`).
+2. **The advertised resume story is unsafe.** `README.md:40-43` claims interrupted runs can be resumed by re-running `bash run.sh`, but the underlying pipelines suppress failures with `|| true` and still write phase-complete markers in both `scripts/run_all_experiments.sh:113-121,130-139,149-155,168-173,184-191,197-200` and `run_acp.sh:178-188,196-206,216-223,235-240,251-259,265-268`. A failed phase can therefore be marked "done" and skipped later.
+3. **Checkpoint/resume is only phase-level, not experiment-level.** The main experiment runners keep results in memory and only emit final JSON/CSV artifacts after the full dataset shard finishes (`scripts/run_gsm8k_experiment.py:662-845`). If a long run dies late, there is no sample-level restart, partial state file, or completed-index recovery. The controller training/evaluation scripts behave similarly and only save outputs at the end (`scripts/run_learned_budget_controller.py:304-420`).
+4. **Multi-GPU support exists, but it is narrow and inconsistently exposed.** The positive: the core runners do implement torchrun-style sample sharding over ranks (`scripts/run_gsm8k_experiment.py:566-645,762-770`). The negative: this is replicated-per-rank inference, not true model sharding, so each GPU must still fit a full model replica. Only some scripts expose a single-process `device_map='auto'` fallback (`scripts/run_gsm8k_experiment.py:513-519,638-645`; `scripts/run_experiment.py:353,435-445`), while others do not (`scripts/run_gsm8k_sc_baseline.py:234-275`; `scripts/run_gsm8k_policy_search.py:385-438`).
+5. **The launch/documentation path is not clean enough to trust from a fresh checkout.** `README_RUN.md:20-205` repeatedly points to `methods/01_adathink/...`, but that path does not exist in this repository. The same stale prefix appears in script defaults such as `scripts/run_gsm8k_experiment.py:559`, `scripts/run_gsm8k_sc_baseline.py:234`, `scripts/run_gsm8k_policy_search.py:385`, and `scripts/run_learned_budget_controller.py:268-285`. `scripts/run_parametric_from_manifest.py:27-54` also invokes `methods/01_adathink/scripts/run_parametric_budget_controller.py`, which will fail in this checkout.
+6. **The multi-GPU launcher UX itself is unreliable.** `scripts/run_gsm8k_torchrun_4gpu.sh:15-22` is named as a 4-GPU launcher, but defaults `CUDA_VISIBLE_DEVICES` to eight devices and hardcodes `--nproc_per_node=8`. That is a concrete reproducibility hazard because the command name, runbook text, and actual launch behavior disagree.
+7. **There is no lightweight validation harness.** I found no tests or smoke checks that verify the README commands, launcher paths, controller defaults, or minimal end-to-end behavior on a tiny subset. For a NeurIPS code release, that absence matters as much as the model code itself.
+
+### What Works
+1. The generalized benchmark stack (`scripts/benchmarks.py` + `scripts/run_experiment.py`) is the strongest part of the repository and has a reasonable output contract.
+2. The main runners and controller scripts are syntactically valid; `python -m py_compile` passed on the principal scripts reviewed.
+3. Distributed sample sharding with `torchrun` is implemented in the core evaluators, so the repo is not purely single-GPU.
+
+### Actionable Feedback
+1. Pick one canonical pipeline and demote or remove the others. Right now `run.sh`, `scripts/run_all_experiments.sh`, `scripts/run_full_pipeline.py`, and ACP/deploy scripts describe different worlds.
+2. Remove every `|| true` from the main orchestration paths and only write `.done` markers after explicit success checks.
+3. Add true per-run resume: periodically append rows to a temp CSV/JSONL, persist completed indices plus an args hash, and continue from unfinished samples on restart.
+4. Replace all `methods/01_adathink`, `/workspace/...`, and host-specific hard-coded paths with repo-relative defaults plus environment overrides.
+5. Make launcher naming honest and parameterized. A `*_4gpu.sh` wrapper should not silently request 8 ranks.
+6. Document the actual multi-GPU contract: sample-parallel replication versus model sharding, expected per-GPU memory, and which scripts support `device_map='auto'`.
+7. Add a tiny artifact CI/smoke suite: import/`--help` checks, `py_compile`, path validation for README commands, and one toy end-to-end run on a handful of examples.
+8. Bundle one reviewer-facing reproduction manifest with exact commands, expected output files, and a small benchmark slice that can be validated in hours rather than days.
+
+### Bottom Line
+The repository contains real research code, not placeholders, but it is still closer to an active project workspace than a reliable NeurIPS artifact. The largest gaps are engineering gaps: fail-fast orchestration, trustworthy resume semantics, path cleanup, and one canonical reproducible run path.
