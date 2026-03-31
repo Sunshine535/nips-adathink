@@ -110,7 +110,7 @@ def main():
     out_json = (
         Path(args.output_json)
         if args.output_json
-        else Path(f"methods/01_adathink/results/qwen35_27b_overthinking_{len(rows)}rows_{ts}.json")
+        else Path(f"results/qwen35_27b_overthinking_{len(rows)}rows_{ts}.json")
     )
 
     summary = {

@@ -182,11 +182,7 @@ def main():
     ap.add_argument(
         "--input_csvs",
         nargs="+",
-        default=[
-            "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260227_150649.csv",
-            "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260227_152431.csv",
-            "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260227_154356.csv",
-        ],
+        default=[],
     )
     ap.add_argument("--lambda_cost", type=float, default=0.15)
     ap.add_argument("--norm_tokens", type=float, default=512.0)
@@ -293,12 +289,12 @@ def main():
     out_json = (
         args.output_json
         if args.output_json
-        else f"methods/01_adathink/results/template_controller_lam{lam_tag}_{ts}.json"
+        else f"results/template_controller_lam{lam_tag}_{ts}.json"
     )
     out_csv = (
         args.output_csv
         if args.output_csv
-        else f"methods/01_adathink/results/template_controller_rows_lam{lam_tag}_{ts}.csv"
+        else f"results/template_controller_rows_lam{lam_tag}_{ts}.csv"
     )
 
     summary = {

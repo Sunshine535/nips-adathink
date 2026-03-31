@@ -9,7 +9,7 @@ Automates all experiments sequentially:
 5. Self-Consistency baseline
 6. Significance tests
 
-Each step saves results to /workspace/nips-adathink/results/ with clear naming.
+Each step saves results to results/ with clear naming.
 Skips runs whose output files already exist.
 """
 
@@ -27,8 +27,7 @@ SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 RESULTS_DIR = os.path.join(os.path.dirname(SCRIPT_DIR), "results")
 os.makedirs(RESULTS_DIR, exist_ok=True)
 
-# Ensure HF cache is on workspace
-os.environ["HF_HOME"] = "/workspace/models/hf_cache"
+os.environ.setdefault("HF_HOME", os.path.join(os.path.expanduser("~"), ".cache", "huggingface"))
 
 # ---- Configuration ----
 MODEL_27B = "Qwen/Qwen3.5-27B"
@@ -71,6 +70,11 @@ def run_experiment(benchmark, model, data_seed, extra_args=None, tag_suffix=""):
     """Run a single experiment. Returns path to per_sample CSV."""
     cfg = BENCHMARK_CONFIG[benchmark]
     model_tag = model.split("/")[-1].replace("-", "_")
+
+    existing = find_existing_result(benchmark, model_tag, data_seed)
+    if existing:
+        log(f"Skipping (existing result): {os.path.basename(existing)}")
+        return existing
 
     cmd = [
         sys.executable, os.path.join(SCRIPT_DIR, "run_experiment.py"),
@@ -161,13 +165,31 @@ def run_controller(input_csvs, controller_type="template", lambda_cost=0.15, out
 
 
 def run_significance(controller_json, output_tag=""):
-    """Run bootstrap significance test."""
+    """Run bootstrap significance test on a controller result CSV."""
     script = os.path.join(SCRIPT_DIR, "run_template_controller_significance.py")
     if not os.path.exists(script):
-        log(f"Significance script not found")
+        log(f"Significance script not found: {script}")
         return
-    # This script may need specific args; check its interface
+
+    rows_csv = controller_json.replace(".json", ".csv").replace("template_controller_", "template_controller_rows_")
+    if not os.path.exists(rows_csv):
+        rows_csvs = glob.glob(os.path.join(RESULTS_DIR, f"template_controller_rows_{output_tag}*.csv"))
+        if rows_csvs:
+            rows_csv = max(rows_csvs, key=os.path.getmtime)
+        else:
+            log(f"  No rows CSV found for significance test: {output_tag}")
+            return
+
     log(f"Running significance test: {output_tag}")
+    cmd = [
+        sys.executable, script,
+        "--rows_csv", rows_csv,
+    ]
+    result = subprocess.run(cmd, capture_output=True, text=True)
+    if result.returncode != 0:
+        log(f"  Significance ERROR: {result.stderr[-300:]}")
+    else:
+        log(f"  Significance OK")
 
 
 def main():

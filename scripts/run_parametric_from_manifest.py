@@ -21,12 +21,14 @@ def main():
     ap.add_argument("--output_csv", required=True)
     args = ap.parse_args()
 
+    SCRIPT_DIR = Path(__file__).resolve().parent
+
     manifest = json.loads(Path(args.manifest_json).read_text(encoding="utf-8"))
     csvs = [r["per_sample_csv"] for r in manifest["runs"]]
 
     cmd = [
         sys.executable,
-        "methods/01_adathink/scripts/run_parametric_budget_controller.py",
+        str(SCRIPT_DIR / "run_parametric_budget_controller.py"),
         "--input_csvs",
         *csvs,
         "--lambda_cost",

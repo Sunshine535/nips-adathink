@@ -24,6 +24,14 @@ mkdir -p "$RESULTS_DIR"
 
 NGPU="${NGPU:-4}"
 
+# Ensure CUDA_VISIBLE_DEVICES and NGPU are in sync
+if [ -n "${CUDA_VISIBLE_DEVICES:-}" ]; then
+    NGPU=$(echo "$CUDA_VISIBLE_DEVICES" | tr ',' '\n' | wc -l)
+else
+    CUDA_VISIBLE_DEVICES=$(seq -s, 0 $((NGPU - 1)))
+    export CUDA_VISIBLE_DEVICES
+fi
+
 BENCH_ARGS=""
 if [ "$BENCHMARK" = "bbh" ]; then
     BENCH_ARGS="--bbh_task $BBH_TASK"

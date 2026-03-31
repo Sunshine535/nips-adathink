@@ -382,7 +382,7 @@ def main() -> None:
         nargs="+",
         default=[1, 2, 3],
     )
-    parser.add_argument("--results_dir", type=str, default="methods/01_adathink/results")
+    parser.add_argument("--results_dir", type=str, default="results")
     parser.add_argument(
         "--prompt_format",
         type=str,
@@ -454,12 +454,37 @@ def main() -> None:
         train_ds, n_train = load_subset(args.train_split, args.n_train, args.train_data_seed)
         test_ds, n_test = load_subset(args.test_split, args.n_test, args.test_data_seed)
 
-        print0(f"Collecting train traces: n={n_train}, world_size={world_size}")
+        model_tag_inc = args.model.split("/")[-1].replace("-", "_")
+
+        train_inc_path = os.path.join(
+            args.results_dir,
+            f"incremental_policy_train_{model_tag_inc}_{args.seed}_rank{rank}.jsonl",
+        )
+        train_done_indices: set = set()
         train_records_local: List[Dict] = []
-        train_target = sum(1 for i in range(n_train) if (i % world_size) == rank)
+        if os.path.exists(train_inc_path):
+            with open(train_inc_path, "r", encoding="utf-8") as _fp:
+                for _line in _fp:
+                    _line = _line.strip()
+                    if not _line:
+                        continue
+                    try:
+                        _rec = json.loads(_line)
+                        train_done_indices.add(_rec["idx"])
+                        train_records_local.append(_rec)
+                    except (json.JSONDecodeError, KeyError):
+                        continue
+            if train_done_indices:
+                print0(f"[resume] Loaded {len(train_done_indices)} existing train results from {train_inc_path}")
+
+        print0(f"Collecting train traces: n={n_train}, world_size={world_size}")
+        train_target = sum(1 for i in range(n_train) if (i % world_size) == rank and i not in train_done_indices)
         train_done = 0
+        train_inc_fp = open(train_inc_path, "a", encoding="utf-8")
         for i, ex in enumerate(train_ds):
             if (i % world_size) != rank:
+                continue
+            if i in train_done_indices:
                 continue
             question = ex["question"]
             gold = get_gold_from_gsm8k(ex["answer"])
@@ -485,16 +510,42 @@ def main() -> None:
                 max_total_tokens=args.max_total_tokens,
             )
             train_records_local.append(row)
+            train_inc_fp.write(json.dumps(row, ensure_ascii=False) + "\n")
+            train_inc_fp.flush()
             train_done += 1
             if train_done % 5 == 0 or train_done == train_target:
                 print(f"[rank {rank}] Train processed {train_done}/{train_target}", flush=True)
+        train_inc_fp.close()
+
+        test_inc_path = os.path.join(
+            args.results_dir,
+            f"incremental_policy_test_{model_tag_inc}_{args.seed}_rank{rank}.jsonl",
+        )
+        test_done_indices: set = set()
+        test_records_local: List[Dict] = []
+        if os.path.exists(test_inc_path):
+            with open(test_inc_path, "r", encoding="utf-8") as _fp:
+                for _line in _fp:
+                    _line = _line.strip()
+                    if not _line:
+                        continue
+                    try:
+                        _rec = json.loads(_line)
+                        test_done_indices.add(_rec["idx"])
+                        test_records_local.append(_rec)
+                    except (json.JSONDecodeError, KeyError):
+                        continue
+            if test_done_indices:
+                print0(f"[resume] Loaded {len(test_done_indices)} existing test results from {test_inc_path}")
 
         print0(f"Collecting test traces: n={n_test}, world_size={world_size}")
-        test_records_local: List[Dict] = []
-        test_target = sum(1 for i in range(n_test) if (i % world_size) == rank)
+        test_target = sum(1 for i in range(n_test) if (i % world_size) == rank and i not in test_done_indices)
         test_done = 0
+        test_inc_fp = open(test_inc_path, "a", encoding="utf-8")
         for i, ex in enumerate(test_ds):
             if (i % world_size) != rank:
+                continue
+            if i in test_done_indices:
                 continue
             question = ex["question"]
             gold = get_gold_from_gsm8k(ex["answer"])
@@ -520,9 +571,12 @@ def main() -> None:
                 max_total_tokens=args.max_total_tokens,
             )
             test_records_local.append(row)
+            test_inc_fp.write(json.dumps(row, ensure_ascii=False) + "\n")
+            test_inc_fp.flush()
             test_done += 1
             if test_done % 5 == 0 or test_done == test_target:
                 print(f"[rank {rank}] Test processed {test_done}/{test_target}", flush=True)
+        test_inc_fp.close()
 
         if distributed:
             gathered_train = [None for _ in range(world_size)] if rank == 0 else None

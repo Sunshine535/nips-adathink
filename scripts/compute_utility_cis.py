@@ -10,8 +10,9 @@ import sys
 
 import numpy as np
 
-RESULTS_DIR = "/workspace/nips-adathink/results"
-METHODS_DIR = "/workspace/nips-adathink/methods/01_adathink/results"
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+RESULTS_DIR = os.path.join(os.path.dirname(SCRIPT_DIR), "results")
+METHODS_DIR = RESULTS_DIR
 
 SETTINGS = {
     "gsm8k_27b": {

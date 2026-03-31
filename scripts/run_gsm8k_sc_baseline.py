@@ -231,7 +231,7 @@ def main() -> None:
     parser.add_argument("--prompt_format", choices=["plain", "chat"], default="chat")
     parser.add_argument("--direct_answer", action="store_true")
     parser.add_argument("--enable_thinking", action="store_true")
-    parser.add_argument("--results_dir", type=str, default="methods/01_adathink/results")
+    parser.add_argument("--results_dir", type=str, default="results")
     parser.add_argument("--allow_cpu", action="store_true")
     parser.add_argument("--skip_local_model_check", action="store_true")
     args = parser.parse_args()
@@ -280,11 +280,36 @@ def main() -> None:
         n = min(args.n_samples, len(ds))
         ds = ds.select(range(n))
 
-        local_target = sum(1 for i in range(n) if (i % world_size) == rank)
+        model_tag_inc = args.model.split("/")[-1].replace("-", "_")
+        incremental_path = os.path.join(
+            args.results_dir,
+            f"incremental_sc_{model_tag_inc}_{args.seed}_rank{rank}.jsonl",
+        )
+        done_indices: set = set()
+        records: List[Dict] = []
+        if os.path.exists(incremental_path):
+            with open(incremental_path, "r", encoding="utf-8") as _fp:
+                for _line in _fp:
+                    _line = _line.strip()
+                    if not _line:
+                        continue
+                    try:
+                        _rec = json.loads(_line)
+                        done_indices.add(_rec["idx"])
+                        records.append(_rec)
+                    except (json.JSONDecodeError, KeyError):
+                        continue
+            if done_indices:
+                print0(f"[resume] Loaded {len(done_indices)} existing results from {incremental_path}")
+
+        local_target = sum(1 for i in range(n) if (i % world_size) == rank and i not in done_indices)
         done = 0
-        records = []
+        inc_fp = open(incremental_path, "a", encoding="utf-8")
+
         for i, ex in enumerate(ds):
             if (i % world_size) != rank:
+                continue
+            if i in done_indices:
                 continue
             q = ex["question"]
             gold = get_gold_from_gsm8k(ex["answer"])
@@ -330,9 +355,13 @@ def main() -> None:
                 "sc_latency_s": sc_latency,
             }
             records.append(row)
+            inc_fp.write(json.dumps(row, ensure_ascii=False) + "\n")
+            inc_fp.flush()
             done += 1
             if done % 5 == 0 or done == local_target:
                 print(f"[rank {rank}] Processed {done}/{local_target}", flush=True)
+
+        inc_fp.close()
 
         if distributed:
             gathered = [None for _ in range(world_size)] if rank == 0 else None

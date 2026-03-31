@@ -10,6 +10,8 @@ import time
 from datetime import datetime, timezone
 from pathlib import Path
 
+SCRIPT_DIR = Path(__file__).resolve().parent
+
 
 def load_json(path: str):
     with open(path, "r", encoding="utf-8") as f:
@@ -43,12 +45,12 @@ def main():
     ap.add_argument(
         "--base_manifest",
         type=str,
-        default="methods/01_adathink/results/manifest_qwen3_8b_think_strict_3seed_20260228.json",
+        default="results/manifest_qwen3_8b_think_strict_3seed_20260228.json",
     )
     ap.add_argument(
         "--results_dir",
         type=str,
-        default="methods/01_adathink/results",
+        default="results",
     )
     ap.add_argument("--poll_sec", type=int, default=30)
     ap.add_argument("--timeout_min", type=int, default=240)
@@ -119,7 +121,7 @@ def main():
     run_cmd(
         [
             sys.executable,
-            "methods/01_adathink/scripts/run_overthinking_aggregate.py",
+            str(SCRIPT_DIR / "run_overthinking_aggregate.py"),
             "--input_csvs",
             *csvs,
             "--output_json",
@@ -136,7 +138,7 @@ def main():
         run_cmd(
             [
                 sys.executable,
-                "methods/01_adathink/scripts/run_value_budget_controller.py",
+                str(SCRIPT_DIR / "run_value_budget_controller.py"),
                 "--input_csvs",
                 *csvs,
                 "--eval_lambda",
@@ -156,7 +158,7 @@ def main():
         run_cmd(
             [
                 sys.executable,
-                "methods/01_adathink/scripts/run_template_controller_significance.py",
+                str(SCRIPT_DIR / "run_template_controller_significance.py"),
                 "--rows_csv",
                 str(out_csv),
                 "--compare_budget",

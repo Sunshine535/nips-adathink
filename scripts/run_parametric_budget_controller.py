@@ -519,12 +519,12 @@ def main():
     out_json = (
         args.output_json
         if args.output_json
-        else f"methods/01_adathink/results/param_controller_lam{lam_tag}_{ts}.json"
+        else f"results/param_controller_lam{lam_tag}_{ts}.json"
     )
     out_csv = (
         args.output_csv
         if args.output_csv
-        else f"methods/01_adathink/results/param_controller_rows_lam{lam_tag}_{ts}.csv"
+        else f"results/param_controller_rows_lam{lam_tag}_{ts}.csv"
     )
 
     summary = {

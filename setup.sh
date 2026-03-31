@@ -16,11 +16,25 @@ else
     echo "[1/5] uv already installed: $(uv --version)"
 fi
 
-# --- Create venv ---
+# --- Create venv with robust Python detection ---
 VENV_DIR="$PROJ_DIR/.venv"
 if [ ! -d "$VENV_DIR" ]; then
-    echo "[2/5] Creating Python 3.10 venv ..."
-    uv venv "$VENV_DIR" --python 3.10 2>/dev/null || uv venv "$VENV_DIR"
+    echo "[2/5] Creating Python venv ..."
+    if uv venv "$VENV_DIR" --python 3.10 2>/dev/null; then
+        echo "  Created venv with Python 3.10"
+    elif uv venv "$VENV_DIR" --python 3.11 2>/dev/null; then
+        echo "  Created venv with Python 3.11 (3.10 not available)"
+    elif uv venv "$VENV_DIR" --python 3.12 2>/dev/null; then
+        echo "  Created venv with Python 3.12 (3.10/3.11 not available)"
+    elif uv venv "$VENV_DIR" 2>/dev/null; then
+        echo "  Created venv with system Python"
+    elif command -v python3 &>/dev/null; then
+        echo "  uv venv failed, falling back to python3 -m venv"
+        python3 -m venv "$VENV_DIR"
+    else
+        echo "[ERROR] Cannot create venv: no uv or python3 available"
+        exit 1
+    fi
 else
     echo "[2/5] Venv exists: $VENV_DIR"
 fi

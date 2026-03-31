@@ -173,6 +173,7 @@ mark_phase_done 0
 # Phase 1: Budget sweep on GSM8K (27B)
 if should_run 1; then
     log_phase 1 "Budget sweep (64/128/256) on GSM8K"
+    P1_FAIL=0
     for SEED in "${SEEDS[@]}"; do
         echo "[Phase 1] Budgets=64,128,256 Seed=$SEED Model=$MODEL_27B"
         $(get_torchrun_cmd) scripts/run_gsm8k_experiment.py \
@@ -182,14 +183,15 @@ if should_run 1; then
             --results_dir "${RESULTS_DIR}" \
             --enable_thinking \
             --skip_local_model_check \
-            2>&1 | tee "results/logs/phase1_s${SEED}.log" || true
+            2>&1 | tee "results/logs/phase1_s${SEED}.log" || { echo "[ERROR] Phase 1 seed=$SEED failed"; P1_FAIL=1; }
     done
-    mark_phase_done 1
+    if [ $P1_FAIL -eq 0 ]; then mark_phase_done 1; else echo "[ERROR] Phase 1 had failures"; exit 1; fi
 fi
 
 # Phase 2: Self-consistency baseline (SC@8, SC@16)
 if should_run 2; then
     log_phase 2 "Self-consistency baseline (SC@8, SC@16)"
+    P2_FAIL=0
     for SC in 8 16; do
         for SEED in "${SEEDS[@]}"; do
             echo "[Phase 2] SC@${SC} Seed=$SEED Model=$MODEL_27B"
@@ -200,10 +202,10 @@ if should_run 2; then
                 --results_dir "${RESULTS_DIR}" \
                 --enable_thinking \
                 --skip_local_model_check \
-                2>&1 | tee "results/logs/phase2_sc${SC}_s${SEED}.log" || true
+                2>&1 | tee "results/logs/phase2_sc${SC}_s${SEED}.log" || { echo "[ERROR] Phase 2 SC@${SC} seed=$SEED failed"; P2_FAIL=1; }
         done
     done
-    mark_phase_done 2
+    if [ $P2_FAIL -eq 0 ]; then mark_phase_done 2; else echo "[ERROR] Phase 2 had failures"; exit 1; fi
 fi
 
 # Phase 3: Learned budget controller (CPU post-processing)
@@ -211,15 +213,16 @@ if should_run 3; then
     log_phase 3 "Learned budget controller"
     INPUT_CSVS=( $(ls ${RESULTS_DIR}/per_sample_*.csv 2>/dev/null) )
     if [ ${#INPUT_CSVS[@]} -gt 0 ]; then
+        P3_FAIL=0
         for SEED in "${SEEDS[@]}"; do
             echo "[Phase 3] Learned controller Seed=$SEED (${#INPUT_CSVS[@]} input CSVs)"
             python scripts/run_learned_budget_controller.py \
                 --input_csvs "${INPUT_CSVS[@]}" \
                 --seed "$SEED" \
                 --output_dir "${RESULTS_DIR}" \
-                2>&1 | tee "results/logs/phase3_learned_s${SEED}.log" || true
+                2>&1 | tee "results/logs/phase3_learned_s${SEED}.log" || P3_FAIL=$((P3_FAIL + 1))
         done
-        mark_phase_done 3
+        [ "$P3_FAIL" -eq 0 ] && mark_phase_done 3 || echo "[WARN] Phase 3 had $P3_FAIL failure(s); not marking as done"
     else
         echo "[Phase 3] SKIPPED: no per_sample CSVs found in ${RESULTS_DIR}/"
     fi
@@ -230,14 +233,15 @@ if should_run 4; then
     log_phase 4 "Value-based budget controller"
     INPUT_CSVS=( $(ls ${RESULTS_DIR}/per_sample_*.csv 2>/dev/null) )
     if [ ${#INPUT_CSVS[@]} -gt 0 ]; then
+        P4_FAIL=0
         for SEED in "${SEEDS[@]}"; do
             echo "[Phase 4] Value controller Seed=$SEED (${#INPUT_CSVS[@]} input CSVs)"
             python scripts/run_value_budget_controller.py \
                 --input_csvs "${INPUT_CSVS[@]}" \
                 --seed "$SEED" \
-                2>&1 | tee "results/logs/phase4_value_s${SEED}.log" || true
+                2>&1 | tee "results/logs/phase4_value_s${SEED}.log" || P4_FAIL=$((P4_FAIL + 1))
         done
-        mark_phase_done 4
+        [ "$P4_FAIL" -eq 0 ] && mark_phase_done 4 || echo "[WARN] Phase 4 had $P4_FAIL failure(s); not marking as done"
     else
         echo "[Phase 4] SKIPPED: no per_sample CSVs found in ${RESULTS_DIR}/"
     fi
@@ -246,6 +250,7 @@ fi
 # Phase 5: Policy search on GSM8K (27B)
 if should_run 5; then
     log_phase 5 "Policy search"
+    P5_FAIL=0
     for SEED in "${SEEDS[@]}"; do
         echo "[Phase 5] Policy search Seed=$SEED Model=$MODEL_27B"
         $(get_torchrun_cmd) scripts/run_gsm8k_policy_search.py \
@@ -254,9 +259,9 @@ if should_run 5; then
             --results_dir "${RESULTS_DIR}" \
             --enable_thinking \
             --skip_local_model_check \
-            2>&1 | tee "results/logs/phase5_policy_s${SEED}.log" || true
+            2>&1 | tee "results/logs/phase5_policy_s${SEED}.log" || { echo "[ERROR] Phase 5 seed=$SEED failed"; P5_FAIL=1; }
     done
-    mark_phase_done 5
+    if [ $P5_FAIL -eq 0 ]; then mark_phase_done 5; else echo "[ERROR] Phase 5 had failures"; exit 1; fi
 fi
 
 # Phase 6: 8B dual-scale validation
@@ -264,21 +269,21 @@ if should_run 6; then
     log_phase 6 "8B dual-scale validation"
     python scripts/run_8b_think_postprocess_after_seeds.py \
         --results_dir "${RESULTS_DIR}" \
-        2>&1 | tee "results/logs/phase6_8b.log" || true
-    mark_phase_done 6
+        2>&1 | tee "results/logs/phase6_8b.log" && mark_phase_done 6 || echo "[WARN] Phase 6 failed; not marking as done"
 fi
 
 # Phase 7: Significance tests
 if should_run 7; then
     log_phase 7 "Significance tests"
+    P7_FAIL=0
     for f in ${RESULTS_DIR}/template_controller_rows_*.csv; do
         [ -f "$f" ] || continue
         echo "[Phase 7] Significance: $f"
         python scripts/run_template_controller_significance.py \
             --rows_csv "$f" \
-            2>&1 | tee -a "results/logs/phase7_significance.log" || true
+            2>&1 | tee -a "results/logs/phase7_significance.log" || P7_FAIL=$((P7_FAIL + 1))
     done
-    mark_phase_done 7
+    [ "$P7_FAIL" -eq 0 ] && mark_phase_done 7 || echo "[WARN] Phase 7 had $P7_FAIL failure(s); not marking as done"
 fi
 
 # === Done ===

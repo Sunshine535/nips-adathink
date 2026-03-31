@@ -481,12 +481,12 @@ def main():
     out_json = (
         args.output_json
         if args.output_json
-        else f"methods/01_adathink/results/value_controller_evalLam{str(args.eval_lambda).replace('.', 'p')}_{ts}.json"
+        else f"results/value_controller_evalLam{str(args.eval_lambda).replace('.', 'p')}_{ts}.json"
     )
     out_csv = (
         args.output_csv
         if args.output_csv
-        else f"methods/01_adathink/results/value_controller_rows_evalLam{str(args.eval_lambda).replace('.', 'p')}_{ts}.csv"
+        else f"results/value_controller_rows_evalLam{str(args.eval_lambda).replace('.', 'p')}_{ts}.csv"
     )
 
     summary = {

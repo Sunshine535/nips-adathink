@@ -556,7 +556,7 @@ def main() -> None:
         default=16,
         help="Max new tokens for projection pass.",
     )
-    parser.add_argument("--results_dir", type=str, default="methods/01_adathink/results")
+    parser.add_argument("--results_dir", type=str, default="results")
     args = parser.parse_args()
     if args.model is None:
         args.model = DEFAULT_LOW_COST_MODEL if args.model_tier == "low_cost" else DEFAULT_MAIN_MODEL
@@ -659,12 +659,37 @@ def main() -> None:
         n = min(args.n_samples, len(ds))
         ds = ds.select(range(n))
 
-        local_target = sum(1 for i in range(n) if (i % world_size) == rank)
+        model_tag_inc = args.model.split("/")[-1].replace("-", "_")
+        incremental_path = os.path.join(
+            args.results_dir,
+            f"incremental_{model_tag_inc}_{args.seed}_rank{rank}.jsonl",
+        )
+        done_indices: set = set()
         records: List[Dict] = []
+        if os.path.exists(incremental_path):
+            with open(incremental_path, "r", encoding="utf-8") as _fp:
+                for _line in _fp:
+                    _line = _line.strip()
+                    if not _line:
+                        continue
+                    try:
+                        _rec = json.loads(_line)
+                        done_indices.add(_rec["idx"])
+                        records.append(_rec)
+                    except (json.JSONDecodeError, KeyError):
+                        continue
+            if done_indices:
+                print0(f"[resume] Loaded {len(done_indices)} existing results from {incremental_path}")
+
+        local_target = sum(1 for i in range(n) if (i % world_size) == rank and i not in done_indices)
         local_done = 0
+
+        inc_fp = open(incremental_path, "a", encoding="utf-8")
 
         for i, ex in enumerate(ds):
             if (i % world_size) != rank:
+                continue
+            if i in done_indices:
                 continue
 
             question = ex["question"]
@@ -754,10 +779,14 @@ def main() -> None:
             row["adaptive_raw"] = adap_raw
 
             records.append(row)
+            inc_fp.write(json.dumps(row, ensure_ascii=False) + "\n")
+            inc_fp.flush()
             local_done += 1
 
             if (local_done % 5 == 0) or (local_done == local_target):
                 print(f"[rank {rank}] Processed {local_done}/{local_target}", flush=True)
+
+        inc_fp.close()
 
         if distributed:
             gathered = [None for _ in range(world_size)] if rank == 0 else None

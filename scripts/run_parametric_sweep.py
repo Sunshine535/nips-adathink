@@ -7,6 +7,8 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
+SCRIPT_DIR = Path(__file__).resolve().parent
+
 
 def parse_float_list(s: str):
     return [float(x.strip()) for x in s.split(",") if x.strip()]
@@ -37,7 +39,7 @@ def main():
     ap.add_argument("--n_bootstrap", type=int, default=10000)
     ap.add_argument("--bootstrap_seed", type=int, default=20260303)
     ap.add_argument(
-        "--result_dir", type=str, default="methods/01_adathink/results"
+        "--result_dir", type=str, default="results"
     )
     ap.add_argument("--tag_prefix", type=str, default="")
     ap.add_argument("--output_csv", type=str, default="")
@@ -66,7 +68,7 @@ def main():
 
             cmd_train = [
                 sys.executable,
-                "methods/01_adathink/scripts/run_parametric_from_manifest.py",
+                str(SCRIPT_DIR / "run_parametric_from_manifest.py"),
                 "--manifest_json",
                 args.manifest_json,
                 "--lambda_cost",
@@ -95,7 +97,7 @@ def main():
 
             cmd_sig = [
                 sys.executable,
-                "methods/01_adathink/scripts/run_template_controller_significance.py",
+                str(SCRIPT_DIR / "run_template_controller_significance.py"),
                 "--rows_csv",
                 str(out_csv),
                 "--compare_budget",

@@ -267,11 +267,7 @@ def main():
     ap.add_argument(
         "--input_csvs",
         nargs="+",
-        default=[
-            "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260227_150649.csv",
-            "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260227_152431.csv",
-            "methods/01_adathink/results/per_sample_Qwen3.5_27B_20260227_154356.csv",
-        ],
+        default=[],
     )
     ap.add_argument("--lambda_cost", type=float, default=0.15)
     ap.add_argument("--norm_tokens", type=float, default=512.0)
@@ -281,7 +277,7 @@ def main():
     ap.add_argument("--lr", type=float, default=0.25)
     ap.add_argument("--l2", type=float, default=1e-4)
     ap.add_argument("--seed", type=int, default=11)
-    ap.add_argument("--output_dir", type=str, default="methods/01_adathink/results")
+    ap.add_argument("--output_dir", type=str, default="results")
     args = ap.parse_args()
 
     input_rows = []
