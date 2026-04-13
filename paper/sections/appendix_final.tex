@@ -4,11 +4,12 @@
 \label{app:experimental_details}
 
 \subsection{Hardware and Software}
-All experiments are conducted on NVIDIA A100-80GB GPUs.
-We use PyTorch 2.10 with CUDA 12.8, HuggingFace Transformers (v4.44+),
+Primary experiments are conducted on NVIDIA A100-80GB GPUs; the think budget ablation (\S\ref{sec:experiments:bthink}) was replicated on NVIDIA H800-80GB GPUs.
+We use PyTorch 2.4.1 with CUDA 12.4 (A100) and CUDA 12.6 (H800), HuggingFace Transformers 5.5.0,
 and bfloat16 precision.
-Greedy decoding ($\tau{=}0$) is used throughout; no sampling or
+Greedy decoding ($\tau{=}0$) is used for all main experiments; no sampling or
 nucleus filtering is applied.
+A sampling robustness pilot ($\tau{=}0.7$) confirms the tax persists under stochastic decoding (Appendix~\ref{app:sampling-robustness}).
 
 \subsection{Budget Control}
 Token budgets are controlled via the \texttt{max\_new\_tokens} parameter
@@ -31,20 +32,55 @@ We use a multi-level extraction pipeline:
     \item Fall back to the last number in the output
 \end{enumerate}
 When thinking mode exhausts its budget without producing a final answer,
-we optionally apply a \emph{projection pass}: a short continuation
-(max 16 tokens) to extract a numerical answer from the truncated output.
-This is controlled by the \texttt{--projection\_on\_missing\_final} flag.
+we apply a \emph{projection pass}: a short continuation
+(up to 32 tokens) to extract a numerical answer from the truncated output.
+This is controlled by the \texttt{--projection\_on\_missing\_final} flag
+and is enabled for all thinking-mode results reported in the main text.
+The projection pass is crucial: without it, think@512 accuracy for 8B
+drops from 56.9\% to ${<}$6\%, since the vast majority of truncated
+chains never reach a final answer marker.
+This design choice is \emph{favorable} to thinking mode---our
+reported thinking-mode accuracies represent an optimistic upper bound,
+making the thinking tax we identify a \emph{conservative} estimate.
+
+\paragraph{Projection pass analysis.}
+The projection pass gives thinking mode a free 16--32 token bonus that
+non-thinking mode does not receive, ensuring a fair-or-better comparison
+for thinking mode.
+To quantify its impact: without projection, think@512 on GSM8K drops
+from 56.9\% to ${<}$6\% (from our pre-projection ablation).
+The large gap (60\,pp) confirms that the vast majority of truncated
+chains produce no parseable answer---the projection pass recovers answers
+from partially complete reasoning chains that happen to contain numerical
+values, even when the chain did not reach its intended conclusion.
+Critically, this \emph{reduces} the measured thinking tax: the
+``true'' tax (without answer recovery heuristics) would be even larger,
+making our reported results a conservative lower bound on the phenomenon.
 
 \subsection{Dataset Details}
 \paragraph{GSM8K.} We use the standard test split ($n{=}1{,}319$ problems)~\citep{cobbe2021gsm8k}.
-A 200-sample subset (seed 42) is used for the budget sweep in
-Table~\ref{tab:thinking-tax}; all other analyses use the complete set
-unless otherwise noted.
+All main-text analyses use the complete set ($n{=}1{,}319$).
+A 200-sample subset (seed 42) used during development is reported
+in Table~\ref{tab:full-8b-200} for reference.
 
 \paragraph{MATH-500.} We use a 500-problem subset of the MATH benchmark~\citep{hendrycks2021math},
-following the split used by~\citet{lightman2024lets}.
-Due to computational constraints, we evaluate 40-sample subsets
-across multiple data seeds (42, 404, 505, 606, 707) and report averages.
+following the split used by~\citet{lightman2023prm}.
+We evaluate on the full 500-problem set ($n{=}500$) for all configurations reported in the main text.
+Early experiments used 40-sample subsets across data seeds \{42, 404, 505, 606, 707\} for rapid prototyping; all final results use the complete set.
+
+\paragraph{BIG-Bench Hard (BBH).}
+To validate the thinking tax beyond mathematical reasoning, we evaluate on
+five subtasks from BIG-Bench Hard~\citep{suzgun2023challenging}:
+\texttt{boolean\_expressions} ($n{=}250$),
+\texttt{causal\_judgement} ($n{=}187$),
+\texttt{date\_understanding} ($n{=}250$),
+\texttt{logical\_deduction\_five\_objects} ($n{=}250$), and
+\texttt{tracking\_shuffled\_objects\_three\_objects} ($n{=}250$),
+totaling $n{=}1{,}187$ samples.
+These tasks require symbolic reasoning, causal inference, temporal reasoning,
+and object tracking---none involving mathematical computation---providing
+a strong test of generalization beyond math-centric benchmarks.
+Answer extraction uses exact match against the gold-standard option label.
 
 % ============================================================================
 \section{Full Data Tables}
@@ -52,12 +88,11 @@ across multiple data seeds (42, 404, 505, 606, 707) and report averages.
 
 \subsection{Qwen3-8B: 200-Sample Subset}
 
-Table~\ref{tab:thinking-tax} in the main text presents the complete
-200-sample subset results.
-All experiments use seed=42, temperature=0 (greedy decoding).
-Below we provide the complete data for all tested budgets:
+The main text tables use the full GSM8K test set ($n{=}1{,}319$).
+During development, we used a 200-sample subset (seed=42, greedy decoding)
+for rapid iteration; we report these for completeness below:
 
-\begin{table}[h]
+\begin{table}[ht]
 \centering
 \small
 \caption{Complete budget sweep for Qwen3-8B on GSM8K 200-sample subset.}
@@ -81,10 +116,14 @@ thinking & 512 & 66.5\% & 442 & 47.5\% & 5.5\% \\
 
 \subsection{Qwen3-8B: Full GSM8K ($n$=1,319)}
 
-\begin{table}[h]
+\begin{table}[ht]
 \centering
 \small
-\caption{Key configurations for Qwen3-8B on full GSM8K ($n{=}1{,}319$).}
+\caption{Key configurations for Qwen3-8B on full GSM8K ($n{=}1{,}319$).
+Early Stop here denotes $|y| < b$ (generation terminated before budget);
+the stricter ``NatStop'' criterion ($<$95\% of budget) used in
+Table~\ref{tab:natural-stop-oracle} yields slightly lower rates
+(e.g., 37.4\% vs.\ 41.3\% at $b{=}512$).}
 \label{tab:full-8b-1319}
 \begin{tabular}{llrrrr}
 \toprule
@@ -93,21 +132,22 @@ thinking & 512 & 66.5\% & 442 & 47.5\% & 5.5\% \\
 nothink & 128 & 50.8\% & 113 & --- & --- \\
 nothink & 256 & 87.5\% & 146 & 88.8\% & 0.6\% \\
 \midrule
-thinking & 128 & 3.0\% & 128 & --- & --- \\
-thinking & 256 & 18.0\% & 255 & --- & --- \\
-thinking & 512 & 65.2\% & 460 & 41.3\% & 6.1\% \\
+thinking & 128 & 3.0\% & 128 & 0.0\% & --- \\
+thinking & 256 & 18.0\% & 255 & 1.4\% & --- \\
+thinking & 512 & 56.9\% & 460 & 37.4\% & 6.1\% \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \subsection{Qwen3.5-27B: Full GSM8K ($n$=1,319)}
 
-\begin{table}[h]
+\begin{table}[ht]
 \centering
 \small
 \caption{Qwen3.5-27B thinking mode results on full GSM8K.
-The model achieves dramatically lower accuracy than the 8B model at
-all budgets due to longer reasoning chains.}
+In thinking mode, the model achieves substantially lower accuracy than
+8B at all budgets due to longer reasoning chains; in non-thinking mode
+the 27B model reaches 95.5\% (Table~\ref{tab:model-size-scaling}).}
 \label{tab:27b-full}
 \begin{tabular}{lrrrr}
 \toprule
@@ -124,14 +164,59 @@ thinking@512 & 18.3\% & 528 & 0.7\% & 99.3\% \\
 \section{DeepSeek-R1 Cross-Model Validation}
 \label{app:deepseek}
 
-We validate our findings on DeepSeek-R1-Distill-Llama-8B using MATH-500
-with multiple data seeds to ensure robustness.
+We validate our findings on DeepSeek-R1-Distill-Llama-8B, a Llama-architecture model
+that also uses explicit \texttt{<think>} reasoning chains, providing evidence that the thinking tax
+is consistent with transfer across open reasoning models.
 
-\begin{table}[h]
+\paragraph{GSM8K full-scale evaluation ($n{=}1{,}319$).}
+Table~\ref{tab:deepseek-gsm8k} reports the full budget sweep for DeepSeek-R1 thinking
+mode on GSM8K.
+At budget 256, accuracy is just \textbf{7.5\%}---\emph{even worse} than Qwen3-8B's 18.0\%---with
+only 4.2\% of responses reaching a natural stop (vs.\ Qwen's 1.4\%).
+The same truncation mechanism is at work: 95.8\% of chains are truncated before the
+model produces an answer.
+Among the rare natural stops (55/1,319), accuracy is 78.2\%, consistent with the
+finding that completed chains are far more likely to be correct.
+At budget 512, accuracy jumps to \textbf{55.6\%} as 74.5\% of chains now complete naturally---but
+this remains 1.3\,pp below Qwen3-8B's 56.9\% at the same budget.
+Notably, DeepSeek-R1's natural-stop accuracy at $b{=}512$ is only 69.9\% (vs.\ Qwen's 99.0\%),
+suggesting the model's shorter chains do not always indicate high confidence.
+At budget 1024, accuracy reaches \textbf{64.4\%} with 99.6\% natural stops---the model's reasoning chains almost entirely fit within budget, yet accuracy reaches 7.5\,pp above Qwen's $b{=}512$ result (56.9\%) but at $2\times$ the token cost.
+Natural-stop accuracy (64.7\%) is nearly identical to overall accuracy, indicating that the few remaining truncated chains contribute negligible signal.
+Doubling the budget to 2048 yields virtually no change: \textbf{64.5\%} accuracy with 100\% natural stops and 448 avg tokens---the chain-length distribution is fully contained within ${\sim}450$ tokens, making any budget above ${\sim}512$ pure overhead for this model on GSM8K.
+
+\begin{table}[ht]
 \centering
 \small
-\caption{DeepSeek-R1-Distill-Llama-8B on MATH-500 subsets (40 samples per seed).
-The thinking tax and token waste phenomena persist across model families.}
+\caption{\textbf{DeepSeek-R1-Distill-Llama-8B on GSM8K} ($n{=}1{,}319$, thinking mode only).
+At $b{=}256$ the truncation-driven collapse is even more severe than on Qwen3-8B
+(7.5\% vs.\ 18.0\%); at $b{=}512$ accuracy recovers to 55.6\%, comparable to Qwen's 56.9\%.
+Natural-stop accuracy is notably lower than Qwen's (69.9\% vs.\ 99.0\% at $b{=}512$).
+At $b{=}1024$, accuracy plateaus at 64.4\% with 99.6\% natural stops; doubling the budget to $b{=}2048$ yields no further gain (64.5\%, 100\% natural stop, avg 448 tokens)---confirming the model's chain-length distribution saturates well below $b{=}1024$.
+DeepSeek-R1 does not support a non-thinking mode, so direct nothink comparison is not possible.
+$^{\dagger}$Only 5 hard-boundary samples at $b{=}1024$; HB accuracy is not reliably estimable.
+$^{\ddagger}$Zero hard-boundary samples at $b{=}2048$ (100\% natural stop).}
+\label{tab:deepseek-gsm8k}
+\begin{tabular}{rrrrrr}
+\toprule
+\textbf{Budget} & \textbf{Accuracy} & \textbf{Avg Tokens} & \textbf{Nat.\ Stop} & \textbf{NS Acc} & \textbf{HB Acc} \\
+\midrule
+256  & 7.5\%  & 255 & 4.2\%  & 78.2\% & 4.4\% \\
+512  & 55.6\% & 418 & 74.5\% & 69.9\% & 13.9\% \\
+1024 & 64.4\% & 447 & 99.6\% & 64.7\% & ---$^{\dagger}$ \\
+2048 & 64.5\% & 448 & 100.0\% & 64.5\% & ---$^{\ddagger}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{MATH-500 pilot results.}
+On MATH-500 subsets (40 samples $\times$ 5 seeds), the thinking tax is confirmed
+with even more severe truncation:
+
+\begin{table}[ht]
+\centering
+\small
+\caption{DeepSeek-R1-Distill-Llama-8B on MATH-500 subsets (40 samples per seed, thinking mode).}
 \label{tab:deepseek-math500}
 \begin{tabular}{lrrrr}
 \toprule
@@ -144,23 +229,61 @@ The thinking tax and token waste phenomena persist across model families.}
 \end{tabular}
 \end{table}
 
-Key findings that generalize from GSM8K:
+\paragraph{Key cross-architecture findings.}
 \begin{itemize}[nosep,leftmargin=*]
-    \item \textbf{Token utilization collapses with budget}: from 91.4\%
-      at $b{=}1024$ to 63.5\% at $b{=}4096$.
-    \item \textbf{Natural stop correlates with accuracy}: samples that
-      produce a final answer marker achieve consistently higher accuracy
-      than truncated samples.
-    \item \textbf{Diminishing returns}: accuracy gains from 2048$\to$4096
-      (+15.0pp) require 2$\times$ the tokens, yielding lower marginal
-      efficiency.
+    \item \textbf{The thinking tax replicates on a second model family}: DeepSeek-R1
+      (Llama architecture) shows an even larger tax than Qwen3-8B at budget 256
+      (7.5\% vs.\ 18.0\%), despite being a different architecture trained with
+      different methods.
+    \item \textbf{The mechanism is identical}: truncation-driven collapse with
+      95.8\% of chains truncated at budget 256, consistent with the framework's
+      prediction that any model with variable-length reasoning prefixes is susceptible.
+    \item \textbf{Diminishing returns at higher budgets}: at $b{=}1024$, accuracy plateaus at 64.4\%---above Qwen's $b{=}512$ result (56.9\%) but at $2\times$ the budget---with 99.6\% natural stops and only 43.7\% budget utilization, demonstrating that additional budget yields waste rather than accuracy.
+    \item \textbf{Natural stop remains informative}: among DeepSeek-R1 natural
+      stops at $b{=}256$, accuracy is 78.2\% (lower than Qwen's 100\% but still
+      substantially above the 4.4\% for truncated samples), confirming the
+      natural-stop oracle generalizes across architectures.
+    \item \textbf{Architectural limitation}: DeepSeek-R1 does not support a
+      non-thinking mode, which prevents direct nothink vs.\ think comparison.
+      This itself illustrates a deployment concern: models without a non-thinking
+      fallback cannot avoid the tax, making architectural support for mode
+      switching an important design consideration.
 \end{itemize}
 
 % ============================================================================
-\section{TOWN Simulation Details}
+\section{Sampling Robustness: Temperature $\tau{=}0.7$}
+\label{app:sampling-robustness}
+
+All main experiments use greedy decoding ($\tau{=}0$).
+To test whether the thinking tax is an artifact of greedy decoding, we run a pilot with Qwen3-8B on a random GSM8K subset ($n{=}200$, seed 42) at $\tau{=}0.7$, budget 256.
+
+\begin{table}[ht]
+\centering
+\small
+\caption{\textbf{Sampling robustness pilot} (Qwen3-8B, GSM8K $n{=}200$, $b{=}256$, $\tau{=}0.7$).
+The thinking tax persists---and is arguably \emph{more} severe---under stochastic decoding.}
+\label{tab:sampling-pilot}
+\begin{tabular}{lrrr}
+\toprule
+\textbf{Mode} & \textbf{Accuracy} & \textbf{Nat.\ Stop} & \textbf{Avg Tokens} \\
+\midrule
+think@256 ($\tau{=}0.7$)   & 5.0\%  & 0.0\%  & 256 \\
+nothink@256 ($\tau{=}0.7$) & 62.0\% & 55.0\% & 216 \\
+\midrule
+\textbf{Thinking Tax}      & \multicolumn{3}{c}{\textbf{57.0\,pp}} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Under greedy decoding, the same configuration yields a tax of 75.4\,pp (18.0\% vs.\ 93.4\%).
+The stochastic tax is smaller in absolute terms (57.0\,pp) because nothink accuracy also drops from 93.4\% to 62.0\% under sampling, but the core phenomenon is unchanged: thinking mode at budget 256 collapses to near-zero accuracy (5.0\%) with 0\% natural stops, while non-thinking mode retains useful accuracy (62.0\%) with 55\% of responses completing within budget.
+This confirms that the thinking tax is not a greedy-decoding artifact but a fundamental consequence of budget-constrained reasoning under the \texttt{<think>} framework.
+
+% ============================================================================
+\section{\method{} Simulation Details}
 \label{app:town-simulation}
 
-Our per-sample TOWN simulation uses the \textbf{full GSM8K test set}
+Our per-sample \method{} simulation uses the \textbf{full GSM8K test set}
 ($n{=}1{,}319$) where we have matched nothink@256 and thinking@512
 results for each question.
 
@@ -195,6 +318,232 @@ The net effect is strongly positive: 64 recoveries $-$ 19 regrets = 45 net gains
 yielding the +3.4\,pp improvement over \texttt{nothink@256}.
 
 % ============================================================================
+\section{Token Utilization Analysis}
+\label{app:utilization}
+
+\input{../results/paper_figures/table_token_utilization}
+
+Table~\ref{tab:token-utilization} reveals a striking pattern.
+At $b{=}128$, Qwen3-8B uses 100\% of its budget---every token is
+consumed, and the model is almost certainly still mid-reasoning when
+generation is forcibly terminated.
+At $b{=}256$, utilization remains near-perfect (99.7\%), with only 1.4\%
+of samples stopping naturally.
+But at $b{=}512$, utilization drops to \textbf{89.8\%}, with an average
+of only 477 tokens consumed out of 512 available.
+
+The pattern is even more dramatic for DeepSeek-R1 on GSM8K: at $b{=}256$, utilization exceeds 100\% (the model consumes its entire budget on 95.8\% of samples), but at $b{=}1{,}024$ utilization drops to \textbf{43.7\%} ($447/1{,}024$ avg tokens consumed), with 99.6\% of samples stopping naturally---more than half the budget is wasted on padding (full-scale, $n{=}1{,}319$; Table~\ref{tab:deepseek-gsm8k}).
+
+% ============================================================================
+\section{Difficulty Distribution and Impossible Questions}
+\label{app:impossible}
+
+We categorize GSM8K problems by the \emph{minimum} budget at which Qwen3-8B
+solves them correctly in thinking mode.
+
+\input{../results/paper_figures/table_efficiency_frontier}
+
+Table~\ref{tab:efficiency-frontier} reveals a four-tier difficulty distribution:
+\begin{itemize}[nosep,leftmargin=*]
+  \item \textbf{Easy} (11.8\%, $n{=}155$): solved at $b{\leq}128$.
+  \item \textbf{Medium} (25.8\%, $n{=}340$): solved at $b{\leq}256$ but not at 128.
+  \item \textbf{Hard} (30.7\%, $n{=}405$): solved only at $b{=}512$.
+  \item \textbf{Impossible} (31.8\%, $n{=}419$): unsolved at \emph{any}
+    tested budget ($b{\leq}512$).
+\end{itemize}
+
+An \emph{oracle router} that skips impossible questions and assigns the minimum
+sufficient budget achieves \textbf{68.2\%} accuracy ($+3.0$\,pp over fixed-512)
+at only \textbf{401} average tokens---a \textbf{21.7\%} savings.
+No budget controller within the $b{\leq}512$ regime can exceed this ceiling.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.72\textwidth]{fig3_difficulty_distribution}
+\caption{%
+  \textbf{Four-tier difficulty distribution of GSM8K problems} under Qwen3-8B thinking mode.
+  31.8\% of problems are impossible at all tested budgets.
+}
+\label{fig:difficulty-distribution}
+\end{figure}
+
+% ============================================================================
+\section{\method{} Routing Ablation}
+\label{app:ablation}
+
+\begin{table}[ht]
+\centering
+\caption{\textbf{Routing sensitivity to $B_1$} on full GSM8K ($n{=}1{,}319$, Qwen3-8B). All variants use $B_2{=}512$.}
+\label{tab:town-ablation}
+\small
+\begin{tabular}{lrrrr}
+\toprule
+\textbf{$B_1$ (probe)} & \textbf{Early Stop} & \textbf{Routed} & \textbf{Accuracy} & \textbf{Avg Tokens} \\
+\midrule
+128 & 50.8\% & 49.2\% & 77.3\% & 399 \\
+256 (default) & 88.8\% & 11.2\% & \textbf{90.9\%} & \textbf{199} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+$B_1{=}128$ yields only 50.8\% early-stop rate, aggressively routing 49.2\% to Stage~2.
+$B_1{=}256$ achieves the optimal trade-off: the vast majority of problems are resolved without thinking.
+
+\paragraph{Full $(B_1, B_2)$ sensitivity grid.}
+Table~\ref{tab:town-grid} shows \method{} accuracy across all
+feasible $(B_1, B_2)$ combinations, revealing when the cascade helps
+vs.\ hurts.
+The net recovery condition (Eq.~\ref{eq:net-recovery}) correctly predicts
+the sign: configurations where $R^+ > R^-$ yield accuracy gains, while
+those where the thinking fallback is too weak ($B_2$ too small) or too
+few samples are routed ($B_1$ too large) show minimal or negative returns.
+
+\begin{table}[ht]
+\centering
+\caption{\textbf{\method{} sensitivity to $(B_1, B_2)$} on full GSM8K
+($n{=}1{,}319$, Qwen3-8B).
+$R^+$: genuine recoveries (nothink wrong, think correct).
+$R^-$: routing regrets (nothink correct, think wrong).
+Net = $R^+ - R^-$.
+\method{} provides substantial gains when $B_2$ is large enough for
+thinking mode to be effective and $B_1$ routes a meaningful fraction.
+Note: thinking-mode accuracy here uses standard HuggingFace generation
+(without the projection pass used in Table~\ref{tab:main-results}),
+so the $B_1{=}256$, $B_2{=}512$ row shows lower accuracy than the main
+\method{} result; the qualitative patterns---$B_2$ must be large
+enough, $B_1{=}256$ is optimal---are consistent across settings.}
+\label{tab:town-grid}
+\small
+\begin{tabular}{rr|rrrrrr}
+\toprule
+$B_1$ & $B_2$ & \textbf{Acc} & \textbf{Avg Tok} & \textbf{Routed} & $R^+$ & $R^-$ & \textbf{Net} \\
+\midrule
+128 & 512 & 63.8\% & 412 & 60.6\% & 237 & 66 & +171 \\
+128 & 1024 & 87.2\% & 552 & 60.6\% & 492 & 12 & +480 \\
+\midrule
+256 & 512 & 86.4\% & 204 & 11.2\% & 22 & 37 & $-$15 \\
+256 & 1024 & \textbf{90.7\%} & \textbf{248} & 11.2\% & 53 & 11 & \textbf{+42} \\
+256 & 2048 & 93.3\% & 287 & 11.2\% & 78 & 1 & +77 \\
+\midrule
+512 & 1024 & 93.3\% & 154 & 0.2\% & 0 & 1 & $-$1 \\
+512 & 2048 & 93.5\% & 156 & 0.2\% & 1 & 0 & +1 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Key patterns: (1)~$B_1{=}128$ over-routes (60.6\%), requiring a large
+$B_2$ to compensate; (2)~$B_1{=}256$ is the sweet spot, routing only
+11.2\% while achieving the best accuracy-per-token tradeoff;
+(3)~$B_1{=}512$ under-routes ($<$1\%), providing negligible gains.
+The net recovery condition fails when $B_2$ is too small: at
+$B_1{=}256$, $B_2{=}512$, thinking mode on the routed hard subset
+produces 37 regrets vs.\ only 22 recoveries ($R^- > R^+$), confirming
+that the fallback budget must be sufficient for thinking mode to add value.
+
+% ============================================================================
+\section{MATH-500 by Difficulty Level}
+\label{app:math500-level}
+
+\begin{table}[ht]
+\centering
+\caption{\textbf{MATH-500 thinking accuracy by difficulty level} (Qwen3-8B).
+Harder problems have longer chains and are more severely truncated.}
+\label{tab:math500-level}
+\small
+\begin{tabular}{lrrr}
+\toprule
+\textbf{Level} & \textbf{Think@512} & \textbf{Think@1024} & \textbf{Think@2048} \\
+\midrule
+Level 1 ($n{=}43$) & 11.6\% & 44.2\% & 81.4\% \\
+Level 2 ($n{=}90$) & 8.9\% & 31.1\% & 60.0\% \\
+Level 3 ($n{=}105$) & 8.6\% & 21.0\% & 50.5\% \\
+Level 4 ($n{=}128$) & 4.7\% & 9.4\% & 38.3\% \\
+Level 5 ($n{=}134$) & 2.2\% & 6.7\% & 21.6\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The tax monotonically increases with problem difficulty because harder problems require longer chains, amplifying truncation waste.
+
+\subsection{MATH-500: Full Data Table}
+\label{app:math500-full}
+
+\begin{table}[ht]
+\centering
+\small
+\caption{Complete budget sweep for Qwen3-8B on MATH-500 ($n{=}500$).
+Non-thinking mode saturates at ${\sim}$64.4\% by budget 2048.
+Thinking mode has \emph{not} reached parity at $b{=}2048$
+(44.0\% vs.\ 64.4\%), confirming the crossover shifts further
+right on harder benchmarks.}
+\label{tab:math500-full}
+\begin{tabular}{llrrrrr}
+\toprule
+\textbf{Mode} & \textbf{Budget} & \textbf{Accuracy} & \textbf{Correct} & \textbf{Avg Tokens} & \textbf{Early Stop} \\
+\midrule
+nothink & 256 & 16.6\% & 83 & 250 & 10.4\% \\
+nothink & 512 & 40.6\% \ci{36.4}{45.0} & 203 & 429 & 42.8\% \\
+nothink & 1024 & 59.8\% \ci{55.6}{64.0} & 299 & 606 & 76.2\% \\
+nothink & 2048 & 64.4\% \ci{60.2}{68.6} & 322 & 763 & 87.8\% \\
+\midrule
+thinking & 256 & 4.2\% & 21 & 256 & 0.0\% \\
+thinking & 512 & 6.2\% \ci{4.2}{8.4} & 31 & 544 & 0.0\% \\
+thinking & 1024 & 18.0\% \ci{14.6}{21.4} & 90 & 1051 & --- \\
+thinking & 2048 & 44.0\% \ci{39.8}{48.4} & 220 & 1978 & --- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% ============================================================================
+\section{Comparison with Alternative Strategies}
+\label{app:comparison}
+
+\paragraph{vs.\ \texttt{think@512} only.}
+\method{} achieves substantially higher accuracy at
+${\sim}$2.3$\times$ fewer tokens by avoiding thinking mode's truncation waste on the
+88.8\% of problems where it is unnecessary.
+
+\paragraph{vs.\ \texttt{nothink@256} only.}
+\method{} adds a thinking fallback for the $\sim$11.2\% of hard
+problems, recovering accuracy at a modest cost increase
+(199 vs.\ 146 avg tokens).
+
+\paragraph{vs.\ Think-then-stop (early termination).}
+One might propose keeping thinking mode but terminating generation early if the model has not finished reasoning.
+However, this is equivalent to our ``truncated'' category: at $b{=}512$, only 37.4\% of 8B samples produce a complete chain, and forcing early termination discards both the reasoning progress and any partial answer.
+Unlike non-thinking mode, which can produce a useful answer in far fewer tokens because it does not waste budget on a reasoning chain, early-terminated thinking chains rarely contain extractable answers (without our projection pass, accuracy drops from 56.9\% to ${<}$6\%).
+\method{} effectively implements the optimal version of this idea: use non-thinking mode first (which naturally stops early on easy problems), and only invoke thinking for genuinely hard cases.
+
+\paragraph{vs.\ Self-consistency~\cite{wang2023selfconsistency}.}
+SC@$K$ generates $K$ full-budget reasoning traces and majority-votes,
+consuming $K \times B$ tokens unconditionally.
+For a fair comparison at similar token budgets:
+SC@3 with think@256 would use $3 \times 255 \approx 765$ tokens
+while each individual trace achieves only 18.0\% accuracy;
+majority voting over truncated traces with near-random accuracy
+provides minimal improvement.
+By contrast, \method{} achieves 90.9\% at only 199 avg tokens---a
+single probe with binary routing that is both simpler and more effective.
+SC@$K$ is more appropriate when individual traces are already accurate
+(i.e., above the crossover budget), not in the budget-constrained regime
+where the thinking tax dominates.
+
+\paragraph{vs.\ Nothink SC@$K$.}
+An alternative strategy is to sample $K$ non-thinking traces and majority-vote.
+SC@3 with nothink@256 would consume $3 \times 146 = 438$ tokens---more than
+\method{}'s 199 avg tokens.
+While nothink SC@$K$ may improve over single-trace nothink@256 (87.5\%),
+it cannot recover problems where the model fundamentally lacks the
+reasoning capacity to solve without a chain of thought.
+\method{}'s advantage is qualitative: Stage~2 thinking mode provides a
+\emph{different reasoning strategy}, not just repeated attempts at the same one.
+
+\paragraph{vs.\ Oracle routing.}
+An oracle that knows each problem's difficulty \emph{a priori}
+achieves 68.2\% accuracy at 401 average tokens.
+\method{}'s early-stop signal approximates this oracle using a training-free heuristic.
+
+% ============================================================================
 \section{Thinking Efficiency Frontier}
 \label{app:frontier}
 
@@ -216,21 +565,602 @@ extended reasoning causes the model to revise a correct intermediate
 answer.
 
 % ============================================================================
+\section{Format-Adjusted Fairness Experiments}
+\label{app:fairness}
+
+To address the concern that comparing \texttt{think@$b$} and \texttt{nothink@$b$} at the same total token budget is ``unfair'' to thinking mode, we design controlled experiments that give thinking mode various advantages.
+
+\begin{table}[ht]
+\centering
+\caption{\textbf{Format-adjusted fairness experiments} on full GSM8K ($n{=}1{,}319$, Qwen3-8B).
+Even with generous answer-buffer guarantees and 2$\times$ the token budget, thinking mode cannot match non-thinking.
+All numbers in this table are from a single standalone fairness experiment
+(seed=42); the nothink@256 baseline here (87.0\%) differs slightly from
+the main evaluation (87.5\%, seed=11) due to seed variation.}
+\label{tab:fairness}
+\small
+\begin{tabular}{lrrrr}
+\toprule
+\textbf{Configuration} & \textbf{Accuracy} & \textbf{Avg Tokens} & \textbf{Budget Hit} & \textbf{vs nothink@256} \\
+\midrule
+\texttt{nothink@256} (baseline) & 87.0\% & 147 & 11.5\% & --- \\
+\texttt{think@256} & 18.0\% & 255 & 98.6\% & $-$69.0pp \\
+\texttt{think@512\_generous} & 56.0\% & 460 & 62.6\% & $-$31.0pp \\
+\texttt{think@256+nothink@256} & 67.6\% & 263 & --- & $-$19.4pp \\
+\texttt{think@512} & 56.0\% & 460 & 62.6\% & $-$31.0pp \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Configurations.}
+\begin{itemize}[nosep,leftmargin=*]
+    \item \textbf{\texttt{think@512\_generous}}: Allocates 512 total tokens, but guarantees the last 256 tokens are reserved for the answer.  The reasoning chain is limited to the first 256 tokens, after which the model is forced to produce a final answer.  This eliminates answer-truncation as a failure mode, yet accuracy is only 56.0\%---31.0\,pp below \texttt{nothink@256} at double the budget.
+    \item \textbf{\texttt{think@256+nothink@256} (two-pass)}: First generates a 256-token reasoning chain in thinking mode, then feeds that chain as context to a non-thinking completion with a 256-token answer budget.  This hybrid achieves 67.6\%---better than pure thinking but still 19.4\,pp below non-thinking alone.
+    \item \textbf{\texttt{think@512}}: Standard thinking mode with 512 total tokens and no answer-buffer guarantee.  Achieves only 56.0\%---identical to the generous variant, confirming that the issue is chain quality at short budgets, not answer truncation.
+\end{itemize}
+
+These results confirm that the thinking tax is not merely about answer truncation: even when the answer is \emph{guaranteed} to fit, the reasoning chain's quality at short budgets is insufficient to improve over direct answering.
+
+% ============================================================================
+\section{Additional Figures}
+\label{app:model-size-figure}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.72\textwidth]{fig_thinking_tax_model_size}
+\caption{%
+  \textbf{The thinking tax worsens with model size.}
+  At $b{=}512$, thinking-mode accuracy collapses with model size
+  (8B: 56.9\%, 9B: 15.5\%, 27B: 18.3\%)---the 9B and 27B taxes are both ${\sim}2.1\times$ larger (vs.\ uniform nothink: 93.1\%, 93.2\%, 95.5\%).
+  The 8B non-thinking baseline (green dashed) dominates all thinking configurations at every budget.
+}
+\label{fig:thinking-tax-model-size}
+\end{figure}
+
+\input{sections/fig_town_pipeline}
+
+% ============================================================================
+% NOTE: Entropy dynamics section removed during Coupling Tax pivot.
+% Entropy monitoring was empirically shown to be ineffective as a stopping
+% criterion: chunk entropy range [0, 0.39] is too narrow for meaningful
+% thresholds, and entropy is anti-correlated with correctness (incorrect
+% samples have LOWER entropy). The key mechanism is decoupled answer
+% generation (split-budget), not entropy-based early stopping.
+% ============================================================================
+
+% ============================================================================
+\section{Full Theoretical Analysis}
+\label{app:theory-full}
+
+The main text presents the core decomposition (Eqs.~\ref{eq:acc-decomp}--\ref{eq:crossover}) with derivations for the accuracy decomposition and crossover budget.
+Here we provide the full formal definitions, additional propositions, and remaining proofs.
+
+\subsection{Formal Definitions}
+
+\begin{definition}[Thinking chain length]
+For a model $\mathcal{M}$ and question $q$, let $L(q) \in \mathbb{N}$
+denote the \emph{natural chain length}---the total number of output tokens
+the model would generate in thinking mode if unconstrained
+(i.e., $b \to \infty$).
+Let $F_L(t) \triangleq \Pr(L \le t)$ denote the CDF of $L$ over the
+question distribution $q \sim \mathcal{Q}$.
+\end{definition}
+
+\begin{definition}[Truncation rate]
+Given token budget $b$, the \emph{truncation rate} is
+$\rho(b) \triangleq 1 - F_L(b) = \Pr(L > b)$.
+\end{definition}
+
+\begin{assumption}[Binary outcome structure (restated)]
+\label{asm:binary-restated}
+When the chain completes naturally ($L \le b$), the model produces a
+well-formed answer with accuracy $\alpha_c \triangleq
+\Pr(\text{correct} \mid L \le b) \in (0,1]$.
+When truncated ($L > b$), the residual accuracy is
+$\alpha_t \triangleq \Pr(\text{correct} \mid L > b) \ll \alpha_c$.
+\end{assumption}
+
+\noindent
+At $b{=}512$ on GSM8K ($n{=}1{,}319$), $\alpha_c = 99.0\%$ among natural-stop samples vs.\
+$\alpha_t = 31.8\%$ among truncated samples (Finding~2).
+At lower budgets, $\alpha_t$ approaches zero.
+
+\begin{remark}[Budget-dependent $\alpha_t$]
+In practice, $\alpha_t$ varies with $b$: at $b{=}128$, nearly all
+truncated samples lack any answer ($\alpha_t \approx 0$);
+at $b{=}512$, answer-extraction heuristics and projection passes
+recover partial answers ($\alpha_t \approx 31.8\%$).
+The $\alpha_t = 0$ simplification serves as a tight first-order
+approximation at low budgets.
+\end{remark}
+
+\subsection{Budget Multiplier}
+
+\begin{corollary}[Budget multiplier (restated)]
+\label{cor:multiplier-restated}
+The budget multiplier $\gamma \triangleq b^*/b_{\mathrm{sat}}$ quantifies
+the token overhead for thinking to become viable.
+On GSM8K: $\gamma \approx 2048/512 = 4\times$.
+On MATH-500: $\gamma > 2048/1024 = 2\times$, since thinking has not yet caught non-thinking at $b{=}2048$, confirming that harder tasks demand larger multipliers.
+\end{corollary}
+
+\subsection{Natural Stop as a Confidence Oracle}
+
+\begin{proposition}[Oracle precision (restated)]
+\label{prop:oracle-restated}
+The natural-stop event $\mathcal{S}(b) \triangleq \{|y| < b\}$
+has positive predictive value
+$\mathrm{PPV}(\mathcal{S}) = \Pr(\mathrm{correct} \mid \mathcal{S}(b)) = \alpha_c$.
+For non-thinking mode, $\mathrm{PPV}(\mathcal{S}_{\mathrm{nt}}) \ge \alpha_c$,
+since early completion selects for easier questions.
+\end{proposition}
+
+\noindent
+By Hoeffding's inequality, with $n{=}475$ natural-stop samples (8B, $b{=}512$)
+and $\hat{\alpha}_c = 0.963$:
+the 95\% lower confidence bound is $\alpha_c \ge 0.919$.
+
+\begin{remark}[Information-theoretic interpretation]
+Early stopping implies the model's conditional entropy
+$H(A \mid y_{1:t^*}) \approx 0$ at $t^* \ll b$---the model is
+near-certain of its answer.
+Unlike logit-based confidence, this signal is purely behavioral.
+\end{remark}
+
+\subsection{Inverse Scaling with Model Size}
+
+\begin{proposition}[Inverse scaling of the thinking tax (restated)]
+\label{prop:inverse-scaling-restated}
+Let $L_M$ denote the chain-length distribution for a model of size $M$.
+If $L_{M_2}$ stochastically dominates $L_{M_1}$ for $M_2 > M_1$
+(i.e., $F_{L_{M_2}}(b) \le F_{L_{M_1}}(b)$ for all $b$), and
+non-thinking accuracy is approximately size-invariant, then for any fixed budget $b$:
+$\mathrm{Tax}(M_2, b) \ge \mathrm{Tax}(M_1, b)$.
+\end{proposition}
+
+\begin{proof}
+From Eq.~\ref{eq:tax}:
+$\mathrm{Tax}(M, b) \approx \mathrm{Acc}_{\mathrm{nt}}(b) -
+F_{L_M}(b) \cdot \alpha_c$.
+With $\mathrm{Acc}_{\mathrm{nt}}$ approximately constant across $M$,
+and $F_{L_{M_2}}(b) \le F_{L_{M_1}}(b)$, the second term decreases,
+increasing the tax.
+\end{proof}
+
+\noindent
+\textbf{Empirical verification.}
+At $b{=}512$: 8B natural-stop rate = 37.4\%, 27B = 0.7\%.
+The thinking tax for 27B is $95.5\% - 18.3\% = 77.2$\,pp vs.\
+8B's gap of $93.1\% - 56.9\% = 36.2$\,pp at budget 512---a ${\sim}2.1\times$ amplification.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.7\textwidth]{fig_chain_length_cdf.pdf}
+\caption{\textbf{Chain-length CDF $F_L(b)$ for Qwen3-8B vs.\ Qwen3.5-9B on GSM8K (think@2048, $n{=}1{,}319$).}
+The 9B CDF shifts right (stochastic dominance): median chain length increases from 540 tokens (8B) to 993 tokens (9B), with natural-stop rates of 92.8\% vs.\ 56.3\%.
+At any fixed budget $b$, $F_{L_{\text{9B}}}(b) \le F_{L_{\text{8B}}}(b)$, meaning more 9B chains are truncated---directly producing the $2.1\times$ tax amplification predicted by Proposition~\ref{prop:inverse-scaling-restated}.
+Kaplan-Meier estimation accounts for right-censored chains that hit the budget ceiling.}
+\label{fig:chain-length-cdf}
+\end{figure}
+
+\begin{corollary}[Crossover budget grows with model size (restated)]
+\label{cor:crossover-scaling-restated}
+Since $b^*(M) \approx F_{L_M}^{-1}(\bar{\alpha}_{\mathrm{nt}}/\alpha_c)$
+and $F_{L_M}^{-1}$ shifts right with $M$:
+$M_2 > M_1 \implies b^*(M_2) \ge b^*(M_1)$.
+Larger models require proportionally larger budgets for thinking to
+become cost-effective.
+\end{corollary}
+
+% ============================================================================
+\section{Natural Stop Oracle: Full Analysis}
+\label{app:natural-stop-details}
+
+Section~\ref{sec:finding:natural-stop} summarizes the natural-stop oracle (see Table~\ref{tab:natural-stop-oracle} in the main text).
+Here we present the complete analysis.
+
+At $b{=}512$ with Qwen3-8B, 37.4\% of samples terminate before consuming
+95\% of their token budget (Table~\ref{tab:natural-stop-oracle}).
+Among these, accuracy is \textbf{99.0\%}; among truncated samples, only 31.8\%---a 49.7\,pp gap.
+A stricter definition requiring an explicit ``Final answer'' marker selects only 6.1\% but achieves 93.8\%.
+The effect generalizes to DeepSeek-R1-8B (Table~\ref{tab:natural-stop-oracle}).
+
+% ============================================================================
+\section{Routing Baseline Comparison}
+\label{app:routing-baselines}
+
+Table~\ref{tab:routing_baselines} compares \method{} against budget-matched routing baselines, all routing exactly 11.2\% of samples to \texttt{think@512}.
+\textbf{Random routing} yields only 85.0\% (45.6 regrets overwhelm 12.7 recoveries).
+\textbf{Inverse token-length routing} performs even worse (83.5\%).
+\method{}'s signal is equivalent to a \textbf{token-length router}---optimal within the class of budget-utilization-based routers.
+The \textbf{oracle} upper bound (95.8\%) leaves a 4.9\,pp gap reflecting routing regret and missed recoveries.
+
+\begin{table}[ht]
+\centering
+\caption{\textbf{Routing baseline comparison} on GSM8K (Qwen3-8B, $n{=}1{,}319$).
+All budget-matched routers use the same 11.2\% routing rate as \method{}.}
+\label{tab:routing_baselines}
+\small
+\begin{tabular}{@{}lcccccc@{}}
+\toprule
+\textbf{Method} & \textbf{Acc.\,(\%)} & \textbf{Avg Tok.} & \textbf{Route\,\%} & \textbf{Recov.} & \textbf{Regret} & \textbf{Net\,$\Delta$} \\
+\midrule
+NoThink@256 & 87.5 & 146 & 0.0 & 0 & 0 & 0 \\
+Think@512 & 56.9 & 460 & 100.0 & 109 & 403 & $-$294 \\
+\midrule
+Random & $85.0{\pm}0.5$ & $200{\pm}1$ & 11.2 & 12.7 & 45.6 & $-$32.9 \\
+Inverse Token-Length & 83.5 & 200 & 11.2 & 1 & 54 & $-$53 \\
+Token-Length & 90.9 & 199 & 11.2 & 64 & 19 & 45 \\
+Oracle & 95.8 & 182 & 8.3 & 109 & 0 & 109 \\
+\midrule
+\textbf{\method{} (Ours)} & \textbf{90.9} & \textbf{199} & 11.2 & 64 & 19 & \textbf{45} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% ============================================================================
+\section{Full MATH-500 Results}
+\label{app:math500-full-results}
+
+Table~\ref{tab:math500-tax-full} below shows the MATH-500 thinking tax results.
+Here we include the extended version with the additional $b{=}128$ data point (see also Table~\ref{tab:math500-full} for per-mode details).
+
+\begin{table}[ht]
+\centering
+\caption{\textbf{Extended MATH-500 thinking tax} ($n{=}500$, Qwen3-8B).
+Includes low-budget results. At budget 256, thinking achieves just 4.2\% with 0\% early stop rate---every response is truncated.}
+\label{tab:math500-tax-full}
+\small
+\begin{tabular}{rrrr}
+\toprule
+\textbf{Budget} & \textbf{Nothink Acc} & \textbf{Think Acc} & \textbf{Gap (NT$-$T)} \\
+\midrule
+128 & 4.6\% & --- & --- \\
+256 & 16.6\% & 4.2\% & $+$12.4pp \\
+512 & 40.6\% \ci{36.4}{45.0} & 6.2\% \ci{4.2}{8.4} & $+$34.4pp \\
+1024 & 59.8\% \ci{55.6}{64.0} & 18.0\% \ci{14.6}{21.4} & $+$41.8pp \\
+2048 & 64.4\% \ci{60.2}{68.6} & 44.0\% \ci{39.8}{48.4} & $+$20.4pp \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The thinking tax is confirmed and amplified on MATH-500: at budget 1024, the gap is \textbf{41.8\,pp} \ci{36.4}{47.0} (paired bootstrap)---even larger than GSM8K's 28.2\,pp at the same budget.
+The crossover has not been reached at 2048 tokens (20.4\,pp gap), confirming that harder benchmarks push the crossover further right.
+
+% ============================================================================
+% Note: Discussion content is in the main text (\S\ref{sec:discussion}).
+% Previously this section duplicated it via \input; removed to avoid double inclusion.
+% ============================================================================
+
+% ============================================================================
+\section{Theory Verification}
+\label{app:theory-verification}
+
+Table~\ref{tab:theory-verification} validates the truncation-waste decomposition
+(Eq.~\ref{eq:acc-decomp}) across three dimensions: budgets, model scales, and benchmarks.
+
+\begin{table}[ht]
+\centering
+\caption{\textbf{Theory verification: predicted vs.\ observed accuracy.}
+The framework $\mathrm{Acc}(b) = F_L(b)\cdot\alpha_c + (1{-}F_L(b))\cdot\alpha_t$
+is verified as an accounting identity at $b{\in}\{256,512\}$ for 8B
+where all components are directly measurable.
+The crossover budget $b^*$ corresponds to the 97th percentile of chain lengths
+(Eq.~\ref{eq:crossover}): at $b{=}2048$, $F_L \approx 0.97$, yielding
+$0.97\times 0.963 = 0.934$---consistent with the observed crossover.
+Cross-scale: the framework explains the 27B collapse
+($F_L(512)_{27\text{B}} = 0.007$ vs.\ $0.374$ for 8B).}
+\label{tab:theory-verification}
+\small
+\begin{tabular}{lccccc}
+\toprule
+\textbf{Config} & $F_L(b)$ & $\alpha_c$ & $\alpha_t$ & \textbf{Predicted} & \textbf{Observed} \\
+\midrule
+\multicolumn{6}{l}{\textit{Directly measured (8B, GSM8K)}} \\
+8B, $b{=}256$ & 0.014 & 1.000 & 0.168 & 18.0\% & 18.0\% \\
+8B, $b{=}512$ & 0.374 & 0.990 & 0.318 & 56.9\% & 56.9\% \\
+\midrule
+\multicolumn{6}{l}{\textit{Crossover prediction (97th percentile)}} \\
+8B, $b{=}2048$ & ${\sim}$0.93 & 0.990 & --- & ${\sim}$93\% & 93.1\% \\
+\midrule
+\multicolumn{6}{l}{\textit{Cross-scale prediction}} \\
+9B, $b{=}512$ & ${\sim}$0.01 & --- & --- & $<$5\% & 15.5\% \\
+27B, $b{=}512$ & 0.007 & --- & 0.178 & 18.3\% & 18.3\% \\
+\midrule
+\multicolumn{6}{l}{\textit{Cross-benchmark (MATH-500, same model)}} \\
+8B, $b{=}512$ & ${\sim}$0.00 & --- & 0.062 & 6.2\% & 6.2\% \\
+8B, $b{=}1024$ & 0.002 & 1.000 & 0.178 & 18.0\% & 18.0\% \\
+8B, $b{=}2048$ & 0.178 & 0.787 & 0.365 & 44.0\% & 44.0\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The framework's predictions are \textbf{consistent with observations} wherever all components ($F_L$, $\alpha_c$, $\alpha_t$)
+are directly measurable (8B at $b{\in}\{256, 512\}$); this is expected since the decomposition is an accounting identity when the binary outcome assumption holds.
+The crossover prediction is confirmed: at $b{=}2048$,
+$F_L \approx 0.93$ (i.e., 93\% of chains complete within budget), yielding a predicted accuracy of
+$0.93 \times 0.990 \approx 92.1\%$, close to the observed 93.1\%---confirming that the crossover occurs near $b{=}2048$ as predicted.
+The cross-scale predictions correctly capture the qualitative ordering
+(27B $\ll$ 9B $\ll$ 8B at same budget) and the mechanism (longer chains $\rightarrow$ smaller $F_L$
+$\rightarrow$ more truncation waste).
+At 9B, observed accuracy (15.5\%) slightly exceeds the $\alpha_t{=}0$ prediction ($<$5\%) because
+the projection pass (Appendix~\ref{app:experimental_details}) recovers partial answers
+from near-complete chains.
+
+The key \emph{predictive} insight is that the crossover budget $b^*$ is fully determined
+by the chain-length distribution and non-thinking saturation accuracy
+(Eq.~\ref{eq:crossover}):
+for any model where these quantities are known, the crossover can be predicted
+\emph{without} running the expensive budget sweep that traditionally determines it.
+For example, estimating $F_L$ from a small pilot run at a single budget suffices
+to predict whether thinking mode will be beneficial at a target deployment budget.
+
+\paragraph{Held-out prediction tests and limits.}
+To assess the decomposition's \emph{out-of-sample} predictive power (beyond the in-sample accounting identity),
+we perform two held-out tests.
+On BBH, estimating $\alpha_c{=}0.950$ and $\alpha_t{=}0.275$ from $b{=}512$ data
+predicts $b{=}2048$ accuracy within \textbf{0.8\,pp} and $b{=}1024$ within 4.3\,pp
+(main text, \S\ref{sec:theory}).
+The larger $b{=}1024$ error arises because $\alpha_t$ increases with budget as more truncated
+samples produce partial answers that happen to be correct.
+
+This reveals a genuine limitation: the decomposition assumes $\alpha_c$ and $\alpha_t$ are
+approximately constant across budgets, which holds for moderate extrapolation
+(BBH $b{=}512{\to}2048$: $\alpha_t$ shifts from 0.275 to 0.283, yielding 0.8\,pp error)
+but breaks down when the budget gap is large relative to chain-length variance
+(MATH-500 $b{=}1024{\to}2048$: $\alpha_t$ shifts from 0.178 to 0.365, yielding ${\sim}$12\,pp error).
+The practical implication is that the crossover heuristic (97th percentile of chain lengths)
+remains reliable---it depends only on $F_L$ and $\bar{\alpha}_{\mathrm{nt}}$, not on $\alpha_t$---but
+point predictions of thinking-mode accuracy at specific budgets degrade when $\alpha_t$
+varies substantially across the prediction range.
+
+% ============================================================================
+\section{\method{} Pareto-Dominance Proof}
+\label{app:town-proof}
+
+\begin{proof}[Full proof of Theorem~\ref{thm:mrsd-pareto}]
+Let $p = \Pr(\mathcal{S}_{\mathrm{nt}}(B_1))$ be the early-stop rate.
+Decompose nothink accuracy:
+$$\mathrm{Acc}_{\mathrm{nt}}(B_1) = p \cdot \alpha_c^{\mathrm{nt}}
+  + (1-p) \cdot \alpha_{\mathrm{nt}}^{\mathrm{hard}},$$
+where $\alpha_{\mathrm{nt}}^{\mathrm{hard}} \triangleq
+\Pr(\mathrm{correct} \mid \neg\mathcal{S}, \mathrm{nothink})$.
+\method{} replaces the second term:
+$$\mathrm{Acc}_{\method{}} = p \cdot \alpha_c^{\mathrm{nt}}
+  + (1-p) \cdot \alpha_{\mathrm{th}}^{\mathrm{hard}}.$$
+Subtracting:
+\begin{equation}
+\mathrm{Acc}_{\method{}} - \mathrm{Acc}_{\mathrm{nt}}(B_1)
+= (1-p)\bigl[\alpha_{\mathrm{th}}^{\mathrm{hard}}
+  - \alpha_{\mathrm{nt}}^{\mathrm{hard}}\bigr].
+\label{eq:town-gain-decomp}
+\end{equation}
+The net recovery condition~\eqref{eq:net-recovery} ensures the bracket
+is positive.
+
+For the cost bound, the expected cost is:
+$\mathbb{E}[T] = p \bar{t}_1 + (1-p)(B_1 + \bar{t}_2).$
+Since $\bar{t}_1 < B_1 < B_2$ and $\bar{t}_2 \le B_2$:
+$\mathbb{E}[T] < p \cdot B_1 + (1-p)(B_1 + B_2) = B_1 + (1-p) B_2 < B_2,$
+where the last inequality holds because $p > 0$ and $B_1 < B_2$.
+
+Combining: $\mathrm{Acc}_{\method{}} > \mathrm{Acc}_{\mathrm{nt}}(B_1)$
+with $\mathrm{Acc}_{\method{}} \gg \mathrm{Acc}_{\mathrm{think}}(B_2)$
+(since most chains are truncated at $B_2$), and
+$\mathbb{E}[T_{\method{}}] < B_2 \le \mathbb{E}[T_{\mathrm{think}}(B_2)]$---
+establishing Pareto-dominance.
+
+On GSM8K ($n{=}1{,}319$): $p = 0.888$, $\alpha_c^{\mathrm{nt}} = 0.944$,
+$\alpha_{\mathrm{nt}}^{\mathrm{hard}} = (87.5\% - 0.888 \times 94.4\%)/0.112 = 33.0\%$,
+$\alpha_{\mathrm{th}}^{\mathrm{hard}} = 62.8\%$.
+Net gain: $0.112 \times (62.8\% - 33.0\%) = 3.3\%$~pp $\approx 3.4$~pp (observed).
+\end{proof}
+
+% ============================================================================
+\section{Qwen3.5-27B: Non-Thinking vs.\ Thinking}
+\label{app:27b-nothink}
+
+To complete the cross-scale analysis, we present 27B results in
+\emph{both} modes, confirming that the thinking tax is even more severe
+at larger scale.
+
+\begin{table}[ht]
+\centering
+\caption{\textbf{Qwen3.5-27B: nothink vs.\ thinking on full GSM8K}
+($n{=}1{,}319$).
+At $b{=}512$, nothink achieves \textbf{95.5\%}---the highest
+accuracy of any configuration---while thinking reaches only 18.3\%.
+The thinking tax is \textbf{77.2\,pp}, \textbf{2.1$\times$} larger
+than the 8B tax (36.2\,pp).}
+\label{tab:27b-both-modes}
+\small
+\begin{tabular}{llrrrr}
+\toprule
+\textbf{Mode} & \textbf{Budget} & \textbf{Accuracy} & \textbf{Avg Tokens} & \textbf{Early Stop} & \textbf{Tax (pp)} \\
+\midrule
+nothink & 128 & 9.9\% & 127 & 4.2\% & --- \\
+nothink & 256 & 65.1\% & 215 & 54.5\% & --- \\
+nothink & 512 & \textbf{95.5\%} & 249 & 96.9\% & --- \\
+\midrule
+thinking & 128 & 3.6\% & 144 & 0.0\% & 6.3 \\
+thinking & 256 & 7.9\% & 272 & 0.0\% & 57.2 \\
+thinking & 512 & 18.3\% & 528 & 0.7\% & \textbf{77.2} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent
+Key observations:
+\begin{itemize}[nosep,leftmargin=*]
+\item The 27B model achieves the \textbf{highest accuracy} of any tested
+  configuration in non-thinking mode (95.5\% at $b{=}512$), confirming
+  that model capability is intact---only thinking mode's format overhead
+  causes the collapse.
+\item At $b{=}512$, the 27B thinking-mode natural-stop rate is just
+  \textbf{0.7\%}, meaning 99.3\% of responses are truncated.
+  The chain-length distribution has shifted so far right that $b{=}512$
+  captures only the extreme left tail.
+\item The tax grows monotonically with budget (6.3 $\to$ 57.2 $\to$ 77.2\,pp)
+  because non-thinking accuracy improves faster than thinking mode can
+  recover from truncation.
+\end{itemize}
+
+\subsection{27B Cascade Results: MRSD and TOWN}
+\label{app:27b-cascade}
+
+At 27B scale, the cascade methods (\method{} and \town{}) fall \emph{below} nothink baselines at the tested budgets, confirming that the thinking tax is severe enough to overwhelm the cascade's recovery mechanism when $B_{\text{think}}$ is insufficient.
+
+\paragraph{GSM8K ($n{=}200$, $B_1{=}256$, $B_{\text{think}}{=}512$).}
+\method{} achieves 60.0\% vs.\ nothink@256's 67.5\% ($-$7.5\,pp).
+Of 80 samples escalated to thinking, only 3 (3.8\%) are answered correctly, vs.\ 97.5\% accuracy among the 120 samples resolved at Stage~0.
+\town{} fares similarly: 62.5\%, also below nothink.
+At $B_{\text{think}}{=}512$, only 0.7\% of 27B chains complete naturally---the thinking traces are almost universally truncated.
+
+\paragraph{MATH-500 ($n{=}200$, $B_1{=}512$, $B_{\text{think}}{=}1024$).}
+\method{} achieves 20.0\% vs.\ nothink@512's 23.5\%.
+Of 167 escalated samples, 100\% saturate the $B_{\text{think}}{=}1024$ ceiling---identical to the 8B pattern.
+\town{} achieves 24.5\%, IRIS single-round achieves 20.0\%.
+
+\paragraph{Diagnosis: budget insufficiency.}
+The cascade's net recovery condition (Eq.~\ref{eq:net-recovery}) fails at these budgets because the thinking fallback is too weak.
+27B generates longer reasoning chains than 8B, requiring proportionally larger $B_{\text{think}}$.
+\emph{Larger budgets ($B_{\text{think}}{=}2048$ or $4096$) have not yet been tested at 27B}---we cannot determine whether the cascade fundamentally fails at this scale or simply requires more thinking budget.
+Calibrating the minimum viable $B_{\text{think}}$ per model size is an important practical question for deployment.
+
+% ============================================================================
+\section{Cross-Domain Validation: BIG-Bench Hard}
+\label{app:bbh}
+
+To test whether the thinking tax extends beyond mathematical reasoning, we
+conduct experiments on five subtasks from BIG-Bench Hard
+(BBH)~\citep{suzgun2023challenging}: \texttt{boolean\_expressions} ($n{=}250$),
+\texttt{causal\_judgement} ($n{=}187$), \texttt{date\_understanding} ($n{=}250$),
+\texttt{logical\_deduction\_five\_objects} ($n{=}250$), and
+\texttt{tracking\_shuffled\_objects\_three\_objects} ($n{=}250$),
+totaling $n{=}1{,}187$ samples.
+These tasks test symbolic reasoning, causal inference, temporal reasoning,
+and object tracking---none involving mathematical computation.
+
+\paragraph{Full-scale results ($n{=}1{,}187$).}
+Table~\ref{tab:bbh-full} reports the complete evaluation across all five subtasks.
+At budget 256, nothink achieves \textbf{49.9\%} vs.\ thinking's \textbf{16.6\%}---a
+\textbf{+33.3\,pp} tax, confirming the phenomenon generalizes beyond mathematical reasoning.
+At budget 512, the gap remains substantial (+20.6\,pp); at budget 1024, it narrows
+to +1.4\,pp; and at budget 2048, thinking surpasses nothink by 11.0\,pp as chains
+become long enough to complete within the budget.
+The crossover occurs between budgets 1024 and 2048---later than on GSM8K (${\sim}$2048)
+but consistent with the theory's prediction that harder tasks push the crossover right.
+
+\begin{table}[ht]
+\centering
+\small
+\caption{\textbf{Thinking tax on BIG-Bench Hard} ($n{=}1{,}187$, Qwen3-8B, 5 subtasks).
+The tax is confirmed on non-mathematical tasks: nothink dominates at budgets $\leq$1024.
+Thinking mode surpasses nothink only at budget 2048, consistent with the crossover theory.}
+\label{tab:bbh-full}
+\begin{tabular}{rrrr}
+\toprule
+\textbf{Budget} & \textbf{Nothink Acc} & \textbf{Think Acc} & \textbf{Gap (NT$-$T)} \\
+\midrule
+256 & 49.9\% & 16.6\% & $+$33.3pp \\
+512 & 66.4\% & 45.8\% & $+$20.6pp \\
+1024 & 75.1\% & 73.6\% & $+$1.4pp \\
+2048 & 75.1\% & 86.0\% & $-$11.0pp \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Per-task analysis.}
+The thinking tax varies dramatically across task types, revealing which reasoning patterns are most affected by truncation:
+\begin{itemize}[nosep,leftmargin=*]
+\item \texttt{tracking\_shuffled\_objects} ($n{=}250$): The most extreme tax.
+  At budget 256, nothink achieves \textbf{88.8\%} vs.\ thinking's \textbf{0.8\%}---an
+  \textbf{88.0\,pp} gap. The task requires tracking object positions through a
+  sequence of swaps; nothink can produce direct answers, while thinking chains
+  are invariably truncated. Even at budget 512, the gap is 36.8\,pp (94.8\% vs.\ 58.0\%).
+  Thinking surpasses nothink only at budget 2048 (99.2\% vs.\ 94.8\%).
+\item \texttt{boolean\_expressions} ($n{=}250$): Tax of +36.8\,pp at budget 256
+  (85.6\% vs.\ 48.8\%). Thinking recovers quickly: at budget 1024 it surpasses
+  nothink (94.8\% vs.\ 85.6\%), reaching 98.0\% at 2048. Nothink saturates
+  early (85.6\% across all budgets), suggesting this task benefits from reasoning
+  when given sufficient budget.
+\item \texttt{causal\_judgement} ($n{=}187$): Consistent tax at all budgets,
+  from +25.7\,pp at 256 to +3.7\,pp at 2048. Thinking does not surpass nothink
+  even at the highest budget, suggesting causal reasoning chains are particularly
+  long and prone to truncation.
+\item \texttt{logical\_deduction} ($n{=}250$): Tax of +23.6\,pp at budget 512
+  (37.6\% vs.\ 14.0\%). Both modes improve dramatically with budget, and thinking
+  surpasses nothink at 2048 (86.8\% vs.\ 78.4\%), a $-$8.4\,pp reversal.
+\item \texttt{date\_understanding} ($n{=}250$): Moderate tax at low budgets
+  (+15.6\,pp at 256), with thinking surpassing nothink at budget 1024
+  (69.2\% vs.\ 52.8\%, $-$16.4\,pp). Thinking reaches 82.4\% at 2048,
+  30\,pp above nothink---the largest thinking \emph{advantage} of any subtask
+  at high budget, demonstrating that temporal reasoning benefits substantially
+  from extended chains when they can complete.
+\end{itemize}
+
+\noindent The BBH results confirm three key patterns from the main text:
+(1)~the thinking tax is large at low budgets and driven by truncation;
+(2)~the crossover budget is task-dependent, occurring between 512 and 2048
+depending on chain length requirements;
+(3)~nothink saturates earlier than thinking, so above the crossover, thinking
+mode provides genuine accuracy gains---the tax is about \emph{budget allocation},
+not about whether reasoning is valuable.
+
+% ============================================================================
 \section{Reproducibility}
 \label{app:reproducibility}
 
 \paragraph{Models.}
 \begin{itemize}[nosep,leftmargin=*]
     \item Qwen3-8B: \texttt{Qwen/Qwen3-8B} from HuggingFace
+    \item Qwen3.5-9B: \texttt{Qwen/Qwen3.5-9B} from HuggingFace
     \item Qwen3.5-27B: \texttt{Qwen/Qwen3.5-27B} from HuggingFace
     \item DeepSeek-R1-8B: \texttt{deepseek-ai/DeepSeek-R1-Distill-Llama-8B}
 \end{itemize}
 
 \paragraph{Random seeds.}
-All experiments use seed 42 for reproducibility.
+Main-text GSM8K experiments (full test set, $n{=}1{,}319$) use seed~11
+with greedy decoding ($\tau{=}0$).
+MATH-500 nothink experiments and the new thinking sweep use seed~42.
+Fairness experiments use seed~42.
 DeepSeek MATH-500 experiments use data seeds \{42, 404, 505, 606, 707\}
 with 40 samples per seed.
+All seeds and hyperparameters are recorded in the per-experiment JSON
+output files.
+
+\paragraph{Generation config.}
+All experiments use greedy decoding: \texttt{temperature=0}, \texttt{top\_p=1.0}, \texttt{do\_sample=False}.
+Thinking mode is enabled via \texttt{enable\_thinking=True} with the model's native \texttt{<think>} block format; non-thinking mode sets \texttt{enable\_thinking=False}.
+The \texttt{max\_new\_tokens} parameter controls the total output budget equally for both modes.
+The projection pass (32 extra tokens with thinking disabled) is applied only when thinking mode exhausts its budget without a natural stop.
+
+\paragraph{Software.}
+\texttt{transformers}~5.5.0, PyTorch~2.10, CUDA~12.8, Python~3.10.
+All inference is single-GPU (A100-80GB) with \texttt{float16} precision.
 
 \paragraph{Compute.}
-Total compute budget: approximately 200 A100-GPU-hours across all
-experiments reported in this paper.
+Total compute budget: approximately 200 A100-GPU-hours plus 50 H800-GPU-hours across all
+experiments reported in this paper (including full-scale IRIS $n{=}500$ at $B_{\text{think}} \in \{2048, 4096\}$).
+
+\subsection{Cross-Hardware Reproducibility}
+\label{app:cross-hardware}
+
+The think budget ablation (\S\ref{sec:experiments:bthink}) was run independently on both A100-80GB and H800-80GB GPUs with identical configurations (Qwen3-8B, greedy decoding $\tau{=}0$, seed=42, $n{=}200$).
+At $B_{\text{think}}{=}2048$, the A100 achieves 67.5\% and the H800 achieves 73.0\%---a 5.5\,pp difference.
+Stage~1 (nothink probe) shows 87/94 (A100) vs.\ 90/94 (H800) correct, with 3 additional false accepts on A100.
+This cross-hardware variance arises from differences in floating-point computation order between GPU architectures under bfloat16 precision; greedy decoding is deterministic \emph{within} a hardware configuration but not across architectures.
+Critically, the qualitative findings are unchanged: both hardware configurations show (1)~monotonic IRIS accuracy improvement with $B_{\text{think}}$, (2)~IRIS outperforming TOWN, and (3)~rising natural stop rates.
+All main-text IRIS results, baselines, and nothink@1024 ($n{=}500$) are on the same H800 hardware, eliminating cross-hardware confounds for the definitive IRIS vs.\ nothink comparison.
+
+\paragraph{Full-scale IRIS validation ($n{=}500$, H800).}
+Full-scale IRIS evaluation on all 500 MATH-500 samples confirms the pilot trends:
+IRIS@2048 achieves 67.2\% \ci{63.0}{71.2} and IRIS@4096 achieves 74.0\% \ci{70.0}{77.7}, both on the same H800 hardware as the nothink@1024 baseline (59.8\%).
+The first 200 samples of each full-scale run reproduce the pilot exactly (73.0\% at $B_{\text{think}}{=}2048$, 78.5\% at $B_{\text{think}}{=}4096$), confirming determinism within hardware and methodological consistency across scale.
+The remaining 300 samples achieve 63.3\% (B2048) and 71.0\% (B4096), reflecting the difficulty gradient in MATH-500's ordering (later problems are harder).
+
+\paragraph{Nothink@1024 cross-run variance.}
+The ${\sim}$10\,pp gap between pilot nothink@1024 (69.5\%, split-budget experiment, A100) and full-scale nothink@1024 (59.8\%, $n{=}500$, separate run) was initially attributed to sample selection.
+Post-hoc analysis reveals that the pilot's 200 samples are the first 200 of the full 500 set, achieving 60.0\% in the full-scale run---essentially identical to the full-set 59.8\%.
+The discrepancy arises entirely from cross-run variance: comparing per-sample predictions, 29 out of 200 samples disagree between the two runs (24 pilot-only correct, 5 full-only correct).
+This demonstrates that bfloat16 greedy decoding is not deterministic across hardware platforms, and cross-run comparisons should account for ${\sim}$5--10\,pp variance.

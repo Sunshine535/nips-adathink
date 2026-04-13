@@ -1,0 +1,30 @@
+Pilot: Chain-Length CDF as Sufficient Statistic
+============================================================
+
+Formula: acc(b) = alpha_c * F_L(b) + alpha_trunc(b) * (1-F_L(b))
+
+Key parameters (8B, GSM8K, n=1319):
+  alpha_c  = 0.9827  (stable across budgets: ~98%)
+  alpha_nt = 0.9310  (nothink saturated)
+  F_L ~ LogNormal(mu=6.415, sigma=0.520)
+  Median chain = 611 tokens
+
+Decomposition table:
+  Budget       F_L       a_c   a_trunc      Pred    Actual       Err
+--------------------------------------------------------------
+     128    0.0000    0.0000    0.0303    0.0303    0.0303     +0.0pp
+     256    0.0235    1.0000    0.1607    0.1804    0.1804     +0.0pp
+     512    0.4276    0.9911    0.2543    0.5694    0.5694     +0.0pp
+    1024    0.7892    0.9827    0.4065    0.8613    0.8613     +0.0pp
+
+Model comparison:
+                                   Model      RMSE      MaxE   OK?
+-----------------------------------------------------------------
+       A: emp CDF + emp a_trunc (oracle)     0.18     0.36   YES
+              B: param CDF + emp a_trunc     2.95     4.78    NO
+               C: emp CDF + zero a_trunc    11.75    15.73    NO
+           D: param CDF + linear a_trunc     4.42     6.61    NO
+            E: param CDF + power a_trunc     4.54     6.55    NO
+
+Verdict: SUPPORTED
+  The CDF captures curve SHAPE, but alpha_trunc must be known.

@@ -1,63 +1,27 @@
 {
-  "round": 9,
-  "threadId": "019d2b4b-bf47-7e70-aa97-dad557791c85",
+  "round": 4,
+  "threadId": "019d78ba-a3ec-7001-8770-a73eb1101bbf",
   "status": "in_progress",
-  "last_score": 8.0,
-  "last_verdict": "artifact-ready with minor caveats",
-  "review_type": "code_artifact_review",
-  "review_focus": [
-    "code_quality_and_completeness",
-    "multi_gpu_support",
-    "checkpoint_resume_support",
-    "experimental_readiness"
-  ],
-  "artifact_subscores": {
-    "code_quality_and_completeness": 8.0,
-    "multi_gpu_support": 7.0,
-    "checkpoint_resume_support": 8.0,
-    "experimental_readiness": 8.0
-  },
-  "crisis": "headline_collapse_confirmed",
-  "honest_feature_result": {
-    "gsm8k_27b": {
-      "accuracy": 0.397,
-      "vs_fixed256": -0.065,
-      "conclusion": "negative gain"
-    }
-  },
+  "difficulty": "medium",
+  "last_score": 7.5,
+  "last_verdict": "Strong accept (top 5-10%), not best paper yet",
   "pending_experiments": [
-    "serverA_deepseek",
-    "serverB_27b_full"
+    "DeepSeek full replication (GSM8K n=1319 + MATH-500 n=500): scripts/deploy_deepseek_replication.sh",
+    "DeepSeek IRIS (GSM8K + MATH-500): scripts/deploy_deepseek_iris.sh"
   ],
-  "servers": {
-    "serverA": {
-      "host": "216.81.151.3",
-      "port": 11839,
-      "script": "scripts/deploy_serverA_deepseek.sh"
-    },
-    "serverB": {
-      "host": "216.81.245.127",
-      "port": 15276,
-      "script": "scripts/deploy_serverB_qwen27b.sh"
-    }
-  },
-  "round9_fixes": {
-    "checkpoint_resume_sc_baseline": "Added per-sample incremental JSONL checkpoint/resume to run_gsm8k_sc_baseline.py (was in-memory only); loads done_indices on startup, skips completed samples, appends each result to incremental file",
-    "checkpoint_resume_policy_search": "Added per-sample incremental JSONL checkpoint/resume to run_gsm8k_policy_search.py for both train and test phases; loads done_indices on startup, skips completed samples, appends each result to incremental file",
-    "stale_path_cleanup_10_files": "Replaced all 'methods/01_adathink/...' references in 10 scripts with repo-relative paths: run_learned_budget_controller.py (input_csvs default + output_dir), run_template_budget_controller.py (input_csvs default + output paths), run_parametric_budget_controller.py (output paths), run_8b_think_postprocess_after_seeds.py (base_manifest + results_dir + 3 subprocess script paths), run_overthinking_aggregate.py (output path), run_value_budget_controller.py (output paths), run_parametric_sweep.py (result_dir + 2 subprocess script paths), compute_utility_cis.py (/workspace hard-coded paths)",
-    "run_full_pipeline_fixes": "Removed hardcoded /workspace/models/hf_cache; made HF_HOME use setdefault to respect env; implemented run_significance() stub with actual subprocess call; fixed docstring",
-    "run_acp_fail_fast": "Replaced || true in run_acp.sh phases 3/4/6/7 with proper failure tracking and conditional mark_phase_done (same pattern as run_all_experiments.sh)",
-    "setup_sh_robust_python": "Added cascading Python version detection (3.10 -> 3.11 -> 3.12 -> system -> python3 -m venv fallback) to setup.sh instead of hard-failing on missing Python 3.10",
-    "syntax_verification": "All 12 modified Python scripts pass py_compile; all 5 modified shell scripts pass bash -n"
-  },
-  "round8_fixes": {
-    "run_all_experiments_error_handling": "Replaced || true with failure tracking; mark_phase_done only on success",
-    "stale_path_fixes": "Changed default results_dir from methods/01_adathink/results to results in 3 scripts; fixed hardcoded script path in run_parametric_from_manifest.py",
-    "multi_gpu_sync": "Added CUDA_VISIBLE_DEVICES/NGPU sync in run_experiment_torchrun_4gpu.sh",
-    "find_existing_result_wired": "Connected find_existing_result() to run_experiment() in run_full_pipeline.py"
-  },
-  "timestamp": "2026-03-31T12:00:00Z",
-  "previous_score": 4.0,
-  "code_fixes_applied": "2026-03-31",
-  "estimated_score_after_fixes": 8.0
+  "completed_experiments": [
+    "IRIS MATH-500 B2=1024: 62.5% [55.6, 68.9], 200 samples (A100)",
+    "IRIS MATH-500 B2=2048: 73.0% [66.5, 78.7], 200 samples (H800)",
+    "IRIS MATH-500 B4096: 78.5% [72.3, 83.6], 200 samples (H800)",
+    "TOWN B1024: 49.0%, TOWN B2048: 58.0%, TOWN B4096: 73.5% (pilot n=200)",
+    "IRIS MATH-500 B2048 FULL-SCALE: 67.2% [63.0, 71.2], n=500, H800",
+    "IRIS MATH-500 B4096 FULL-SCALE: 74.0% [70.0, 77.7], n=500, H800",
+    "TOWN@B2048 FULL-SCALE: 55.0% [50.6, 59.3], n=500, H800",
+    "TOWN@B4096 FULL-SCALE: 71.8% [67.7, 75.6], n=500, H800"
+  ],
+  "score_progression": [8.0, 8.5, 7.5],
+  "score_progression_note": "Round 3-4 scored on best-paper scale (top 1-3%); Rounds 1-2 on accept scale",
+  "timestamp": "2026-04-12T18:00:00Z",
+  "paper_updates": "Round 3-4: (1) Rate-distortion theory §3.5.6 with Prop 6-7; (2) BBH promoted to main text Finding 5; (3) Intro reframed around 3 surprises; (4) Pareto frontier figure; (5) Chain-length CDF figure; (6) Production impact analysis; (7) Gap narrowing reframed as theory validation; (8) DeepSeek cross-architecture verification; (9) IRIS applicability design rule; (10) Method positioning improved.",
+  "next_critical_action": "Run DeepSeek full replication on server — THE gap to best paper"
 }

@@ -1,24 +1,28 @@
 % Table 1: Natural Stop as Confidence Oracle
-% Key result: natural-stop samples achieve 96.3% accuracy at budget=512
+% Key result: natural-stop samples achieve 99.0% accuracy at budget=512 (HF engine)
+% Updated 2026-04-09: switched from vLLM+projection to HF engine for consistency
 \begin{table}[t]
 \centering
 \caption{\textbf{Natural stop as a free confidence oracle.}
 When a thinking model naturally terminates before exhausting its token budget,
 the resulting answer is correct with remarkably high probability.
-This phenomenon is universal across models and benchmarks.
-\emph{NatStop\%}: fraction of samples that stop early ($<$95\% of budget used).
+This phenomenon is consistent across models and benchmarks.
+\emph{NatStop}: fraction of samples that stop early ($<$95\% of budget used).
 \emph{Acc$_\text{nat}$}: accuracy among early-stop samples.
-\emph{Acc$_\text{hit}$}: accuracy among budget-exhausting samples.}
+\emph{Acc$_\text{hit}$}: accuracy among budget-exhausting samples.
+All Qwen3-8B results use HF engine with greedy decoding.
+DeepSeek-R1 Acc splits are omitted due to small sample sizes ($n{=}40$--$80$).}
 \label{tab:natural-stop-oracle}
 \small
-\begin{tabular}{lrrrrrr}
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}lrrrrrr@{}}
 \toprule
-\textbf{Model / Benchmark} & \textbf{Budget} & \textbf{Acc (\%)} & \textbf{NatStop\%} & \textbf{Acc$_\text{nat}$} & \textbf{Acc$_\text{hit}$} & \textbf{Gap} \\
+\textbf{Model / Benchmark} & \textbf{Bud.} & \textbf{Acc} & \textbf{NatStop} & \textbf{Acc$_\text{nat}$} & \textbf{Acc$_\text{hit}$} & \textbf{Gap} \\
 \midrule
 \multirow{3}{*}{Qwen3-8B / GSM8K (n=1319)}
- & 128  & 11.8 &  0.0 & --- & 11.8 & --- \\
- & 256  & 34.8 &  1.4 & 89.5 & 34.0 & +55.5 \\
- & 512  & 65.2 & 37.4 & 96.3 & 46.6 & \textbf{+49.7} \\
+ & 128  &  3.0 &  0.0 & --- &  3.0 & --- \\
+ & 256  & 18.0 &  1.4 & 100.0 & 16.8 & +83.2 \\
+ & 512  & 56.9 & 37.4 & 99.0 & 31.8 & \textbf{+67.2} \\
 \midrule
 \multirow{3}{*}{DeepSeek-R1-8B / GSM8K (n=40)}
  & 256  & 22.5 & 15.0 & --- & --- & --- \\

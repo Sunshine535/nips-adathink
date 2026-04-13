@@ -1,25 +1,32 @@
 % conclusion_final.tex — loaded by main_final.tex
 
-We have presented a systematic study of the \emph{thinking tax}---the accuracy penalty imposed by chain-of-thought reasoning under realistic token budgets.
-Our findings challenge the prevailing assumption that thinking modes universally improve LLM reasoning:
+We presented the \couplingtax{}: a systematic empirical and theoretical study showing that coupling reasoning and answering under a shared token budget imposes a dramatic accuracy penalty below a task- and model-specific \emph{crossover budget}---${\sim}$2048 tokens on GSM8K, with the crossover shifting to even higher budgets on harder benchmarks (MATH-500)---with the tax scaling inversely with model size.
+Our failure-mode analysis reveals the causal mechanism: 98.6\% of thinking responses are truncated at budget 256, vs.\ only 11.2\% in non-thinking mode.
+We scope this finding to Qwen-family open reasoning models with explicit \texttt{<think>} mode under fixed output-token budgets.
+Our formal truncation-waste decomposition (Propositions~\ref{prop:acc-decomp}--\ref{prop:inverse-scaling}) explains these phenomena quantitatively, predicting the crossover budget from chain-length statistics alone.
 
-\begin{enumerate}[nosep,leftmargin=*]
-    \item \textbf{Non-thinking dominates at matched budgets.} Across all tested budgets (128--512 tokens), non-thinking mode achieves dramatically higher accuracy than thinking mode on both Qwen3-8B and Qwen3.5-27B. The headline result---non-thinking@256 (87.5\%) vs.\ thinking@512 (65.2\%) on full GSM8K---represents a \textbf{4.2$\times$ token efficiency improvement}.
+The natural-stop signal provides a free confidence oracle with 99.0\% positive predictive value, motivating \method{} (\fullmethod{}), a training-free inference framework that allocates \emph{separate} budgets for reasoning and answering via \splitbudget{}.
+\method{} achieves \textbf{94.0\%} accuracy on GSM8K at 235 avg tokens (+5.0\,pp over nothink@256, pilot $n{=}200$)---the only method to improve beyond the nothink plateau.
+On MATH-500, \method{}'s core mechanism---decoupled answer generation---recovers +25.4\,pp on hard samples requiring escalation.
+Full-scale evaluation ($n{=}500$, same hardware) confirms that IRIS surpasses the nothink ceiling: IRIS@2048 achieves \textbf{67.2\%} \ci{63.0}{71.2} and IRIS@4096 achieves \textbf{74.0\%} \ci{70.0}{77.7}, exceeding nothink@1024 (59.8\%) by +7.4\,pp and +14.2\,pp respectively---with CI lower bounds above 59.8\%.
+The cross-budget gain of +6.8\,pp from $B_{\text{think}}{=}2048$ to 4096 (McNemar $p{=}0.0004$) confirms that the split-budget mechanism scales with the thinking budget.
 
-    \item \textbf{The tax scales with model size.} Larger models produce longer reasoning chains, making truncation more devastating. The 27B model's thinking tax at budget=512 is \textbf{2.6$\times$ larger} than the 8B model's, achieving only 18.3\% accuracy.
+Our theoretical framework makes testable predictions: the crossover budget scales with the 97th percentile of chain-length distributions (Proposition~\ref{prop:crossover}), the tax grows with model size via stochastic dominance of chain lengths (Proposition~\ref{prop:inverse-scaling}), and the budget multiplier for thinking to become cost-effective is at least $4\times$ on GSM8K (Corollary~\ref{cor:multiplier}), with harder benchmarks requiring even larger multipliers.
+As frontier models grow and chains lengthen, these results suggest the thinking tax will worsen---not improve---making adaptive routing between reasoning modes essential.
 
-    \item \textbf{Natural stopping is a free oracle.} Samples that terminate before their budget achieve 96.3\% accuracy, providing a zero-cost confidence signal for routing decisions.
-\end{enumerate}
-
-Based on these findings, we propose \textbf{TOWN (Think Only When Needed)}, a simple cascade that defaults to non-thinking mode and escalates to thinking only for the minority of hard problems identified by the early-stopping signal.
-\method{} achieves \textbf{90.9\%} accuracy at 199 average tokens on the full GSM8K test set ($n{=}1{,}319$)---\textbf{+25.7pp} over thinking@512 at 2.4$\times$ fewer tokens---demonstrating that the right question is not \emph{how long} to think, but \emph{whether} to think at all.
+The practical implication is clear: for budget-constrained deployment below the crossover, the question is not \emph{how long} to think, but \emph{whether} to think at all.
+Above the crossover, thinking mode recovers its advantage---making crossover estimation a prerequisite for optimal mode selection.
 
 \paragraph{Limitations.}
-Our study focuses on mathematical reasoning benchmarks (GSM8K, MATH-500).
-The thinking tax may manifest differently on tasks where chain-of-thought is more essential (e.g., multi-hop reasoning, planning).
-Additionally, our TOWN method uses a simple binary routing signal; more sophisticated confidence estimation could further improve efficiency.
+Our study focuses on structured reasoning tasks (mathematical, logical, symbolic); the tax may differ for tasks where CoT is structurally essential, such as multi-hop reasoning requiring intermediate retrieval, code generation requiring iterative debugging, or agentic workflows with tool use, or stochastic decoding regimes where best-of-$K$/self-consistency can amortize the truncation cost.
+Experiments on BIG-Bench Hard (Appendix~\ref{app:bbh}) extend the finding beyond mathematics, but comprehensive validation on natural language understanding or open-ended generation remains future work.
+The cascade requires sufficiently large thinking budgets: at 27B scale with $B_{\text{think}}{=}512$, \method{} falls below nothink baselines; while $B_{\text{think}}{=}2048$ resolves this for 8B, the larger-scale budget calibration remains open.
+Full-scale evaluation ($n{=}500$) confirms the think budget ablation: IRIS@2048 (67.2\%) and IRIS@4096 (74.0\%) both exceed nothink@1024 (59.8\%) on identical hardware, resolving the cross-run variance confound that affected earlier pilot comparisons.
+\method{}'s split-budget allocation could be further enhanced with learned budget ratios or task-specific calibration of the reasoning--answering split---we leave this to future work.
+Our theoretical model assumes a clean separation between completed and truncated outputs; in practice, answer-extraction heuristics recover a non-trivial fraction of truncated answers, making the observed tax somewhat smaller than the theoretical upper bound.
+The $\tau{=}0.7$ sampling analysis (Appendix) is a pilot conducted on Qwen3-8B with a GSM8K subset at $b{=}256$; broader validation across model sizes, budgets, and benchmarks is needed before drawing general conclusions about stochastic decoding.
 
 \paragraph{Broader Impact.}
-Our results have immediate practical implications for LLM deployment:
-at constrained inference budgets---which is the norm in production settings---practitioners should \emph{default to non-thinking mode} and reserve thinking for genuinely hard inputs.
-This simple change can simultaneously improve accuracy and reduce computational cost, benefiting both model providers and end users.
+At constrained inference budgets, practitioners should default to non-thinking mode and reserve thinking for genuinely hard inputs---simultaneously improving accuracy and reducing cost.
+Our findings have implications for the economics of deploying reasoning-augmented LLMs: the $4\times$ budget multiplier for thinking to break even (Corollary~\ref{cor:multiplier}) translates directly to 4$\times$ higher latency and cost, which may not be justified for the majority of production queries.
+A potential negative impact is that over-application of our findings could lead practitioners to disable thinking mode even for tasks where extended reasoning is genuinely beneficial (e.g., complex multi-step proofs, novel mathematical problems); we emphasize that the thinking tax is specific to \emph{budget-constrained} settings and that thinking mode remains valuable when sufficient tokens are available.

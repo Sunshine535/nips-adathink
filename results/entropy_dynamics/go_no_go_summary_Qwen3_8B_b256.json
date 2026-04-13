@@ -1,0 +1,33 @@
+{
+  "meta": {
+    "script": "collect_entropy_dynamics.py",
+    "timestamp_utc": "20260408_101204",
+    "model": "Qwen/Qwen3-8B",
+    "budget": 256,
+    "n_samples": 200,
+    "chunk_size": 32,
+    "seed": 42,
+    "save_traces": true
+  },
+  "go_no_go": {
+    "hypothesis": "Entropy drops >50% before </think> AND correlates with correctness",
+    "n_total": 200,
+    "n_valid": 200,
+    "accuracy": 0.2,
+    "natural_stop_rate": 0.02,
+    "entropy_drop": {
+      "overall_mean": -0.0618,
+      "overall_std": 0.276,
+      "correct_mean": -0.0944,
+      "incorrect_mean": -0.0536,
+      "natural_stop_mean": -0.1484,
+      "truncated_mean": -0.06
+    },
+    "late_thinking_entropy": {
+      "correct_mean": 0.0292,
+      "incorrect_mean": 0.0125
+    },
+    "decision": "NO-GO",
+    "reasoning": "Overall entropy drop ratio = -0.062 (< 0.2 threshold). Correct vs incorrect gap = 0.041 (< 0.05). Decision: NO-GO — pivot to batch reallocation + theory only."
+  }
+}

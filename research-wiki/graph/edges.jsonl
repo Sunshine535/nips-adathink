@@ -1,0 +1,25 @@
+{"from": "idea:001", "to": "paper:wei2022_chain", "type": "inspired_by", "note": "CoT as baseline for coupling tax analysis"}
+{"from": "idea:001", "to": "paper:snell2024_scaling", "type": "inspired_by", "note": "Scaling compute optimally motivated budget-constrained framing"}
+{"from": "idea:001", "to": "paper:chen2024_overthinking", "type": "inspired_by", "note": "Overthinking problem motivated thinking tax investigation"}
+{"from": "exp:coupling_tax_gsm8k", "to": "claim:C1", "type": "supports", "note": "8B GSM8K: nothink dominates at all budgets ≤2048"}
+{"from": "exp:coupling_tax_math500", "to": "claim:C1", "type": "supports", "note": "8B MATH-500: nothink dominates at all budgets ≤2048"}
+{"from": "exp:cross_scale", "to": "claim:C2", "type": "supports", "note": "Tax amplifies: 36pp@8B → ~77pp@9B/27B"}
+{"from": "exp:coupling_tax_gsm8k", "to": "claim:C3", "type": "supports", "note": "Natural stop PPV ~99% on GSM8K"}
+{"from": "exp:mrsd_gsm8k_pilot", "to": "claim:C4", "type": "supports", "note": "MRSD 94% vs nothink 89% on saturated GSM8K"}
+{"from": "exp:mrsd_math500_pilot", "to": "claim:C5", "type": "supports", "note": "MRSD 61% < nothink@1024 69.5% (pilot), but caveats apply"}
+{"from": "exp:mrsd_27b", "to": "claim:C6", "type": "supports", "note": "27B MRSD 60% < nothink 67.5% on GSM8K with B_think=512"}
+{"from": "idea:001", "to": "claim:C1", "type": "tested_by", "note": "Core coupling tax claim"}
+{"from": "idea:001", "to": "claim:C4", "type": "tested_by", "note": "MRSD effectiveness claim"}
+{"from": "paper:chen2024_overthinking", "to": "paper:wei2022_chain", "type": "extends", "note": "Studies when CoT wastes compute"}
+{"from": "paper:snell2024_scaling", "to": "paper:wei2022_chain", "type": "extends", "note": "Optimal compute allocation for CoT"}
+{"from": "paper:adathink2025", "to": "paper:wei2022_chain", "type": "extends", "note": "Adaptive thinking token allocation"}
+{"from": "paper:nvidia2025_pareto", "to": "paper:snell2024_scaling", "type": "extends", "note": "Pareto-optimal reasoning compute"}
+{"from": "paper:muennighoff2025_s1", "to": "paper:snell2024_scaling", "type": "extends", "note": "Budget-forcing for test-time compute"}
+{"from": "exp:bbh", "to": "claim:C1", "type": "supports", "note": "BBH: nothink dominates across 5 non-math tasks"}
+{"from": "exp:bbh", "to": "claim:C8", "type": "supports", "note": "BBH n=1187: coupling tax generalizes to non-math tasks"}
+{"from": "exp:iris_math500_fullscale", "to": "claim:C7", "type": "supports", "note": "IRIS@4096 74.0% > nothink@1024 59.8%, n=500"}
+{"from": "exp:iris_math500_fullscale", "to": "claim:C5", "type": "invalidates", "note": "Full-scale IRIS beats nothink — budget-scaling ceiling was artifact"}
+{"from": "exp:town_math500_fullscale", "to": "claim:C7", "type": "supports", "note": "TOWN@4096 71.8% also beats nothink@1024"}
+{"from": "exp:deepseek_replication", "to": "claim:C1", "type": "tested_by", "note": "Testing if coupling tax generalizes to DeepSeek-R1 family"}
+{"from": "idea:001", "to": "claim:C7", "type": "tested_by", "note": "IRIS MATH-500 full-scale validates split-budget approach"}
+{"from": "idea:001", "to": "claim:C8", "type": "tested_by", "note": "BBH validates coupling tax is task-agnostic"}

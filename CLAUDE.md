@@ -2,33 +2,34 @@
 
 ## Project goal
 
-AdaThink: Adaptive Test-Time Compute Control for LLMs — 在推理阶段对 thinking token 预算做自适应控制，包括固定预算 sweep、自洽基线、多种可学习/价值型/模板型 budget controller、策略搜索，以及 8B/27B 双尺度验证。
+"The Thinking Tax: When Chain-of-Thought Costs More Than It Saves" — NeurIPS 2026 submission. 研究发现在固定 token budget 下，non-thinking mode 在所有测试预算 (≤2048) 上全面优于 thinking mode。提出 TOWN (Think Only When Needed) 两阶段级联方法。
 
 ## Key models
 
-- `Qwen/Qwen3.5-27B` — 主实验模型
-- `Qwen/Qwen3.5-8B` — 双尺度验证
+- `Qwen/Qwen3-8B` — 主实验模型
+- `Qwen/Qwen3.5-9B` — 模型尺度验证 (thinking only; nothink 待补)
+- `Qwen/Qwen3.5-27B` — 大尺度验证
+- `DeepSeek-R1-Distill-Llama-8B` — 跨模型族验证
 
 ## Key datasets
 
-- GSM8K (`openai/gsm8k`) — 数学推理
+- GSM8K (`openai/gsm8k`, n=1319) — 主数学推理
+- MATH-500 (`hendrycks/math`, n=500) — 高难度数学
+- BBH (`lukaemon/bbh`, n=1187, 5 tasks) — 非数学推理
 
 ## Repo map
 
-- `scripts/` — 所有实验脚本入口
-  - `run_all_experiments.sh` — 全阶段编排（Phase 0–7）
-  - `run_gsm8k_experiment.py` — 预算扫描
-  - `run_gsm8k_sc_baseline.py` — Self-consistency 基线
-  - `run_gsm8k_policy_search.py` — 策略搜索
-  - `run_learned_budget_controller.py` — 学习型控制器
-  - `run_value_budget_controller.py` — 价值型控制器
-  - `run_8b_think_postprocess_after_seeds.py` — 8B 后处理
-  - `run_template_controller_significance.py` — 显著性检验
-  - `gpu_utils.sh` — GPU 分配工具
-- `src/` — 核心模块
-- `configs/` — 配置文件
-- `results/` — 实验输出根目录
+- `scripts/` — 所有实验脚本 (97 files)
+  - `run_experiment.py` — 多基准 HF 推理
+  - `run_nothink_baseline.py` — nothink + thinking 对比
+  - `run_experiment_vllm.py` — vLLM 加速推理
+  - `benchmarks.py` — 统一基准抽象层
+  - `run_gap_fill_critical.sh` — 审计后补跑缺失实验
+- `paper/` — LaTeX 论文 (`main_final.tex` + sections/)
+- `results/` — 实验输出 (700+ JSON/CSV)
+- `results_kun/` — 服务器同步结果 (107MB)
 - `refine-logs/` — 研究笔记与计划
+- `archive/` — 归档过时文档
 
 ## Common commands
 
@@ -94,10 +95,25 @@ bash collect_results.sh
 ## Project-specific rules
 
 - 实验计划放 `refine-logs/EXPERIMENT_PLAN.md`
-- 叙事总结放 `NARRATIVE_REPORT.md`
 - 所有实验必须输出机器可读的 metrics 文件
-- 论文 claim 必须映射到具体的 result 文件
-- Phase 3/4 依赖 Phase 1 的 `results/per_sample_*.csv`
+- **论文 claim 必须映射到具体的 result 文件** (data provenance)
+- 每个数据点需记录: source file, n_samples, seed, engine (HF/vLLM)
+- 归档文档放 `archive/`
+
+## Data provenance (2026-04-07 审计后)
+
+已验证数据:
+- 8B think@128/256 (n=1319): `results_kun/nothink_fullset/nothink_baseline_*`
+- 8B think@512 (n=1319): `results_kun/fulltest/summary_gsm8k_Qwen3_8B_20260324_120316.json`
+- 8B nothink@128/256 (n=1319): `results_kun/nothink_fullset/nothink_baseline_*`
+- 27B think@128/256/512 (n=1319): `results_kun/fulltest_27b/summary_gsm8k_Qwen3.5_27B_20260328_213534.json`
+- 27B nothink@128/256/512 (n=1319): `results_kun/fulltest_27b_nothink/summary_recovered.json`
+- TOWN routing (n=1319): `results/uncertainty_router/routing_baselines_metrics.json`
+
+待补数据 (run_gap_fill_critical.sh):
+- 8B nothink@512/1024/2048 (HF engine)
+- 8B think@1024/2048 (HF engine)
+- 9B nothink@256/512/1024
 
 ## Remote server
 

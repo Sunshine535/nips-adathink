@@ -1,0 +1,90 @@
+% method_compact.tex — §5 TOWN: Think Only When Needed (compact 9-page version)
+
+The thinking tax creates an immediate practical question: \emph{can we avoid the tax on easy problems while preserving reasoning for hard ones?}
+The answer follows directly from our findings.
+We formalize it as \method{} (\textbf{T}hink \textbf{O}nly \textbf{W}hen \textbf{N}eeded), a training-free, two-stage inference cascade requiring no model internals or auxiliary models.
+
+\method{}'s design is deliberately minimal---it is the simplest instantiation of the thinking-tax insight that yields a provable Pareto improvement---but two aspects make it non-trivial.
+First, the routing signal is \emph{free}: unlike learned routers or confidence calibrators~\citep{chen2023frugalgpt}, \method{} uses whether the model hit the budget ceiling---a byproduct of generation---as its routing criterion.
+Second, the \emph{nothink-first ordering} is counterintuitive: the default in all Qwen3 and DeepSeek-R1 deployments is thinking-first.
+Our empirical finding that nothink dominates at low budgets (\S\ref{sec:finding:tax}) is what makes the reversed ordering effective; without it, a rational engineer would cascade think$\to$nothink, which our results show is strictly worse.
+
+\subsection{Key Insight: Early Stopping as Difficulty Classifier}
+\label{sec:method:insight}
+
+Non-thinking mode's early-stopping behavior provides a natural binary classifier for problem difficulty.
+For Qwen3-8B with \texttt{nothink@256} on GSM8K: \textbf{88.8\%} of samples stop early (avg 133 tokens) with \textbf{94.4\%} accuracy; the remaining \textbf{11.2\%} exhaust the budget, indicating the model struggled.
+This dichotomy provides a zero-cost routing signal: if the model finishes quickly, the answer is likely correct; if it exhausts the budget, the problem may benefit from extended reasoning.
+This signal requires no logit access, calibration, or auxiliary models---it is a byproduct of generation (Finding~2, \S\ref{sec:finding:natural-stop}).
+
+\subsection{The \method{} Cascade}
+\label{sec:method:cascade}
+
+\method{} operates in two stages (Algorithm~\ref{alg:town}).
+
+\begin{algorithm}[t]
+\caption{\method{}: Think Only When Needed}
+\label{alg:town}
+\begin{algorithmic}[1]
+\Require Question $q$, model $\mathcal{M}$,
+  probe budget $B_1$ (non-thinking),
+  fallback budget $B_2 > B_1$ (thinking)
+\Ensure Answer $\hat{a}$, total tokens $T$
+\State $y_1 \leftarrow \mathcal{M}_{\textrm{nt}}(q, B_1)$; $T \leftarrow |y_1|$
+\Comment{Stage 1: Non-thinking probe}
+\If{$|y_1| < B_1$} \Comment{Natural stop $\Rightarrow$ high confidence}
+  \State \Return $a(y_1), T$
+\Else \Comment{Budget hit $\Rightarrow$ low confidence}
+  \State $y_2 \leftarrow \mathcal{M}_{\textrm{th}}(q, B_2)$
+  \Comment{Stage 2: Thinking fallback}
+  \State \Return $a(y_2), T + |y_2|$
+\EndIf
+\end{algorithmic}
+\end{algorithm}
+
+\paragraph{Stage 1: Non-thinking probe.}
+We run the input through non-thinking mode with budget $B_1$ (default: 256).
+If the model produces a complete answer before exhausting $B_1$, we accept it immediately.
+This handles 88.8\% of GSM8K inputs at ${\sim}$133 tokens on average.
+
+\paragraph{Stage 2: Thinking fallback.}
+For inputs that exhaust Stage~1, we route to thinking mode with extended budget $B_2$ (default: 512).
+These are precisely the ``hard'' problems where step-by-step reasoning is most likely to help.
+
+\subsection{Cost and Accuracy Analysis}
+\label{sec:method:analysis}
+
+\paragraph{Expected token cost.}
+Let $p$ denote the early-stop rate, $\bar{t}_1$ the average tokens for early-stopped samples, and $\bar{t}_2$ the average thinking-mode cost for fallback samples:
+\begin{equation}
+  \mathbb{E}[T] = p \cdot \bar{t}_1 + (1 - p)(B_1 + \bar{t}_2) \approx 0.888 \times 133 + 0.112 \times 725 = \mathbf{199\text{ tokens}},
+  \label{eq:town-cost}
+\end{equation}
+which is \textbf{2.3$\times$} cheaper than \texttt{think@512} (460 tokens).
+
+\paragraph{Analytical prediction.}
+\method{}'s accuracy decomposes as
+$\textrm{Acc}_{\method{}} = p \cdot \textrm{Acc}_{\textrm{nt}}^{\textrm{early}} + (1 - p) \cdot \textrm{Acc}_{\textrm{th}}^{\textrm{hard}}
+= 0.888 \times 94.4\% + 0.112 \times 62.8\% = \mathbf{90.9\%}$ (1199/1319 by exact count).
+
+\begin{proposition}[\method{} dominance]
+\label{thm:town-pareto}
+If the \emph{net recovery condition} holds---thinking recovers more routed samples than it loses to routing regret:
+\begin{equation}
+  \alpha_{\mathrm{th}}^{\mathrm{hard}}
+  > \alpha_{\mathrm{nt}}^{\mathrm{hard}}
+  \triangleq \Pr(\text{correct} \mid \neg\mathcal{S}_{\mathrm{nt}}(B_1), \text{nothink@}B_1),
+  \label{eq:net-recovery}
+\end{equation}
+then: (1)~$\mathrm{Acc}_{\method{}} > \mathrm{Acc}_{\mathrm{nt}}(B_1)$ (accuracy gain over non-thinking at a modest cost increase), and (2)~$\mathbb{E}[T_{\method{}}] < \mathbb{E}[T_{\mathrm{think}}(B_2)]$ with $\mathrm{Acc}_{\method{}} > \mathrm{Acc}_{\mathrm{think}}(B_2)$ (Pareto improvement over thinking mode).
+\end{proposition}
+
+\noindent\emph{Sketch.}
+For (1): $\mathrm{Acc}_{\method{}} - \mathrm{Acc}_{\mathrm{nt}}(B_1) = (1-p)[\alpha_{\mathrm{th}}^{\mathrm{hard}} - \alpha_{\mathrm{nt}}^{\mathrm{hard}}] > 0$ by Eq.~\eqref{eq:net-recovery}.
+For (2): $\mathbb{E}[T_{\method{}}] \approx 199 < 460 = \mathbb{E}[T_{\mathrm{think}}(B_2)]$ since most samples ($p \approx 0.89$) resolve at $\bar{t}_1 \approx 133$ tokens.
+On GSM8K: $R^+ = 64$ recoveries vs.\ $R^- = 19$ regrets (net $+45$), confirming the condition (full derivation in Appendix~\ref{app:town-proof}).
+
+\noindent
+The net recovery condition is easier to satisfy when $B_2$ is sufficient: on GSM8K, $R^+/R^- = 64/19 \gg 1$.
+On harder benchmarks, the condition requires larger $B_2$ because thinking chains are longer (\S\ref{sec:crossover}).
+A detailed comparison with alternative routers, $(B_1, B_2)$ sensitivity analysis, and Monte Carlo simulation of \method{}'s expected cost are in Appendices~\ref{app:routing-baselines}--\ref{app:ablation} and \ref{app:town-simulation}.

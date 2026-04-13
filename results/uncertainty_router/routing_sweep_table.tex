@@ -1,0 +1,25 @@
+\begin{table}[t]
+\centering
+\caption{Accuracy (\%) at varying routing rates on GSM8K (Qwen3-8B). TOWN's natural rate is 11.2\%; other rates are hypothetical.}
+\label{tab:routing_sweep}
+\small
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+Route \% & Random & Token-Length & Oracle & TOWN* \\
+\midrule
+5 & $86.3 \pm 0.3$ & 89.8 & 92.5 & --- \\
+10 & $85.1 \pm 0.4$ & 91.5 & 95.8 & --- \\
+11 & $84.8 \pm 0.4$ & 90.9 & 95.8 & 90.9 \\
+15 & $84.3 \pm 0.6$ & 89.2 & 95.8 & --- \\
+20 & $83.3 \pm 0.8$ & 88.2 & 95.8 & --- \\
+25 & $82.1 \pm 0.5$ & 87.3 & 95.8 & --- \\
+30 & $80.9 \pm 0.9$ & 85.4 & 95.8 & --- \\
+40 & $78.6 \pm 0.6$ & 82.4 & 95.8 & --- \\
+50 & $76.3 \pm 0.8$ & 79.9 & 95.8 & --- \\
+\bottomrule
+\end{tabular}
+\vspace{-0.5em}
+\begin{flushleft}
+\footnotesize *TOWN has a fixed routing rate (11.2\%); other rates shown for reference only.
+\end{flushleft}
+\end{table}

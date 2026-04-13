@@ -3,10 +3,11 @@
 
 \begin{figure}[t]
 \centering
+\resizebox{\linewidth}{!}{%
 \begin{tikzpicture}[
-    node distance=1.2cm and 1.5cm,
-    box/.style={rectangle, draw, rounded corners=3pt, minimum width=2.2cm,
-                minimum height=0.8cm, align=center, font=\small},
+    node distance=1.0cm and 1.2cm,
+    box/.style={rectangle, draw, rounded corners=3pt, minimum width=2.0cm,
+                minimum height=0.75cm, align=center, font=\small},
     decision/.style={diamond, draw, aspect=2.5, inner sep=1pt,
                      align=center, font=\small},
     arrow/.style={->, thick, >=stealth},
@@ -53,15 +54,17 @@
 \node[above=0.15cm of final2, font=\scriptsize, text=thinkorange!80!black]
     {62.8\% acc};
 
-\end{tikzpicture}
+\end{tikzpicture}%
+}
 \caption{%
-    \textbf{\method{} inference pipeline.}
+    \textbf{\town{} baseline inference pipeline.}
     Stage~1 probes with non-thinking mode at budget $B_1$.
     If the model stops early (88.8\% of GSM8K), the answer is accepted
     at ${\sim}$133 tokens (94.4\% accuracy).
     Otherwise, Stage~2 routes to thinking mode at budget $B_2$,
     recovering additional correct answers on hard problems.
     Overall: \textbf{90.9\%} accuracy at \textbf{199} average tokens on the full test set ($n{=}1{,}319$).
+    Note: \method{} extends this with decoupled answer generation and iterative refinement (Algorithm~\ref{alg:mrsd}).
 }
 \label{fig:town-pipeline}
 \end{figure}

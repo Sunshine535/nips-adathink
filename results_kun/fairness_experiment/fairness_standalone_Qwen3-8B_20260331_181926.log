@@ -1,0 +1,356 @@
+2026-03-31 18:19:26,979 INFO     Arguments: {'model': 'Qwen/Qwen3-8B', 'b_think': [256, 512], 'b_answer': 256, 'n_samples': 99999, 'seed': 42, 'output_dir': 'results/fairness_experiment', 'gpu': 1}
+2026-03-31 18:19:26,982 INFO     Log file: results/fairness_experiment/fairness_standalone_Qwen3-8B_20260331_181926.log
+2026-03-31 18:19:29,121 INFO     Loading model: Qwen/Qwen3-8B
+2026-03-31 18:19:29,940 INFO     HTTP Request: HEAD https://hf-mirror.com/Qwen/Qwen3-8B/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-03-31 18:19:30,140 INFO     HTTP Request: HEAD https://hf-mirror.com/api/resolve-cache/models/Qwen/Qwen3-8B/b968826d9c46dd6066d109eabc6255188de91218/config.json "HTTP/1.1 200 OK"
+2026-03-31 18:19:30,839 INFO     HTTP Request: HEAD https://hf-mirror.com/Qwen/Qwen3-8B/resolve/main/tokenizer_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-03-31 18:19:31,143 INFO     HTTP Request: HEAD https://hf-mirror.com/api/resolve-cache/models/Qwen/Qwen3-8B/b968826d9c46dd6066d109eabc6255188de91218/tokenizer_config.json "HTTP/1.1 200 OK"
+2026-03-31 18:19:31,550 INFO     HTTP Request: GET https://hf-mirror.com/api/models/Qwen/Qwen3-8B/tree/main/additional_chat_templates?recursive=false&expand=false "HTTP/1.1 404 Not Found"
+2026-03-31 18:19:31,780 INFO     HTTP Request: GET https://hf-mirror.com/api/models/Qwen/Qwen3-8B/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
+2026-03-31 18:19:32,983 INFO     HTTP Request: GET https://hf-mirror.com/api/models/Qwen/Qwen3-8B "HTTP/1.1 200 OK"
+2026-03-31 18:19:33,433 INFO     HTTP Request: HEAD https://hf-mirror.com/Qwen/Qwen3-8B/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-03-31 18:19:33,746 INFO     HTTP Request: HEAD https://hf-mirror.com/api/resolve-cache/models/Qwen/Qwen3-8B/b968826d9c46dd6066d109eabc6255188de91218/config.json "HTTP/1.1 200 OK"
+2026-03-31 18:21:06,904 INFO     HTTP Request: HEAD https://hf-mirror.com/Qwen/Qwen3-8B/resolve/main/generation_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-03-31 18:21:07,142 INFO     HTTP Request: HEAD https://hf-mirror.com/api/resolve-cache/models/Qwen/Qwen3-8B/b968826d9c46dd6066d109eabc6255188de91218/generation_config.json "HTTP/1.1 200 OK"
+2026-03-31 18:21:07,646 INFO     HTTP Request: HEAD https://hf-mirror.com/Qwen/Qwen3-8B/resolve/main/custom_generate/generate.py "HTTP/1.1 404 Not Found"
+2026-03-31 18:21:08,413 INFO     Loading GSM8K test set ...
+2026-03-31 18:21:08,828 INFO     HTTP Request: HEAD https://hf-mirror.com/datasets/openai/gsm8k/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+2026-03-31 18:21:09,047 INFO     HTTP Request: HEAD https://hf-mirror.com/api/resolve-cache/datasets/openai/gsm8k/740312add88f781978c0658806c59bc2815b9866/README.md "HTTP/1.1 200 OK"
+2026-03-31 18:21:09,645 INFO     HTTP Request: GET https://hf-mirror.com/api/resolve-cache/datasets/openai/gsm8k/740312add88f781978c0658806c59bc2815b9866/README.md "HTTP/1.1 200 OK"
+2026-03-31 18:21:10,232 INFO     HTTP Request: HEAD https://hf-mirror.com/datasets/openai/gsm8k/resolve/740312add88f781978c0658806c59bc2815b9866/gsm8k.py "HTTP/1.1 404 Not Found"
+2026-03-31 18:21:10,432 INFO     HTTP Request: HEAD https://s3.amazonaws.com/datasets.huggingface.co/datasets/datasets/openai/gsm8k/openai/gsm8k.py "HTTP/1.1 404 Not Found"
+2026-03-31 18:21:10,745 INFO     HTTP Request: GET https://hf-mirror.com/api/datasets/openai/gsm8k/revision/740312add88f781978c0658806c59bc2815b9866 "HTTP/1.1 200 OK"
+2026-03-31 18:21:11,132 INFO     HTTP Request: HEAD https://hf-mirror.com/datasets/openai/gsm8k/resolve/740312add88f781978c0658806c59bc2815b9866/.huggingface.yaml "HTTP/1.1 404 Not Found"
+2026-03-31 18:21:11,656 INFO     HTTP Request: GET https://hf-mirror.com/api/datasets/openai/gsm8k/tree/740312add88f781978c0658806c59bc2815b9866/main?recursive=true&expand=false "HTTP/1.1 200 OK"
+2026-03-31 18:21:11,838 INFO     HTTP Request: GET https://hf-mirror.com/api/datasets/openai/gsm8k/tree/740312add88f781978c0658806c59bc2815b9866?recursive=false&expand=false "HTTP/1.1 200 OK"
+2026-03-31 18:21:12,433 INFO     HTTP Request: HEAD https://hf-mirror.com/datasets/openai/gsm8k/resolve/740312add88f781978c0658806c59bc2815b9866/dataset_infos.json "HTTP/1.1 404 Not Found"
+2026-03-31 18:21:12,549 INFO       Loaded 1319 items (seed=42)
+2026-03-31 18:21:12,555 INFO     Loaded 1319 items, B_answer=256, B_think=[256, 512]
+2026-03-31 18:21:12,559 INFO     
+============================================================
+2026-03-31 18:21:12,562 INFO     Running nothink@256  (enable_thinking=False, max_new_tokens=256)
+2026-03-31 18:21:12,565 INFO     ============================================================
+2026-03-31 18:22:41,853 INFO       [20/1319] nothink@256: acc=0.900, avg_tok=116, budget_hit=10.0%
+2026-03-31 18:24:43,995 INFO       [40/1319] nothink@256: acc=0.850, avg_tok=138, budget_hit=12.5%
+2026-03-31 18:26:21,491 INFO       [60/1319] nothink@256: acc=0.817, avg_tok=135, budget_hit=11.7%
+2026-03-31 18:28:08,877 INFO       [80/1319] nothink@256: acc=0.863, avg_tok=136, budget_hit=8.8%
+2026-03-31 18:30:04,402 INFO       [100/1319] nothink@256: acc=0.870, avg_tok=139, budget_hit=9.0%
+2026-03-31 18:32:01,063 INFO       [120/1319] nothink@256: acc=0.858, avg_tok=142, budget_hit=11.7%
+2026-03-31 18:34:02,450 INFO       [140/1319] nothink@256: acc=0.850, avg_tok=144, budget_hit=12.9%
+2026-03-31 18:35:42,109 INFO       [160/1319] nothink@256: acc=0.856, avg_tok=143, budget_hit=11.9%
+2026-03-31 18:37:15,104 INFO       [180/1319] nothink@256: acc=0.867, avg_tok=141, budget_hit=10.6%
+2026-03-31 18:39:06,553 INFO       [200/1319] nothink@256: acc=0.880, avg_tok=141, budget_hit=10.0%
+2026-03-31 18:40:49,997 INFO       [220/1319] nothink@256: acc=0.886, avg_tok=141, budget_hit=10.0%
+2026-03-31 18:43:01,486 INFO       [240/1319] nothink@256: acc=0.875, avg_tok=143, budget_hit=11.2%
+2026-03-31 18:44:54,427 INFO       [260/1319] nothink@256: acc=0.862, avg_tok=144, budget_hit=11.5%
+2026-03-31 18:46:54,326 INFO       [280/1319] nothink@256: acc=0.857, avg_tok=145, budget_hit=12.1%
+2026-03-31 18:48:48,708 INFO       [300/1319] nothink@256: acc=0.863, avg_tok=145, budget_hit=11.7%
+2026-03-31 18:50:37,709 INFO       [320/1319] nothink@256: acc=0.866, avg_tok=145, budget_hit=11.2%
+2026-03-31 18:52:37,004 INFO       [340/1319] nothink@256: acc=0.862, avg_tok=146, budget_hit=11.2%
+2026-03-31 18:54:34,192 INFO       [360/1319] nothink@256: acc=0.858, avg_tok=146, budget_hit=11.1%
+2026-03-31 18:56:33,469 INFO       [380/1319] nothink@256: acc=0.853, avg_tok=147, budget_hit=11.6%
+2026-03-31 18:58:26,656 INFO       [400/1319] nothink@256: acc=0.855, avg_tok=147, budget_hit=11.2%
+2026-03-31 19:00:19,130 INFO       [420/1319] nothink@256: acc=0.855, avg_tok=147, budget_hit=11.7%
+2026-03-31 19:02:25,867 INFO       [440/1319] nothink@256: acc=0.850, avg_tok=147, budget_hit=12.0%
+2026-03-31 19:04:28,162 INFO       [460/1319] nothink@256: acc=0.850, avg_tok=148, budget_hit=12.4%
+2026-03-31 19:06:15,532 INFO       [480/1319] nothink@256: acc=0.854, avg_tok=148, budget_hit=12.1%
+2026-03-31 19:08:17,739 INFO       [500/1319] nothink@256: acc=0.856, avg_tok=148, budget_hit=11.8%
+2026-03-31 19:10:00,438 INFO       [520/1319] nothink@256: acc=0.858, avg_tok=148, budget_hit=11.9%
+2026-03-31 19:11:35,229 INFO       [540/1319] nothink@256: acc=0.859, avg_tok=147, budget_hit=11.5%
+2026-03-31 19:13:30,455 INFO       [560/1319] nothink@256: acc=0.861, avg_tok=147, budget_hit=11.6%
+2026-03-31 19:15:16,402 INFO       [580/1319] nothink@256: acc=0.860, avg_tok=147, budget_hit=11.7%
+2026-03-31 19:17:09,152 INFO       [600/1319] nothink@256: acc=0.862, avg_tok=147, budget_hit=11.5%
+2026-03-31 19:19:06,281 INFO       [620/1319] nothink@256: acc=0.865, avg_tok=147, budget_hit=11.5%
+2026-03-31 19:21:08,928 INFO       [640/1319] nothink@256: acc=0.866, avg_tok=147, budget_hit=11.7%
+2026-03-31 19:22:49,343 INFO       [660/1319] nothink@256: acc=0.870, avg_tok=147, budget_hit=11.4%
+2026-03-31 19:24:45,073 INFO       [680/1319] nothink@256: acc=0.871, avg_tok=147, budget_hit=11.3%
+2026-03-31 19:26:43,878 INFO       [700/1319] nothink@256: acc=0.870, avg_tok=147, budget_hit=11.6%
+2026-03-31 19:28:27,235 INFO       [720/1319] nothink@256: acc=0.871, avg_tok=147, budget_hit=11.4%
+2026-03-31 19:30:21,958 INFO       [740/1319] nothink@256: acc=0.869, avg_tok=147, budget_hit=11.5%
+2026-03-31 19:32:28,955 INFO       [760/1319] nothink@256: acc=0.868, avg_tok=148, budget_hit=11.7%
+2026-03-31 19:34:11,895 INFO       [780/1319] nothink@256: acc=0.869, avg_tok=147, budget_hit=11.7%
+2026-03-31 19:35:54,851 INFO       [800/1319] nothink@256: acc=0.871, avg_tok=147, budget_hit=11.5%
+2026-03-31 19:37:32,196 INFO       [820/1319] nothink@256: acc=0.873, avg_tok=147, budget_hit=11.3%
+2026-03-31 19:39:23,917 INFO       [840/1319] nothink@256: acc=0.875, avg_tok=147, budget_hit=11.4%
+2026-03-31 19:41:26,291 INFO       [860/1319] nothink@256: acc=0.876, avg_tok=147, budget_hit=11.4%
+2026-03-31 19:43:14,375 INFO       [880/1319] nothink@256: acc=0.875, avg_tok=147, budget_hit=11.6%
+2026-03-31 19:45:20,186 INFO       [900/1319] nothink@256: acc=0.872, avg_tok=147, budget_hit=11.8%
+2026-03-31 19:47:07,917 INFO       [920/1319] nothink@256: acc=0.874, avg_tok=147, budget_hit=11.8%
+2026-03-31 19:48:58,819 INFO       [940/1319] nothink@256: acc=0.873, avg_tok=147, budget_hit=11.8%
+2026-03-31 19:50:54,490 INFO       [960/1319] nothink@256: acc=0.874, avg_tok=147, budget_hit=11.8%
+2026-03-31 19:52:44,373 INFO       [980/1319] nothink@256: acc=0.872, avg_tok=147, budget_hit=11.8%
+2026-03-31 19:54:31,428 INFO       [1000/1319] nothink@256: acc=0.873, avg_tok=147, budget_hit=11.9%
+2026-03-31 19:56:08,786 INFO       [1020/1319] nothink@256: acc=0.875, avg_tok=147, budget_hit=11.9%
+2026-03-31 19:58:11,082 INFO       [1040/1319] nothink@256: acc=0.876, avg_tok=147, budget_hit=11.6%
+2026-03-31 20:00:14,295 INFO       [1060/1319] nothink@256: acc=0.873, avg_tok=147, budget_hit=11.9%
+2026-03-31 20:01:55,699 INFO       [1080/1319] nothink@256: acc=0.871, avg_tok=147, budget_hit=11.8%
+2026-03-31 20:03:32,640 INFO       [1100/1319] nothink@256: acc=0.873, avg_tok=147, budget_hit=11.6%
+2026-03-31 20:05:24,682 INFO       [1120/1319] nothink@256: acc=0.872, avg_tok=147, budget_hit=11.6%
+2026-03-31 20:07:17,222 INFO       [1140/1319] nothink@256: acc=0.873, avg_tok=147, budget_hit=11.5%
+2026-03-31 20:09:10,928 INFO       [1160/1319] nothink@256: acc=0.875, avg_tok=147, budget_hit=11.5%
+2026-03-31 20:11:04,239 INFO       [1180/1319] nothink@256: acc=0.875, avg_tok=147, budget_hit=11.6%
+2026-03-31 20:12:57,040 INFO       [1200/1319] nothink@256: acc=0.873, avg_tok=147, budget_hit=11.5%
+2026-03-31 20:14:51,229 INFO       [1220/1319] nothink@256: acc=0.873, avg_tok=147, budget_hit=11.5%
+2026-03-31 20:16:48,291 INFO       [1240/1319] nothink@256: acc=0.872, avg_tok=147, budget_hit=11.6%
+2026-03-31 20:18:40,094 INFO       [1260/1319] nothink@256: acc=0.871, avg_tok=147, budget_hit=11.6%
+2026-03-31 20:20:32,080 INFO       [1280/1319] nothink@256: acc=0.870, avg_tok=147, budget_hit=11.6%
+2026-03-31 20:22:34,796 INFO       [1300/1319] nothink@256: acc=0.870, avg_tok=147, budget_hit=11.6%
+2026-03-31 20:24:03,749 INFO       [1319/1319] nothink@256: acc=0.870, avg_tok=147, budget_hit=11.5%
+2026-03-31 20:24:03,758 INFO       nothink@256 FINAL: acc=0.870, avg_tok=147, budget_hit=11.5%
+2026-03-31 20:24:03,759 INFO     
+============================================================
+2026-03-31 20:24:03,762 INFO     Running think@256  (enable_thinking=True, max_new_tokens=256)
+2026-03-31 20:24:03,765 INFO     ============================================================
+2026-03-31 20:27:17,847 INFO       [20/1319] think@256: acc=0.250, avg_tok=256, budget_hit=100.0%
+2026-03-31 20:30:32,337 INFO       [40/1319] think@256: acc=0.225, avg_tok=256, budget_hit=100.0%
+2026-03-31 20:33:45,922 INFO       [60/1319] think@256: acc=0.233, avg_tok=255, budget_hit=98.3%
+2026-03-31 20:37:00,210 INFO       [80/1319] think@256: acc=0.237, avg_tok=256, budget_hit=98.8%
+2026-03-31 20:40:14,364 INFO       [100/1319] think@256: acc=0.260, avg_tok=256, budget_hit=99.0%
+2026-03-31 20:43:30,192 INFO       [120/1319] think@256: acc=0.258, avg_tok=256, budget_hit=99.2%
+2026-03-31 20:46:45,555 INFO       [140/1319] think@256: acc=0.250, avg_tok=256, budget_hit=98.6%
+2026-03-31 20:49:58,236 INFO       [160/1319] think@256: acc=0.250, avg_tok=255, budget_hit=98.1%
+2026-03-31 20:53:11,472 INFO       [180/1319] think@256: acc=0.233, avg_tok=255, budget_hit=97.8%
+2026-03-31 20:56:25,918 INFO       [200/1319] think@256: acc=0.220, avg_tok=255, budget_hit=98.0%
+2026-03-31 20:59:41,199 INFO       [220/1319] think@256: acc=0.227, avg_tok=255, budget_hit=98.2%
+2026-03-31 21:02:57,118 INFO       [240/1319] think@256: acc=0.208, avg_tok=255, budget_hit=98.3%
+2026-03-31 21:06:10,147 INFO       [260/1319] think@256: acc=0.212, avg_tok=255, budget_hit=98.1%
+2026-03-31 21:09:23,757 INFO       [280/1319] think@256: acc=0.218, avg_tok=255, budget_hit=97.5%
+2026-03-31 21:12:40,050 INFO       [300/1319] think@256: acc=0.213, avg_tok=255, budget_hit=97.3%
+2026-03-31 21:15:52,051 INFO       [320/1319] think@256: acc=0.222, avg_tok=255, budget_hit=97.2%
+2026-03-31 21:19:06,167 INFO       [340/1319] think@256: acc=0.218, avg_tok=255, budget_hit=97.4%
+2026-03-31 21:22:20,294 INFO       [360/1319] think@256: acc=0.208, avg_tok=255, budget_hit=97.5%
+2026-03-31 21:25:34,501 INFO       [380/1319] think@256: acc=0.203, avg_tok=255, budget_hit=97.6%
+2026-03-31 21:28:48,132 INFO       [400/1319] think@256: acc=0.198, avg_tok=255, budget_hit=97.8%
+2026-03-31 21:32:03,127 INFO       [420/1319] think@256: acc=0.195, avg_tok=255, budget_hit=97.9%
+2026-03-31 21:35:17,809 INFO       [440/1319] think@256: acc=0.191, avg_tok=255, budget_hit=98.0%
+2026-03-31 21:38:31,218 INFO       [460/1319] think@256: acc=0.196, avg_tok=255, budget_hit=97.8%
+2026-03-31 21:41:51,089 INFO       [480/1319] think@256: acc=0.198, avg_tok=255, budget_hit=97.9%
+2026-03-31 21:45:05,656 INFO       [500/1319] think@256: acc=0.200, avg_tok=255, budget_hit=98.0%
+2026-03-31 21:48:19,567 INFO       [520/1319] think@256: acc=0.196, avg_tok=255, budget_hit=98.1%
+2026-03-31 21:51:33,426 INFO       [540/1319] think@256: acc=0.193, avg_tok=255, budget_hit=98.1%
+2026-03-31 21:54:47,358 INFO       [560/1319] think@256: acc=0.195, avg_tok=255, budget_hit=98.2%
+2026-03-31 21:58:01,105 INFO       [580/1319] think@256: acc=0.193, avg_tok=255, budget_hit=98.3%
+2026-03-31 22:01:15,627 INFO       [600/1319] think@256: acc=0.188, avg_tok=255, budget_hit=98.3%
+2026-03-31 22:04:32,477 INFO       [620/1319] think@256: acc=0.185, avg_tok=255, budget_hit=98.4%
+2026-03-31 22:07:45,509 INFO       [640/1319] think@256: acc=0.186, avg_tok=255, budget_hit=98.4%
+2026-03-31 22:10:59,173 INFO       [660/1319] think@256: acc=0.185, avg_tok=255, budget_hit=98.5%
+2026-03-31 22:14:12,657 INFO       [680/1319] think@256: acc=0.184, avg_tok=255, budget_hit=98.5%
+2026-03-31 22:17:27,278 INFO       [700/1319] think@256: acc=0.181, avg_tok=255, budget_hit=98.6%
+2026-03-31 22:20:42,689 INFO       [720/1319] think@256: acc=0.182, avg_tok=255, budget_hit=98.6%
+2026-03-31 22:23:57,447 INFO       [740/1319] think@256: acc=0.181, avg_tok=255, budget_hit=98.6%
+2026-03-31 22:27:12,782 INFO       [760/1319] think@256: acc=0.176, avg_tok=255, budget_hit=98.7%
+2026-03-31 22:30:23,792 INFO       [780/1319] think@256: acc=0.177, avg_tok=255, budget_hit=98.5%
+2026-03-31 22:33:39,409 INFO       [800/1319] think@256: acc=0.177, avg_tok=255, budget_hit=98.5%
+2026-03-31 22:36:57,687 INFO       [820/1319] think@256: acc=0.179, avg_tok=255, budget_hit=98.5%
+2026-03-31 22:40:11,872 INFO       [840/1319] think@256: acc=0.181, avg_tok=255, budget_hit=98.6%
+2026-03-31 22:43:25,451 INFO       [860/1319] think@256: acc=0.181, avg_tok=255, budget_hit=98.6%
+2026-03-31 22:46:40,763 INFO       [880/1319] think@256: acc=0.182, avg_tok=255, budget_hit=98.6%
+2026-03-31 22:49:56,149 INFO       [900/1319] think@256: acc=0.181, avg_tok=255, budget_hit=98.7%
+2026-03-31 22:53:11,100 INFO       [920/1319] think@256: acc=0.182, avg_tok=255, budget_hit=98.7%
+2026-03-31 22:56:25,837 INFO       [940/1319] think@256: acc=0.182, avg_tok=255, budget_hit=98.7%
+2026-03-31 22:59:40,844 INFO       [960/1319] think@256: acc=0.180, avg_tok=255, budget_hit=98.8%
+2026-03-31 23:02:56,447 INFO       [980/1319] think@256: acc=0.179, avg_tok=255, budget_hit=98.8%
+2026-03-31 23:06:10,536 INFO       [1000/1319] think@256: acc=0.175, avg_tok=255, budget_hit=98.8%
+2026-03-31 23:09:27,875 INFO       [1020/1319] think@256: acc=0.176, avg_tok=255, budget_hit=98.8%
+2026-03-31 23:12:43,197 INFO       [1040/1319] think@256: acc=0.175, avg_tok=255, budget_hit=98.8%
+2026-03-31 23:15:56,998 INFO       [1060/1319] think@256: acc=0.175, avg_tok=256, budget_hit=98.9%
+2026-03-31 23:19:10,270 INFO       [1080/1319] think@256: acc=0.174, avg_tok=255, budget_hit=98.8%
+2026-03-31 23:22:24,446 INFO       [1100/1319] think@256: acc=0.176, avg_tok=255, budget_hit=98.7%
+2026-03-31 23:25:43,608 INFO       [1120/1319] think@256: acc=0.176, avg_tok=255, budget_hit=98.8%
+2026-03-31 23:29:02,437 INFO       [1140/1319] think@256: acc=0.174, avg_tok=255, budget_hit=98.8%
+2026-03-31 23:32:18,296 INFO       [1160/1319] think@256: acc=0.174, avg_tok=255, budget_hit=98.8%
+2026-03-31 23:35:27,568 INFO       [1180/1319] think@256: acc=0.175, avg_tok=255, budget_hit=98.6%
+2026-03-31 23:38:43,086 INFO       [1200/1319] think@256: acc=0.178, avg_tok=255, budget_hit=98.6%
+2026-03-31 23:41:56,958 INFO       [1220/1319] think@256: acc=0.180, avg_tok=255, budget_hit=98.5%
+2026-03-31 23:45:12,337 INFO       [1240/1319] think@256: acc=0.179, avg_tok=255, budget_hit=98.5%
+2026-03-31 23:48:28,325 INFO       [1260/1319] think@256: acc=0.179, avg_tok=255, budget_hit=98.5%
+2026-03-31 23:51:44,896 INFO       [1280/1319] think@256: acc=0.178, avg_tok=255, budget_hit=98.5%
+2026-03-31 23:54:59,840 INFO       [1300/1319] think@256: acc=0.178, avg_tok=255, budget_hit=98.5%
+2026-03-31 23:58:05,662 INFO       [1319/1319] think@256: acc=0.180, avg_tok=255, budget_hit=98.6%
+2026-03-31 23:58:05,669 INFO       think@256 FINAL: acc=0.180, avg_tok=255, budget_hit=98.6%
+2026-03-31 23:58:05,673 INFO     
+============================================================
+2026-03-31 23:58:05,674 INFO     Running think@512_generous  (enable_thinking=True, max_new_tokens=512)
+2026-03-31 23:58:05,675 INFO     ============================================================
+2026-04-01 00:03:10,918 INFO       [20/1319] think@512_generous: acc=0.650, avg_tok=401, budget_hit=40.0%
+2026-04-01 00:09:11,611 INFO       [40/1319] think@512_generous: acc=0.625, avg_tok=437, budget_hit=52.5%
+2026-04-01 00:14:38,956 INFO       [60/1319] think@512_generous: acc=0.600, avg_tok=434, budget_hit=50.0%
+2026-04-01 00:20:19,008 INFO       [80/1319] think@512_generous: acc=0.637, avg_tok=438, budget_hit=46.2%
+2026-04-01 00:26:04,703 INFO       [100/1319] think@512_generous: acc=0.640, avg_tok=442, budget_hit=49.0%
+2026-04-01 00:31:22,751 INFO       [120/1319] think@512_generous: acc=0.633, avg_tok=438, budget_hit=46.7%
+2026-04-01 00:37:03,806 INFO       [140/1319] think@512_generous: acc=0.643, avg_tok=440, budget_hit=49.3%
+2026-04-01 00:42:41,809 INFO       [160/1319] think@512_generous: acc=0.619, avg_tok=440, budget_hit=51.2%
+2026-04-01 00:48:17,665 INFO       [180/1319] think@512_generous: acc=0.628, avg_tok=440, budget_hit=51.1%
+2026-04-01 00:54:04,808 INFO       [200/1319] think@512_generous: acc=0.610, avg_tok=441, budget_hit=52.0%
+2026-04-01 01:00:03,614 INFO       [220/1319] think@512_generous: acc=0.605, avg_tok=445, budget_hit=53.2%
+2026-04-01 01:06:12,294 INFO       [240/1319] think@512_generous: acc=0.583, avg_tok=448, budget_hit=55.8%
+2026-04-01 01:11:55,970 INFO       [260/1319] think@512_generous: acc=0.588, avg_tok=448, budget_hit=55.8%
+2026-04-01 01:17:28,628 INFO       [280/1319] think@512_generous: acc=0.596, avg_tok=447, budget_hit=55.0%
+2026-04-01 01:23:14,460 INFO       [300/1319] think@512_generous: acc=0.583, avg_tok=448, budget_hit=55.3%
+2026-04-01 01:29:16,518 INFO       [320/1319] think@512_generous: acc=0.572, avg_tok=449, budget_hit=56.6%
+2026-04-01 01:35:18,853 INFO       [340/1319] think@512_generous: acc=0.562, avg_tok=451, budget_hit=57.6%
+2026-04-01 01:41:40,547 INFO       [360/1319] think@512_generous: acc=0.553, avg_tok=453, budget_hit=59.4%
+2026-04-01 01:47:33,029 INFO       [380/1319] think@512_generous: acc=0.558, avg_tok=454, budget_hit=59.5%
+2026-04-01 01:53:41,953 INFO       [400/1319] think@512_generous: acc=0.560, avg_tok=455, budget_hit=60.0%
+2026-04-01 01:59:37,178 INFO       [420/1319] think@512_generous: acc=0.555, avg_tok=456, budget_hit=60.2%
+2026-04-01 02:05:39,026 INFO       [440/1319] think@512_generous: acc=0.555, avg_tok=457, budget_hit=60.7%
+2026-04-01 02:11:29,013 INFO       [460/1319] think@512_generous: acc=0.557, avg_tok=457, budget_hit=60.7%
+2026-04-01 02:17:13,123 INFO       [480/1319] think@512_generous: acc=0.565, avg_tok=456, budget_hit=60.2%
+2026-04-01 02:22:53,204 INFO       [500/1319] think@512_generous: acc=0.562, avg_tok=456, budget_hit=60.2%
+2026-04-01 02:28:49,668 INFO       [520/1319] think@512_generous: acc=0.562, avg_tok=456, budget_hit=60.6%
+2026-04-01 02:34:41,375 INFO       [540/1319] think@512_generous: acc=0.561, avg_tok=456, budget_hit=60.2%
+2026-04-01 02:40:31,271 INFO       [560/1319] think@512_generous: acc=0.568, avg_tok=457, budget_hit=59.8%
+2026-04-01 02:46:10,060 INFO       [580/1319] think@512_generous: acc=0.567, avg_tok=456, budget_hit=60.0%
+2026-04-01 02:52:19,403 INFO       [600/1319] think@512_generous: acc=0.565, avg_tok=457, budget_hit=60.5%
+2026-04-01 02:58:07,170 INFO       [620/1319] think@512_generous: acc=0.569, avg_tok=457, budget_hit=60.2%
+2026-04-01 03:04:11,334 INFO       [640/1319] think@512_generous: acc=0.570, avg_tok=457, budget_hit=60.5%
+2026-04-01 03:09:56,508 INFO       [660/1319] think@512_generous: acc=0.582, avg_tok=457, budget_hit=60.2%
+2026-04-01 03:15:50,801 INFO       [680/1319] think@512_generous: acc=0.579, avg_tok=457, budget_hit=60.1%
+2026-04-01 03:21:41,120 INFO       [700/1319] think@512_generous: acc=0.580, avg_tok=458, budget_hit=60.3%
+2026-04-01 03:27:41,174 INFO       [720/1319] think@512_generous: acc=0.576, avg_tok=458, budget_hit=60.6%
+2026-04-01 03:33:39,636 INFO       [740/1319] think@512_generous: acc=0.578, avg_tok=458, budget_hit=60.7%
+2026-04-01 03:39:37,766 INFO       [760/1319] think@512_generous: acc=0.574, avg_tok=459, budget_hit=60.9%
+2026-04-01 03:45:26,365 INFO       [780/1319] think@512_generous: acc=0.573, avg_tok=459, budget_hit=61.0%
+2026-04-01 03:51:00,971 INFO       [800/1319] think@512_generous: acc=0.574, avg_tok=458, budget_hit=60.8%
+2026-04-01 03:56:45,356 INFO       [820/1319] think@512_generous: acc=0.576, avg_tok=458, budget_hit=60.6%
+2026-04-01 04:02:31,587 INFO       [840/1319] think@512_generous: acc=0.579, avg_tok=458, budget_hit=60.5%
+2026-04-01 04:08:37,631 INFO       [860/1319] think@512_generous: acc=0.578, avg_tok=458, budget_hit=60.8%
+2026-04-01 04:14:39,974 INFO       [880/1319] think@512_generous: acc=0.576, avg_tok=459, budget_hit=61.1%
+2026-04-01 04:20:33,113 INFO       [900/1319] think@512_generous: acc=0.573, avg_tok=459, budget_hit=61.1%
+2026-04-01 04:26:10,582 INFO       [920/1319] think@512_generous: acc=0.573, avg_tok=459, budget_hit=61.1%
+2026-04-01 04:31:57,243 INFO       [940/1319] think@512_generous: acc=0.573, avg_tok=458, budget_hit=61.1%
+2026-04-01 04:38:03,310 INFO       [960/1319] think@512_generous: acc=0.571, avg_tok=459, budget_hit=61.3%
+2026-04-01 04:44:22,305 INFO       [980/1319] think@512_generous: acc=0.567, avg_tok=460, budget_hit=61.6%
+2026-04-01 04:50:43,616 INFO       [1000/1319] think@512_generous: acc=0.566, avg_tok=460, budget_hit=62.0%
+2026-04-01 04:56:35,661 INFO       [1020/1319] think@512_generous: acc=0.570, avg_tok=460, budget_hit=62.0%
+2026-04-01 05:02:49,407 INFO       [1040/1319] think@512_generous: acc=0.570, avg_tok=461, budget_hit=62.2%
+2026-04-01 05:09:00,005 INFO       [1060/1319] think@512_generous: acc=0.566, avg_tok=461, budget_hit=62.5%
+2026-04-01 05:14:40,898 INFO       [1080/1319] think@512_generous: acc=0.566, avg_tok=461, budget_hit=62.5%
+2026-04-01 05:20:12,291 INFO       [1100/1319] think@512_generous: acc=0.567, avg_tok=460, budget_hit=62.2%
+2026-04-01 05:26:03,743 INFO       [1120/1319] think@512_generous: acc=0.567, avg_tok=460, budget_hit=62.1%
+2026-04-01 05:32:17,841 INFO       [1140/1319] think@512_generous: acc=0.566, avg_tok=461, budget_hit=62.5%
+2026-04-01 05:38:16,418 INFO       [1160/1319] think@512_generous: acc=0.566, avg_tok=461, budget_hit=62.5%
+2026-04-01 05:43:46,973 INFO       [1180/1319] think@512_generous: acc=0.564, avg_tok=461, budget_hit=62.5%
+2026-04-01 05:49:40,719 INFO       [1200/1319] think@512_generous: acc=0.565, avg_tok=461, budget_hit=62.4%
+2026-04-01 05:55:23,017 INFO       [1220/1319] think@512_generous: acc=0.566, avg_tok=460, budget_hit=62.4%
+2026-04-01 06:01:11,133 INFO       [1240/1319] think@512_generous: acc=0.564, avg_tok=460, budget_hit=62.5%
+2026-04-01 06:07:03,308 INFO       [1260/1319] think@512_generous: acc=0.563, avg_tok=460, budget_hit=62.6%
+2026-04-01 06:13:05,069 INFO       [1280/1319] think@512_generous: acc=0.560, avg_tok=461, budget_hit=62.7%
+2026-04-01 06:19:09,536 INFO       [1300/1319] think@512_generous: acc=0.559, avg_tok=461, budget_hit=62.8%
+2026-04-01 06:24:15,800 INFO       [1319/1319] think@512_generous: acc=0.560, avg_tok=460, budget_hit=62.6%
+2026-04-01 06:24:15,880 INFO       think@512_generous FINAL: acc=0.560, avg_tok=460, budget_hit=62.6%
+2026-04-01 06:24:15,885 INFO     
+============================================================
+2026-04-01 06:24:15,890 INFO     Running think@256+nothink@256_twopass  (think@256 + nothink@256)
+2026-04-01 06:24:15,892 INFO     ============================================================
+2026-04-01 06:27:36,006 INFO       [20/1319] think@256+nothink@256_twopass: acc=0.900, avg_tok=263
+2026-04-01 06:30:57,840 INFO       [40/1319] think@256+nothink@256_twopass: acc=0.775, avg_tok=263
+2026-04-01 06:34:22,887 INFO       [60/1319] think@256+nothink@256_twopass: acc=0.750, avg_tok=263
+2026-04-01 06:37:44,638 INFO       [80/1319] think@256+nothink@256_twopass: acc=0.750, avg_tok=263
+2026-04-01 06:41:06,595 INFO       [100/1319] think@256+nothink@256_twopass: acc=0.740, avg_tok=263
+2026-04-01 06:44:26,206 INFO       [120/1319] think@256+nothink@256_twopass: acc=0.725, avg_tok=263
+2026-04-01 06:47:46,440 INFO       [140/1319] think@256+nothink@256_twopass: acc=0.721, avg_tok=263
+2026-04-01 06:51:05,748 INFO       [160/1319] think@256+nothink@256_twopass: acc=0.700, avg_tok=263
+2026-04-01 06:54:25,058 INFO       [180/1319] think@256+nothink@256_twopass: acc=0.717, avg_tok=263
+2026-04-01 06:57:45,936 INFO       [200/1319] think@256+nothink@256_twopass: acc=0.710, avg_tok=263
+2026-04-01 07:01:06,687 INFO       [220/1319] think@256+nothink@256_twopass: acc=0.705, avg_tok=263
+2026-04-01 07:04:27,808 INFO       [240/1319] think@256+nothink@256_twopass: acc=0.696, avg_tok=263
+2026-04-01 07:07:49,815 INFO       [260/1319] think@256+nothink@256_twopass: acc=0.696, avg_tok=263
+2026-04-01 07:11:11,614 INFO       [280/1319] think@256+nothink@256_twopass: acc=0.700, avg_tok=262
+2026-04-01 07:14:33,164 INFO       [300/1319] think@256+nothink@256_twopass: acc=0.700, avg_tok=262
+2026-04-01 07:18:00,913 INFO       [320/1319] think@256+nothink@256_twopass: acc=0.691, avg_tok=263
+2026-04-01 07:21:21,765 INFO       [340/1319] think@256+nothink@256_twopass: acc=0.688, avg_tok=263
+2026-04-01 07:24:43,293 INFO       [360/1319] think@256+nothink@256_twopass: acc=0.683, avg_tok=263
+2026-04-01 07:28:03,074 INFO       [380/1319] think@256+nothink@256_twopass: acc=0.682, avg_tok=263
+2026-04-01 07:31:22,491 INFO       [400/1319] think@256+nothink@256_twopass: acc=0.675, avg_tok=263
+2026-04-01 07:34:45,448 INFO       [420/1319] think@256+nothink@256_twopass: acc=0.679, avg_tok=263
+2026-04-01 07:38:04,839 INFO       [440/1319] think@256+nothink@256_twopass: acc=0.677, avg_tok=263
+2026-04-01 07:41:23,238 INFO       [460/1319] think@256+nothink@256_twopass: acc=0.676, avg_tok=263
+2026-04-01 07:44:45,055 INFO       [480/1319] think@256+nothink@256_twopass: acc=0.677, avg_tok=263
+2026-04-01 07:48:07,312 INFO       [500/1319] think@256+nothink@256_twopass: acc=0.676, avg_tok=263
+2026-04-01 07:51:31,114 INFO       [520/1319] think@256+nothink@256_twopass: acc=0.679, avg_tok=263
+2026-04-01 07:54:53,371 INFO       [540/1319] think@256+nothink@256_twopass: acc=0.681, avg_tok=263
+2026-04-01 07:58:19,671 INFO       [560/1319] think@256+nothink@256_twopass: acc=0.689, avg_tok=263
+2026-04-01 08:01:41,645 INFO       [580/1319] think@256+nothink@256_twopass: acc=0.690, avg_tok=263
+2026-04-01 08:05:05,060 INFO       [600/1319] think@256+nothink@256_twopass: acc=0.693, avg_tok=263
+2026-04-01 08:08:30,659 INFO       [620/1319] think@256+nothink@256_twopass: acc=0.695, avg_tok=263
+2026-04-01 08:11:56,024 INFO       [640/1319] think@256+nothink@256_twopass: acc=0.695, avg_tok=263
+2026-04-01 08:15:19,476 INFO       [660/1319] think@256+nothink@256_twopass: acc=0.702, avg_tok=263
+2026-04-01 08:18:42,013 INFO       [680/1319] think@256+nothink@256_twopass: acc=0.697, avg_tok=263
+2026-04-01 08:22:05,269 INFO       [700/1319] think@256+nothink@256_twopass: acc=0.697, avg_tok=263
+2026-04-01 08:25:29,655 INFO       [720/1319] think@256+nothink@256_twopass: acc=0.694, avg_tok=263
+2026-04-01 08:28:53,044 INFO       [740/1319] think@256+nothink@256_twopass: acc=0.696, avg_tok=263
+2026-04-01 08:32:16,433 INFO       [760/1319] think@256+nothink@256_twopass: acc=0.692, avg_tok=263
+2026-04-01 08:35:34,268 INFO       [780/1319] think@256+nothink@256_twopass: acc=0.690, avg_tok=263
+2026-04-01 08:38:58,109 INFO       [800/1319] think@256+nothink@256_twopass: acc=0.690, avg_tok=263
+2026-04-01 08:42:21,979 INFO       [820/1319] think@256+nothink@256_twopass: acc=0.693, avg_tok=263
+2026-04-01 08:45:42,936 INFO       [840/1319] think@256+nothink@256_twopass: acc=0.692, avg_tok=263
+2026-04-01 08:49:03,609 INFO       [860/1319] think@256+nothink@256_twopass: acc=0.690, avg_tok=263
+2026-04-01 08:52:26,134 INFO       [880/1319] think@256+nothink@256_twopass: acc=0.688, avg_tok=263
+2026-04-01 08:55:50,472 INFO       [900/1319] think@256+nothink@256_twopass: acc=0.688, avg_tok=263
+2026-04-01 08:59:12,865 INFO       [920/1319] think@256+nothink@256_twopass: acc=0.687, avg_tok=263
+2026-04-01 09:02:33,898 INFO       [940/1319] think@256+nothink@256_twopass: acc=0.688, avg_tok=263
+2026-04-01 09:05:55,671 INFO       [960/1319] think@256+nothink@256_twopass: acc=0.685, avg_tok=263
+2026-04-01 09:09:20,385 INFO       [980/1319] think@256+nothink@256_twopass: acc=0.685, avg_tok=263
+2026-04-01 09:12:42,502 INFO       [1000/1319] think@256+nothink@256_twopass: acc=0.683, avg_tok=263
+2026-04-01 09:16:04,739 INFO       [1020/1319] think@256+nothink@256_twopass: acc=0.682, avg_tok=263
+2026-04-01 09:19:27,570 INFO       [1040/1319] think@256+nothink@256_twopass: acc=0.682, avg_tok=263
+2026-04-01 09:22:52,653 INFO       [1060/1319] think@256+nothink@256_twopass: acc=0.677, avg_tok=263
+2026-04-01 09:26:11,673 INFO       [1080/1319] think@256+nothink@256_twopass: acc=0.680, avg_tok=263
+2026-04-01 09:29:31,057 INFO       [1100/1319] think@256+nothink@256_twopass: acc=0.682, avg_tok=263
+2026-04-01 09:32:54,018 INFO       [1120/1319] think@256+nothink@256_twopass: acc=0.679, avg_tok=263
+2026-04-01 09:36:16,636 INFO       [1140/1319] think@256+nothink@256_twopass: acc=0.675, avg_tok=263
+2026-04-01 09:39:42,280 INFO       [1160/1319] think@256+nothink@256_twopass: acc=0.677, avg_tok=263
+2026-04-01 09:43:00,071 INFO       [1180/1319] think@256+nothink@256_twopass: acc=0.675, avg_tok=263
+2026-04-01 09:46:25,922 INFO       [1200/1319] think@256+nothink@256_twopass: acc=0.677, avg_tok=263
+2026-04-01 09:49:46,988 INFO       [1220/1319] think@256+nothink@256_twopass: acc=0.678, avg_tok=263
+2026-04-01 09:53:09,194 INFO       [1240/1319] think@256+nothink@256_twopass: acc=0.678, avg_tok=263
+2026-04-01 09:56:31,743 INFO       [1260/1319] think@256+nothink@256_twopass: acc=0.678, avg_tok=263
+2026-04-01 09:59:56,344 INFO       [1280/1319] think@256+nothink@256_twopass: acc=0.676, avg_tok=263
+2026-04-01 10:03:21,527 INFO       [1300/1319] think@256+nothink@256_twopass: acc=0.675, avg_tok=263
+2026-04-01 10:06:33,784 INFO       [1319/1319] think@256+nothink@256_twopass: acc=0.676, avg_tok=263
+2026-04-01 10:06:33,791 INFO       think@256+nothink@256_twopass FINAL: acc=0.676, avg_tok=263
+2026-04-01 10:06:33,800 INFO     
+============================================================
+2026-04-01 10:06:33,855 INFO     Running think@512  (enable_thinking=True, max_new_tokens=512)
+2026-04-01 10:06:33,862 INFO     ============================================================
+2026-04-01 10:11:42,242 INFO       [20/1319] think@512: acc=0.650, avg_tok=401, budget_hit=40.0%
+2026-04-01 10:17:44,201 INFO       [40/1319] think@512: acc=0.625, avg_tok=437, budget_hit=52.5%
+2026-04-01 10:23:12,239 INFO       [60/1319] think@512: acc=0.600, avg_tok=434, budget_hit=50.0%
+2026-04-01 10:28:57,913 INFO       [80/1319] think@512: acc=0.637, avg_tok=438, budget_hit=46.2%
+2026-04-01 10:34:48,939 INFO       [100/1319] think@512: acc=0.640, avg_tok=442, budget_hit=49.0%
+2026-04-01 10:40:10,808 INFO       [120/1319] think@512: acc=0.633, avg_tok=438, budget_hit=46.7%
+2026-04-01 10:45:56,160 INFO       [140/1319] think@512: acc=0.643, avg_tok=440, budget_hit=49.3%
+2026-04-01 10:51:35,988 INFO       [160/1319] think@512: acc=0.619, avg_tok=440, budget_hit=51.2%
+2026-04-01 10:57:16,016 INFO       [180/1319] think@512: acc=0.628, avg_tok=440, budget_hit=51.1%
+2026-04-01 11:03:09,005 INFO       [200/1319] think@512: acc=0.610, avg_tok=441, budget_hit=52.0%
+2026-04-01 11:09:18,723 INFO       [220/1319] think@512: acc=0.605, avg_tok=445, budget_hit=53.2%
+2026-04-01 11:15:29,715 INFO       [240/1319] think@512: acc=0.583, avg_tok=448, budget_hit=55.8%
+2026-04-01 11:21:18,187 INFO       [260/1319] think@512: acc=0.588, avg_tok=448, budget_hit=55.8%
+2026-04-01 11:26:54,723 INFO       [280/1319] think@512: acc=0.596, avg_tok=447, budget_hit=55.0%
+2026-04-01 11:32:40,009 INFO       [300/1319] think@512: acc=0.583, avg_tok=448, budget_hit=55.3%
+2026-04-01 11:38:43,998 INFO       [320/1319] think@512: acc=0.572, avg_tok=449, budget_hit=56.6%
+2026-04-01 11:44:51,345 INFO       [340/1319] think@512: acc=0.562, avg_tok=451, budget_hit=57.6%
+2026-04-01 11:51:15,886 INFO       [360/1319] think@512: acc=0.553, avg_tok=453, budget_hit=59.4%
+2026-04-01 11:57:13,586 INFO       [380/1319] think@512: acc=0.558, avg_tok=454, budget_hit=59.5%
+2026-04-01 12:03:25,740 INFO       [400/1319] think@512: acc=0.560, avg_tok=455, budget_hit=60.0%
+2026-04-01 12:09:21,637 INFO       [420/1319] think@512: acc=0.555, avg_tok=456, budget_hit=60.2%
+2026-04-01 12:15:26,846 INFO       [440/1319] think@512: acc=0.555, avg_tok=457, budget_hit=60.7%
+2026-04-01 12:21:19,722 INFO       [460/1319] think@512: acc=0.557, avg_tok=457, budget_hit=60.7%
+2026-04-01 12:27:07,197 INFO       [480/1319] think@512: acc=0.565, avg_tok=456, budget_hit=60.2%
+2026-04-01 12:32:51,286 INFO       [500/1319] think@512: acc=0.562, avg_tok=456, budget_hit=60.2%
+2026-04-01 12:38:50,343 INFO       [520/1319] think@512: acc=0.562, avg_tok=456, budget_hit=60.6%
+2026-04-01 12:44:44,469 INFO       [540/1319] think@512: acc=0.561, avg_tok=456, budget_hit=60.2%
+2026-04-01 12:50:38,906 INFO       [560/1319] think@512: acc=0.568, avg_tok=457, budget_hit=59.8%
+2026-04-01 12:56:21,773 INFO       [580/1319] think@512: acc=0.567, avg_tok=456, budget_hit=60.0%
+2026-04-01 13:02:29,825 INFO       [600/1319] think@512: acc=0.565, avg_tok=457, budget_hit=60.5%
+2026-04-01 13:08:16,514 INFO       [620/1319] think@512: acc=0.569, avg_tok=457, budget_hit=60.2%
+2026-04-01 13:14:25,602 INFO       [640/1319] think@512: acc=0.570, avg_tok=457, budget_hit=60.5%
+2026-04-01 13:20:11,818 INFO       [660/1319] think@512: acc=0.582, avg_tok=457, budget_hit=60.2%
+2026-04-01 13:26:18,785 INFO       [680/1319] think@512: acc=0.579, avg_tok=457, budget_hit=60.1%
+2026-04-01 13:32:16,669 INFO       [700/1319] think@512: acc=0.580, avg_tok=458, budget_hit=60.3%
+2026-04-01 13:38:18,499 INFO       [720/1319] think@512: acc=0.576, avg_tok=458, budget_hit=60.6%
+2026-04-01 13:44:23,945 INFO       [740/1319] think@512: acc=0.578, avg_tok=458, budget_hit=60.7%
+2026-04-01 13:50:26,058 INFO       [760/1319] think@512: acc=0.574, avg_tok=459, budget_hit=60.9%
+2026-04-01 13:56:14,522 INFO       [780/1319] think@512: acc=0.573, avg_tok=459, budget_hit=61.0%
+2026-04-01 14:01:52,140 INFO       [800/1319] think@512: acc=0.574, avg_tok=458, budget_hit=60.8%

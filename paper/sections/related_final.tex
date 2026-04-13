@@ -2,29 +2,39 @@
 
 \paragraph{Chain-of-Thought Reasoning.}
 Chain-of-thought (CoT) prompting~\citep{wei2022chain} and its variants~\citep{wang2023selfconsistency, yao2023tree} have become the de facto approach for improving LLM reasoning.
-Recent work has moved beyond prompting to \emph{training} models with explicit reasoning traces, yielding ``thinking'' LLMs such as DeepSeek-R1~\citep{deepseek2025r1}, QwQ~\citep{qwen2025qwq}, and Qwen3~\citep{qwen2025qwen3}.
+Recent work has moved beyond prompting to \emph{training} models with explicit reasoning traces, yielding ``thinking'' LLMs such as DeepSeek-R1~\citep{deepseekr1}, QwQ~\citep{qwq2024}, and Qwen3~\citep{qwen3_2025}.
 These models produce a \texttt{<think>...</think>} block before the final answer.
 While effective at unconstrained budgets, we show that this thinking overhead imposes a severe penalty under realistic token constraints.
 
 \paragraph{Test-Time Compute Scaling.}
 The scaling of inference-time computation has emerged as a complementary axis to model scaling~\citep{snell2024scaling}.
-Best-of-N sampling~\citep{lightman2024lets}, process reward models~\citep{wang2024math}, and iterative refinement~\citep{madaan2023selfrefine} all trade additional tokens for improved accuracy.
-However, these approaches assume that \emph{more tokens always help}.
-Our findings challenge this assumption: at constrained budgets, the overhead of structured reasoning can actively \emph{hurt} performance.
+Best-of-N sampling~\citep{lightman2023prm}, process reward models~\citep{wang2024math}, and iterative refinement~\citep{madaan2023selfrefine} all trade additional tokens for improved accuracy.
+\citet{muennighoff2025s1} demonstrate that ``budget forcing''---controlling the length of reasoning chains---can improve efficiency, but operate within the thinking paradigm.
+Our findings challenge a shared assumption of these approaches: that \emph{more reasoning tokens always help}.
+At constrained budgets, the overhead of structured reasoning can actively \emph{hurt} performance.
 
 \paragraph{Adaptive Computation and Early Exit.}
-Adaptive computation~\citep{graves2016adaptive, dehghani2018universal} allows models to allocate variable compute per input.
-In the LLM setting, speculative decoding~\citep{leviathan2023fast, chen2023accelerating} and early exit mechanisms~\citep{schuster2022confident, bae2023fast} reduce inference cost.
-Our work differs in that we identify a \emph{free} confidence signal---natural stopping---that requires no additional training or auxiliary models, and propose routing between thinking and non-thinking modes rather than adjusting depth within a single forward pass.
+Adaptive computation~\citep{graves2016adaptive, dehghani2019universal} allows models to allocate variable compute per input.
+In the LLM setting, speculative decoding~\citep{leviathan2023fast, chen2023accelerating} and early exit mechanisms~\citep{schuster2022confident, bae2023fast} reduce inference cost by terminating generation early.
+Our work identifies a \emph{free} confidence signal---natural stopping---that requires no additional training or auxiliary models, and differs from these approaches in routing \emph{between} thinking and non-thinking modes rather than adjusting depth within a single forward pass.
+More broadly, LLM cascades~\citep{chen2023frugalgpt} route
+queries between models of different sizes to balance cost and quality.
+\method{} applies the cascade principle \emph{within} a single model by
+routing between reasoning modes rather than model sizes---a distinction
+enabled by the hybrid \texttt{think}/\texttt{nothink} architecture of
+models like Qwen3.
+The connection to cascade classifiers~\citep{viola2001rapid} is deliberate: we formalize \method{} as a two-stage cascade with provable Pareto-dominance guarantees.
 
 \paragraph{Budget-Aware Reasoning.}
 A growing body of concurrent work addresses reasoning efficiency.
 AdaThink~\citep{adathink2025} trains budget controllers to allocate thinking tokens adaptively; Think Less, Think Better~\citep{hou2025thinkless} injects wrap-up tokens to shorten chains; Satisficing~\citep{luo2025satisficing} applies confidence-based early exit; and SelfBudgeter~\citep{liu2025selfbudgeter} learns per-instance budgets.
 These methods all operate \emph{within} the thinking paradigm---they assume thinking mode is desirable and seek to make it cheaper.
-Our work challenges the premise itself: we show that at practical budgets, the \emph{entire thinking framework} is counterproductive, and propose routing \emph{between} thinking and non-thinking modes rather than optimizing within thinking mode alone.
+Our work challenges this premise: we show that at practical budgets, the \emph{entire thinking framework} is counterproductive, and provide a decomposition framework (Proposition~\ref{thm:thinking-tax}) explaining why.
+Rather than optimizing within thinking mode, we propose routing \emph{between} thinking and non-thinking modes.
 
 \paragraph{Overthinking and Compute Waste.}
 \citet{chen2024overthinking} identify overthinking in mathematical reasoning, where models produce redundant reasoning steps.
 \citet{nvidia2025pareto} propose a Pareto framework for allocating test-time compute.
-Our contribution is orthogonal and more fundamental: rather than reducing waste within thinking mode, we show that \emph{disabling} thinking mode entirely yields dramatic improvements at constrained budgets.
-The natural-stop oracle we identify provides a free, training-free signal for routing decisions---a capability not explored in prior work.
+Our contribution differs in two ways.
+First, we study a more fundamental failure mode: not redundant reasoning within a completed chain, but \emph{incomplete reasoning} due to truncation---a qualitatively different problem requiring a qualitatively different solution.
+Second, we provide a formal model (Proposition~\ref{prop:acc-decomp}) that makes quantitative predictions about the accuracy decomposition, crossover budget, and scaling behavior, all verified empirically.

@@ -1,0 +1,22 @@
+% related_compact.tex — Compressed related work for 9-page version
+
+\paragraph{Chain-of-Thought and Thinking LLMs.}
+CoT prompting~\citep{wei2022chain} and its variants~\citep{wang2023selfconsistency, yao2023tree} improve reasoning by generating intermediate steps.
+Recent models like OpenAI's o1~\citep{openai2024o1}, DeepSeek-R1~\citep{deepseekr1}, and Qwen3~\citep{qwen3_2025} invest substantial test-time compute via extended reasoning chains.
+We show this overhead imposes a severe penalty under realistic token constraints.
+
+\paragraph{Test-Time Compute Scaling.}
+Inference-time compute scaling~\citep{snell2024scaling} via best-of-N~\citep{lightman2023prm}, process rewards~\citep{wang2024math}, and budget forcing~\citep{muennighoff2025s1} all assume more reasoning tokens help.
+Our findings challenge this: at constrained budgets, structured reasoning actively hurts.
+
+\paragraph{Adaptive Computation and LLM Cascades.}
+Adaptive computation~\citep{graves2016adaptive}, early exit~\citep{schuster2022confident, bae2023fast}, and LLM cascades~\citep{chen2023frugalgpt} reduce inference cost.
+\method{} applies the cascade principle \emph{within} a single model by routing between reasoning modes, using a free behavioral confidence signal rather than auxiliary models.
+
+\paragraph{Budget-Aware Reasoning.}
+Concurrent work on reasoning efficiency---AdaThink~\citep{adathink2025}, Think Less~\citep{hou2025thinkless}, Satisficing~\citep{luo2025satisficing}, SelfBudgeter~\citep{liu2025selfbudgeter}---optimizes \emph{within} thinking mode.
+We challenge this premise: at practical budgets below the crossover, the thinking framework is counterproductive---the first-order decision is whether to invoke reasoning at all.
+
+\paragraph{Overthinking.}
+\citet{chen2024overthinking} study redundant reasoning; \citet{nvidia2025pareto} propose Pareto test-time compute allocation.
+We address a more severe failure: not redundant but \emph{incomplete} reasoning due to truncation, with a diagnostic decomposition that yields quantitative accuracy estimates.

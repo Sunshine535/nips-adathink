@@ -1,0 +1,119 @@
+
+==============================================================================
+PORTFOLIO THEORY / PARETO FRONTIER — PILOT ANALYSIS
+Model: Qwen3-8B | Benchmark: GSM8K (n=1319) | Seed: 42
+==============================================================================
+
+1. STRATEGY ACCURACIES
+--------------------------------------------------
+      nothink@128: 0.5080  (670/1319)
+      nothink@256: 0.8749  (1154/1319)
+      nothink@512: 0.9310  (1228/1319)
+     nothink@1024: 0.9310  (1228/1319)
+        think@128: 0.0303  (40/1319)
+        think@256: 0.1804  (238/1319)
+        think@512: 0.5694  (751/1319)
+       think@1024: 0.8613  (1136/1319)
+
+2. CORRELATION MATRIX (phi coefficient)
+--------------------------------------------------
+               nothink@128  nothink@256  nothink@512 nothink@1024    think@128    think@256    think@512   think@1024
+   nothink@128       1.000        0.380        0.277        0.277        0.050        0.292        0.446        0.298
+   nothink@256       0.380        1.000        0.720        0.720        0.040        0.166        0.328        0.471
+   nothink@512       0.277        0.720        1.000        1.000        0.048        0.120        0.259        0.462
+  nothink@1024       0.277        0.720        1.000        1.000        0.048        0.120        0.259        0.462
+     think@128       0.050        0.040        0.048        0.048        1.000        0.124        0.082        0.071
+     think@256       0.292        0.166        0.120        0.120        0.124        1.000        0.324        0.183
+     think@512       0.446        0.328        0.259        0.259        0.082        0.324        1.000        0.408
+    think@1024       0.298        0.471        0.462        0.462        0.071        0.183        0.408        1.000
+
+3. THINK / NOTHINK COMPLEMENTARITY (same budget)
+------------------------------------------------------------
+  Budget    Think  Nothink   Both✓  Only-T  Only-NT  Neither    Union
+     128   0.0303   0.5080      26      14      644      635   0.5186
+     256   0.1804   0.8749     236       2      918      163   0.8764
+     512   0.5694   0.9310     742       9      486       82   0.9378
+    1024   0.8613   0.9310    1111      25      117       66   0.9500
+
+  Conditional probabilities:
+    @128: P(think✓|nothink✗) = 0.0216    P(nothink✓|think✗) = 0.5035
+    @256: P(think✓|nothink✗) = 0.0121    P(nothink✓|think✗) = 0.8492
+    @512: P(think✓|nothink✗) = 0.0989    P(nothink✓|think✗) = 0.8556
+    @1024: P(think✓|nothink✗) = 0.2747    P(nothink✓|think✗) = 0.6393
+
+4. PARETO VALLEY ANALYSIS
+--------------------------------------------------
+  Budget    Think  Nothink   Dominant      Gap
+     128   0.0303   0.5080    nothink   0.4776
+     256   0.1804   0.8749    nothink   0.6945
+     512   0.5694   0.9310    nothink   0.3616
+    1024   0.8613   0.9310    nothink   0.0697
+
+  → No crossover detected — one mode dominates at all budgets
+
+5. ORACLE PARETO FRONTIER (per-sample best)
+------------------------------------------------------------
+  Budget  Oracle Acc  # Strategies Strategies
+     128      0.5186             2   think@128, nothink@128
+     192      0.5186             2   think@128, nothink@128
+     256      0.8787             4   think@128, think@256, nothink@128, nothink@256
+     384      0.8787             4   think@128, think@256, nothink@128, nothink@256
+     512      0.9386             6   think@128, think@256, think@512, nothink@128, nothink@256, nothink@512
+     640      0.9386             6   think@128, think@256, think@512, nothink@128, nothink@256, nothink@512
+     768      0.9386             6   think@128, think@256, think@512, nothink@128, nothink@256, nothink@512
+    1024      0.9515             8   think@128, think@256, think@512, think@1024, nothink@128, nothink@256, nothink@512, nothink@1024
+
+6. ACHIEVABLE PARETO FRONTIER (static mixtures)
+------------------------------------------------------------------------------
+  Budget  Best Acc  Avg Cost Configuration
+     128    0.5080     128.0   pure nothink@128
+     192    0.6914     192.0   mix nothink@128(0.500) + nothink@256(0.500)
+     256    0.8749     256.0   pure nothink@256
+     384    0.9030     384.0   mix nothink@256(0.500) + nothink@512(0.500)
+     512    0.9310     512.0   pure nothink@512
+     640    0.9310     512.0   pure nothink@512
+     768    0.9310     512.0   pure nothink@512
+    1024    0.9310     512.0   pure nothink@512
+
+7. TOP CASCADE STRATEGIES (oracle fallback)
+------------------------------------------------------------------------------
+                              Cascade     Acc  Avg Cost  Fallback%  #Saved
+             nothink@512 → think@1024  0.9500     582.6     0.0690      25
+            nothink@1024 → think@1024  0.9500    1094.6     0.0690      25
+             think@1024 → nothink@512  0.9500    1095.0     0.1387     117
+            think@1024 → nothink@1024  0.9500    1166.1     0.1387     117
+              nothink@512 → think@512  0.9378     547.3     0.0690       9
+              think@512 → nothink@512  0.9378     732.5     0.4306     486
+             think@512 → nothink@1024  0.9378     953.0     0.4306     486
+             nothink@1024 → think@512  0.9378    1059.3     0.0690       9
+              nothink@512 → think@256  0.9318     529.7     0.0690       1
+              think@256 → nothink@512  0.9318     675.6     0.8196     991
+             nothink@1024 → think@256  0.9318    1041.7     0.0690       1
+             think@256 → nothink@1024  0.9318    1095.2     0.8196     991
+            nothink@256 → nothink@512  0.9310     320.0     0.1251      74
+            nothink@128 → nothink@512  0.9310     379.9     0.4920     558
+           nothink@256 → nothink@1024  0.9310     384.1     0.1251      74
+
+==============================================================================
+KEY FINDINGS
+==============================================================================
+
+  Best pure nothink: nothink@512 = 0.9310
+  Best pure think:   think@1024 = 0.8613
+
+  At budget=512:
+    nothink@512 (pure):     0.9310
+    Best static mixture:    0.9310
+    Oracle (per-sample):    0.9386
+    Mixture gain over pure: +0.0000
+    Oracle gap:             +0.0076
+
+  ★ Does mixing beat nothink@512 (0.9310)?
+    Checking oracle...
+    Oracle YES (0.9386), but static mixture NO (0.9310)
+    → A router is needed to unlock the oracle gain
+
+  Think/nothink complementarity summary:
+    @256: 2 only-think + 918 only-nothink = 920 unique solvers → union 0.8764 (vs 0.8749 best pure)
+    @512: 9 only-think + 486 only-nothink = 495 unique solvers → union 0.9378 (vs 0.9310 best pure)
+    @1024: 25 only-think + 117 only-nothink = 142 unique solvers → union 0.9500 (vs 0.9310 best pure)

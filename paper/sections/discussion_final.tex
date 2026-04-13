@@ -1,82 +1,108 @@
 % discussion_final.tex — §7 Discussion
 
 \paragraph{Is the thinking tax obvious in hindsight?}
-One might argue that the thinking tax is a tautological consequence of
-output format: thinking mode must generate a reasoning chain
-\emph{before} its answer, so of course it fails when given
-too few tokens.
-We make three responses.
-First, while the \emph{mechanism} may be unsurprising \emph{post hoc},
-the \emph{magnitude} is not: at budget 256, thinking mode achieves only
-18.0\% accuracy on the full GSM8K set---a
-\textbf{69.5\,pp} gap behind non-thinking at the same budget.
-Prior to our study, the conventional wisdom held that ``more thinking is
-always better''~\citep{snell2024scaling}; quantifying just how badly this
-assumption can fail at finite budgets is a necessary empirical
-contribution.
-Second, the inverse scaling with model size
-(\S\ref{sec:finding:model-size}) is genuinely counterintuitive:
-larger, more capable models become \emph{worse} at thinking mode under
-the same budget, not better.
-Third, the natural-stop oracle
-(\S\ref{sec:finding:natural-stop}) is a \emph{novel signal} that
-emerges from the interaction between chain length and budget
-constraints---it is not predicted by the truncation narrative alone and
-has immediate practical utility for routing decisions.
+While the \emph{mechanism} (truncation) may seem unsurprising, three aspects are not.
+First, the \emph{magnitude} far exceeds what a simple format-overhead model would predict.
+A naive account---``thinking wastes some tokens on tags and preamble, reducing the effective budget''---would predict a tax proportional to the format overhead: ${\sim}$10--20 tokens for \texttt{<think>} tags and preamble, i.e., a ${\sim}$5--8\% effective budget reduction at $b{=}256$.
+This would predict at most a ${\sim}$5\,pp accuracy gap.
+The observed gap is \textbf{69.5\,pp}---over $13\times$ larger.
+The discrepancy arises because truncation is not a marginal tax but a \emph{catastrophic failure mode}: 98.6\% of thinking responses at $b{=}256$ produce \emph{zero parseable answer}, not merely a slightly degraded one.
+Our decomposition (Proposition~\ref{prop:acc-decomp}) captures this: the tax scales with the \emph{entire truncation rate} $\rho(b) = 1 - F_L(b)$, not with a format constant.
+A length-normalized comparison (accuracy per token) similarly fails to explain the phenomenon: nothink@256 achieves 87.5\% at 140 avg tokens (0.63\%/token), while think@256 achieves 18.0\% at 255 tokens (0.07\%/token)---a $9\times$ efficiency gap that no normalization can close.
+Second, the \emph{inverse scaling with model size} (\S\ref{sec:finding:model-size}, Proposition~\ref{prop:inverse-scaling}) is counterintuitive: larger models become \emph{worse} at thinking under the same budget, a phenomenon our theory explains through stochastic dominance of chain-length distributions.
+No format-overhead argument predicts this: the overhead is constant across model sizes, but the tax amplifies $2.1\times$ from 8B to 9B.
+Third, the \emph{natural-stop oracle} (\S\ref{sec:finding:natural-stop}) is a novel signal with 99.0\% PPV (Proposition~\ref{prop:oracle}), not predicted by the truncation narrative alone.
 
-\paragraph{Why does non-thinking work so well?}
-For well-trained reasoning models, the knowledge required to solve grade-school math problems is sufficiently internalized that explicit chain-of-thought is unnecessary---the model can ``jump to the answer'' much as a skilled human can solve simple arithmetic without writing out each step.
-The thinking mode forces the model to show its work, which at low budgets means it runs out of space before reaching the answer.
+\paragraph{Why hasn't this been studied before?}
+The thinking tax has gone unnoticed because most reasoning evaluations impose generous budgets (4096--32768 tokens)---well above the crossover point---where thinking mode indeed dominates.
+In practice, however, production deployments routinely operate at 256--1024 token budgets due to latency, cost, and throughput constraints~\citep{snell2024scaling}.
+Our contribution is to systematically characterize this under-studied regime and show that the penalty is not marginal but \emph{severe}---rendering thinking mode strictly inferior across all tested conditions below the crossover.
+The absence of this analysis from the literature reflects a gap between benchmark evaluation practice (unlimited budgets) and deployment reality (constrained budgets).
+
+\paragraph{The format tax vs.\ the information tax.}
+A key insight from the 27B nothink results (Appendix~\ref{app:27b-nothink}) resolves a natural question: is the tax due to model weakness, or format overhead?
+The answer is definitively format: \textbf{27B nothink@512 achieves 95.5\%}---the \emph{highest} accuracy of any configuration we tested---while 27B think@512 achieves only 18.3\%.
+The same model, answering the same questions, goes from near-perfect to near-random depending solely on whether it generates a reasoning chain.
+This confirms that the thinking tax is a \emph{format tax}: the cost of wrapping answers in verbose reasoning traces that cannot fit within practical budgets.
 
 \paragraph{When \emph{should} one think?}
-Our results do not argue against thinking mode \emph{in general}.
-At sufficiently large budgets, thinking mode recovers and
-eventually surpasses non-thinking performance.
-The issue is that at practical token budgets---defined here as
-$b \leq 512$ tokens, corresponding to the regime where generation
-latency is below ${\sim}$2 seconds per query on consumer hardware
-and output costs remain under \$0.001 per query at typical API
-pricing---thinking mode's overhead
-significantly outweighs its benefit.
-This regime is relevant whenever latency or cost constraints dominate
-(e.g., real-time chatbots, high-throughput batch processing, or
-edge deployment with limited memory bandwidth).
-The \method{} approach resolves this tension: think only when you must,
-and default to the efficient non-thinking path otherwise.
+Our crossover analysis (\S\ref{sec:theory}) provides a precise answer: thinking mode requires ${\sim}$2048 tokens on GSM8K (4$\times$ the non-thinking saturation budget) to match non-thinking accuracy; on MATH-500, the crossover demands an even larger budget, reflecting the longer chains harder problems produce.
+Our theory (Proposition~\ref{prop:crossover}) explains this: the crossover budget $b^*$ corresponds to the $(\bar{\alpha}_{\mathrm{nt}}/\alpha_c)$-quantile of the chain-length distribution---approximately the 97th percentile.
+Below these budgets, non-thinking mode is strictly preferred.
+\method{} resolves this tension: triage difficulty via non-thinking probe,
+allocate a split budget for reasoning, and decouple the answer from reasoning via multi-round self-distillation.
 
-\paragraph{Why not simply use \texttt{nothink@512}?}
-On GSM8K, \texttt{nothink@512} may achieve slightly higher accuracy than
-\method{} at comparable average token cost.
-Two factors argue that \method{} remains the principled solution.
-First, \method{} addresses a failure mode that
-\texttt{nothink@512} cannot: for genuinely hard problems where
-non-thinking produces an incorrect answer within budget, Stage~2's
-thinking fallback provides an additional chance at the correct answer.
-On the full test set ($n{=}1{,}319$), 64 of the 148 routed samples are genuine recoveries---problems where nothink was wrong but thinking produced the correct answer---yielding a net gain of 45 samples (64 recoveries $-$ 19 routing regrets; Error Analysis, \S\ref{sec:town-eval}).
-Second, and most importantly, the value of \method{} increases as task difficulty rises.
-On GSM8K, where non-thinking accuracy is already high (${\sim}$87.5\%), the marginal benefit of thinking fallback is modest (+3.4\,pp).
-On harder benchmarks where non-thinking accuracy drops substantially (e.g., MATH-500), the recovery mechanism becomes critical, and \method{}'s advantage over pure nothink grows.
-The principled contribution of \method{} is a \emph{general framework} for adaptive mode selection: it provides a floor on performance by matching each problem to the most efficient inference mode for its difficulty, with the early-stop signal as a zero-cost difficulty classifier.
+\paragraph{Why not simply use nothink with a larger budget?}
+This is the right question.
+On GSM8K, nothink accuracy plateaus at ${\sim}$89\% (nothink@256 $\approx$ nothink@512), so additional nothink budget provides no benefit, and \method{}'s structured think-then-extract pipeline achieves +5.0\,pp---the \emph{only} method to improve beyond the nothink plateau.
+On MATH-500, the think budget ablation (\S\ref{sec:experiments:bthink}) provides decisive evidence.
+Full-scale evaluation ($n{=}500$, same H800 hardware as baselines) provides definitive evidence.
+IRIS@2048 achieves \textbf{67.2\%} \ci{63.0}{71.2} and IRIS@4096 achieves \textbf{74.0\%} \ci{70.0}{77.7}---exceeding nothink@1024 (59.8\%) by +7.4\,pp and +14.2\,pp respectively, with CI lower bounds well above the nothink@1024 point estimate.
+The cross-budget gain of +6.8\,pp from $B_{\text{think}}{=}2048$ to 4096 (McNemar $p{=}0.0004$) confirms that the split-budget mechanism scales with the thinking budget.
+At $B_{\text{think}}{=}4096$, 44.7\% of escalated chains complete naturally (vs.\ 8.8\% at 2048), and these achieve 71.7\% accuracy---validating that the model \emph{can} reason correctly when given sufficient budget.
+The first 200 samples of each full-scale run reproduce the pilot exactly (73.0\% at 2048, 78.5\% at 4096), confirming methodological consistency across scale.
 
-\paragraph{Implications for scaling test-time compute.}
-The inverse scaling of the thinking tax with model size (Finding~4, \S\ref{sec:finding:model-size}) has concerning implications for the roadmap of scaling test-time compute.
-As models grow larger and more capable, their thinking chains become longer and more elaborate, exacerbating the budget-truncation problem.
-This suggests that simply increasing model size will not ``solve'' the thinking tax---instead, complementary approaches (budget-aware training, adaptive routing, or non-thinking fallbacks) will become increasingly important.
+\paragraph{Implications for scaling and the 27B limitation.}
+The inverse scaling (Proposition~\ref{prop:inverse-scaling}) has troubling implications for frontier models.
+Non-thinking accuracy is remarkably stable across model sizes---93.1\% (8B), 93.2\% (9B), 95.5\% (27B)---while thinking-mode accuracy \emph{collapses}: 56.9\%, 15.5\%, 18.3\% at the same budget.
+The resulting tax grows from 36.2\,pp (8B) to 77.7\,pp (9B), a ${\sim}2.1\times$ amplification.
+As models grow and chains lengthen (Corollary~\ref{cor:crossover-scaling}), the crossover budget $b^*$ will shift further right, making the thinking tax \emph{worse}, not better.
 
-\paragraph{Generalization beyond GSM8K.}
-Our primary experiments focus on mathematical reasoning (GSM8K with
-Qwen3-8B/27B, validated on MATH-500 with DeepSeek-R1-8B).
-The thinking tax may manifest differently on tasks where
-chain-of-thought is more structurally essential (e.g., multi-hop QA,
-planning, code generation)---particularly tasks where non-thinking
-accuracy is substantially lower.
-We view systematic evaluation on harder benchmarks as an important
-direction for future work.
-However, the \emph{mechanism} we identify---truncation waste due to
-verbose reasoning chains under constrained budgets---is fundamental
-and model-agnostic.
-It applies whenever (i)~the model's typical reasoning-chain length
-exceeds the allocated budget, and (ii)~the answer appears at the
-end of the chain rather than incrementally.
-Our cross-model validation with DeepSeek-R1 confirms that the
-phenomenon generalizes across both model families and benchmarks.
+\textbf{Importantly, the cascade does not uniformly benefit all model sizes.}
+At 27B scale with $B_1{=}256$, $B_2{=}512$, \town{} achieves only 62.8\%---\emph{below} \texttt{nothink@256} (65.1\%)---because the thinking fallback is too weak ($\text{think@512} = 18.3\%$ on routed samples).
+The net recovery condition (Eq.~\ref{eq:net-recovery}) fails: more routing regrets than recoveries.
+This provides a concrete \textbf{deployment criterion}: the cascade should only be applied when the fallback budget $B_2$ is large enough for thinking mode to add value on the routed hard subset.
+For 27B, this requires $B_2 \geq 1024$ (where think accuracy rises to ${\sim}49\%$), implying a higher per-query cost for the fallback stage.
+This scale-dependent asymmetry is a genuine limitation, and suggests that adaptive routing between thinking and non-thinking modes---rather than unconditional thinking---will become increasingly important for frontier models, but the \emph{minimum viable fallback budget} must be calibrated per model size.
+
+\paragraph{Addressing potential concerns.}
+We anticipate three objections and address them directly.
+
+\emph{``The tax is just truncation/verbosity, not a reasoning issue.''}
+Precisely---that is our point.
+The \couplingtax{} is an \emph{architectural} inefficiency, not a reasoning failure.
+When chains complete, accuracy is ${\sim}98\%$.
+The problem is that coupling reasoning and answering under a shared budget means most chains \emph{never} complete.
+Our truncation-waste decomposition (Proposition~\ref{prop:acc-decomp}) formalizes this: the tax is determined entirely by the chain-length CDF $F_L(b)$ and the conditional accuracies, not by reasoning quality.
+
+\emph{``Does \method{} beat nothink@1024 on MATH-500?''}
+Yes.
+Full-scale evaluation ($n{=}500$, same H800 hardware as nothink@1024) provides a definitive answer: IRIS@2048 achieves \textbf{67.2\%} \ci{63.0}{71.2} (+7.4\,pp over nothink@1024's 59.8\%) and IRIS@4096 achieves \textbf{74.0\%} \ci{70.0}{77.7} (+14.2\,pp).
+Both CI lower bounds exceed the nothink@1024 point estimate.
+The cross-budget gain of +6.8\,pp from $B_{\text{think}}{=}2048$ to 4096 (McNemar $p{=}0.0004$) confirms monotonic scaling.
+On GSM8K, where nothink has plateaued, \method{} is the only method that improves further (+5.0\,pp).
+
+\emph{``The model scaling claim may be confounded by cross-model differences.''}
+We control for this by using models within the same Qwen family (8B, 9B, 27B), sharing architecture, training pipeline, and \texttt{<think>} mode protocol.
+The key evidence is that non-thinking accuracy is \emph{stable} across scales (93.1\%--95.5\%), while thinking accuracy collapses (56.9\% $\to$ 15.5\% $\to$ 18.3\%).
+Since the same model achieves high accuracy in non-thinking mode, the collapse is attributable to longer chains, not weaker reasoning.
+
+\paragraph{Production impact: the coupling tax as compute waste.}
+The coupling tax is not merely an accuracy problem---it is a
+\emph{compute waste} problem with direct production implications.
+At $b{=}512$ on GSM8K, 62.0\% of thinking-mode responses are truncated,
+consuming an average of 477 tokens per query while producing no
+parseable answer.
+For a service processing 1M queries/day at this budget, switching
+from \texttt{think@512} to \texttt{nothink@512} eliminates
+${\sim}$325M wasted tokens/day while \emph{increasing} accuracy by
+36.2\,pp---a simultaneous improvement in both cost and quality.
+On MATH-500, where truncation is even more severe (91.2\% at $b{=}2048$),
+the waste scales proportionally.
+Split-budget generation (IRIS) recovers value from these wasted
+reasoning traces: rather than discarding a truncated chain that consumed
+2048 tokens, the decoupled answer pass extracts a correct answer
+from the partial reasoning in ${\sim}$200 additional tokens---turning
+truncation waste into partial-reasoning credit.
+
+\paragraph{Generalization and limitations.}
+Our experiments span three benchmark families: GSM8K, MATH-500, and five BIG-Bench Hard subtasks ($n{=}3{,}006$ total), three Qwen-family model sizes (8B, 9B, 27B), with cross-architecture validation on DeepSeek-R1-Distill-Llama-8B.
+The tax appears on both easy and hard benchmarks---and is \emph{larger} on the harder one---while the crossover budget shifts predictably with task difficulty.
+On BIG-Bench Hard (Appendix~\ref{app:bbh}), full-scale evaluation ($n{=}1{,}187$) confirms the tax persists in non-mathematical domains (logical deduction, object tracking, date understanding), with a +33.3\,pp gap at budget 256 and crossover between 1024--2048.
+The mechanism (truncation waste when chain length exceeds budget) is model-agnostic in principle, applying whenever (i)~typical chain length exceeds the budget and (ii)~the answer appears at the chain's end.
+
+We explicitly scope our claims to \textbf{Qwen-family open reasoning models with explicit \texttt{<think>} mode under fixed output-token budgets on structured reasoning tasks}.
+The thinking tax may not apply (or may differ significantly) in three settings: (1)~tasks where CoT provides qualitatively different value, such as multi-hop retrieval, iterative code generation, or agentic workflows; (2)~closed-source models (e.g., OpenAI o1) where the thinking budget is managed internally; and (3)~settings with dynamic or unbounded token budgets where the crossover is always exceeded.
+While auxiliary DeepSeek-R1 experiments (Appendix~\ref{app:deepseek}) show consistent utilization collapse and natural-stop patterns, we do not have matched nothink baselines for DeepSeek and therefore restrict our primary claims to the Qwen family.
+\method{}'s split-budget design demonstrates that decoupling reasoning from answer generation can mitigate the \couplingtax{}---confirmed on GSM8K (+5.0\,pp) and on MATH-500 at full scale ($n{=}500$): IRIS@4096 achieves 74.0\% \ci{70.0}{77.7}, exceeding nothink@1024 (59.8\%) by +14.2\,pp on identical hardware.
+Extending split-budget generation with learned budget ratios, task-adaptive routing, and integration with multi-model ensembles is a promising direction for future work.

@@ -1,10 +1,14 @@
-% Table 1: The Thinking Tax — Comprehensive comparison at matched budgets
+% Table 1: The Thinking Tax — Full-set comparison at matched budgets
+% Data sources (all HF engine, greedy decoding):
+%   8B nothink@128/256: results_kun/nothink_fullset/ (n=1319, seed=42)
+%   8B think@128/256:   same files (also_thinking mode)
+%   8B nothink@512, think@512: gap_fill/8b_highbudget/20260407_121035 (n=1319, seed=42, HF)
+%   27B think@*:        results_kun/fulltest_27b/ (n=1319)
+%   27B nothink@*:      results_kun/fulltest_27b_nothink/ (n=1319)
 \begin{table}[t]
 \centering
-\caption{\textbf{The Thinking Tax: Non-thinking mode dramatically outperforms thinking mode at matched token budgets.}
-Results on GSM8K with Qwen3-8B.
-Rows without a marker use the 200-sample subset (seed=42); starred ($\star$) rows use the full test set ($n{=}1{,}319$).
-Qwen3.5-27B results use the full set.
+\caption{\textbf{The Thinking Tax: Non-thinking mode outperforms thinking mode at all matched token budgets.}
+Results on the full GSM8K test set ($n{=}1{,}319$) with Qwen3-8B (top) and Qwen3.5-27B (bottom).
 \textbf{At every budget, non-thinking achieves higher accuracy while using fewer tokens.}}
 \label{tab:thinking-tax}
 \small
@@ -12,24 +16,23 @@ Qwen3.5-27B results use the full set.
 \toprule
 \textbf{Model} & \textbf{Config} & \textbf{Budget} & \textbf{Accuracy} & \textbf{Avg Tok} & \textbf{Early Stop} \\
 \midrule
-\multirow{10}{*}{\textbf{Qwen3-8B}}
-& \texttt{nothink@128}      & 128 & 54.5\%  & 111 & 43.5\% \\
-& \texttt{nothink@128$\star$} & 128 & 50.8\%  & 113 & --- \\
-& \texttt{nothink@256}      & 256 & 89.0\%  & 140 & 92.0\% \\
-& \texttt{nothink@256$\star$} & 256 & \textbf{87.5\%}  & \textbf{146} & 88.8\% \\
-& \texttt{nothink@512}      & 512 & 94.0\%  & 145 & 99.5\% \\
+\multirow{6}{*}{\textbf{Qwen3-8B}}
+& \texttt{nothink@128} & 128 & 50.8\%  & 113 & 39.4\% \\
+& \texttt{nothink@256} & 256 & 87.5\%  & 146 & 88.8\% \\
+& \texttt{nothink@512} & 512 & \textbf{93.1\%} & \textbf{152} & 99.7\% \\
 \cmidrule{2-6}
-& \texttt{think@128}        & 128 & 2.0\%   & 128 & 0.0\% \\
-& \texttt{think@128$\star$}  & 128 & 3.0\%   & 128 & --- \\
-& \texttt{think@256}        & 256 & 22.0\%  & 255 & 2.0\% \\
-& \texttt{think@256$\star$}  & 256 & 18.0\%  & 255 & --- \\
-& \texttt{think@512}        & 512 & 66.5\%  & 442 & 47.5\% \\
-& \texttt{think@512$\star$}  & 512 & 65.2\%  & 460 & 37.4\% \\
+& \texttt{think@128}   & 128 & 3.0\%   & 128 & 0.0\% \\
+& \texttt{think@256}   & 256 & 18.0\%  & 255 & 1.4\% \\
+& \texttt{think@512}   & 512 & 56.9\%  & 460 & 37.4\% \\
 \midrule
-\multirow{3}{*}{\textbf{Qwen3.5-27B$\star$}}
-& \texttt{think@128}        & 128 & 3.6\%   & 144 & 0.0\% \\
-& \texttt{think@256}        & 256 & 7.9\%   & 272 & 0.0\% \\
-& \texttt{think@512}        & 512 & 18.3\%  & 528 & 0.7\% \\
+\multirow{6}{*}{\textbf{Qwen3.5-27B}}
+& \texttt{nothink@128} & 128 & 9.9\%   & 127 & 4.2\% \\
+& \texttt{nothink@256} & 256 & 65.1\%  & 215 & 54.5\% \\
+& \texttt{nothink@512} & 512 & \textbf{95.5\%} & 249 & 96.9\% \\
+\cmidrule{2-6}
+& \texttt{think@128}   & 128 & 3.6\%   & 144 & 0.0\% \\
+& \texttt{think@256}   & 256 & 7.9\%   & 272 & 0.0\% \\
+& \texttt{think@512}   & 512 & 18.3\%  & 528 & 0.7\% \\
 \bottomrule
 \end{tabular}
 \vspace{-2mm}

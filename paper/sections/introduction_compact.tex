@@ -1,0 +1,31 @@
+% introduction_compact.tex — Compressed introduction for 9-page version
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\linewidth]{fig_nothink_vs_thinking.pdf}
+    \caption{\textbf{The Thinking Tax.}
+    Non-thinking mode (blue) outperforms thinking mode (orange) at \emph{every} matched token budget on GSM8K (Qwen3-8B), by up to \textbf{+22.3\,pp} at 3.2$\times$ fewer tokens.}
+    \label{fig:nothink-vs-thinking}
+\end{figure}
+
+More thinking tokens, more accuracy---this is the implicit contract of chain-of-thought (CoT) reasoning~\citep{wei2022chain}, now operationalized in systems like DeepSeek-R1~\citep{deepseekr1} and Qwen3~\citep{qwen3_2025}.
+We show this contract is broken: below a task- and model-specific token budget, thinking mode \emph{degrades} accuracy by up to 69.5 percentage points, and the penalty \textbf{worsens} with model scale.
+The crossover budget where thinking catches up is far higher than commonly assumed.
+
+\paragraph{The thinking tax.}
+Through experiments on GSM8K, MATH-500, and five BIG-Bench Hard subtasks with three Qwen-family model sizes (8B, 9B, 27B), we find that \textbf{below the crossover budget, non-thinking mode outperforms thinking mode at every tested budget, often by a wide margin} (Figure~\ref{fig:nothink-vs-thinking}).
+The crossover occurs at ${\sim}$2048 tokens on GSM8K; on MATH-500, it shifts further right, beyond 2048 tokens.
+As Figure~\ref{fig:nothink-vs-thinking} illustrates, non-thinking@256 outperforms thinking@512 by +22.3\,pp at 3.2$\times$ fewer tokens; on MATH-500, the gap exceeds \textbf{41.8\,pp} at budget 1024.
+The root cause is \emph{truncation waste}: thinking mode's verbose chains are truncated before reaching the answer.
+The tax \emph{worsens with model size}---2.9$\times$ and 2.7$\times$ larger for 9B and 27B vs.\ 8B---as larger models generate longer chains.
+
+\paragraph{Natural stopping as free confidence signal.}
+When thinking mode completes its chain before exhausting the budget (a \emph{natural stop}), accuracy is 96.3\%---nearly perfect---vs.\ 46.6\% for truncated samples.
+This binary, endogenous signal requires no logit access and enables zero-cost routing between modes.
+
+\paragraph{Contributions.}
+\begin{enumerate}[nosep,leftmargin=*]
+    \item \textbf{The Thinking Tax} (\S\ref{sec:thinking-tax}): non-thinking outperforms thinking at all budgets below a crossover (${\sim}$2048 on GSM8K; ${>}$2048 on MATH-500; 1024--2048 on BBH), with the gap \emph{worsening} with model size (2.7--2.9$\times$ for 9B/27B vs.\ 8B) and task difficulty. The truncation mechanism also replicates on DeepSeek-R1-Distill-Llama-8B (Appendix~\ref{app:deepseek}), consistent with the tax transferring across open reasoning models.
+    \item \textbf{Truncation-Waste Decomposition} (\S\ref{sec:theory}): a diagnostic decomposition that, given empirically measured completion rates and accuracy gaps, yields closed-form accuracy estimates from chain-length statistics, characterizes the crossover as a quantile of the chain-length distribution, and explains the model-size effect through stochastic dominance.
+    \item \textbf{\method{}} (\S\ref{sec:method}): the minimal instantiation of the thinking-tax insight---a training-free cascade achieving 90.9\% at 199 avg tokens (+25.7\,pp over think@512 at 2.3$\times$ fewer tokens), with provable Pareto improvement over both single-mode baselines.
+\end{enumerate}

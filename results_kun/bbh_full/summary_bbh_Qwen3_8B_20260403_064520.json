@@ -1,0 +1,396 @@
+{
+  "meta": {
+    "timestamp_utc": "20260403_064520",
+    "benchmark": "bbh",
+    "tasks": [
+      "boolean_expressions",
+      "causal_judgement",
+      "date_understanding",
+      "logical_deduction_five_objects",
+      "tracking_shuffled_objects_three_objects"
+    ],
+    "task_counts": {
+      "boolean_expressions": 250,
+      "causal_judgement": 187,
+      "date_understanding": 250,
+      "logical_deduction_five_objects": 250,
+      "tracking_shuffled_objects_three_objects": 250
+    },
+    "model": "Qwen/Qwen3-8B",
+    "n_total_samples": 1187,
+    "n_samples_per_task": 0,
+    "seed": 42,
+    "data_seed": 42,
+    "budgets": [
+      256,
+      512,
+      1024,
+      2048
+    ],
+    "modes": [
+      "nothink",
+      "thinking"
+    ],
+    "strict_final_only": false,
+    "engine": "hf_transformers"
+  },
+  "per_mode": {
+    "nothink": {
+      "256": {
+        "accuracy": 0.4987363100252738,
+        "avg_tokens": 204.55265374894694,
+        "avg_latency_s": 8.132672283066555,
+        "final_rate": 0.38416175231676497,
+        "hit_budget_rate": 0.45240101095197977
+      },
+      "512": {
+        "accuracy": 0.6638584667228307,
+        "avg_tokens": 272.3167649536647,
+        "avg_latency_s": 10.822793597304123,
+        "final_rate": 0.5459140690817186,
+        "hit_budget_rate": 0.18449873631002528
+      },
+      "1024": {
+        "accuracy": 0.7506318449873631,
+        "avg_tokens": 298.9486099410278,
+        "avg_latency_s": 11.879620808761597,
+        "final_rate": 0.6444818871103623,
+        "hit_budget_rate": 0.011794439764111205
+      },
+      "2048": {
+        "accuracy": 0.7506318449873631,
+        "avg_tokens": 306.0252737994945,
+        "avg_latency_s": 12.160860067396802,
+        "final_rate": 0.6470092670598147,
+        "hit_budget_rate": 0.006739679865206402
+      }
+    },
+    "thinking": {
+      "256": {
+        "accuracy": 0.16596461668070767,
+        "avg_tokens": 254.66975568660487,
+        "avg_latency_s": 10.128476326874477,
+        "final_rate": 0.03622577927548441,
+        "hit_budget_rate": 0.9713563605728728
+      },
+      "512": {
+        "accuracy": 0.45829823083403537,
+        "avg_tokens": 472.2417860151643,
+        "avg_latency_s": 18.776715754001657,
+        "final_rate": 0.36562763268744736,
+        "hit_budget_rate": 0.7287278854254423
+      },
+      "1024": {
+        "accuracy": 0.7363100252737995,
+        "avg_tokens": 728.3597304128054,
+        "avg_latency_s": 28.943887615838264,
+        "final_rate": 0.6866048862679023,
+        "hit_budget_rate": 0.37994945240101097
+      },
+      "2048": {
+        "accuracy": 0.8601516427969671,
+        "avg_tokens": 938.56950294861,
+        "avg_latency_s": 37.3028681550127,
+        "final_rate": 0.7725358045492839,
+        "hit_budget_rate": 0.12215669755686605
+      }
+    }
+  },
+  "overthinking": {
+    "nothink_fixed_256_vs_fixed_2048": 0.006739679865206402,
+    "thinking_fixed_256_vs_fixed_2048": 0.006739679865206402
+  },
+  "per_task": {
+    "boolean_expressions": {
+      "n": 250,
+      "nothink": {
+        "256": {
+          "accuracy": 0.856,
+          "avg_tokens": 144.176,
+          "avg_latency_s": 5.725266000000004
+        },
+        "512": {
+          "accuracy": 0.856,
+          "avg_tokens": 144.176,
+          "avg_latency_s": 5.7211608
+        },
+        "1024": {
+          "accuracy": 0.856,
+          "avg_tokens": 144.176,
+          "avg_latency_s": 5.723024400000002
+        },
+        "2048": {
+          "accuracy": 0.856,
+          "avg_tokens": 144.176,
+          "avg_latency_s": 5.7231560000000075
+        }
+      },
+      "thinking": {
+        "256": {
+          "accuracy": 0.488,
+          "avg_tokens": 250.316,
+          "avg_latency_s": 9.9755432
+        },
+        "512": {
+          "accuracy": 0.812,
+          "avg_tokens": 395.236,
+          "avg_latency_s": 15.764809200000002
+        },
+        "1024": {
+          "accuracy": 0.948,
+          "avg_tokens": 458.208,
+          "avg_latency_s": 18.267396399999985
+        },
+        "2048": {
+          "accuracy": 0.98,
+          "avg_tokens": 470.528,
+          "avg_latency_s": 18.768182
+        }
+      },
+      "thinking_tax": {
+        "256": 0.368,
+        "512": 0.044,
+        "1024": -0.092,
+        "2048": -0.124
+      }
+    },
+    "causal_judgement": {
+      "n": 187,
+      "nothink": {
+        "256": {
+          "accuracy": 0.32620320855614976,
+          "avg_tokens": 219.10160427807486,
+          "avg_latency_s": 8.698582887700535
+        },
+        "512": {
+          "accuracy": 0.5989304812834224,
+          "avg_tokens": 252.1283422459893,
+          "avg_latency_s": 10.007897860962565
+        },
+        "1024": {
+          "accuracy": 0.5989304812834224,
+          "avg_tokens": 252.1283422459893,
+          "avg_latency_s": 10.007939572192514
+        },
+        "2048": {
+          "accuracy": 0.5989304812834224,
+          "avg_tokens": 252.1283422459893,
+          "avg_latency_s": 10.007001604278074
+        }
+      },
+      "thinking": {
+        "256": {
+          "accuracy": 0.06951871657754011,
+          "avg_tokens": 255.22994652406416,
+          "avg_latency_s": 10.140919786096257
+        },
+        "512": {
+          "accuracy": 0.23529411764705882,
+          "avg_tokens": 479.7700534759358,
+          "avg_latency_s": 19.049510160427804
+        },
+        "1024": {
+          "accuracy": 0.42780748663101603,
+          "avg_tokens": 740.9465240641712,
+          "avg_latency_s": 29.416328342246008
+        },
+        "2048": {
+          "accuracy": 0.5614973262032086,
+          "avg_tokens": 925.3903743315508,
+          "avg_latency_s": 36.73857914438503
+        }
+      },
+      "thinking_tax": {
+        "256": 0.2567,
+        "512": 0.3636,
+        "1024": 0.1711,
+        "2048": 0.0374
+      }
+    },
+    "date_understanding": {
+      "n": 250,
+      "nothink": {
+        "256": {
+          "accuracy": 0.344,
+          "avg_tokens": 214.068,
+          "avg_latency_s": 8.519732399999997
+        },
+        "512": {
+          "accuracy": 0.524,
+          "avg_tokens": 280.9,
+          "avg_latency_s": 11.180639199999996
+        },
+        "1024": {
+          "accuracy": 0.528,
+          "avg_tokens": 300.804,
+          "avg_latency_s": 11.968962800000003
+        },
+        "2048": {
+          "accuracy": 0.528,
+          "avg_tokens": 313.332,
+          "avg_latency_s": 12.466417199999992
+        }
+      },
+      "thinking": {
+        "256": {
+          "accuracy": 0.188,
+          "avg_tokens": 255.944,
+          "avg_latency_s": 10.216791599999997
+        },
+        "512": {
+          "accuracy": 0.468,
+          "avg_tokens": 487.908,
+          "avg_latency_s": 19.46472559999999
+        },
+        "1024": {
+          "accuracy": 0.692,
+          "avg_tokens": 780.564,
+          "avg_latency_s": 31.116800399999995
+        },
+        "2048": {
+          "accuracy": 0.824,
+          "avg_tokens": 1076.692,
+          "avg_latency_s": 42.95508799999999
+        }
+      },
+      "thinking_tax": {
+        "256": 0.156,
+        "512": 0.056,
+        "1024": -0.164,
+        "2048": -0.296
+      }
+    },
+    "logical_deduction_five_objects": {
+      "n": 250,
+      "nothink": {
+        "256": {
+          "accuracy": 0.036,
+          "avg_tokens": 255.972,
+          "avg_latency_s": 10.168427999999993
+        },
+        "512": {
+          "accuracy": 0.376,
+          "avg_tokens": 483.336,
+          "avg_latency_s": 19.191385200000006
+        },
+        "1024": {
+          "accuracy": 0.784,
+          "avg_tokens": 589.88,
+          "avg_latency_s": 23.420881599999987
+        },
+        "2048": {
+          "accuracy": 0.784,
+          "avg_tokens": 610.952,
+          "avg_latency_s": 24.26019239999999
+        }
+      },
+      "thinking": {
+        "256": {
+          "accuracy": 0.052,
+          "avg_tokens": 256.0,
+          "avg_latency_s": 10.1556512
+        },
+        "512": {
+          "accuracy": 0.14,
+          "avg_tokens": 511.896,
+          "avg_latency_s": 20.303992799999993
+        },
+        "1024": {
+          "accuracy": 0.612,
+          "avg_tokens": 960.372,
+          "avg_latency_s": 38.0820328
+        },
+        "2048": {
+          "accuracy": 0.868,
+          "avg_tokens": 1444.564,
+          "avg_latency_s": 57.281676399999974
+        }
+      },
+      "thinking_tax": {
+        "256": -0.016,
+        "512": 0.236,
+        "1024": 0.172,
+        "2048": -0.084
+      }
+    },
+    "tracking_shuffled_objects_three_objects": {
+      "n": 250,
+      "nothink": {
+        "256": {
+          "accuracy": 0.888,
+          "avg_tokens": 193.112,
+          "avg_latency_s": 7.693961600000002
+        },
+        "512": {
+          "accuracy": 0.948,
+          "avg_tokens": 195.956,
+          "avg_latency_s": 7.8075312000000014
+        },
+        "1024": {
+          "accuracy": 0.948,
+          "avg_tokens": 195.956,
+          "avg_latency_s": 7.805632000000002
+        },
+        "2048": {
+          "accuracy": 0.948,
+          "avg_tokens": 195.956,
+          "avg_latency_s": 7.804760799999999
+        }
+      },
+      "thinking": {
+        "256": {
+          "accuracy": 0.008,
+          "avg_tokens": 256.0,
+          "avg_latency_s": 10.156611599999998
+        },
+        "512": {
+          "accuracy": 0.58,
+          "avg_tokens": 488.296,
+          "avg_latency_s": 19.3692852
+        },
+        "1024": {
+          "accuracy": 0.924,
+          "avg_tokens": 704.88,
+          "avg_latency_s": 27.95593519999999
+        },
+        "2048": {
+          "accuracy": 0.992,
+          "avg_tokens": 772.352,
+          "avg_latency_s": 30.62861440000001
+        }
+      },
+      "thinking_tax": {
+        "256": 0.88,
+        "512": 0.368,
+        "1024": 0.024,
+        "2048": -0.044
+      }
+    }
+  },
+  "thinking_tax": {
+    "256": {
+      "nothink_acc": 0.4987,
+      "thinking_acc": 0.166,
+      "delta": -0.3328,
+      "thinking_tax": 0.3328
+    },
+    "512": {
+      "nothink_acc": 0.6639,
+      "thinking_acc": 0.4583,
+      "delta": -0.2056,
+      "thinking_tax": 0.2056
+    },
+    "1024": {
+      "nothink_acc": 0.7506,
+      "thinking_acc": 0.7363,
+      "delta": -0.0143,
+      "thinking_tax": 0.0143
+    },
+    "2048": {
+      "nothink_acc": 0.7506,
+      "thinking_acc": 0.8602,
+      "delta": 0.1095,
+      "thinking_tax": -0.1095
+    }
+  }
+}

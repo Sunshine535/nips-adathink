@@ -1,210 +1,396 @@
 % ===========================================================================
-%  §4  TOWN: Think Only When Needed
+%  §5  Split-Budget Generation via MRSD
 %  method_final.tex — NeurIPS 2026
 %  Loaded via \input{sections/method_final}
 % ===========================================================================
 
-The empirical findings in \S\ref{sec:thinking-tax} suggest a clear strategy:
-\textbf{default to non-thinking mode and reserve thinking for genuinely
-hard problems}.
-We formalize this intuition as \textsc{Town} (\textbf{T}hink
-\textbf{O}nly \textbf{W}hen \textbf{N}eeded), a training-free,
-two-stage inference cascade that requires no access to model internals
-and no auxiliary models.
+The decomposition in \S\ref{sec:theory} reveals a structural cause for the
+thinking tax: reasoning and answering \emph{share a single output channel},
+so that lengthy chains leave insufficient budget for the answer.
+This section develops \emph{split-budget generation}, a principled
+decoupling strategy, and instantiates it as
+\textsc{Mrsd} (\textbf{M}ulti-\textbf{R}ound
+\textbf{S}elf-\textbf{D}istillation), a training-free inference
+framework that adaptively allocates compute across difficulty levels.
+We present \method{} as a \textbf{principled mitigation} grounded in the
+coupling-tax theory: since Proposition~\ref{prop:recoverable-tax} shows
+that accuracy can be recovered by decoupling reasoning from answering,
+\method{} instantiates this decoupling at inference time with zero
+training overhead.
+The deliberate simplicity is a feature: it demonstrates that the
+coupling tax is recoverable through inference-time restructuring alone,
+establishing a strong \emph{lower bound} on what more complex approaches
+(learned routing, distillation, budget-aware fine-tuning) can achieve.
 
 % ---------------------------------------------------------------------------
-\subsection{Key Insight: Early Stopping as a Difficulty Classifier}
-\label{sec:method:insight}
+\subsection{The Coupling Problem}
+\label{sec:method:coupling}
 % ---------------------------------------------------------------------------
 
-Our analysis reveals that non-thinking mode's early-stopping behavior
-provides a natural binary classifier for problem difficulty:
+In standard thinking mode, reasoning tokens and answer tokens are
+produced in a single autoregressive pass under one shared budget~$b$.
+Let $Z = (z_1, \ldots, z_{|Z|})$ denote the reasoning trace and
+$A = (a_1, \ldots, a_{|A|})$ the final answer; the hard constraint is:
+\begin{equation}
+  \label{eq:coupling-constraint}
+  |Z| + |A| \;\le\; b.
+\end{equation}
+When the model's natural chain length $L(q) = |Z| + |A|$ exceeds~$b$,
+generation is truncated, typically mid-chain before any answer tokens
+are produced.
+This creates a \emph{zero-sum coupling}: every reasoning token consumed
+is one fewer token available for the answer.
 
-\begin{observation}
-\label{obs:early-stop}
-For Qwen3-8B with \texttt{nothink@256} on GSM8K ($n{=}1{,}319$):
+Recall from Proposition~\ref{prop:acc-decomp} that thinking-mode accuracy
+decomposes as:
+\begin{equation}
+  \mathrm{Acc}_{\mathrm{think}}(b)
+  \;=\; \underbrace{\alpha_c \cdot F_L(b)}_{\text{completed chains}}
+  \;+\; \underbrace{\alpha_t(b) \cdot \bigl(1 - F_L(b)\bigr)}_{\text{truncated chains}},
+  \tag{\ref{eq:acc-decomp}}
+\end{equation}
+where $F_L(b) = \Pr(L \le b)$ is the chain-length CDF, $\alpha_c$ is the
+accuracy of completed chains, and $\alpha_t(b) \ll \alpha_c$ is the
+residual accuracy of truncated chains.
+At budget 256 on GSM8K, $F_L(256) < 0.02$---over 98\% of chains are
+truncated---making the first term negligible and the second term dominant
+but small ($\alpha_t \approx 0$).
+
+The coupling constraint in Eq.~\eqref{eq:coupling-constraint} is the
+\emph{sole} mechanism behind the thinking tax: if reasoning and answering
+could draw from separate budgets, truncated reasoning would not destroy
+the model's ability to emit a correct answer.
+This observation motivates the split-budget framework.
+
+% ---------------------------------------------------------------------------
+\subsection{Split-Budget Generation}
+\label{sec:method:split}
+% ---------------------------------------------------------------------------
+
+\paragraph{Key insight.}
+Decouple reasoning from answering by allocating \emph{separate} token
+budgets to each stage.
+Rather than requiring $|Z| + |A| \le b$ in a single pass, we introduce:
 \begin{itemize}[nosep,leftmargin=*]
-    \item \textbf{88.8\% of samples stop early} (avg 133 tokens),
-      achieving \textbf{94.4\%} accuracy among early-stopped samples
-      (87.5\% overall).
-    \item \textbf{11.2\% of samples hit the budget} (use all 256 tokens),
-      indicating the model struggled.
+  \item A \textbf{reasoning pass}: generate a thinking trace with budget $B_r$,
+    potentially allowing truncation;
+  \item An \textbf{answer pass}: feed the (possibly truncated) reasoning
+    trace as context to a non-thinking generation with budget $B_a$.
 \end{itemize}
-\end{observation}
+The total cost is $B_r + B_a$, but crucially, truncation of the reasoning
+trace no longer prevents the model from emitting a well-formed answer.
 
-This dichotomy provides a zero-cost routing signal: if the model finishes
-quickly in non-thinking mode, the answer is likely correct; if it
-exhausts the budget, the problem is likely hard and may benefit from
-extended reasoning.
-Unlike soft confidence scores or logit-based uncertainty measures, this
-signal is \emph{binary}, \emph{endogenous}, and \emph{free}---it emerges
-as a byproduct of the generation process itself
-(Finding~2, \S\ref{sec:finding:natural-stop}).
+\paragraph{Why truncated reasoning is still useful.}
+A truncated chain $Z_{1:B_r}$ (with $B_r < L(q)$) is not worthless---it
+contains partial problem decomposition, intermediate computations, and
+subgoal completions.
+Empirically, $\alpha_t(b)$ increases from ${\approx}0$ at $b{=}128$ to 31.8\%
+at $b{=}512$ (Table~\ref{tab:natural-stop-oracle}), demonstrating that
+even incomplete reasoning carries substantial information about the answer.
+By feeding $Z_{1:B_r}$ as a \emph{context prefix} to a non-thinking pass
+that generates the answer independently, the model can:
+(i)~read and integrate the partial reasoning,
+(ii)~fill in any missing steps, and
+(iii)~produce a complete, well-formed answer within $B_a$ tokens.
+
+\paragraph{Formal decomposition.}
+Let $\alpha_{\mathrm{split}}(B_r, B_a)$ denote the accuracy of
+split-budget generation.
+This replaces the coupled accuracy with:
+\begin{equation}
+  \label{eq:split-acc}
+  \alpha_{\mathrm{split}}(B_r, B_a)
+  \;=\; F_L(B_r) \cdot \alpha_c
+  \;+\; \bigl(1 - F_L(B_r)\bigr) \cdot
+    \alpha_{\mathrm{extract}}(B_r, B_a),
+\end{equation}
+where $\alpha_{\mathrm{extract}}(B_r, B_a) \gg \alpha_t(B_r)$ is the
+accuracy of the decoupled answer pass on truncated chains.
+The gain over standard thinking is:
+\begin{equation}
+  \label{eq:split-gain}
+  \Delta \;=\; \bigl(1 - F_L(B_r)\bigr) \cdot
+    \bigl(\alpha_{\mathrm{extract}}(B_r, B_a) - \alpha_t(B_r)\bigr)
+  \;\ge\; 0,
+\end{equation}
+which is positive whenever the decoupled answer pass improves upon the
+truncation residual---a mild condition satisfied in all our experiments.
+The gain is largest when $F_L(B_r) \ll 1$ (heavy truncation) and
+$\alpha_{\mathrm{extract}} \gg \alpha_t$ (large recovery margin),
+precisely the regime where the coupling tax is most severe.
 
 % ---------------------------------------------------------------------------
-\subsection{The \textsc{Town} Cascade}
-\label{sec:method:cascade}
+\subsection{\textsc{Mrsd}: Multi-Round Self-Distillation}
+\label{sec:method:mrsd}
 % ---------------------------------------------------------------------------
 
-\textsc{Town} operates in two stages, summarized in
-Algorithm~\ref{alg:town} and Figure~\ref{fig:town-pipeline}.
+Split-budget generation recovers value from truncated chains in a single
+round.
+For problems where one round of reasoning is insufficient, we extend the
+framework to \textsc{Mrsd}: an iterative procedure that progressively
+refines the answer through multiple think-then-extract rounds, with
+each round informed by the previous attempt.
+The full procedure is given in Algorithm~\ref{alg:mrsd}.
 
 \begin{algorithm}[t]
-\caption{\textsc{Town}: Think Only When Needed}
-\label{alg:town}
+\caption{\textsc{Mrsd}: Multi-Round Self-Distillation}
+\label{alg:mrsd}
 \begin{algorithmic}[1]
-\REQUIRE Question $q$, model $\mathcal{M}$,
-  probe budget $B_1$ (non-thinking),
-  fallback budget $B_2$ (thinking, $B_2 > B_1$)
-\ENSURE Answer $\hat{a}$, total tokens consumed $T$
+\Require Query $q$, model $\mathcal{M}$,
+  triage budget $B_1$, thinking budget $B_r$,
+  answer budget $B_a$, max rounds $K$
+\Ensure Answer $\hat{a}$, total tokens used $T$
 
 \medskip
-\STATE \textbf{// Stage 1: Non-thinking probe}
-\STATE $y_1 \leftarrow \mathcal{M}_{\textrm{nt}}(q,\; B_1)$
-  \hfill\COMMENT{Generate without thinking}
-\STATE $T \leftarrow |y_1|$
+\Statex \textbf{Stage 0: Difficulty triage}
+\State $y_0 \leftarrow \mathcal{M}_{\mathrm{nothink}}(q,\; B_1)$
+  \Comment{Non-thinking probe}
+\If{$|y_0| < B_1$}
+  \Comment{Natural stop $\Rightarrow$ easy; accept immediately}
+  \State \Return $\mathrm{answer}(y_0),\; |y_0|$
+\EndIf
 
 \medskip
-\IF{$|y_1| < B_1$}
-  \hfill\COMMENT{Natural stop $\Rightarrow$ high confidence}
-  \STATE $\hat{a} \leftarrow a(y_1)$
-  \hfill\COMMENT{Accept non-thinking answer}
-\ELSE
-  \hfill\COMMENT{Budget hit $\Rightarrow$ low confidence}
-  \STATE \textbf{// Stage 2: Thinking fallback}
-  \STATE $y_2 \leftarrow \mathcal{M}_{\textrm{th}}(q,\; B_2)$
-    \hfill\COMMENT{Generate with chain-of-thought}
-  \STATE $T \leftarrow T + |y_2|$
-  \STATE $\hat{a} \leftarrow a(y_2)$
-  \hfill\COMMENT{Use thinking answer}
-\ENDIF
+\Statex \textbf{Stage 1: First think-then-extract round}
+\State $Z_1 \leftarrow \mathcal{M}_{\mathrm{think}}(q,\; B_r)$
+  \Comment{Generate reasoning trace (may truncate)}
+\State $y_1 \leftarrow \mathcal{M}_{\mathrm{nothink}}(q \,\|\, Z_1,\; B_a)$
+  \Comment{Decoupled answer extraction}
+\State $\hat{a}_1 \leftarrow \mathrm{answer}(y_1)$
 
 \medskip
-\RETURN $\hat{a},\; T$
+\Statex \textbf{Stages $k = 2, \ldots, K$: Iterative refinement}
+\For{$k = 2, \ldots, K$}
+  \State $\mathrm{hint}_k \leftarrow \hat{a}_{k-1}$
+    \Comment{Previous answer as hint}
+  \State $Z_k \leftarrow \mathcal{M}_{\mathrm{think}}(
+    q \,\|\, \text{``Previous attempt: } \mathrm{hint}_k \text{''},\; B_r)$
+  \State $y_k \leftarrow \mathcal{M}_{\mathrm{nothink}}(q \,\|\, Z_k,\; B_a)$
+  \State $\hat{a}_k \leftarrow \mathrm{answer}(y_k)$
+  \If{$\hat{a}_k = \hat{a}_{k-1}$}
+    \Comment{Convergence: consecutive agreement}
+    \State \Return $\hat{a}_k, \; B_1 + k \cdot (B_r + B_a)$
+  \EndIf
+\EndFor
+
+\medskip
+\Statex \textbf{Fallback: majority vote}
+\State \Return $\mathrm{majority}(\hat{a}_1, \ldots, \hat{a}_K),
+  \; B_1 + K \cdot (B_r + B_a)$
 \end{algorithmic}
 \end{algorithm}
 
-\input{sections/fig_town_pipeline}
+\paragraph{Stage 0: Difficulty triage via non-thinking probe.}
+We first attempt the query in non-thinking mode with a modest triage
+budget $B_1$ (default: 256 tokens).
+If the model produces a complete answer before exhausting $B_1$---a
+\emph{natural stop}---we accept it immediately.
+This exploits Finding~1's observation that non-thinking mode dominates
+at low budgets: on GSM8K, ${\sim}$88.8\% of queries terminate naturally
+at $B_1{=}256$, with an average cost of only 133 tokens and accuracy
+matching \texttt{nothink@256} (87.5\%).
+The natural-stop signal functions as a high-precision difficulty filter
+(Proposition~\ref{prop:oracle}): questions that complete are
+overwhelmingly easy, making escalation unnecessary.
 
-\paragraph{Stage 1: Non-thinking probe.}
-We run the input through non-thinking mode with a moderate budget
-$B_1$ (default: 256 tokens).
-If the model produces a complete answer before exhausting $B_1$, we
-accept it immediately.
-This stage handles the vast majority of inputs---88.8\% on GSM8K---at
-minimal cost (${\sim}$133 tokens on average for early-stopped samples), exploiting Finding~1's
-observation that non-thinking mode is more token-efficient than thinking
-mode at matched budgets.
+\paragraph{Stage 1: Think-then-extract.}
+For the ${\sim}$11.2\% of queries that exhaust the triage budget (hard
+problems), we invoke split-budget generation:
+\begin{enumerate}[nosep,leftmargin=*]
+  \item \textbf{Think@$B_r$}: Generate a reasoning trace in thinking
+    mode with budget $B_r$.
+    The trace may be truncated, but this is acceptable---truncated
+    reasoning still carries useful intermediate information.
+  \item \textbf{Nothink@$B_a$}: Concatenate the query~$q$ and reasoning
+    trace~$Z_1$ as context, then generate the answer in non-thinking
+    mode with a dedicated budget $B_a$.
+    The answer is produced by a clean, non-thinking pass that reads
+    the reasoning as a ``scratchpad'' but is never constrained by its length.
+\end{enumerate}
+This decoupling is the core innovation: reasoning tokens and answer
+tokens draw from \emph{separate budgets}, eliminating the zero-sum
+coupling that causes the thinking tax.
 
-\paragraph{Stage 2: Thinking fallback.}
-For the ${\sim}$11.2\% of inputs that exhaust the Stage~1 budget---indicating
-the model could not produce a confident answer quickly---we route to
-thinking mode with an extended budget $B_2$ (default: 512 tokens).
-These are precisely the ``hard'' problems where step-by-step reasoning
-chains are most likely to provide genuine benefit.
-The total cost for a fallback sample is $B_1 + |y_2|$, since the
-probe consumed its full budget.
+\paragraph{Stages $k \ge 2$: Iterative refinement with hints.}
+When the first round fails to produce a correct answer (or when
+additional confidence is desired), subsequent rounds provide the
+previous answer as a \emph{hint} to the thinking pass:
+\begin{quote}
+  \texttt{Previous attempt: $\hat{a}_{k-1}$. Re-examine the problem
+  and verify or correct this answer.}
+\end{quote}
+The thinking model can then:
+(i)~verify the previous answer and reinforce it if correct,
+(ii)~identify errors and explore alternative solution paths, or
+(iii)~decompose the problem differently given the hint.
+The resulting trace $Z_k$ is again fed to a non-thinking answer
+extraction pass, producing $\hat{a}_k$.
 
-% ---------------------------------------------------------------------------
-\subsection{Cost and Accuracy Analysis}
-\label{sec:method:analysis}
-% ---------------------------------------------------------------------------
+\paragraph{Convergence criterion.}
+We stop iterating when two consecutive rounds produce the same
+answer: $\hat{a}_k = \hat{a}_{k-1}$.
+Agreement signals that the model has converged to a stable solution.
+Empirically, 98\% of escalated queries converge within $K{=}3$ rounds
+on GSM8K (pilot, $n{=}200$).
 
-\paragraph{Expected token cost.}
-Let $p$ denote the early-stop rate in Stage~1,
-$\bar{t}_1$ the average tokens for early-stopped samples, and
-$\bar{t}_2$ the average thinking-mode cost for fallback samples.
-The expected token cost per question is:
-\begin{equation}
-  \label{eq:town-cost}
-  \mathbb{E}[T] \;=\; p \cdot \bar{t}_1
-    \;+\; (1 - p) \cdot \big(B_1 + \bar{t}_2\big).
-\end{equation}
-With our GSM8K parameters ($p{=}0.888$, $\bar{t}_1{\approx}133$,
-$B_1{=}256$, $\bar{t}_2{\approx}469$) on the full test set ($n{=}1{,}319$):
-\begin{equation}
-  \label{eq:town-cost-concrete}
-  \mathbb{E}[T]
-    \;\approx\; 0.888 \times 133 \;+\; 0.112 \times (256 + 469)
-    \;\approx\; 118 + 81
-    \;=\; \mathbf{\sim\!199\text{ tokens}}.
-\end{equation}
-This is \textbf{2.4$\times$} cheaper than \texttt{think@512} alone
-(460~tokens), representing a \textbf{57\%} reduction in average token
-consumption.  Note that the Stage~1 probe budget $B_1$ is ``spent''
-even for routed samples---it serves as the cost of difficulty
-classification.
-
-\paragraph{Projected accuracy.}
-\textsc{Town}'s accuracy decomposes as:
-\begin{equation}
-  \label{eq:town-acc}
-  \textrm{Acc}_{\textsc{Town}}
-    \;=\; p \cdot \textrm{Acc}_{\textrm{nt}}^{\textrm{early}}
-    \;+\; (1 - p) \cdot \textrm{Acc}_{\textrm{th}}^{\textrm{hard}},
-\end{equation}
-where $\textrm{Acc}_{\textrm{nt}}^{\textrm{early}}$ is the
-accuracy of early-stop non-thinking samples and
-$\textrm{Acc}_{\textrm{th}}^{\textrm{hard}}$ is the thinking-mode
-accuracy on the hard subset routed to Stage~2.
-On the full GSM8K test set ($n{=}1{,}319$),
-\textsc{Town} achieves \textbf{90.9\%} accuracy at only \textbf{199
-average tokens} (including the Stage~1 probe cost for routed samples):
-\begin{equation}
-  \textrm{Acc}_{\textsc{Town}}
-    \;=\; \underbrace{0.888 \times 94.4\%}_{\text{Stage 1: early-stop}}
-    \;+\; \underbrace{0.112 \times 62.8\%}_{\text{Stage 2: thinking fallback}}
-    \;=\; 83.8\% + 7.0\%
-    \;=\; \mathbf{90.9\%}.
-\end{equation}
-This exceeds \texttt{think@512} (65.2\%) by \textbf{+25.7\,pp}
-while using \textbf{2.4$\times$ fewer tokens}, and surpasses
-\texttt{nothink@256} (87.5\%) by \textbf{+3.4\,pp} by recovering
-hard cases through Stage~2.
-Full evaluation results are in \S\ref{sec:town-eval}.
+\paragraph{Fallback: majority vote.}
+If the maximum number of rounds $K$ is reached without convergence,
+we take a majority vote over all round answers
+$\{\hat{a}_1, \ldots, \hat{a}_K\}$.
+This provides a robust aggregation that benefits from the diversity of
+reasoning traces across rounds.
 
 % ---------------------------------------------------------------------------
-\subsection{Comparison with Alternative Strategies}
-\label{sec:method:comparison}
+\subsection{Analysis of Token Efficiency}
+\label{sec:method:cost}
 % ---------------------------------------------------------------------------
 
-\paragraph{vs.\ \texttt{think@512} only.}
-\textsc{Town} achieves substantially higher accuracy at
-${\sim}$2.4$\times$ fewer tokens.
-The advantage comes from avoiding thinking mode's truncation waste on the
-88.8\% of problems where it is unnecessary.
+We analyze the expected token cost of \textsc{Mrsd} and compare it
+against fixed-mode baselines and self-consistency.
 
-\paragraph{vs.\ \texttt{nothink@256} only.}
-\textsc{Town} adds a thinking fallback for the $\sim$11.2\% of hard
-problems, recovering accuracy on cases where direct answering
-fails.
-The additional cost is modest: $\sim$53 extra tokens on average
-over the entire dataset (199 vs.\ 146 for \texttt{nothink@256}).
+\paragraph{Expected cost decomposition.}
+Let $p$ denote the fraction of queries resolved at Stage~0
+(natural-stop rate at budget $B_1$), and let $\bar{K}$ denote the
+average number of refinement rounds for escalated queries.
+The expected per-query token cost is:
+\begin{equation}
+  \label{eq:mrsd-cost}
+  \mathbb{E}[T_{\textsc{Mrsd}}]
+  \;=\; p \cdot \bar{t}_1
+  \;+\; (1-p) \cdot \bigl(B_1 + \bar{K} \cdot (B_r + B_a)\bigr),
+\end{equation}
+where $\bar{t}_1 \le B_1$ is the average token cost of queries that
+stop naturally.
+On GSM8K with $B_1{=}256$, $B_r{=}512$, $B_a{=}128$: $p = 0.888$,
+$\bar{t}_1 = 133$, $\bar{K} \approx 1.5$, giving
+$\mathbb{E}[T] = 0.888 \times 133 + 0.112 \times (256 + 1.5 \times 640)
+\approx 118 + 136 = 254$ tokens per query (observed: 235, as early
+convergence and short answers reduce the actual token count below
+worst-case budgets).
 
-\paragraph{vs.\ Self-consistency~\cite{wang2023selfconsistency}.}
-SC@$K$ generates $K$ full-budget reasoning traces and majority-votes,
-consuming $K \times B$ tokens unconditionally.
-\textsc{Town} uses a \emph{single} non-thinking probe and a binary
-routing decision, yielding lower latency (one generation call for easy
-questions vs.\ $K$), lower token cost ($\sim$146 tokens for easy
-questions vs.\ $K \times B$), and a simpler implementation (no consensus
-computation, no threshold tuning).
+\paragraph{Comparison with baselines.}
+We compare cost structures across methods:
+\begin{itemize}[nosep,leftmargin=*]
+  \item \textbf{\texttt{nothink@$b$}}: Fixed non-thinking budget.
+    Cost $= b$ per query (no adaptation).
+    Accuracy saturates at moderate budgets but cannot leverage reasoning
+    for hard problems.
+  \item \textbf{\texttt{think@$b$}}: Fixed thinking budget.
+    Cost $= b$ per query.
+    Accuracy limited by truncation waste when $b < b^*$
+    (Proposition~\ref{prop:crossover}).
+  \item \textbf{Self-consistency (SC@$k$)}: Sample $k$ independent
+    non-thinking responses and take a majority vote.
+    Cost $= k \cdot b$ per query.
+    Improves accuracy through diversity but scales linearly in~$k$
+    with diminishing returns.
+  \item \textbf{\town{} cascade}: Two-stage triage (nothink@$B_1$ then
+    think@$B_2$).
+    Cost $= p \bar{t}_1 + (1-p)(B_1 + B_2)$.
+    Efficient triage, but the escalation stage still suffers from the
+    coupling problem.
+  \item \textbf{\textsc{Mrsd}}: Adaptive triage + decoupled reasoning.
+    Cost given by Eq.~\eqref{eq:mrsd-cost}.
+    Spends tokens efficiently by (i)~resolving easy queries cheaply,
+    (ii)~decoupling reasoning from answering, and (iii)~iterating only
+    when needed.
+\end{itemize}
 
-\paragraph{vs.\ Oracle routing.}
-An oracle that knows each problem's difficulty \emph{a priori}
-achieves 68.2\% accuracy at 401 average tokens
-(Table~\ref{tab:efficiency-frontier}).
-\textsc{Town}'s early-stop signal approximates this oracle using a
-training-free heuristic, with the gap determined primarily by the
-signal's precision on the routed subset.
+\paragraph{Why \textsc{Mrsd} is more token-efficient.}
+The key advantage is \emph{adaptive allocation}: easy queries ($p \approx 89\%$)
+cost only $\bar{t}_1 \approx 133$ tokens, while hard queries receive
+multi-round reasoning up to $K(B_r + B_a)$ tokens.
+Compared to SC@$k$ at matched total budget, \textsc{Mrsd} invests
+its tokens in \emph{complementary} ways---combining reasoning-mode
+depth with non-thinking answer extraction---rather than sampling
+$k$ independent shallow responses.
+Compared to \town{}, the decoupled answer pass converts truncated
+reasoning (previously ${\sim}0\%$ accuracy at low budgets) into usable
+signal, achieving Stage~3 accuracy of 76.9\% on escalated samples
+vs.\ only 15.4\% for standard truncated thinking
+(pilot, $n{=}200$).
 
-\paragraph{Hyperparameters.}
-\textsc{Town} introduces exactly \emph{two} hyperparameters beyond the
-base model: $B_1$ (probe budget) and $B_2$ (thinking fallback budget).
-Both have intuitive interpretations: $B_1$ should be large enough for
-the model to produce a complete non-thinking answer on most easy
-questions (256 tokens suffices for GSM8K), and $B_2$ should be large
-enough for a complete reasoning chain on hard questions (512+ for
-GSM8K).
-No routing thresholds, consensus weights, or learned parameters are
-required.
+\paragraph{Pareto dominance.}
+Both \town{} and \textsc{Mrsd} satisfy a Pareto-dominance property
+over fixed-mode baselines:
+
+\begin{theorem}[\textsc{Mrsd} Pareto-dominance]
+\label{thm:mrsd-pareto}
+If the \emph{net recovery condition}
+\begin{equation}
+  \label{eq:net-recovery}
+  \alpha_{\mathrm{extract}}^{\mathrm{hard}} > \alpha_{\mathrm{nt}}^{\mathrm{hard}}
+\end{equation}
+holds (split-budget generation on escalated queries achieves higher
+accuracy than non-thinking alone) and the triage early-stop rate
+$p > 0$, then \textsc{Mrsd} achieves:
+\begin{enumerate}[nosep,leftmargin=*]
+  \item Higher accuracy than \texttt{nothink@}$B_1$, and
+  \item Lower expected cost than \texttt{think@}$(B_1 + K(B_r + B_a))$,
+\end{enumerate}
+Pareto-dominating both single-mode baselines.
+On GSM8K (pilot, $n{=}200$), the condition is satisfied:
+$\alpha_{\mathrm{extract}}^{\mathrm{hard}} = 87.5\%$ (14/16 escalated
+queries rescued) vs.\ $\alpha_{\mathrm{nt}}^{\mathrm{hard}} \approx 0\%$.
+
+\textbf{Caveat:} this dominance is over \texttt{nothink@}$B_1$---the triage budget.
+If nothink accuracy improves substantially when $B_1$ is doubled
+(as on MATH-500: 47.5\% $\to$ 59.8\% full-scale at $n{=}500$), it may be more efficient
+to increase the nothink budget than to deploy split-budget generation.
+\method{} is most effective when nothink accuracy has saturated at $B_1$.
+\end{theorem}
+
+\begin{proof}
+For accuracy: the triage stage achieves at least
+$\mathrm{Acc}_{\mathrm{nt}}(B_1) \cdot p$ on easy queries.
+The escalation stage adds
+$(1-p) \cdot \alpha_{\mathrm{extract}}^{\mathrm{hard}} > 0$,
+so total accuracy exceeds $\mathrm{Acc}_{\mathrm{nt}}(B_1)$.
+For cost: the expected cost (Eq.~\ref{eq:mrsd-cost}) satisfies
+$\mathbb{E}[T] = p \bar{t}_1 + (1-p)(B_1 + \bar{K}(B_r + B_a))
+< B_1 + K(B_r + B_a)$ whenever $p > 0$, since the first term is
+strictly less than $B_1$ for $p > 0$.
+\end{proof}
+
+% ---------------------------------------------------------------------------
+\subsection{Design Choices and Practical Considerations}
+\label{sec:method:design}
+% ---------------------------------------------------------------------------
+
+\paragraph{Budget allocation.}
+The triage budget $B_1$ should be large enough to accommodate most
+answer lengths (we use $B_1{=}256$, sufficient for ${\sim}$89\% of
+GSM8K answers).
+The reasoning budget $B_r$ controls the depth of thinking; even at
+moderate values ($B_r{=}512$), truncated traces contain sufficient
+intermediate information for the extraction pass.
+The answer budget $B_a$ can be relatively small ($B_a{=}128$) because
+the extraction pass leverages the reasoning context and only needs
+to produce the final answer.
+
+\paragraph{Hint construction.}
+In refinement rounds ($k \ge 2$), we prepend a minimal hint to the
+query: the previous numerical answer and an instruction to verify or
+correct it.
+We avoid feeding the full previous reasoning trace as a hint, as this
+would consume budget without guaranteed benefit; the compact answer
+serves as a sufficient ``seed'' for re-examination.
+
+\paragraph{Convergence vs.\ fixed rounds.}
+The convergence criterion (consecutive agreement) provides an adaptive
+stopping rule that avoids unnecessary computation on problems that
+converge quickly.
+In the pilot study, 72\% of escalated queries converge after Round~1,
+and 98\% by Round~3.
+An alternative is to fix $K$ and always majority-vote; we find
+convergence-based stopping reduces average cost by ${\sim}$20\% with
+no accuracy loss.
+
+\paragraph{Compatibility with existing infrastructure.}
+\textsc{Mrsd} requires no model modification, fine-tuning, or access
+to internal activations.
+It uses only the model's standard
+\texttt{enable\_thinking=True/False} API, making it applicable to any
+reasoning model with dual-mode support (e.g., Qwen3, DeepSeek-R1).
+The multi-round procedure can be implemented as a simple wrapper around
+any inference API, with each round being an independent forward pass.

@@ -1,0 +1,64 @@
+{
+  "meta": {
+    "iris_file": "results/iris/iris_Qwen3_8B_b1256_b2512_ba128_20260408_105307.json",
+    "n_samples": 200,
+    "iris_accuracy": 93.0,
+    "town_accuracy": 89.0,
+    "diff_pp": 4.0
+  },
+  "stage_distribution": {
+    "1": 184,
+    "3": 13,
+    "2": 3
+  },
+  "stop_reasons": {
+    "stage1_natural_stop": 184,
+    "stage3_after_budget_exhausted": 13,
+    "stage2_complete": 3
+  },
+  "per_stage_accuracy": {
+    "1": {
+      "n": 184,
+      "correct": 174,
+      "accuracy": 94.6
+    },
+    "2": {
+      "n": 3,
+      "correct": 2,
+      "accuracy": 66.7
+    },
+    "3": {
+      "n": 13,
+      "correct": 10,
+      "accuracy": 76.9
+    }
+  },
+  "comparison": {
+    "both_correct": 177,
+    "iris_only": 9,
+    "town_only": 1,
+    "both_wrong": 13,
+    "net_gain_samples": 8,
+    "net_gain_pp": 4.0
+  },
+  "recovery_by_stage": {
+    "3": 9
+  },
+  "routing_identity": {
+    "identical": 200,
+    "different": 0,
+    "pct_identical": 100.0
+  },
+  "entropy_contribution": {
+    "entropy_stopped": 0,
+    "contribution_pp": 0.0,
+    "diagnosis": "entropy stopping never fires \u2014 zero contribution"
+  },
+  "stage3_analysis": {
+    "n_samples": 13,
+    "iris_accuracy": 76.9,
+    "town_accuracy": 15.4,
+    "gap_pp": 61.5
+  },
+  "conclusion": "IRIS = TOWN + decoupled answering. Entropy monitoring adds 0 value (0/200 triggers). All 9 net recoveries (+4.0pp) come from Stage 3."
+}

@@ -1,0 +1,62 @@
+{
+  "meta": {
+    "model": "Qwen/Qwen3-8B",
+    "benchmark": "math500",
+    "mode": "nothink",
+    "budgets": [
+      256,
+      512,
+      1024,
+      2048
+    ],
+    "n_samples": 500,
+    "seed": 42,
+    "timestamp": "20260401_011643"
+  },
+  "results": {
+    "nothink_256": {
+      "label": "nothink_256",
+      "mode": "nothink",
+      "budget": 256,
+      "accuracy": 0.166,
+      "correct": 83,
+      "total": 500,
+      "avg_tokens": 249.828,
+      "early_stop_rate": 0.104,
+      "has_final_rate": 0.144
+    },
+    "nothink_512": {
+      "label": "nothink_512",
+      "mode": "nothink",
+      "budget": 512,
+      "accuracy": 0.406,
+      "correct": 203,
+      "total": 500,
+      "avg_tokens": 428.936,
+      "early_stop_rate": 0.428,
+      "has_final_rate": 0.48
+    },
+    "nothink_1024": {
+      "label": "nothink_1024",
+      "mode": "nothink",
+      "budget": 1024,
+      "accuracy": 0.598,
+      "correct": 299,
+      "total": 500,
+      "avg_tokens": 606.472,
+      "early_stop_rate": 0.762,
+      "has_final_rate": 0.784
+    },
+    "nothink_2048": {
+      "label": "nothink_2048",
+      "mode": "nothink",
+      "budget": 2048,
+      "accuracy": 0.644,
+      "correct": 322,
+      "total": 500,
+      "avg_tokens": 762.75,
+      "early_stop_rate": 0.878,
+      "has_final_rate": 0.884
+    }
+  }
+}

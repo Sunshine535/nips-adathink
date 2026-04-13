@@ -1,0 +1,159 @@
+{
+  "generated": "2026-04-09T16:33:11.925804",
+  "benchmarks": {
+    "GSM8K": {
+      "n_samples": 200,
+      "mrsd": {
+        "name": "MRSD (ours)",
+        "accuracy": 0.94,
+        "avg_tokens": 235.42,
+        "total_tokens": 47084,
+        "accuracy_per_1k_tokens": 3.9929,
+        "n_samples": 200,
+        "source": "per_sample exact",
+        "notes": ""
+      },
+      "baselines": [
+        {
+          "name": "Nothink@256",
+          "accuracy": 0.89,
+          "avg_tokens": 139.75,
+          "total_tokens": 27950.0,
+          "accuracy_per_1k_tokens": 6.3685,
+          "n_samples": 200,
+          "source": "json baselines",
+          "notes": ""
+        },
+        {
+          "name": "TOWN",
+          "accuracy": 0.89,
+          "avg_tokens": 180.35,
+          "total_tokens": 36070.0,
+          "accuracy_per_1k_tokens": 4.9348,
+          "n_samples": 200,
+          "source": "json baselines",
+          "notes": ""
+        },
+        {
+          "name": "IRIS (single)",
+          "accuracy": 0.935,
+          "avg_tokens": 180.93,
+          "total_tokens": 36186.0,
+          "accuracy_per_1k_tokens": 5.1677,
+          "n_samples": 200,
+          "source": "json baselines",
+          "notes": ""
+        }
+      ],
+      "matched_compute": [
+        {
+          "name": "Nothink@235 (budget match)",
+          "accuracy": 0.89,
+          "avg_tokens": 139.75,
+          "total_tokens": 27950.0,
+          "accuracy_per_1k_tokens": 6.3685,
+          "n_samples": 200,
+          "source": "estimated (raising budget ≈ no effect, outputs short)",
+          "notes": "Budget rarely hit; accuracy unchanged"
+        },
+        {
+          "name": "SC@2 Nothink (compute match)",
+          "accuracy": 0.89,
+          "avg_tokens": 279.5,
+          "total_tokens": 55900.0,
+          "accuracy_per_1k_tokens": 3.1843,
+          "n_samples": 200,
+          "source": "estimated (k=ceil(235/140)=2)",
+          "notes": "Majority vote over 2 independent nothink@256 draws"
+        },
+        {
+          "name": "Think@235 (budget match)",
+          "accuracy": 0.935,
+          "avg_tokens": 180.93,
+          "total_tokens": 36186.0,
+          "accuracy_per_1k_tokens": 5.1677,
+          "n_samples": 200,
+          "source": "estimated (think output ≈ 181 tokens avg; raising budget has diminishing returns)",
+          "notes": "Think rarely uses full budget at this scale"
+        }
+      ]
+    },
+    "MATH-500": {
+      "n_samples": 100,
+      "mrsd": {
+        "name": "MRSD (ours)",
+        "accuracy": 0.66,
+        "avg_tokens": 1800.0,
+        "total_tokens": 180000.0,
+        "accuracy_per_1k_tokens": 0.3667,
+        "n_samples": 100,
+        "source": "user_estimate (checkpoint_100.json unavailable)",
+        "notes": ""
+      },
+      "baselines": [
+        {
+          "name": "nothink@512",
+          "accuracy": 0.46,
+          "avg_tokens": 400.0,
+          "total_tokens": 40000.0,
+          "accuracy_per_1k_tokens": 1.15,
+          "n_samples": 100,
+          "source": "known_baseline",
+          "notes": ""
+        },
+        {
+          "name": "think@512",
+          "accuracy": 0.55,
+          "avg_tokens": 500.0,
+          "total_tokens": 50000.0,
+          "accuracy_per_1k_tokens": 1.1,
+          "n_samples": 100,
+          "source": "known_baseline",
+          "notes": ""
+        },
+        {
+          "name": "nothink@1024",
+          "accuracy": 0.48,
+          "avg_tokens": 600.0,
+          "total_tokens": 60000.0,
+          "accuracy_per_1k_tokens": 0.8,
+          "n_samples": 100,
+          "source": "known_baseline",
+          "notes": ""
+        },
+        {
+          "name": "think@1024",
+          "accuracy": 0.6,
+          "avg_tokens": 900.0,
+          "total_tokens": 90000.0,
+          "accuracy_per_1k_tokens": 0.6667,
+          "n_samples": 100,
+          "source": "known_baseline",
+          "notes": ""
+        }
+      ],
+      "matched_compute": [
+        {
+          "name": "SC@5 Nothink@512 (compute match)",
+          "accuracy": 0.4253,
+          "avg_tokens": 2000.0,
+          "total_tokens": 200000.0,
+          "accuracy_per_1k_tokens": 0.2127,
+          "n_samples": 100,
+          "source": "estimated (k=ceil(1800/400)=5)",
+          "notes": "Majority vote over 5 independent nothink@512 draws"
+        },
+        {
+          "name": "Think@1800 (budget match)",
+          "accuracy": 0.6,
+          "avg_tokens": 900.0,
+          "total_tokens": 90000.0,
+          "accuracy_per_1k_tokens": 0.6667,
+          "n_samples": 100,
+          "source": "estimated (think at higher budget)",
+          "notes": "Generous estimate for think with larger budget"
+        }
+      ]
+    }
+  }
+}

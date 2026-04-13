@@ -1,0 +1,46 @@
+2026-04-09 10:19:13,235 INFO Loading per-sample data...
+2026-04-09 10:19:13,237 INFO Loaded results_kun/nothink_fullset/nothink_baseline_Qwen3-8B_gsm8k_20260329_063213.json
+2026-04-09 10:19:13,238 INFO   think@128: acc=0.0303 (40/1319)
+2026-04-09 10:19:13,240 INFO Loaded results_kun/nothink_fullset/nothink_baseline_Qwen3-8B_gsm8k_20260329_000345.json
+2026-04-09 10:19:13,240 INFO   think@256: acc=0.1804 (238/1319)
+2026-04-09 10:19:13,243 INFO Loaded results/gap_fill/8b_highbudget/nothink_baseline_Qwen3-8B_gsm8k_20260407_121035.json
+2026-04-09 10:19:13,243 INFO   think@512: acc=0.5694 (751/1319)
+2026-04-09 10:19:13,245 INFO Loaded results/gap_fill/8b_highbudget/nothink_baseline_Qwen3-8B_gsm8k_20260407_220034.json
+2026-04-09 10:19:13,245 INFO   think@1024: acc=0.8613 (1136/1319)
+2026-04-09 10:19:13,246 INFO   nothink@128: acc=0.5080 (670/1319)
+2026-04-09 10:19:13,246 INFO   nothink@256: acc=0.8749 (1154/1319)
+2026-04-09 10:19:13,246 INFO   nothink@512: acc=0.9310 (1228/1319)
+2026-04-09 10:19:13,246 INFO   nothink@1024: acc=0.9310 (1228/1319)
+2026-04-09 10:19:13,247 INFO 
+Computing correlation matrix...
+2026-04-09 10:19:13,249 INFO 
+Computing oracle Pareto frontier...
+2026-04-09 10:19:13,249 INFO Oracle @ B=128: acc=0.5186 using ['think@128', 'nothink@128']
+2026-04-09 10:19:13,249 INFO Oracle @ B=192: acc=0.5186 using ['think@128', 'nothink@128']
+2026-04-09 10:19:13,249 INFO Oracle @ B=256: acc=0.8787 using ['think@128', 'think@256', 'nothink@128', 'nothink@256']
+2026-04-09 10:19:13,249 INFO Oracle @ B=384: acc=0.8787 using ['think@128', 'think@256', 'nothink@128', 'nothink@256']
+2026-04-09 10:19:13,249 INFO Oracle @ B=512: acc=0.9386 using ['think@128', 'think@256', 'think@512', 'nothink@128', 'nothink@256', 'nothink@512']
+2026-04-09 10:19:13,249 INFO Oracle @ B=640: acc=0.9386 using ['think@128', 'think@256', 'think@512', 'nothink@128', 'nothink@256', 'nothink@512']
+2026-04-09 10:19:13,249 INFO Oracle @ B=768: acc=0.9386 using ['think@128', 'think@256', 'think@512', 'nothink@128', 'nothink@256', 'nothink@512']
+2026-04-09 10:19:13,250 INFO Oracle @ B=1024: acc=0.9515 using ['think@128', 'think@256', 'think@512', 'think@1024', 'nothink@128', 'nothink@256', 'nothink@512', 'nothink@1024']
+2026-04-09 10:19:13,250 INFO 
+Computing static mixture frontier...
+2026-04-09 10:19:13,250 INFO Static best @ B=128: acc=0.5080 config=pure → nothink@128
+2026-04-09 10:19:13,250 INFO Static best @ B=192: acc=0.6914 config=mixture → nothink@128
+2026-04-09 10:19:13,250 INFO Static best @ B=256: acc=0.8749 config=pure → nothink@256
+2026-04-09 10:19:13,250 INFO Static best @ B=384: acc=0.9030 config=mixture → nothink@256
+2026-04-09 10:19:13,250 INFO Static best @ B=512: acc=0.9310 config=pure → nothink@512
+2026-04-09 10:19:13,250 INFO Static best @ B=640: acc=0.9310 config=pure → nothink@512
+2026-04-09 10:19:13,250 INFO Static best @ B=768: acc=0.9310 config=pure → nothink@512
+2026-04-09 10:19:13,250 INFO Static best @ B=1024: acc=0.9310 config=pure → nothink@512
+2026-04-09 10:19:13,250 INFO 
+Computing cascade analysis...
+2026-04-09 10:19:13,250 INFO 
+Computing complementarity analysis...
+2026-04-09 10:19:13,250 INFO 
+Computing Pareto valley analysis...
+2026-04-09 10:19:13,250 INFO 
+Computing achievable mixture frontier...
+2026-04-09 10:19:13,251 INFO 
+Results saved to /Users/niewenhua/Desktop/aicoding/github_repos/nips-adathink/results/pilot_portfolio/portfolio_pareto_results.json
+2026-04-09 10:19:13,252 INFO Summary saved to /Users/niewenhua/Desktop/aicoding/github_repos/nips-adathink/results/pilot_portfolio/portfolio_pareto_summary.txt

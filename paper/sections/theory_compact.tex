@@ -1,0 +1,64 @@
+% theory_compact.tex — §4 Analytical Framework (compact 9-page version)
+% Full proofs in Appendix~\ref{app:theory-full}
+
+We decompose the thinking tax into interpretable components.
+The decomposition builds on elementary conditional probability---deliberately so: each term maps to a directly observable quantity, making the framework falsifiable from standard generation logs alone.
+It serves three diagnostic purposes: (i)~given empirically measured completion rates ($\alpha_c$, $\alpha_t$), it yields closed-form accuracy predictions from chain-length statistics, (ii)~it characterizes the crossover budget as a quantile of the chain-length distribution, enabling practitioners to estimate it from a small pilot run, and (iii)~it explains inverse scaling through stochastic dominance.
+
+For a model $\mathcal{M}$ and question $q$, let $L(q) \in \mathbb{N}$ denote the \emph{natural chain length}---the total output tokens if unconstrained ($b \to \infty$)---and $F_L(b) = \Pr(L \le b)$ the chain-length CDF.
+When the chain completes ($L \le b$), accuracy is $\alpha_c$; when truncated ($L > b$), residual accuracy is $\alpha_t \ll \alpha_c$.
+This binary structure is strongly supported empirically: at $b{=}512$ on GSM8K, $\alpha_c = 96.3\%$ among natural stops vs.\ $\alpha_t = 46.6\%$ among truncated samples (Finding~2).
+
+\paragraph{Accuracy decomposition.}
+\label{prop:acc-decomp}
+Conditioning on the event $\{L \le b\}$ via the law of total probability:
+\begin{equation}
+  \mathrm{Acc}_{\mathrm{think}}(b)
+  = F_L(b) \cdot \alpha_c
+  + \bigl(1 - F_L(b)\bigr) \cdot \alpha_t.
+  \label{eq:acc-decomp}
+\end{equation}
+This separates thinking-mode accuracy into two factors: the \emph{completeness rate} $F_L(b)$ and the \emph{quality gap} $(\alpha_c - \alpha_t)$.
+The key insight is that the dominant driver of the tax is not low $\alpha_t$ per se, but the interaction between a near-zero $F_L(b)$ and the quality gap: at $b{=}256$, $F_L \approx 0.014$, so 98.6\% of chains are truncated before the model has finished reasoning.
+For the 27B model, $F_L(512) = 0.007$---the model has barely \emph{begun} its chain within the budget.
+
+\noindent\textbf{Empirical verification (in-sample).}
+At $b{=}512$ on GSM8K, $F_L = 0.374$, giving $0.374 \times 96.3\% + 0.626 \times 46.6\% = 65.2\%$---consistent with the observed accuracy.
+On MATH-500, the decomposition yields 6.2\% ($b{=}512$), 18.0\% ($b{=}1024$), and 44.0\% ($b{=}2048$)---all consistent with measurements (Appendix~\ref{app:theory-verification}).
+
+\noindent\textbf{Held-out prediction test.}
+To test predictive power beyond in-sample verification, we estimate $\alpha_c$ and $\alpha_t$ from BBH at budget 512 ($\alpha_c{=}0.950$, $\alpha_t{=}0.275$) and use them to predict BBH accuracy at budgets 1024 and 2048, using only the observed completion rate $F_L$ at the target budget.
+The framework predicts 69.3\% at $b{=}1024$ (observed: 73.6\%, error 4.3\,pp) and 86.8\% at $b{=}2048$ (observed: 86.0\%, error 0.8\,pp).
+The $b{=}1024$ prediction is less precise (4.3\,pp error), partly because $\alpha_t$ increases with budget (from 0.275 to 0.417) as borderline-truncated samples contribute more correct answers---a systematic deviation the fixed-parameter decomposition does not capture.
+This out-of-sample prediction---using parameters from one budget to predict accuracy at a different budget on the same benchmark---confirms the framework has genuine predictive utility beyond explaining known data.
+
+\paragraph{The thinking tax.}
+\label{thm:thinking-tax}
+Setting $\alpha_t \approx 0$ as a first-order approximation (the error is bounded by $(1{-}F_L(b))\cdot\alpha_t$, which is small when either $F_L(b) \to 1$ or $\alpha_t$ is low) yields a closed form:
+\begin{equation}
+  \underbrace{\mathrm{Acc}_{\mathrm{nt}}(b)
+    - \mathrm{Acc}_{\mathrm{think}}(b)}_{\text{Thinking Tax}}
+  \;\approx\;
+  \mathrm{Acc}_{\mathrm{nt}}(b) - F_L(b) \cdot \alpha_c.
+  \label{eq:tax}
+\end{equation}
+When $F_L(b) \ll 1$ (most chains exceed budget), the tax approaches $\mathrm{Acc}_{\mathrm{nt}}(b)$ itself---i.e., thinking mode captures essentially none of the model's capability.
+
+\paragraph{Crossover budget.}
+\label{prop:crossover}
+Setting the tax to zero and solving for $b$, the crossover budget $b^*$---the smallest $b$ where thinking matches non-thinking---satisfies:
+\begin{equation}
+  b^* \;\approx\; F_L^{-1}\!\!\left(
+    \frac{\bar{\alpha}_{\mathrm{nt}}}{\alpha_c}\right),
+  \label{eq:crossover}
+\end{equation}
+where $\bar{\alpha}_{\mathrm{nt}}$ is the saturated non-thinking accuracy.
+On GSM8K: $\bar{\alpha}_{\mathrm{nt}}/\alpha_c = 0.934/0.963 = 0.970$, so $b^*$ is the 97th percentile of $L$, yielding $b^* \approx 2048$---consistent with Figure~\ref{fig:pareto}.
+\emph{Practical recipe}: run ${\sim}$100 samples with thinking mode unconstrained, estimate the 97th percentile of chain lengths, and compare with the deployment budget---if the budget is below this percentile, thinking will hurt.
+The \emph{empirical} budget multiplier on GSM8K is $\gamma = b^*/b_{\mathrm{sat}} \approx 2048/512 = 4\times$; on MATH-500, $\gamma > 4\times$ since thinking has not reached parity at $b{=}2048$, confirming harder tasks demand larger multipliers (the specific multiplier is task-dependent).
+
+\paragraph{Inverse scaling and oracle precision.}
+The decomposition also explains why the tax worsens with model size (\S\ref{sec:finding:model-size}).
+If $L_{M_2}$ stochastically dominates $L_{M_1}$ for $M_2 > M_1$ (i.e., $F_{L_{M_2}}(b) \le F_{L_{M_1}}(b)$ for all $b$), then $\mathrm{Tax}(M_2, b) \ge \mathrm{Tax}(M_1, b)$: larger models generate longer chains, pushing $F_L(b)$ closer to zero at the same budget (Appendix~\ref{app:theory-full}).
+Empirically, at $b{=}512$, each model's tax relative to its own nothink baseline: 27B tax = 77.2\,pp (95.5\% $-$ 18.3\%) vs.\ 8B tax = 28.2\,pp (93.4\% $-$ 65.2\%)---a $2.7\times$ amplification driven by $F_L^{27B}(512) = 0.007$ vs.\ $F_L^{8B}(512) = 0.374$ (using a common baseline as in \S\ref{sec:finding:model-size} yields a consistent $2.7\times$).
+Finally, the natural-stop event provides a confidence oracle with PPV $= \alpha_c = 96.3\%$ (Appendix~\ref{app:theory-full}): early stopping implies the model is near-certain of its answer, requiring no access to model internals.

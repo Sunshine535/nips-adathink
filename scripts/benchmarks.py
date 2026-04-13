@@ -31,7 +31,7 @@ LATEX_SQRT_RE = re.compile(r"\\sqrt\{([^}]+)\}")
 
 # BBH subtasks that use multiple-choice format
 BBH_MC_TASKS = {
-    "boolean_expressions", "causal_judgement", "date_understanding",
+    "date_understanding",
     "disambiguation_qa", "formal_fallacies", "geometric_shapes",
     "hyperbaton", "logical_deduction_five_objects",
     "logical_deduction_seven_objects", "logical_deduction_three_objects",
@@ -44,6 +44,7 @@ BBH_MC_TASKS = {
 }
 
 BBH_FREEFORM_TASKS = {
+    "boolean_expressions", "causal_judgement",
     "dyck_languages", "multistep_arithmetic_two",
     "object_counting", "word_sorting",
 }
@@ -69,11 +70,42 @@ def extract_final_number(text: str) -> Optional[str]:
     return matches[-1].group(1) if matches else None
 
 
+def _extract_boxed_brace_counting(text: str, start_idx: int) -> Optional[str]:
+    """Extract content from \\boxed{...} using brace-counting (handles arbitrary nesting)."""
+    open_pos = text.find("{", start_idx)
+    if open_pos == -1:
+        return None
+    depth = 1
+    i = open_pos + 1
+    while i < len(text) and depth > 0:
+        if text[i] == "{":
+            depth += 1
+        elif text[i] == "}":
+            depth -= 1
+        i += 1
+    if depth == 0:
+        return text[open_pos + 1 : i - 1].strip()
+    # Unclosed brace — return what we have
+    return text[open_pos + 1 :].strip()
+
+
 def extract_boxed(text: str) -> Optional[str]:
+    """Extract the LAST \\boxed{...} content using brace-counting.
+
+    Unlike the regex approach, this correctly handles arbitrary nesting:
+      \\boxed{\\frac{14}{3}}  → \\frac{14}{3}   (correct)
+      \\boxed{\\frac{\\sqrt{2}}{3}} → \\frac{\\sqrt{2}}{3}  (correct)
+    """
     if not text:
         return None
-    matches = list(BOXED_RE.finditer(text))
-    return matches[-1].group(1).strip() if matches else None
+    # Find the LAST occurrence of \boxed{
+    idx = text.rfind("\\boxed{")
+    if idx == -1:
+        # Also try \boxed without brace (rare edge case)
+        idx = text.rfind("\\boxed")
+        if idx == -1:
+            return None
+    return _extract_boxed_brace_counting(text, idx)
 
 
 def has_explicit_final(text: str) -> bool:
@@ -116,15 +148,57 @@ def normalize_latex(s: str) -> str:
     while "  " in s:
         s = s.replace("  ", " ")
 
-    # Handle \dfrac and \frac → a/b
-    def frac_repl(m):
-        return f"({m.group(1)})/({m.group(2)})"
-    s = LATEX_FRAC_RE.sub(frac_repl, s)
+    # Handle \dfrac and \frac → (numer)/(denom) using brace-counting
+    def _replace_frac(text):
+        for cmd in ("\\dfrac", "\\frac"):
+            while cmd + "{" in text:
+                idx = text.find(cmd + "{")
+                after = idx + len(cmd)
+                # Extract numerator
+                num = _extract_boxed_brace_counting(text, after)
+                if num is None:
+                    break
+                # Find end of numerator brace group
+                open_pos = text.find("{", after)
+                depth, i = 1, open_pos + 1
+                while i < len(text) and depth > 0:
+                    if text[i] == "{": depth += 1
+                    elif text[i] == "}": depth -= 1
+                    i += 1
+                # Extract denominator
+                den = _extract_boxed_brace_counting(text, i)
+                if den is None:
+                    break
+                open_pos2 = text.find("{", i)
+                depth2, j = 1, open_pos2 + 1
+                while j < len(text) and depth2 > 0:
+                    if text[j] == "{": depth2 += 1
+                    elif text[j] == "}": depth2 -= 1
+                    j += 1
+                text = text[:idx] + f"({num})/({den})" + text[j:]
+        return text
+    s = _replace_frac(s)
 
-    # Handle \sqrt{x} → sqrt(x)
-    def sqrt_repl(m):
-        return f"sqrt({m.group(1)})"
-    s = LATEX_SQRT_RE.sub(sqrt_repl, s)
+    # Handle \sqrt{x} → sqrt(x) using brace-counting
+    # Also handle \sqrt followed by single char (no braces): \sqrt2 → sqrt(2)
+    def _replace_sqrt(text):
+        cmd = "\\sqrt{"
+        while cmd in text:
+            idx = text.find(cmd)
+            content = _extract_boxed_brace_counting(text, idx + len("\\sqrt"))
+            if content is None:
+                break
+            open_pos = text.find("{", idx + len("\\sqrt"))
+            depth, i = 1, open_pos + 1
+            while i < len(text) and depth > 0:
+                if text[i] == "{": depth += 1
+                elif text[i] == "}": depth -= 1
+                i += 1
+            text = text[:idx] + f"sqrt({content})" + text[i:]
+        # Handle \sqrt followed by a single character (no braces): \sqrt2, \sqrtx
+        text = re.sub(r"\\sqrt([a-zA-Z0-9])", r"sqrt(\1)", text)
+        return text
+    s = _replace_sqrt(s)
 
     s = s.replace("\\cdot", "*").replace("\\times", "*")
     s = s.replace("\\pi", "pi").replace("\\infty", "inf")
@@ -400,6 +474,11 @@ def parse_prediction_bbh(
                     return first_char[0], True, "final_marker"
             else:
                 ans = tail.split("\n")[0].strip().rstrip(".")
+                ans = re.sub(r"</?answer>", "", ans)
+                ans = re.sub(r"<([^>]+)>", r"\1", ans)
+                ans = ans.strip().lstrip(":").strip()
+                if ans.lower() in ("true", "false", "yes", "no"):
+                    ans = ans.upper()
                 if ans:
                     return ans, True, "final_marker"
 
@@ -415,7 +494,19 @@ def parse_prediction_bbh(
     # Fallback for freeform: last line content
     lines = [l.strip() for l in text.strip().split("\n") if l.strip()]
     if lines:
-        return lines[-1].rstrip("."), False, "fallback_last"
+        last = lines[-1].rstrip(".")
+        # Clean formatting tags
+        last = re.sub(r"</?answer>", "", last)
+        last = re.sub(r"<([^>]+)>", r"\1", last)
+        last = last.strip()
+        # Normalize TRUE/FALSE/YES/NO keywords
+        lower_words = last.lower().split()
+        for word in ["true", "false", "yes", "no"]:
+            if lower_words and lower_words[0].rstrip(",.:;") == word:
+                return word.upper(), False, "fallback_keyword"
+            if word in [w.rstrip(",.:;") for w in lower_words]:
+                return word.upper(), False, "fallback_keyword"
+        return last, False, "fallback_last"
     return None, False, "none"
 
 

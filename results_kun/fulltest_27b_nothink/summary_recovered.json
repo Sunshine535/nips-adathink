@@ -1,0 +1,49 @@
+{
+  "source": "recovered_from_nothink_27b.log",
+  "model": "Qwen/Qwen3.5-27B",
+  "benchmark": "gsm8k",
+  "n_samples": 1319,
+  "experiments": {
+    "nothink_128": {
+      "accuracy": 0.099,
+      "avg_tokens": 127.0,
+      "early_stop_rate": 0.042,
+      "has_final_rate": 0.0,
+      "n_samples": 1319,
+      "status": "complete"
+    },
+    "nothink_256": {
+      "accuracy": 0.651,
+      "avg_tokens": 215.0,
+      "early_stop_rate": 0.545,
+      "has_final_rate": 0.0,
+      "n_samples": 1319,
+      "status": "complete"
+    },
+    "nothink_512": {
+      "accuracy": 0.955,
+      "avg_tokens": 249.0,
+      "early_stop_rate": 0.9690000000000001,
+      "has_final_rate": 0.002,
+      "n_samples": 1319,
+      "status": "complete"
+    },
+    "thinking_128": {
+      "accuracy": 0.026,
+      "avg_tokens": 128.0,
+      "early_stop_rate": 0.0,
+      "has_final_rate": 0.0,
+      "n_samples": 1319,
+      "status": "complete"
+    },
+    "thinking_256": {
+      "accuracy": 0.051,
+      "avg_tokens": 256.0,
+      "early_stop_rate": 0.0,
+      "has_final_rate": 0.0,
+      "n_samples": 1319,
+      "n_completed": 1120,
+      "status": "incomplete (1120/1319)"
+    }
+  }
+}

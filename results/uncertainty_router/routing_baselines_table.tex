@@ -1,0 +1,27 @@
+\begin{table}[t]
+\centering
+\caption{Routing baseline comparison on GSM8K (Qwen3-8B, $n{=}1319$). All budget-matched routers use the same 11.2\% routing rate as TOWN. ``Recov.'' = nothink-wrong samples corrected by thinking; ``Regret'' = nothink-correct samples broken by thinking.}
+\label{tab:routing_baselines}
+\small
+\begin{tabular}{@{}lcccccc@{}}
+\toprule
+Method & Acc.\,(\%) & Avg Tok. & Route\,\% & Recov. & Regret & Net\,$\Delta$ \\
+\midrule
+\multicolumn{7}{l}{\textit{Baselines (no routing)}} \\
+NoThink@256 & 87.5 & 146 & 0.0 & 0 & 0 & 0 \\
+Think@512 & 65.2 & 477 & 100.0 & 109 & 403 & -294 \\
+\midrule
+\multicolumn{7}{l}{\textit{Budget-matched routers (11.2\% routed to Think@512)}} \\
+Random & $85.0 \pm 0.5$ & $200 \pm 1$ & 11.2 & $12.7$ & $45.6$ & $-32.9$ \\
+Inverse Token-Length & 83.5 & 200 & 11.2 & 1 & 54 & -53 \\
+Mid-Token & 84.2 & 200 & 11.2 & 2 & 45 & -43 \\
+Token-Length (uncertainty) & 90.9 & 199 & 11.2 & 64 & 19 & 45 \\
+\midrule
+\multicolumn{7}{l}{\textit{Bounds}} \\
+Oracle (budget-matched) & 95.8 & 182 & 8.3 & 109 & 0 & 109 \\
+Oracle (uncapped) & 95.8 & 182 & 8.3 & 109 & 0 & 109 \\
+\midrule
+\textbf{TOWN (Ours)} & \textbf{90.9} & 199 & 11.2 & 64 & 19 & \textbf{45} \\
+\bottomrule
+\end{tabular}
+\end{table}

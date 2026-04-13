@@ -1,0 +1,94 @@
+% analysis_compact.tex — §3 The Thinking Tax: Empirical Study (compact 9-page version)
+
+All experiments use \textbf{Qwen3-8B}~\cite{qwen3_2025} on the full GSM8K test set ($n{=}1{,}319$), with cross-scale validation on Qwen3.5-9B and Qwen3.5-27B.
+We control test-time compute via \texttt{max\_new\_tokens}, which caps \emph{total} output tokens for both modes equally.
+Thinking mode's chain and answer share this budget; non-thinking mode uses it entirely for the answer.
+Greedy decoding ($\tau{=}0$) is used throughout; we deliberately scope to the deterministic setting to isolate the truncation mechanism from sampling variance (the interaction between the thinking tax and stochastic decoding, including best-of-$K$ and self-consistency baselines, is an orthogonal question).
+When thinking exhausts its budget without a final answer, a projection pass (up to 32 tokens) extracts a partial answer---\emph{favorable} to thinking mode (without it, think@512 drops from 65.2\% to 57.5\%; without \emph{any} answer extraction, to ${<}$6\%).
+
+\paragraph{On fairness.}
+One might object that capping thinking tokens is ``unfair.''
+We note that (1)~in deployment, latency and cost budgets are real constraints~\citep{snell2024scaling}; (2)~we apply a projection pass that \emph{favors} thinking mode; and (3)~even a ``generous'' setup guaranteeing dedicated answer tokens trails nothink by 31.5\,pp (\S\ref{sec:crossover}).
+The tax is not about answer truncation but about the reasoning chain consuming the \emph{entire} budget before reaching any answer.
+
+\subsection{Finding 1: Non-Thinking Beats Thinking at All Matched Budgets}
+\label{sec:finding:tax}
+
+\input{../results/paper_figures/table_thinking_tax_main}
+
+At every budget from 128 to 512, non-thinking mode uniformly dominates thinking mode (Table~\ref{tab:thinking-tax}).
+\texttt{nothink@256} achieves \textbf{87.5\%} vs.\ only \textbf{18.0\%} for \texttt{think@256}---a \textbf{69.5\,pp} gap.
+At $b{=}512$: 93.4\% vs.\ 65.2\% with projection ($+28.2$\,pp; 57.5\% without).
+Non-thinking saturates by $b{=}512$ (93.4\%); thinking requires ${\sim}$2048 tokens for parity---a \textbf{4$\times$} budget multiplier.
+The root cause is that thinking mode must fit its reasoning chain \emph{plus} its answer within $b$ tokens; at low budgets, the chain consumes all available tokens (token utilization analysis in Appendix~\ref{app:utilization}).
+This does not imply CoT is useless---above the crossover (${\sim}$2048 on GSM8K), thinking recovers---but below this threshold, the reasoning overhead is a \emph{tax} that must be justified by problem difficulty.
+
+\paragraph{Failure-mode decomposition.}
+Table~\ref{tab:failure-decomp} decomposes the thinking tax into its constituent failure modes, providing causal evidence for the truncation mechanism.
+At $b{=}256$, \textbf{98.6\%} of thinking responses are truncated before reaching a final answer, compared to only \textbf{11.2\%} in non-thinking mode.
+Among the rare natural-stop thinking samples (1.4\%), accuracy is 100\%---the model \emph{can} reason correctly when given sufficient budget, but the chain format prevents it from finishing.
+This rules out alternative explanations (prompt format, decoding mismatch): the only differentiating factor is whether the chain fits within the budget.
+At $b{=}512$, natural-stop rate rises to 38.0\% with 99.0\% accuracy among completers; the truncated 62.0\% achieve only 32.2\%, dragging overall accuracy to 57.5\% (65.2\% with projection pass).
+Under a stricter criterion ($<$95\% of budget, used in \S\ref{sec:theory}), the rate is 37.4\% with 96.3\% accuracy---the slight difference reflects near-boundary completions.
+
+\begin{table}[t]
+\centering
+\caption{\textbf{Failure-mode decomposition} on GSM8K ($n{=}1{,}319$, Qwen3-8B).
+Thinking mode's poor accuracy is almost entirely explained by truncation.
+Think@512 overall is without projection; with projection it reaches 65.2\% (Table~\ref{tab:town-comparison}).
+``Has final answer'' = truncated but a parseable answer was found in the output.
+95\% bootstrap CIs from 10k paired resamples.}
+\label{tab:failure-decomp}
+\small
+\begin{tabular}{@{}l@{\;\;}rr@{\;\;}rr@{}}
+\toprule
+& \multicolumn{2}{c}{\textbf{Budget 256}} & \multicolumn{2}{c}{\textbf{Budget 512}} \\
+\cmidrule(lr){2-3} \cmidrule(lr){4-5}
+\textbf{Metric} & \textbf{Think} & \textbf{Nothink} & \textbf{Think} & \textbf{Nothink} \\
+\midrule
+Natural stop rate & 1.4\% & 88.8\% & 38.0\% & 99.8\% \\
+\;\;Acc.\ among natural stops & 100\% & 94.4\% & 99.0\% & 93.4\% \\
+Truncated (hit budget) & 98.6\% & 11.2\% & 62.0\% & 0.2\% \\
+\;\;Acc.\ among truncated & 16.8\% & 32.4\% & 32.2\% & --- \\
+Has final answer & 0.4\% & --- & 5.3\% & --- \\
+\midrule
+\textbf{Overall accuracy} & 18.0\% & 87.5\% & 57.5\% & 93.4\% \\
+\textbf{Tax (paired bootstrap)} & \multicolumn{2}{c}{69.5pp \ci{66.9}{72.0}} & \multicolumn{2}{c}{35.9pp \ci{33.2}{38.6}} \\
+\bottomrule
+\end{tabular}
+\vspace{-2mm}
+\end{table}
+
+\subsection{Finding 2: Natural Stop as Confidence Oracle}
+\label{sec:finding:natural-stop}
+
+When thinking mode generates a complete chain and emits a final answer \emph{before} exhausting its budget, we say the sample exhibits a \emph{natural stop}.
+At $b{=}512$ with Qwen3-8B, 37.4\% of samples terminate naturally; among these, accuracy is \textbf{96.3\%}---nearly perfect.
+Among samples that exhaust the budget, accuracy is only 46.6\%, yielding a \textbf{49.7\,pp} gap (full analysis in Appendix~\ref{app:natural-stop-details}).
+Unlike soft confidence scores, the natural-stop signal is \emph{binary}, \emph{endogenous}, and \emph{free}---it requires no logit access, hidden states, or calibration.
+The effect generalizes across models: DeepSeek-R1-8B shows similar behavior (Appendix~\ref{app:deepseek}), with natural-stop rates increasing steadily with budget on MATH-500 (31.2\% $\to$ 76.2\% as $b$ scales from 1024 to 4096).
+This signal forms the basis of \method{}'s routing mechanism (\S\ref{sec:method}).
+
+\subsection{Finding 3: The Thinking Tax Scales with Model Size}
+\label{sec:finding:model-size}
+
+One might hope that the thinking tax diminishes with more capable models.
+We test this by comparing Qwen3-8B, Qwen3.5-9B, and Qwen3.5-27B in thinking mode at identical budgets.
+The results are counterintuitive.
+
+\input{../results/paper_figures/table_model_size_scaling}
+
+At $b{=}512$, thinking-mode accuracy \emph{collapses} with model size: 8B achieves 65.2\%, 9B drops to 11.5\%, and 27B reaches only 18.3\% (Table~\ref{tab:model-size-scaling}).
+The thinking tax for 9B and 27B (relative to 8B nothink@512 = 93.4\%) is \textbf{2.9$\times$} and \textbf{2.7$\times$ larger} than for 8B, respectively.
+The root cause is that larger models produce longer chains: at $b{=}512$, the 27B model's natural-stop rate is just \textbf{0.7\%} (vs.\ 8B's 37.4\%), so 99.3\% of its responses are truncated.
+Crucially, the 27B model in \emph{non-thinking} mode achieves \textbf{95.5\%} at the same budget---the \emph{highest accuracy of any configuration}---confirming that model capability is intact and the tax is purely a format overhead.
+Even quadrupling the budget does not close the gap: at $b{=}2048$, the 9B model reaches only 66.8\% in thinking mode---26.6\,pp below 8B \texttt{nothink@512} (93.4\%).
+The tax worsens with scale, making adaptive allocation increasingly important for frontier models.
+
+\paragraph{Summary.}
+Our findings paint a coherent picture:
+(1)~non-thinking dominates at all matched budgets;
+(2)~natural stop predicts 96.3\% accuracy at zero cost;
+(3)~the tax worsens with model scale.
+The natural question is: can we \emph{think only when thinking helps}?
+This is the goal of \method{}, introduced next.

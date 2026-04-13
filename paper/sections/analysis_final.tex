@@ -8,11 +8,10 @@ Before introducing our method, we present a systematic empirical study of
 the costs and failure modes of chain-of-thought reasoning under constrained
 token budgets.  All experiments in this section use
 \textbf{Qwen3-8B}~\cite{qwen3_2025} with its native thinking mode
-(\texttt{enable\_thinking=True}) and \textbf{Qwen3.5-27B} for cross-scale
-validation, evaluated on the full GSM8K test set ($n{=}1{,}319$)
-unless otherwise noted.\footnote{%
-  A 200-sample subset (seed 42) is used for the budget sweep in
-  Table~\ref{tab:thinking-tax}; all other analyses use the complete set.}
+(\texttt{enable\_thinking=True}), with \textbf{Qwen3.5-9B} and
+\textbf{Qwen3.5-27B} for cross-scale validation,
+evaluated on the full GSM8K test set ($n{=}1{,}319$)
+unless otherwise noted.
 We control test-time compute via the \texttt{max\_new\_tokens} parameter,
 which caps the \emph{total} number of newly generated tokens---including
 both the thinking trace (\texttt{<think>...<\!/think>}) and the final answer.
@@ -24,14 +23,21 @@ $b$~tokens for the answer directly.
 Non-thinking results are obtained by setting
 \texttt{enable\_thinking=False} in the Qwen3 chat template, which
 suppresses the thinking block entirely.
-Greedy decoding ($\tau{=}0$) is used throughout.
+Greedy decoding ($\tau{=}0$) is used throughout; we deliberately scope to the deterministic setting to isolate the truncation mechanism from sampling variance (the interaction between the thinking tax and stochastic decoding, including best-of-$K$ and self-consistency baselines, is an orthogonal question).
+When thinking mode exhausts its budget without producing a final answer,
+a short \emph{projection pass} (up to 32 additional tokens) is applied to
+extract a numerical answer from the truncated output
+(details in Appendix~\ref{app:experimental_details}).
+This is \emph{favorable} to thinking mode: without projection,
+think@512 accuracy drops from 56.9\% to ${<}$6\%, making
+our reported thinking tax a conservative estimate.
 
 Our five findings collectively establish that (i)~thinking mode imposes a
 severe \emph{tax} at practical token budgets, (ii)~models already emit
 reliable signals indicating when this tax is unnecessary, and
 (iii)~a large fraction of compute is wasted on questions the model
 cannot solve regardless of budget.
-These findings motivate the design of \textsc{Town} in
+These findings motivate the design of \method{} (\fullmethod{}) in
 \S\ref{sec:method}.
 
 % ---------------------------------------------------------------------------
@@ -46,42 +52,61 @@ Table~\ref{tab:thinking-tax} summarizes the comparison.
 
 \input{../results/paper_figures/table_thinking_tax_main}
 
-At budget $b{=}128$, non-thinking achieves \textbf{54.5\%} accuracy while
-thinking yields only \textbf{2.0\%}---a 52.5 percentage-point (pp) gap.
-At $b{=}256$, the gap narrows but remains enormous:
-\textbf{89.0\%} vs.\ \textbf{22.0\%} ($+67.0$\,pp).
-Even at $b{=}512$, where thinking has enough room for short chains,
-non-thinking still leads by a large margin:
-\textbf{94.0\%} vs.\ \textbf{66.5\%} ($+27.5$\,pp).
-These results are confirmed on the full GSM8K test set ($n{=}1{,}319$,
-$\star$ rows in Table~\ref{tab:thinking-tax}):
-\texttt{nothink@256$\star$} achieves \textbf{87.5\%} vs.\ only
-\textbf{18.0\%} for \texttt{think@256$\star$}, a
-\textbf{69.5\,pp} gap at matched budget.
+On the complete GSM8K test set ($n{=}1{,}319$),
+\texttt{nothink@256} achieves \textbf{87.5\%} vs.\ only
+\textbf{18.0\%} for \texttt{think@256}---a \textbf{69.5\,pp} gap.
+At the 27B scale, the gap is even starker: nothink@512 = 95.5\% vs.\ think@512 = 18.3\% ($+77.2$\,pp).
+Non-thinking mode saturates at moderate budgets, while thinking has not reached parity at any tested budget (Table~\ref{tab:thinking-tax}).
 
-The root cause is straightforward: a thinking model must first produce a
-reasoning chain \emph{inside} its $b$-token budget before emitting an answer.
-At low budgets, the chain consumes nearly all available tokens, leaving
-insufficient room for a well-formed answer.
-A non-thinking model, by contrast, directly generates the solution,
-allocating its full budget to answer-bearing content.
-This difference manifests in the \emph{Early Stop} column of
-Table~\ref{tab:thinking-tax}: at $b{=}256$, 92.0\% of non-thinking
-samples terminate naturally before the budget, whereas only 2.0\% of
-thinking samples do.
-In effect, the non-thinking model has already ``solved'' the problem and
-moved on, while the thinking model is still mid-chain.
+The root cause is that thinking mode must fit its reasoning chain \emph{plus} its answer within $b$ tokens; at low budgets, the chain consumes all available tokens.
+At $b{=}256$, 88.8\% of non-thinking samples terminate naturally, vs.\ less than 2\% for thinking (Table~\ref{tab:thinking-tax}).
+This does not imply CoT is useless---above the crossover budget (${\sim}$2048 on GSM8K; higher on harder benchmarks), thinking recovers and can surpass non-thinking---but below this threshold, the reasoning overhead is a \emph{tax} that must be justified by problem difficulty.
 
-% Figure 1 (nothink vs thinking) is presented in the Introduction.
-% See Figure~\ref{fig:nothink-vs-thinking} for the visual comparison.
+\paragraph{Failure-mode decomposition.}
+Table~\ref{tab:failure-decomp} decomposes the thinking tax into its constituent
+failure modes, providing causal evidence for the truncation mechanism.
+At $b{=}256$, \textbf{98.6\%} of thinking responses are truncated before
+reaching a final answer, compared to only \textbf{11.2\%} in non-thinking mode.
+Among the rare natural-stop thinking samples (1.4\%), accuracy is 100\%---the
+model can reason correctly when given sufficient budget, but the chain
+format prevents it from finishing.
+At $b{=}512$, natural-stop rate rises to 38.0\% with 99.0\% accuracy among
+completers; the truncated 62.0\% achieve only 32.2\%, dragging overall
+accuracy to 56.9\%.
 
-We emphasize that this result does \emph{not} imply that chain-of-thought
-reasoning is useless---at sufficiently large budgets (e.g.,\ $b{=}4096$),
-thinking mode recovers and eventually surpasses non-thinking.
-Rather, it shows that under the budget-constrained regime that is
-increasingly relevant for cost-sensitive deployment, the overhead of
-producing a reasoning chain is a \emph{tax} that must be justified by
-the problem's difficulty.
+\begin{table}[t]
+\centering
+\caption{\textbf{Failure-mode decomposition} on GSM8K ($n{=}1{,}319$, Qwen3-8B).
+Thinking mode's poor accuracy is almost entirely explained by truncation:
+the vast majority of responses never produce a final answer.
+Non-thinking mode's token-efficient format avoids this failure mode entirely.
+Think@512 overall accuracy is 56.9\% (HuggingFace engine, greedy decoding).
+95\% bootstrap CIs from 10k paired resamples.}
+\label{tab:failure-decomp}
+\small
+\begin{tabular}{@{}l@{\;\;}rr@{\;\;}rr@{}}
+\toprule
+& \multicolumn{2}{c}{\textbf{Budget 256}} & \multicolumn{2}{c}{\textbf{Budget 512}} \\
+\cmidrule(lr){2-3} \cmidrule(lr){4-5}
+\textbf{Metric} & \textbf{Think} & \textbf{Nothink} & \textbf{Think} & \textbf{Nothink} \\
+\midrule
+Natural stop rate & 1.4\% & 88.8\% & 38.0\% & 99.8\% \\
+\;\;Acc.\ among natural stops & 100\% & 94.4\% & 99.0\% & 93.4\% \\
+Truncated (hit budget) & 98.6\% & 11.2\% & 62.0\% & 0.2\% \\
+\;\;Acc.\ among truncated & 16.8\% & 32.4\% & 32.2\% & --- \\
+Has final answer & 0.4\% & --- & 5.3\% & --- \\
+\midrule
+\textbf{Overall accuracy} & 18.0\% & 87.5\% & 57.5\%$^*$ & 93.4\%$^\dagger$ \\
+\textbf{Tax (paired bootstrap)} & \multicolumn{2}{c}{69.5pp \ci{66.9}{72.0}} & \multicolumn{2}{c}{---} \\
+\bottomrule
+\end{tabular}
+\vspace{1mm}
+
+\footnotesize
+$^*$HuggingFace engine, greedy decoding (56.9\% on full $n{=}1{,}319$; 57.5\% on $n{=}200$ subset).
+$^\dagger$Nothink@512 column from $n{=}200$ subset (seed=42); full-set accuracy is 93.1\% ($n{=}1{,}319$).
+\vspace{-2mm}
+\end{table}
 
 % ---------------------------------------------------------------------------
 \subsection{Finding 2: Natural Stop Is a Free Confidence Oracle}
@@ -98,86 +123,39 @@ We find that this event is a remarkably reliable indicator of correctness.
 At $b{=}512$ with Qwen3-8B, 37.4\% of samples terminate before consuming
 95\% of their token budget---we call these \emph{natural stops}
 (Table~\ref{tab:natural-stop-oracle}).
-Among these 475 samples, accuracy is \textbf{96.3\%}---nearly perfect.
+Among these natural-stop samples, accuracy is \textbf{99.0\%}---nearly perfect.
 Among samples that exhaust the budget (i.e., are truncated), accuracy is
-only 47.5\%, yielding an accuracy gap of \textbf{$+$48.8\,pp}
-(Figure~\ref{fig:natural-stop-split}).
+only 31.8\%, yielding an accuracy gap of \textbf{$+$67.2\,pp}
+(Figure~\ref{fig:natural-stop-split}, Table~\ref{tab:natural-stop-oracle}).
 A stricter definition---requiring an explicit ``Final answer'' marker
 (\texttt{has\_final})---selects only 6.1\% of samples but achieves
 93.8\% accuracy, further confirming the signal's reliability.
 
-This phenomenon admits a simple explanation.
-A natural stop means the model's \emph{own} generation process
-determined that the reasoning chain was complete---the model ``believes''
-it has reached a satisfactory answer.
-While LLM confidence is notoriously miscalibrated in
-general~\cite{chen2024overthinking}, the natural-stop signal is
-structurally different from soft confidence scores: it is a
-\emph{binary}, \emph{endogenous} event that does not require access to
-logits, hidden states, or any post-hoc calibration.
-It is, in a precise sense, a \emph{free} confidence oracle---one that
-the model provides at zero additional inference cost.
-
-\begin{remark}[Generality]
-The natural-stop oracle effect is not limited to Qwen3-8B.
-Table~\ref{tab:natural-stop-oracle} shows that DeepSeek-R1-8B exhibits
-similar behavior: at $b{=}512$, 85.0\% of GSM8K samples stop naturally,
-and on the harder MATH500 benchmark, natural-stop rates increase steadily
-with budget (31.2\% $\to$ 55.0\% $\to$ 76.2\% as $b$ scales from 1024
-to 4096).
-This universality suggests that the phenomenon is an intrinsic property
-of reasoning-trained models, not an artifact of a specific architecture.
-\end{remark}
+Unlike soft confidence scores, the natural-stop signal is
+\emph{binary}, \emph{endogenous}, and \emph{free}---it requires no logit access, hidden states, or calibration.
+The effect generalizes: DeepSeek-R1-8B shows similar behavior (Table~\ref{tab:natural-stop-oracle}), with natural-stop rates increasing steadily with budget on MATH-500 (31.2\% $\to$ 76.2\% as $b$ scales from 1024 to 4096).
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=0.72\textwidth]{fig9_acc_split_natural_vs_hit}
+\includegraphics[width=0.55\textwidth]{fig9_acc_split_natural_vs_hit}
+\vspace{-2mm}
 \caption{%
   \textbf{Natural stop is a free confidence oracle.}
-  Accuracy decomposition by stopping behavior for Qwen3-8B on GSM8K.
-  Samples that stop naturally before the budget (blue) achieve dramatically
-  higher accuracy than those that exhaust the budget (red), across all
-  budget levels.  At $b{=}512$, natural-stop samples reach 96.3\% accuracy
-  vs.\ 47.5\% for truncated samples---a 48.8\,pp gap.
+  Natural-stop samples (blue) achieve dramatically higher accuracy than truncated ones (red).
+  At $b{=}512$: 99.0\% vs.\ 31.8\%---a 67.2\,pp gap.
 }
 \label{fig:natural-stop-split}
+\vspace{-2mm}
 \end{figure}
 
 % ---------------------------------------------------------------------------
-\subsection{Finding 3: Token Utilization Collapses at High Budgets}
-\label{sec:finding:utilization}
+% Finding 3 (Token Utilization) — moved to Appendix~\ref{app:utilization}
 % ---------------------------------------------------------------------------
 
-A complementary perspective on the natural-stop phenomenon comes from
-examining \emph{token utilization}: the fraction of the allocated budget
-that the model actually consumes.
-
-\input{../results/paper_figures/table_token_utilization}
-
-Table~\ref{tab:token-utilization} reveals a striking pattern.
-At $b{=}128$, Qwen3-8B uses 100\% of its budget---every token is
-consumed, and the model is almost certainly still mid-reasoning when
-generation is forcibly terminated.
-At $b{=}256$, utilization remains near-perfect (99.7\%), with only 1.4\%
-of samples stopping naturally.
-But at $b{=}512$, utilization drops to \textbf{89.8\%}, with an average
-of only 460 tokens consumed out of 512 available.
-The model is already ``paying'' for $\sim$52 tokens it does not need.
-
-The pattern is even more dramatic for DeepSeek-R1 on GSM8K: utilization
-plummets from 103.0\% at $b{=}256$ (the model slightly exceeds its
-budget due to token-counting granularity) to \textbf{38.3\%} at
-$b{=}1{,}024$, with 97.5\% of samples stopping naturally.
-This means the model uses fewer than 400 tokens on average when allocated
-1{,}024---more than 60\% of the budget is wasted.
-
-This utilization collapse is a direct consequence of the heterogeneous
-difficulty distribution in typical benchmarks: many problems are easy
-enough that a short reasoning chain suffices, and additional budget
-yields no benefit.
-It provides strong empirical motivation for adaptive budget allocation:
-rather than setting a single high budget and accepting low utilization,
-one should match the budget to the problem's actual difficulty.
+Token utilization analysis (Appendix~\ref{app:utilization}) reveals that
+at $b{=}512$, Qwen3-8B consumes only 89.8\% of its budget; DeepSeek-R1
+drops to 38.3\% at $b{=}1{,}024$.
+This waste motivates adaptive budget allocation.
 
 % ---------------------------------------------------------------------------
 \subsection{Finding 4: The Thinking Tax Scales with Model Size}
@@ -185,123 +163,95 @@ one should match the budget to the problem's actual difficulty.
 % ---------------------------------------------------------------------------
 
 One might hope that the thinking tax diminishes with more capable models.
-We test this hypothesis by comparing Qwen3-8B and Qwen3.5-27B in
-thinking mode at identical budgets.
+We test this hypothesis by comparing Qwen3-8B, Qwen3.5-9B, and
+Qwen3.5-27B in thinking mode at identical budgets.
 The results are counterintuitive.
 
 \input{../results/paper_figures/table_model_size_scaling}
 
-At $b{=}512$, the 27B model achieves only \textbf{18.3\%} accuracy in
-thinking mode---dramatically \emph{worse} than the 8B model's 65.2\%
-(Table~\ref{tab:model-size-scaling}).
-The thinking tax for 27B ($75.7$\,pp relative to 8B non-thinking at the
-same budget) is \textbf{2.6$\times$ larger} than for 8B ($28.8$\,pp).
+At $b{=}512$, thinking-mode accuracy \emph{collapses dramatically}
+with model size: 8B achieves 56.9\%, 9B drops to 15.5\%, and 27B
+reaches only 18.3\% (Table~\ref{tab:model-size-scaling}).
+Non-thinking accuracy remains uniformly high: 8B = 93.1\%, 9B = 93.2\%, 27B = 95.5\%.
+The resulting thinking tax is 36.2\,pp (8B), \textbf{77.7\,pp} (9B), and 77.2\,pp (27B)---a \textbf{2.1$\times$} amplification from 8B to 9B.
 
-The root cause is a scaling mismatch between reasoning chain length and
-token budget.
-The 27B model produces longer, more elaborate reasoning chains---a
-consequence of its greater capacity and RLHF training.
-At $b{=}512$, the 27B model's natural-stop rate is a mere \textbf{0.7\%}
-(Table~\ref{tab:model-size-scaling}, footnote), meaning 99.3\% of its
-responses are \emph{truncated projections}: the model ran out of tokens
-mid-reasoning and was forced to output an answer.
-By contrast, 8B achieves a 37.4\% natural-stop rate at the same budget.
+The root cause is that larger models produce longer chains: at $b{=}512$, the 27B model's natural-stop rate is just \textbf{0.7\%} (vs.\ 8B's 37.4\%), so 99.3\% of its responses are truncated.
+Crucially, the 27B model in \emph{non-thinking} mode achieves \textbf{95.5\%} at the same budget---the \emph{highest accuracy of any configuration}---confirming that model capability is intact and the tax is purely a format overhead.
+Even quadrupling the budget does not close the gap: at $b{=}2048$, the 9B model reaches only 66.8\% in thinking mode---still below 9B \texttt{nothink@512} (93.2\%) by 26.4\,pp.
+The tax does not diminish with scale---it \emph{worsens}, making adaptive allocation increasingly important for frontier models.
 
-This finding has important practical implications.
-As reasoning models grow larger and more capable, their chains of thought
-grow proportionally longer, requiring commensurately larger budgets to
-avoid truncation.
-The thinking tax does not diminish with scale---it \emph{worsens},
-making adaptive budget allocation \emph{more} important, not less, for
-frontier models.
-
-\begin{figure}[t]
-\centering
-\includegraphics[width=0.72\textwidth]{fig_thinking_tax_model_size}
-\caption{%
-  \textbf{The thinking tax scales with model size.}
-  Comparison of thinking-mode accuracy for Qwen3-8B (blue) and
-  Qwen3.5-27B (red) at matched budgets on GSM8K.
-  At $b{=}512$, 27B's accuracy (18.3\%) is 46.9\,pp below 8B's (65.2\%),
-  because 27B's longer chains are more severely truncated.
-  The 8B non-thinking baseline (green dashed) dominates both at all budgets.
-}
-\label{fig:thinking-tax-model-size}
-\end{figure}
+% Figure moved to Appendix (see Figure~\ref{fig:thinking-tax-model-size} in Appendix~\ref{app:model-size-figure})
 
 % ---------------------------------------------------------------------------
-\subsection{Finding 5: 31.8\% of Questions Are Impossible at All Budgets}
-\label{sec:finding:impossible}
+\subsection{Finding 5: The Tax Generalizes Beyond Mathematics}
+\label{sec:finding:bbh}
 % ---------------------------------------------------------------------------
 
-To understand the efficiency ceiling of any budget-allocation scheme, we
-categorize GSM8K problems by the \emph{minimum} budget at which Qwen3-8B
-solves them correctly in thinking mode.
+A natural concern is whether the thinking tax is specific to mathematical
+reasoning.
+We test this on five BIG-Bench Hard (BBH)~\citep{suzgun2023challenging}
+subtasks spanning symbolic reasoning, causal inference, temporal reasoning,
+and object tracking ($n{=}1{,}187$ total, Qwen3-8B).
+None involve mathematical computation.
 
-\input{../results/paper_figures/table_efficiency_frontier}
-
-Table~\ref{tab:efficiency-frontier} and Figure~\ref{fig:difficulty-distribution}
-reveal a four-tier difficulty distribution:
-\begin{itemize}[nosep,leftmargin=*]
-  \item \textbf{Easy} (11.8\%, $n{=}155$): solved at $b{\leq}128$.
-    These require only a short chain.
-  \item \textbf{Medium} (25.8\%, $n{=}340$): solved at $b{\leq}256$
-    but not at 128.  A moderate reasoning chain suffices.
-  \item \textbf{Hard} (30.7\%, $n{=}405$): solved only at $b{=}512$.
-    These genuinely benefit from extended reasoning.
-  \item \textbf{Impossible} (31.8\%, $n{=}419$): unsolved at \emph{any}
-    tested budget ($b{\leq}512$).  Tokens spent on these problems
-    yield zero return.
-\end{itemize}
-
-The ``impossible'' category is surprisingly large: nearly a third of
-GSM8K is beyond the model's reach regardless of how much thinking budget
-is allocated (up to 512 tokens).
-An \emph{oracle router} that (i)~skips impossible questions entirely
-and (ii)~assigns the minimum sufficient budget to solvable questions
-achieves \textbf{68.2\%} accuracy ($+3.0$\,pp over fixed-512) while
-consuming only \textbf{401} average tokens---a \textbf{21.7\%}
-savings.\footnote{%
-  The oracle accuracy exceeds fixed-512 because it avoids cases where
-  extended reasoning causes the model to ``overthink'' and revise a
-  correct intermediate answer.}
-
-This analysis establishes both an opportunity and a ceiling for adaptive
-methods.
-The opportunity: a substantial fraction of compute is wasted on problems
-that are either trivially easy (and need few tokens) or genuinely
-impossible (and waste all tokens).
-The ceiling: no budget controller operating within the $b{\leq}512$
-regime can exceed 68.2\% accuracy on this benchmark, because 31.8\% of
-problems are fundamentally beyond the model's capability.
-
-\begin{figure}[t]
+\begin{table}[t]
 \centering
-\includegraphics[width=0.72\textwidth]{fig3_difficulty_distribution}
-\caption{%
-  \textbf{Four-tier difficulty distribution of GSM8K problems} under Qwen3-8B thinking mode.
-  Problems are categorized by the minimum budget at which they are solved correctly.
-  31.8\% of problems are impossible at all tested budgets---tokens spent on these yield zero return.
-  An ideal budget allocator would skip impossible questions and assign minimum budgets to the rest.
-}
-\label{fig:difficulty-distribution}
-\end{figure}
+\small
+\caption{\textbf{The thinking tax generalizes beyond mathematics.}
+BBH results ($n{=}1{,}187$, Qwen3-8B, 5 subtasks).
+The tax persists across non-mathematical reasoning tasks, with the
+crossover between budgets 1024--2048.
+Per-task crossovers vary from ${\sim}$512 (boolean expressions) to
+${>}$2048 (causal judgement), matching the theory's prediction that
+$b^*$ depends on chain-length distributions.}
+\label{tab:bbh-main}
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+& \multicolumn{4}{c}{\textbf{Budget}} \\
+\cmidrule(l){2-5}
+\textbf{Task / Aggregate} & \textbf{256} & \textbf{512} & \textbf{1024} & \textbf{2048} \\
+\midrule
+\textbf{All BBH} (nothink) & 49.9\% & 66.4\% & 75.1\% & 75.1\% \\
+\textbf{All BBH} (think) & 16.6\% & 45.8\% & 73.6\% & 86.0\% \\
+\textbf{Tax} & $+$33.3pp & $+$20.6pp & $+$1.4pp & $-$11.0pp \\
+\midrule
+\texttt{tracking\_shuffled} (tax) & $+$88.0pp & $+$36.8pp & $+$2.4pp & $-$4.4pp \\
+\texttt{causal\_judgement} (tax) & $+$25.7pp & $+$36.4pp & $+$17.1pp & $+$3.7pp \\
+\bottomrule
+\end{tabular}
+\vspace{-2mm}
+\end{table}
 
-\paragraph{Summary of findings.}
-Taken together, our five findings paint a coherent picture:
-\begin{enumerate}[nosep,leftmargin=*]
-  \item The thinking tax is real and large (\S\ref{sec:finding:tax}):
-    non-thinking mode dominates at all matched budgets.
-  \item Models already signal when thinking was successful
-    (\S\ref{sec:finding:natural-stop}): natural stop predicts 96.3\%
-    accuracy at zero cost.
-  \item High budgets are under-utilized (\S\ref{sec:finding:utilization}):
-    up to 60\% of allocated tokens go unused.
-  \item The tax worsens with scale (\S\ref{sec:finding:model-size}):
-    larger models need proportionally larger budgets.
-  \item A third of problems are impossible
-    (\S\ref{sec:finding:impossible}): no budget helps.
-\end{enumerate}
-The natural question is: can we design a system that \emph{thinks only
-when thinking actually helps}?
-This is precisely the goal of \textsc{Town}, introduced next.
+Table~\ref{tab:bbh-main} shows the aggregate and two extreme subtasks.
+At budget 256, nothink achieves 49.9\% vs.\ thinking's 16.6\%---a
++33.3\,pp tax, confirming the phenomenon is not math-specific.
+The per-task variation is striking:
+\texttt{tracking\_shuffled\_objects} exhibits an \textbf{88.0\,pp} tax at
+budget 256 (nothink 88.8\% vs.\ thinking 0.8\%), while
+\texttt{causal\_judgement} shows a persistent tax even at budget 2048
+(+3.7\,pp)---thinking has not reached parity at any tested budget.
+This variation in crossover budgets is exactly what our theory predicts
+(Proposition~\ref{prop:crossover}): $b^*$ is determined by the chain-length
+CDF, which varies with task complexity.
+Full per-task results are in Appendix~\ref{app:bbh}.
+
+% ---------------------------------------------------------------------------
+% Finding 6 (Impossible Questions) — moved to Appendix~\ref{app:impossible}
+% ---------------------------------------------------------------------------
+
+A difficulty decomposition (Appendix~\ref{app:impossible}) shows that
+31.8\% of GSM8K problems remain unsolved by thinking mode at budgets
+up to $b{=}512$, establishing a practical ceiling on thinking-mode
+accuracy in this regime and motivating the routing approach of
+\S\ref{sec:method}.
+
+\paragraph{Summary.}
+Our findings paint a coherent picture:
+(1)~non-thinking dominates at all matched budgets;
+(2)~natural stop predicts 99.0\% accuracy at zero cost;
+(3)~token utilization collapses at high budgets (Appendix~\ref{app:utilization});
+(4)~the tax worsens with model scale;
+(5)~the tax generalizes to non-mathematical reasoning (BBH); and
+(6)~31.8\% of problems are beyond reach at any budget (Appendix~\ref{app:impossible}).
+The natural question is: can we \emph{think only when thinking helps}?
+This is the goal of \method{}, introduced next.

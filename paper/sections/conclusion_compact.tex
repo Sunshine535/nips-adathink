@@ -1,0 +1,24 @@
+% conclusion_compact.tex — §7 Discussion and Conclusion (compact, merging discussion)
+
+\paragraph{Is the thinking tax obvious?}
+While truncation may seem unsurprising, three aspects are not: the \emph{magnitude} (69.5\,pp at budget 256; 41.8\,pp on MATH-500), the \emph{inverse scaling} (2.7--2.9$\times$ larger tax for bigger models), and the \emph{96.3\% PPV} of the natural-stop oracle.
+The mechanism is structural---any model that prefixes answers with a variable-length reasoning chain is susceptible---so while we scope our experiments to Qwen-family models, the underlying phenomenon should generalize to any thinking-mode LLM under budget constraints.
+The tax went unnoticed because benchmarks use generous budgets (4096--32768) while production operates at 256--1024 tokens~\citep{snell2024scaling}; our work bridges this gap.
+
+\paragraph{Summary.}
+\textbf{The central lesson is that the right question is not \emph{how long} to think, but \emph{whether} to think at all.}
+Below a task- and model-specific crossover budget (${\sim}$2048 on GSM8K; ${>}$2048 on MATH-500), thinking mode underperforms non-thinking by up to 69.5\,pp, with the tax worsening with model size.
+Our truncation-waste decomposition (Eqs.~\eqref{eq:acc-decomp}--\eqref{eq:crossover}) diagnoses thinking-mode accuracy from chain-length statistics---matching in-sample and predicting a held-out budget within 0.8--4.3\,pp error (\S\ref{sec:theory}).
+\method{} achieves \textbf{90.9\%} at 199 avg tokens (+25.7\,pp over think@512 at 2.3$\times$ fewer tokens), with Pareto improvement guarantees under a verifiable net-recovery condition.
+As models grow and chains lengthen, the crossover shifts further right (Corollary~\ref{cor:crossover-scaling} in the appendix), making adaptive routing between reasoning modes increasingly essential for frontier deployments.
+
+\paragraph{Limitations.}
+Our claims are scoped to \textbf{open reasoning models with explicit \texttt{<think>} mode under fixed output-token budgets and greedy decoding on structured reasoning tasks}, primarily validated on the Qwen family with auxiliary confirmation on DeepSeek-R1-Distill-Llama-8B.
+The tax may not apply to multi-hop retrieval, code generation, agentic workflows, closed-source models with internal budget management, settings with dynamic/unbounded budgets, or stochastic decoding regimes where best-of-$K$/self-consistency can amortize the truncation cost (though a pilot at $\tau{=}0.7$ confirms a 57\,pp tax persists for single samples; Appendix~\ref{app:sampling-robustness}).
+\method{}'s binary routing could be enhanced with soft confidence scores or multi-stage cascades; we leave this to future work.
+Full-scale evaluation on five BIG-Bench Hard subtasks ($n{=}1{,}187$; Appendix~\ref{app:bbh}) confirms the tax extends beyond mathematical reasoning, with a +33.3\,pp gap at budget 256 and crossover between 1024--2048; comprehensive validation on additional task families and model architectures remains open.
+
+\paragraph{Broader impact.}
+Our findings yield a concrete deployment heuristic: \textbf{for open reasoning models with an explicit think/nothink mode toggle under greedy decoding, if your output budget is below ${\sim}$2048 tokens, turn off thinking mode}---it will simultaneously improve accuracy \emph{and} reduce inference cost.
+For systems handling a mix of easy and hard queries \emph{within the budget-constrained regime}, \method{} provides a conditional, training-free cascade---effective when the probe budget suffices for easy inputs and the fallback budget exceeds the model-specific crossover.
+Both changes require zero model modification, can be deployed today, and have positive implications for inference latency and the environmental footprint of LLM serving at scale.

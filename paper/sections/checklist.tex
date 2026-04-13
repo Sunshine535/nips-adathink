@@ -5,29 +5,29 @@
 \item {\bf Claims}
     \begin{enumerate}
         \item Do the main claims made in the abstract and introduction accurately reflect the paper's contributions and scope?
-        \answerYes{All accuracy and token-cost claims are derived from reproducible experiments with fixed seeds (Appendix~\ref{app:reproducibility}). The thinking tax is demonstrated across two model scales (8B/27B) and two benchmarks (GSM8K/MATH-500). TOWN evaluation uses per-sample matched data (Table~\ref{tab:town-comparison}). Claims about generality are scoped to the validated models and benchmarks (\S\ref{sec:discussion}).}
+        \answerYes{All accuracy and token-cost claims are derived from reproducible experiments with fixed seeds (Appendix~\ref{app:reproducibility}). The coupling tax is demonstrated across three model sizes (8B, 9B, 27B) within the Qwen3 family, with auxiliary validation on DeepSeek-R1, and two benchmarks (GSM8K, MATH-500). \method{} evaluation uses per-sample matched data (Table~\ref{tab:main-results}). Claims about generality are scoped to the validated models and benchmarks (\S\ref{sec:conclusion}).}
     \end{enumerate}
 
 \item {\bf Limitations}
     \begin{enumerate}
         \item Does the paper discuss the limitations of the work performed by the authors?
-        \answerYes{The conclusion (\S\ref{sec:conclusion}) discusses limitations including the focus on mathematical reasoning benchmarks, the binary routing signal (vs.\ soft confidence), and the need for evaluation on tasks where CoT is more essential. The ``Generalization beyond GSM8K'' paragraph in \S\ref{sec:discussion} further discusses scope limitations.}
+        \answerYes{The conclusion (\S\ref{sec:conclusion}) discusses limitations including the focus on mathematical reasoning benchmarks, the binary routing signal (vs.\ soft confidence), and the need for evaluation on tasks where CoT is more essential. The discussion (\S\ref{sec:discussion}) further analyzes scope limitations, the format-vs-information tax distinction, and deployment criteria.}
     \end{enumerate}
 
 \item {\bf Theory}
     \begin{enumerate}
         \item Does the paper include theoretical results?
-        \answerNo{This is primarily an empirical contribution. The cost analysis in Eqs.~\eqref{eq:town-cost}--\eqref{eq:town-acc} provides formal decompositions but we do not prove theoretical guarantees.}
+        \answerYes{Section~\ref{sec:theory} presents an analytical framework. The truncation-waste decomposition (Eq.~\ref{eq:acc-decomp}) expresses thinking-mode accuracy as a function of the chain-length CDF and conditional accuracies; Theorem~\ref{thm:mrsd-pareto} shows \method{} achieves a Pareto improvement over fixed-mode strategies under a net recovery condition. The crossover budget formula (Eq.~\ref{eq:crossover}) and inverse-scaling analysis (Appendix~\ref{app:theory-full}) complete the framework. All derivations are in the main text and appendix.}
     \end{enumerate}
 
 \item {\bf Experiments}
     \begin{enumerate}
         \item Does the paper include experiments?
-        \answerYes{Sections~\ref{sec:thinking-tax} and \ref{sec:experiments} report comprehensive experiments across GSM8K (full set, $n{=}1{,}319$) and MATH-500, with two model families (Qwen3, DeepSeek-R1).}
+        \answerYes{Sections~\ref{sec:thinking-tax} and \ref{sec:experiments} report comprehensive experiments across GSM8K (full set, $n{=}1{,}319$) and MATH-500, with the Qwen3 family (primary) and auxiliary DeepSeek-R1 validation.}
         \item Does the paper report error bars or confidence intervals?
-        \answerNo{We report exact accuracy on fixed test sets with deterministic (greedy) decoding, so there is no sampling variance. Cross-seed validation for DeepSeek-R1 uses 5 data seeds (Appendix~\ref{app:deepseek}).}
+        \answerYes{We report 95\% bootstrap confidence intervals (10{,}000 resamples) for key comparisons in Table~\ref{tab:main-results} and the failure decomposition table. Since we use deterministic (greedy) decoding on fixed test sets, residual variance comes from cross-hardware floating-point nondeterminism rather than stochastic generation (Appendix~\ref{app:reproducibility}). Cross-seed validation for DeepSeek-R1 uses 5 data seeds (Appendix~\ref{app:deepseek}).}
         \item Does the paper report the number of parameters, FLOPs, or other computational cost?
-        \answerYes{Average token counts are reported in all tables. Model sizes (8B, 27B) are specified throughout.}
+        \answerYes{Average token counts are reported in all tables. Model sizes (8B, 9B, 27B) are specified throughout.}
         \item Does the paper report the computational cost of the experiments?
         \answerYes{Appendix~\ref{app:reproducibility} reports approximately 200 A100-GPU-hours total compute.}
     \end{enumerate}
@@ -43,15 +43,15 @@
 \item {\bf Open access to data and code}
     \begin{enumerate}
         \item Does the paper promise to release code and/or data?
-        \answerYes{We will release the complete codebase, per-sample result CSVs, and TOWN implementation scripts.}
+        \answerYes{We will release the complete codebase, per-sample result CSVs, and \method{} implementation scripts.}
     \end{enumerate}
 
 \item {\bf Experimental Setting/Details}
     \begin{enumerate}
         \item Does the paper specify the computing infrastructure used for running the experiments?
-        \answerYes{NVIDIA A100-80GB GPUs, PyTorch 2.10 (CUDA 12.8), HuggingFace Transformers (v4.44+), bfloat16 precision (Appendix~\ref{app:experimental_details}).}
+        \answerYes{NVIDIA A100-80GB GPUs, PyTorch 2.4.1 (CUDA 12.4), HuggingFace Transformers 5.5.0, bfloat16 precision (Appendix~\ref{app:experimental_details}).}
         \item Does the paper specify all the training and test details necessary to reproduce the results?
-        \answerYes{No training is performed---TOWN is a training-free inference method. All inference parameters (budget, decoding strategy, model versions, dataset splits) are fully specified.}
+        \answerYes{No training is performed---\method{} is a training-free inference method. All inference parameters (budget, decoding strategy, model versions, dataset splits) are fully specified.}
     \end{enumerate}
 
 \item {\bf Broader Impacts}
@@ -69,13 +69,13 @@
 \item {\bf Licenses}
     \begin{enumerate}
         \item Are the creators of assets used in the paper properly credited?
-        \answerYes{GSM8K~\citep{cobbe2021gsm8k}, MATH~\citep{hendrycks2021math}, Qwen3~\citep{qwen3_2025}, and DeepSeek-R1~\citep{deepseek2025r1} are properly cited. All models are publicly available under their respective licenses.}
+        \answerYes{GSM8K~\citep{cobbe2021gsm8k}, MATH~\citep{hendrycks2021math}, Qwen3~\citep{qwen3_2025}, and DeepSeek-R1~\citep{deepseekr1} are properly cited. All models are publicly available under their respective licenses.}
     \end{enumerate}
 
 \item {\bf New Assets}
     \begin{enumerate}
         \item Are new assets introduced in the paper well documented?
-        \answerYes{The TOWN inference scripts and per-sample result files will be released with documentation.}
+        \answerYes{The \method{} inference scripts and per-sample result files will be released with documentation.}
     \end{enumerate}
 
 \item {\bf Human Subjects}

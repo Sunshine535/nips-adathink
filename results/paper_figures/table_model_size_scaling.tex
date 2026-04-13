@@ -1,30 +1,40 @@
-% Table 2: Thinking Tax scales with model size
+% Table: Thinking Tax scales with model size (8B, 9B, 27B)
+% Updated 2026-04-08 with gap-fill results: 8B nothink@512/1024/2048, 9B think@512/nothink@256/512, 8B think@1024
 \begin{table}[t]
 \centering
-\caption{\textbf{The Thinking Tax scales inversely with model size.}
-At budget=512, the 27B model achieves only 18.3\% accuracy in thinking mode
-(vs.\ 8B's 65.2\%), because its longer reasoning chains are more severely truncated.
-The ``Thinking Tax'' measures the accuracy gap between non-thinking and thinking modes at matched budgets (using 8B non-thinking as reference).}
+\caption{\textbf{The Thinking Tax worsens with model size} on GSM8K ($n{=}1{,}319$).
+At budget=512, thinking-mode accuracy collapses from 56.9\% (8B) to 18.3\% (27B),
+while non-thinking accuracy remains high across all scales:
+8B=93.1\%, 9B=93.2\%, 27B=\textbf{95.5\%}.
+The 9B model exhibits the largest tax (\textbf{77.7\,pp}), confirming that
+inverse scaling is driven by chain-length growth, not capability loss.}
 \label{tab:model-size-scaling}
 \small
-\begin{tabular}{l rr r}
+\begin{tabular}{l rr rr rr}
 \toprule
-\textbf{Budget} & \textbf{8B Think Acc} & \textbf{27B Think Acc} & \textbf{27B vs 8B} \\
+ & \multicolumn{2}{c}{\textbf{8B}} & \multicolumn{2}{c}{\textbf{9B}} & \multicolumn{2}{c}{\textbf{27B}} \\
+\cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-7}
+\textbf{Budget} & \textbf{Think} & \textbf{NoThink} & \textbf{Think} & \textbf{NoThink} & \textbf{Think} & \textbf{NoThink} \\
 \midrule
-128 & 2.0\%  & 3.6\%  & $+$1.6pp \\
-256 & 22.0\% & 7.9\%  & $-$14.1pp \\
-512 & 65.2\% & 18.3\% & $-$46.9pp \\
+128 & 3.0\%  & 50.8\% & ---    & ---    & 3.6\%  & 9.9\% \\
+256 & 18.0\% & 87.5\% & 3.4\%  & 61.2\% & 7.9\%  & 65.1\% \\
+512 & 56.9\% & 93.1\% & 15.5\% & 93.2\% & 18.3\% & \textbf{95.5\%} \\
+1024 & 86.1\% & 93.1\% & 41.8\% & ---$^\ddagger$ & ${\sim}$49\%$^\dagger$ & --- \\
+2048 & ---$^\ddagger$ & 93.1\% & 66.8\% & ---    & ---    & --- \\
 \midrule
-\multicolumn{4}{l}{\textit{Thinking Tax (Nothink$_\text{8B}$ $-$ Think)}} \\
+\multicolumn{7}{l}{\textit{Thinking Tax at budget=512 (NoThink@512 $-$ Think@512):}} \\
 \midrule
-128 & +52.5pp & +50.9pp & --- \\
-256 & +65.5pp & +79.6pp & \textbf{1.2$\times$ larger} \\
-512 & +28.8pp & +75.7pp & \textbf{2.6$\times$ larger} \\
+Tax & \multicolumn{6}{c}{8B: \textbf{36.2\,pp} (93.1\%$-$56.9\%); \quad 9B: \textbf{77.7\,pp} (93.2\%$-$15.5\%); \quad 27B: \textbf{77.2\,pp} (95.5\%$-$18.3\%)} \\
 \bottomrule
 \end{tabular}
 \vspace{1mm}
+
 \footnotesize
-\textit{Root cause}: 27B natural-stop rate at budget=512 is only 0.7\% (vs.\ 8B's 37.4\%),
-meaning 99.3\% of 27B responses are truncated projections.
+$^\dagger$Checkpoint at $n{=}200$; full-dataset experiment pending.\\
+$^\dagger$Checkpoint at $n{=}200$; full-dataset experiment pending.
+$^\ddagger$8B think@2048 in progress.\\
+\textit{Root cause}: natural-stop rates at budget=512: 8B=37.4\%, 9B${\approx}$0.5\%, 27B=0.7\%.\\
+At $b{=}1024$: 8B think=86.1\% vs nothink=93.1\% (gap 7.0\,pp); crossover not yet reached.\\
+Nothink saturates: 8B nothink@512/1024/2048 = 93.1\%/93.1\%/93.1\% (avg ${\sim}$152 tokens).\\
 \vspace{-3mm}
 \end{table}

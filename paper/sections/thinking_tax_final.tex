@@ -25,17 +25,16 @@ When a response exceeds the budget, we apply projection---a simple extraction he
 
 \input{../results/paper_figures/table_thinking_tax_main}
 
-Table~\ref{tab:thinking-tax} presents the complete results.
+Table~\ref{tab:thinking-tax} presents the complete results on the full test set ($n{=}1{,}319$).
 At \textbf{every tested budget}, non-thinking mode achieves dramatically higher accuracy:
 
 \begin{itemize}[nosep,leftmargin=*]
-    \item \textbf{Budget 128}: nothink 54.5\% vs.\ think 2.0\% (+52.5pp)
-    \item \textbf{Budget 256}: nothink 89.0\% vs.\ think 22.0\% (+67.0pp)
-    \item \textbf{Budget 512}: nothink 94.0\% vs.\ think 66.5\% (+27.5pp)
+    \item \textbf{Budget 128}: nothink 50.8\% vs.\ think 3.0\% (+47.8\,pp)
+    \item \textbf{Budget 256}: nothink 87.5\% vs.\ think 18.0\% (+69.5\,pp)
 \end{itemize}
 
-On the full test set ($n$=1,319), \texttt{nothink@256} achieves \textbf{87.5\%} accuracy with only 146 avg tokens, compared to \texttt{think@512}'s 65.2\% at 460 avg tokens.
-The non-thinking mode is \textbf{4.2$\times$ more token-efficient} (accuracy per token consumed).
+The headline comparison: \texttt{nothink@256} achieves \textbf{87.5\%} accuracy with only 146 avg tokens, compared to \texttt{think@512}'s 65.2\% at 477 avg tokens---non-thinking is \textbf{22.3\,pp more accurate} while consuming \textbf{3.3$\times$ fewer tokens}.
+For the 27B model, the tax is even more dramatic: \texttt{nothink@512} = 95.5\% vs.\ \texttt{think@512} = 18.3\%, a \textbf{77.2\,pp} gap.
 
 \subsection{Finding 2: Early Stopping as Confidence Oracle}
 \label{sec:finding2}
@@ -44,8 +43,8 @@ The non-thinking mode is \textbf{4.2$\times$ more token-efficient} (accuracy per
 
 A key structural insight: \textbf{whether a model stops before exhausting its budget is a highly predictive signal of correctness} (Table~\ref{tab:natural-stop-oracle}).
 
-For non-thinking mode at budget 256, 88.8\% of samples stop early (using ~146 avg tokens), and these samples achieve 87.5\% accuracy.
-For thinking mode at budget 512, samples that stop early achieve a remarkable \textbf{93.8\%} accuracy.
+For non-thinking mode at budget 256, 88.8\% of samples (1{,}171/1{,}319) stop early (using ${\sim}$133 avg tokens), and these early-stopped samples achieve 94.4\% accuracy.
+For thinking mode at budget 512 (8B), samples that stop early achieve a remarkable \textbf{93.8\%} accuracy (among 37.4\% that complete naturally).
 This natural-stop signal is \emph{free}---it requires no auxiliary model, no additional computation, and no training.
 
 \subsection{Finding 3: Token Waste Scales with Budget}
@@ -54,11 +53,10 @@ This natural-stop signal is \emph{free}---it requires no auxiliary model, no add
 \input{../results/paper_figures/table_token_utilization}
 
 Token utilization---the fraction of the budget actually consumed---decreases systematically with budget (Table~\ref{tab:token-utilization}).
-For non-thinking mode:
+For non-thinking mode on the full test set ($n{=}1{,}319$):
 \begin{itemize}[nosep,leftmargin=*]
-    \item Budget 128: 86.7\% utilization (111/128 tokens)
-    \item Budget 256: 54.7\% utilization (140/256 tokens)
-    \item Budget 512: 28.3\% utilization (145/512 tokens)
+    \item Budget 128: 88.4\% utilization (113/128 tokens)
+    \item Budget 256: 57.0\% utilization (146/256 tokens)
 \end{itemize}
-This precipitous drop reveals that non-thinking answers are \emph{inherently compact}: the model needs ${\sim}$140 tokens regardless of the budget allocated.
+This drop reveals that non-thinking answers are \emph{inherently compact}: the model needs ${\sim}$146 tokens regardless of the budget allocated.
 The implication is that budgets beyond ${\sim}$256 provide diminishing returns for non-thinking mode on GSM8K.
