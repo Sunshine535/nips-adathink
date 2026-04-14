@@ -17,9 +17,10 @@ This paradigm, operationalized in systems like OpenAI o1~\citep{openai2024o1}, Q
 The implicit promise is simple: more thinking tokens, more accuracy.
 
 We show that this promise breaks down whenever the output-token budget falls \emph{below a task- and model-specific crossover}---and that this crossover is far higher than commonly assumed.
+The phenomenon requires two conditions: (i)~the model's reasoning chains typically exceed the budget, causing truncation waste; and (ii)~the model has an architecturally distinct non-thinking mode that can answer without generating a reasoning trace.
 
 \paragraph{The thinking tax.}
-Through systematic experiments on GSM8K and MATH-500 with three Qwen-family model sizes (8B, 9B, 27B), we uncover a striking phenomenon that we term the \emph{thinking tax}: \textbf{below the crossover budget, non-thinking mode outperforms thinking mode at every tested budget, often by a wide margin} (Figure~\ref{fig:nothink-vs-thinking}).
+Through systematic experiments on GSM8K and MATH-500 with three Qwen-family model sizes (8B, 9B, 27B)---all possessing native \texttt{<think>} mode with a distinct non-thinking alternative---we uncover a striking phenomenon that we term the \emph{thinking tax}: \textbf{below the crossover budget, non-thinking mode outperforms thinking mode at every tested budget, often by a wide margin} (Figure~\ref{fig:nothink-vs-thinking}).
 The crossover---where thinking finally matches non-thinking---has not been reached at budgets $\leq$512 on GSM8K; on MATH-500, it shifts even further right, beyond 2048 tokens.
 The headline result is stark: non-thinking mode with a 512-token budget achieves \textbf{93.1\%} accuracy using only 152 average tokens, while thinking mode with the \emph{same} budget reaches just \textbf{56.9\%}---requiring 477 average tokens.
 This is not a marginal difference: non-thinking is \textbf{36.2 percentage points more accurate} while consuming \textbf{3.1$\times$ fewer tokens}.
@@ -29,22 +30,23 @@ On the harder MATH-500 benchmark, the tax is even larger: non-thinking@1024 achi
 The root cause is \emph{truncation waste}: thinking mode generates verbose reasoning chains that are truncated before reaching the answer.
 While the mechanism may seem obvious in hindsight, three aspects of our findings are genuinely surprising.
 \textbf{First, the magnitude}: a 69.5\,pp gap at budget 256 on GSM8K (41.8\,pp on MATH-500 at budget 1024) far exceeds what format overhead alone would predict---our decomposition reveals that 98.6\% of thinking responses are truncated at $b{=}256$, meaning the tax scales with the \emph{entire truncation rate}, not merely a format constant.
-\textbf{Second, the inverse scaling}: within the Qwen family, larger models get \emph{worse} at thinking under the same budget (a $2.1\times$ tax amplification from 8B to 9B), with troubling implications for frontier model deployment.
+\textbf{Second, the tax amplification}: within the Qwen family, larger models get \emph{worse} at thinking under the same budget---the tax jumps from 36.2\,pp at 8B to ${\sim}$77\,pp at both 9B and 27B ($2.1\times$ amplification), consistent with longer reasoning chains that overflow the budget more severely.
 \textbf{Third, the oracle}: natural stopping---when the model finishes its reasoning chain before exhausting the budget---predicts 99.0\% accuracy at zero compute cost, a novel signal not predicted by the truncation narrative alone.
 At no tested budget ($\leq$512 on GSM8K, $\leq$2048 on MATH-500) has thinking mode reached parity with non-thinking, and on BIG-Bench Hard ($n{=}1{,}187$), the tax persists across non-mathematical tasks with task-specific crossovers.
 
-\paragraph{The thinking tax scales with model size.}
-The problem is not confined to small models---it gets \emph{worse} as models grow larger.
-Across three model sizes (8B, 9B, 27B), thinking-mode accuracy at budget 512 \emph{collapses dramatically}: 56.9\% (8B), 15.5\% (9B), 18.3\% (27B)---while non-thinking accuracy remains uniformly high: 93.1\% (8B), 93.2\% (9B), 95.5\% (27B).
-The resulting thinking tax is 36.2\,pp (8B), \textbf{77.7\,pp} (9B), and 77.2\,pp (27B)---a ${\sim}$2.1$\times$ amplification from 8B to 9B.
-The mechanism is straightforward: larger models generate longer, more elaborate reasoning chains.
-At budget 512, only \textbf{0.7\%} of 27B thinking traces produce a complete answer (vs.\ 37.4\% for 8B), meaning 99.3\% of responses are truncated projections that never reach a final answer.
+\paragraph{The thinking tax amplifies with chain length.}
+The problem is not confined to small models---within the Qwen family, it gets \emph{worse} as chains grow longer.
+Across three model sizes (8B, 9B, 27B), thinking-mode accuracy at budget 512 \emph{collapses}: 56.9\% (8B), 15.5\% (9B), 18.3\% (27B)---while non-thinking accuracy remains uniformly high: 93.1\% (8B), 93.2\% (9B), 95.5\% (27B).
+The resulting thinking tax is 36.2\,pp (8B), \textbf{77.7\,pp} (9B), and 77.2\,pp (27B)---a ${\sim}$2.1$\times$ amplification from 8B to 9B/27B.
+The mechanism is chain-length driven: larger models generate more elaborate reasoning chains.
+At budget 512, only \textbf{0.7\%} of 27B thinking traces produce a complete answer (vs.\ 37.4\% for 8B), meaning 99.3\% of responses are truncated and never reach a final answer.
 Critically, the inefficiency is specific to thinking mode's format, not model capability: the 27B model in \emph{non-thinking} mode achieves 95.5\% at budget 512---the highest accuracy of any configuration---while its thinking mode manages only 18.3\%.
-Within the Qwen family, this inverse scaling has troubling implications: as models grow and chains lengthen, the practical cost of thinking mode under realistic deployment budgets will only increase.
+Within the Qwen family, this amplification has troubling deployment implications: as models produce longer chains, the budget threshold for thinking to break even shifts further right.
 
-\paragraph{Natural stopping as a confidence oracle.}
-Among samples where the reasoning chain naturally terminates within budget, accuracy is \textbf{99.0\%} (8B, budget 512)---a free confidence signal requiring no logit access or calibration.
-Most samples never reach this point within practical budgets, suggesting a clean decomposition: easy problems (model finishes quickly, almost always correct) vs.\ hard problems (model cannot finish).
+\paragraph{Natural stopping as an operational routing signal.}
+Among samples where the reasoning chain naturally terminates within budget, accuracy is \textbf{99.0\%} (8B, budget 512).
+This is not a post-hoc observation: whether the model emits EOS before exhausting \texttt{max\_new\_tokens} is a binary signal available at generation time, requiring no logit access or calibration.
+\method{} uses this signal operationally in Stage~0 to route easy queries (natural stop $\Rightarrow$ accept immediately) vs.\ hard queries (budget exhausted $\Rightarrow$ escalate to decoupled answering).
 
 \paragraph{The coupling tax and split-budget generation.}
 The root cause of the thinking tax is architectural: reasoning and the final answer are \emph{coupled} in a single output stream, forcing them to compete for a shared token budget.
@@ -69,20 +71,21 @@ Our work makes four contributions:
 
 \begin{enumerate}[nosep,leftmargin=*]
     \item \textbf{The Coupling Tax} (\S\ref{sec:thinking-tax}).
-    We identify and quantify the \couplingtax{}: coupling reasoning and answering under a shared token budget causes accuracy to collapse via truncation waste.
+    We identify and quantify the \couplingtax{} in models with architecturally distinct thinking and non-thinking modes: coupling reasoning and answering under a shared token budget causes accuracy to collapse via truncation waste.
     Non-thinking mode outperforms thinking mode at every tested budget ($\leq$2048) on GSM8K and MATH-500, across three Qwen-family model sizes, with the tax amplifying on harder benchmarks and larger models.
-    The phenomenon extends beyond mathematics: on five BIG-Bench Hard subtasks ($n{=}1{,}187$, \S\ref{sec:finding:bbh}), the tax persists across task types---from +36.8\,pp on boolean expressions to +88.0\,pp on object tracking at budget 256---with task-dependent crossovers ranging from ${\sim}$512 to ${>}$2048, as predicted by our theory.
+    The phenomenon extends beyond mathematics: on five BIG-Bench Hard subtasks ($n{=}1{,}187$, \S\ref{sec:finding:bbh}), the tax persists across task types---from +36.8\,pp on boolean expressions to +88.0\,pp on object tracking at budget 256---with task-dependent crossovers ranging from ${\sim}$512 to ${>}$2048, as predicted by our decomposition.
+    Cross-architecture experiments on DeepSeek-R1-Distill-Llama-8B confirm that truncation waste is a structural property of coupled generation, while the end-to-end tax magnitude depends on availability of a genuinely distinct non-thinking mode (Appendix~\ref{app:deepseek}).
 
-    \item \textbf{Truncation-Waste Decomposition and Coupling Theory} (\S\ref{sec:theory}).
-    A formal decomposition expressing thinking-mode accuracy as $\alpha_c \cdot F_L(b) + \alpha_t \cdot (1 - F_L(b))$, yielding closed-form predictions for the crossover budget.
-    We formalize the coupling constraint $|Z|{+}|A|{\le}b$ as a rate limit and derive the \emph{recoverable coupling tax}---the exact accuracy gain achievable by decoupling reasoning from answering (Proposition~\ref{prop:recoverable-tax}).
-    Held-out prediction tests confirm the framework generalizes across budgets, benchmarks, and model architectures (DeepSeek-R1).
+    \item \textbf{Truncation-Waste Decomposition} (\S\ref{sec:theory}).
+    A predictive decomposition expressing thinking-mode accuracy as $\alpha_c \cdot F_L(b) + \alpha_t \cdot (1 - F_L(b))$, yielding closed-form predictions for the crossover budget.
+    We formalize the coupling constraint $|Z|{+}|A|{\le}b$ and derive the \emph{recoverable coupling tax}---the accuracy gain achievable by decoupling reasoning from answering (Proposition~\ref{prop:recoverable-tax}).
+    Held-out prediction tests confirm the framework generalizes across budgets and benchmarks.
 
-    \item \textbf{Inverse Scaling with Model Size (Within Qwen Family)} (\S\ref{sec:finding:model-size}).
+    \item \textbf{Tax Amplification with Chain Length (Within Qwen Family)} (\S\ref{sec:finding:model-size}).
     Within three Qwen-family checkpoints, the tax worsens sharply: 36.2\,pp at 8B vs.\ ${\sim}$77\,pp at both 9B and 27B (a $2.1\times$ amplification), consistent with stochastic dominance of chain-length distributions (Proposition~\ref{prop:inverse-scaling})---while non-thinking accuracy remains uniformly high (93.1\%--95.5\%).
 
     \item \textbf{Proof-of-Concept Mitigation via Split-Budget Generation} (\S\ref{sec:method}, \S\ref{sec:experiments}).
     We instantiate \method{} (\fullmethod{}), a training-free framework that decouples reasoning from answering.
     \method{} improves over nothink@$B_1$ on GSM8K (+5.0\,pp, $n{=}200$), where nothink accuracy has saturated.
-    On MATH-500, full-scale evaluation ($n{=}500$, same hardware) confirms that IRIS exceeds the nothink ceiling: IRIS@4096 achieves \textbf{74.0\%} \ci{70.0}{77.7}---surpassing nothink@1024 (59.8\%) by +14.2\,pp, with the CI lower bound well above 59.8\%.
+    On MATH-500, full-scale evaluation ($n{=}500$, same hardware) confirms that IRIS exceeds the nothink ceiling: IRIS@4096 achieves \textbf{74.0\%} \ci{70.0}{77.7}---surpassing nothink@1024 (59.8\%) by +14.2\,pp.
 \end{enumerate}

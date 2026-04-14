@@ -106,7 +106,8 @@ This replaces the coupled accuracy with:
 \end{equation}
 where $\alpha_{\mathrm{extract}}(B_r, B_a) \gg \alpha_t(B_r)$ is the
 accuracy of the decoupled answer pass on truncated chains.
-The gain over standard thinking is:
+The gain over coupled thinking at the same reasoning budget $B_r$
+(Proposition~\ref{prop:recoverable-tax}) is:
 \begin{equation}
   \label{eq:split-gain}
   \Delta \;=\; \bigl(1 - F_L(B_r)\bigr) \cdot
@@ -310,11 +311,11 @@ signal, achieving Stage~3 accuracy of 76.9\% on escalated samples
 vs.\ only 15.4\% for standard truncated thinking
 (pilot, $n{=}200$).
 
-\paragraph{Pareto dominance.}
-Both \town{} and \textsc{Mrsd} satisfy a Pareto-dominance property
-over fixed-mode baselines:
+\paragraph{Interpolation dominance.}
+Both \town{} and \textsc{Mrsd} strictly improve on at least one
+objective relative to each single-mode baseline:
 
-\begin{theorem}[\textsc{Mrsd} Pareto-dominance]
+\begin{theorem}[\textsc{Mrsd} interpolation dominance]
 \label{thm:mrsd-pareto}
 If the \emph{net recovery condition}
 \begin{equation}
@@ -326,14 +327,13 @@ accuracy than non-thinking alone) and the triage early-stop rate
 $p > 0$, then \textsc{Mrsd} achieves:
 \begin{enumerate}[nosep,leftmargin=*]
   \item Higher accuracy than \texttt{nothink@}$B_1$, and
-  \item Lower expected cost than \texttt{think@}$(B_1 + K(B_r + B_a))$,
+  \item Lower expected cost than \texttt{think@}$(B_1 + K(B_r + B_a))$.
 \end{enumerate}
-Pareto-dominating both single-mode baselines.
 On GSM8K (pilot, $n{=}200$), the condition is satisfied:
 $\alpha_{\mathrm{extract}}^{\mathrm{hard}} = 87.5\%$ (14/16 escalated
 queries rescued) vs.\ $\alpha_{\mathrm{nt}}^{\mathrm{hard}} \approx 0\%$.
 
-\textbf{Caveat:} this dominance is over \texttt{nothink@}$B_1$---the triage budget.
+\textbf{Caveat:} the accuracy dominance is over \texttt{nothink@}$B_1$---the triage budget.
 If nothink accuracy improves substantially when $B_1$ is doubled
 (as on MATH-500: 47.5\% $\to$ 59.8\% full-scale at $n{=}500$), it may be more efficient
 to increase the nothink budget than to deploy split-budget generation.
@@ -341,15 +341,20 @@ to increase the nothink budget than to deploy split-budget generation.
 \end{theorem}
 
 \begin{proof}
-For accuracy: the triage stage achieves at least
-$\mathrm{Acc}_{\mathrm{nt}}(B_1) \cdot p$ on easy queries.
-The escalation stage adds
-$(1-p) \cdot \alpha_{\mathrm{extract}}^{\mathrm{hard}} > 0$,
-so total accuracy exceeds $\mathrm{Acc}_{\mathrm{nt}}(B_1)$.
+For accuracy: decompose both methods by the triage event
+$\mathcal{S} = \{|y_0| < B_1\}$.
+Nothink accuracy: $\mathrm{Acc}_{\mathrm{nt}}(B_1) = p \cdot \alpha_c^{\mathrm{nt}}
++ (1-p) \cdot \alpha_{\mathrm{nt}}^{\mathrm{hard}}$.
+\textsc{Mrsd} accuracy:
+$\mathrm{Acc}_{\textsc{Mrsd}} = p \cdot \alpha_c^{\mathrm{nt}}
++ (1-p) \cdot \alpha_{\mathrm{extract}}^{\mathrm{hard}}$.
+Subtracting: $\mathrm{Acc}_{\textsc{Mrsd}} - \mathrm{Acc}_{\mathrm{nt}}(B_1)
+= (1-p)(\alpha_{\mathrm{extract}}^{\mathrm{hard}} - \alpha_{\mathrm{nt}}^{\mathrm{hard}}) > 0$
+by the net recovery condition (full proof in Appendix~\ref{app:town-proof}).
 For cost: the expected cost (Eq.~\ref{eq:mrsd-cost}) satisfies
 $\mathbb{E}[T] = p \bar{t}_1 + (1-p)(B_1 + \bar{K}(B_r + B_a))
-< B_1 + K(B_r + B_a)$ whenever $p > 0$, since the first term is
-strictly less than $B_1$ for $p > 0$.
+< B_1 + K(B_r + B_a)$ whenever $p > 0$, since $\bar{t}_1 < B_1$
+for early-stop queries.
 \end{proof}
 
 % ---------------------------------------------------------------------------

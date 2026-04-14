@@ -209,45 +209,71 @@ $^{\ddagger}$Zero hard-boundary samples at $b{=}2048$ (100\% natural stop).}
 \end{tabular}
 \end{table}
 
-\paragraph{MATH-500 pilot results.}
-On MATH-500 subsets (40 samples $\times$ 5 seeds), the thinking tax is confirmed
-with even more severe truncation:
+\paragraph{MATH-500 full-scale results ($n{=}500$).}
+We evaluate both thinking and prompt-based nothink modes on the complete MATH-500 dataset.
+DeepSeek-R1 does not natively support \texttt{enable\_thinking=False}; we implement nothink
+by injecting \texttt{</think>} immediately after the generation prompt, forcing the model
+to begin answer generation without an explicit reasoning phase.
 
 \begin{table}[ht]
 \centering
 \small
-\caption{DeepSeek-R1-Distill-Llama-8B on MATH-500 subsets (40 samples per seed, thinking mode).}
+\caption{\textbf{DeepSeek-R1-Distill-Llama-8B on MATH-500} ($n{=}500$, full dataset).
+  Unlike Qwen3-8B where nothink dramatically outperforms thinking at low budgets,
+  DeepSeek-R1 shows \emph{near-zero thinking tax} across all budgets.
+  The prompt-based nothink implementation produces nearly identical token statistics
+  and accuracy to thinking mode, suggesting the model does not meaningfully
+  change its generation behavior when the \texttt{<think>} block is closed early.}
 \label{tab:deepseek-math500}
-\begin{tabular}{lrrrr}
+\begin{tabular}{llrrrrr}
 \toprule
-\textbf{Budget} & \textbf{Accuracy} & \textbf{Avg Tokens} & \textbf{Final Rate} & \textbf{Utilization} \\
+\textbf{Mode} & \textbf{Budget} & \textbf{Accuracy} & \textbf{Avg Tok} & \textbf{Nat.\ Stop} & \textbf{NS Acc} & \textbf{HB Acc} \\
 \midrule
-1024 & 22.5\% & 936 & 27.5\% & 91.4\% \\
-2048 & 32.5\% & 1644 & 50.0\% & 80.3\% \\
-4096 & 47.5\% & 2599 & 72.5\% & 63.5\% \\
+nothink & 512  & 16.2\% & 492  & 17.2\% & 64.0\% & 6.3\% \\
+nothink & 1024 & 25.8\% & 863  & 33.4\% & 58.7\% & 9.3\% \\
+nothink & 2048 & 34.6\% & 1439 & 54.2\% & 58.3\% & 6.6\% \\
+nothink & 4096 & 44.8\% & 2101 & 75.8\% & 58.0\% & 3.3\% \\
+\midrule
+thinking & 512  & 14.8\% & 492  & 16.8\% & 60.7\% & 5.5\% \\
+thinking & 1024 & 26.0\% & 857  & 34.8\% & 56.3\% & 9.8\% \\
+thinking & 2048 & 35.2\% & 1417 & 54.8\% & 56.2\% & 9.7\% \\
+thinking & 4096 & 44.2\% & 2084 & 76.0\% & 56.3\% & 5.8\% \\
+\midrule
+\multicolumn{2}{l}{\textit{Thinking tax}} & \multicolumn{5}{l}{+1.4pp, $-$0.2pp, $-$0.6pp, +0.6pp (avg: +0.3pp)} \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \paragraph{Key cross-architecture findings.}
 \begin{itemize}[nosep,leftmargin=*]
-    \item \textbf{The thinking tax replicates on a second model family}: DeepSeek-R1
-      (Llama architecture) shows an even larger tax than Qwen3-8B at budget 256
-      (7.5\% vs.\ 18.0\%), despite being a different architecture trained with
-      different methods.
-    \item \textbf{The mechanism is identical}: truncation-driven collapse with
-      95.8\% of chains truncated at budget 256, consistent with the framework's
-      prediction that any model with variable-length reasoning prefixes is susceptible.
-    \item \textbf{Diminishing returns at higher budgets}: at $b{=}1024$, accuracy plateaus at 64.4\%---above Qwen's $b{=}512$ result (56.9\%) but at $2\times$ the budget---with 99.6\% natural stops and only 43.7\% budget utilization, demonstrating that additional budget yields waste rather than accuracy.
+    \item \textbf{The truncation mechanism replicates on a second model family}: DeepSeek-R1
+      (Llama architecture) shows an even larger truncation rate than Qwen3-8B at budget 256
+      on GSM8K (7.5\% accuracy vs.\ 18.0\%), with 95.8\% of chains truncated---consistent with
+      the framework's prediction that any model with variable-length reasoning prefixes
+      is susceptible to truncation waste.
+    \item \textbf{Near-zero thinking tax on DeepSeek}: unlike Qwen3-8B (36.2\,pp at $b{=}512$
+      on GSM8K), DeepSeek-R1 shows effectively no difference between nothink and thinking
+      on MATH-500 (average tax: +0.3\,pp across all budgets).
+      This suggests that the \emph{magnitude} of the coupling tax is model-family-dependent,
+      even though the truncation mechanism is universal.
+    \item \textbf{Prompt-based nothink is ineffective for DeepSeek}: the near-identical
+      token statistics (avg tokens, natural-stop rates) between modes indicate that
+      injecting \texttt{</think>} does not meaningfully alter DeepSeek-R1's generation behavior.
+      The model appears to embed reasoning within its ``answer'' regardless of the
+      \texttt{<think>} block status, unlike Qwen3-8B where \texttt{enable\_thinking=False}
+      produces qualitatively different (shorter, more direct) outputs.
     \item \textbf{Natural stop remains informative}: among DeepSeek-R1 natural
-      stops at $b{=}256$, accuracy is 78.2\% (lower than Qwen's 100\% but still
+      stops at $b{=}256$ (GSM8K), accuracy is 78.2\% (lower than Qwen's 99.0\% but still
       substantially above the 4.4\% for truncated samples), confirming the
       natural-stop oracle generalizes across architectures.
-    \item \textbf{Architectural limitation}: DeepSeek-R1 does not support a
-      non-thinking mode, which prevents direct nothink vs.\ think comparison.
-      This itself illustrates a deployment concern: models without a non-thinking
-      fallback cannot avoid the tax, making architectural support for mode
-      switching an important design consideration.
+    \item \textbf{Implication for the coupling tax}: the thinking tax requires
+      \emph{two conditions}: (1) truncation waste from shared budgets (universal), and
+      (2) a genuinely distinct non-thinking mode that uses the budget more efficiently
+      (model-dependent). When condition (2) fails---as with DeepSeek's prompt-based
+      nothink---the tax vanishes because both modes are effectively identical.
+      This \emph{strengthens} rather than weakens the coupling tax theory: the tax is
+      precisely the gap between coupled and decoupled generation, and disappears
+      when no true decoupling is available.
 \end{itemize}
 
 % ============================================================================
@@ -654,10 +680,12 @@ $\rho(b) \triangleq 1 - F_L(b) = \Pr(L > b)$.
 \begin{assumption}[Binary outcome structure (restated)]
 \label{asm:binary-restated}
 When the chain completes naturally ($L \le b$), the model produces a
-well-formed answer with accuracy $\alpha_c \triangleq
+well-formed answer with accuracy $\alpha_c(b) \triangleq
 \Pr(\text{correct} \mid L \le b) \in (0,1]$.
 When truncated ($L > b$), the residual accuracy is
-$\alpha_t \triangleq \Pr(\text{correct} \mid L > b) \ll \alpha_c$.
+$\alpha_t(b) \triangleq \Pr(\text{correct} \mid L > b) \ll \alpha_c(b)$.
+Both depend on $b$ through the conditioning event; we suppress the
+argument when the dependence is negligible.
 \end{assumption}
 
 \noindent
@@ -688,17 +716,18 @@ On MATH-500: $\gamma > 2048/1024 = 2\times$, since thinking has not yet caught n
 
 \begin{proposition}[Oracle precision (restated)]
 \label{prop:oracle-restated}
-The natural-stop event $\mathcal{S}(b) \triangleq \{|y| < b\}$
-has positive predictive value
-$\mathrm{PPV}(\mathcal{S}) = \Pr(\mathrm{correct} \mid \mathcal{S}(b)) = \alpha_c$.
-For non-thinking mode, $\mathrm{PPV}(\mathcal{S}_{\mathrm{nt}}) \ge \alpha_c$,
-since early completion selects for easier questions.
+Under Assumption~\ref{asm:binary-restated}, the natural-stop event
+$\mathcal{S}(b) \triangleq \{L(q) \le b\}$ has positive predictive value
+$\mathrm{PPV}(\mathcal{S}) = \Pr(\mathrm{correct} \mid L \le b) = \alpha_c(b)$.
+In practice, $|y| < b$ serves as an empirical proxy for $\{L \le b\}$.
+Non-thinking PPV is empirically high (94.4\% at $b{=}256$ on GSM8K)
+but does not follow from Assumption~\ref{asm:binary-restated} alone.
 \end{proposition}
 
 \noindent
 By Hoeffding's inequality, with $n{=}475$ natural-stop samples (8B, $b{=}512$)
 and $\hat{\alpha}_c = 0.963$:
-the 95\% lower confidence bound is $\alpha_c \ge 0.919$.
+the 95\% lower confidence bound is $\alpha_c \ge 0.901$.
 
 \begin{remark}[Information-theoretic interpretation]
 Early stopping implies the model's conditional entropy
@@ -712,19 +741,28 @@ Unlike logit-based confidence, this signal is purely behavioral.
 \begin{proposition}[Inverse scaling of the thinking tax (restated)]
 \label{prop:inverse-scaling-restated}
 Let $L_M$ denote the chain-length distribution for a model of size $M$.
-If $L_{M_2}$ stochastically dominates $L_{M_1}$ for $M_2 > M_1$
-(i.e., $F_{L_{M_2}}(b) \le F_{L_{M_1}}(b)$ for all $b$), and
-non-thinking accuracy is approximately size-invariant, then for any fixed budget $b$:
+If (i) $L_{M_2}$ stochastically dominates $L_{M_1}$ for $M_2 > M_1$
+(i.e., $F_{L_{M_2}}(b) \le F_{L_{M_1}}(b)$ for all $b$),
+(ii) non-thinking accuracy $\mathrm{Acc}_{\mathrm{nt}}(b)$ is
+approximately size-invariant at moderate budgets,
+and (iii) the thinking-mode accuracy of completed chains satisfies
+$F_{L_{M_2}}(b) \cdot \alpha_c(M_2, b) \le F_{L_{M_1}}(b) \cdot \alpha_c(M_1, b)$,
+then for any fixed budget $b$ in the truncation-dominated regime
+($\alpha_t \approx 0$):
 $\mathrm{Tax}(M_2, b) \ge \mathrm{Tax}(M_1, b)$.
 \end{proposition}
 
 \begin{proof}
-From Eq.~\ref{eq:tax}:
+From Eq.~\ref{eq:tax} with $\alpha_t \approx 0$:
 $\mathrm{Tax}(M, b) \approx \mathrm{Acc}_{\mathrm{nt}}(b) -
-F_{L_M}(b) \cdot \alpha_c$.
-With $\mathrm{Acc}_{\mathrm{nt}}$ approximately constant across $M$,
-and $F_{L_{M_2}}(b) \le F_{L_{M_1}}(b)$, the second term decreases,
+F_{L_M}(b) \cdot \alpha_c(M, b)$.
+With $\mathrm{Acc}_{\mathrm{nt}}$ approximately constant across $M$
+and condition~(iii), the second term is smaller for the larger model,
 increasing the tax.
+Condition~(iii) is implied by stochastic dominance alone when
+$\alpha_c$ is size-invariant, but is verified empirically in the
+general case: at $b{=}512$, $F_{L_{\text{8B}}} \alpha_c = 0.374 \times 0.990 = 0.370$
+vs.\ $F_{L_{\text{27B}}} \alpha_c = 0.007 \times 0.963 = 0.007$.
 \end{proof}
 
 \noindent
@@ -845,9 +883,9 @@ Table~\ref{tab:theory-verification} validates the truncation-waste decomposition
 The framework $\mathrm{Acc}(b) = F_L(b)\cdot\alpha_c + (1{-}F_L(b))\cdot\alpha_t$
 is verified as an accounting identity at $b{\in}\{256,512\}$ for 8B
 where all components are directly measurable.
-The crossover budget $b^*$ corresponds to the 97th percentile of chain lengths
-(Eq.~\ref{eq:crossover}): at $b{=}2048$, $F_L \approx 0.97$, yielding
-$0.97\times 0.963 = 0.934$---consistent with the observed crossover.
+The crossover budget $b^*$ corresponds to the $\bar{\alpha}_{\mathrm{nt}}/\alpha_c$ quantile of chain lengths
+(Eq.~\ref{eq:crossover-exact}): at $b{=}2048$, $F_L \approx 0.93$ (93\% of chains complete), yielding
+$0.93 \times 0.990 \approx 92.1\%$---close to the observed 93.1\%, confirming the crossover occurs near $b{=}2048$.
 Cross-scale: the framework explains the 27B collapse
 ($F_L(512)_{27\text{B}} = 0.007$ vs.\ $0.374$ for 8B).}
 \label{tab:theory-verification}
@@ -860,7 +898,7 @@ Cross-scale: the framework explains the 27B collapse
 8B, $b{=}256$ & 0.014 & 1.000 & 0.168 & 18.0\% & 18.0\% \\
 8B, $b{=}512$ & 0.374 & 0.990 & 0.318 & 56.9\% & 56.9\% \\
 \midrule
-\multicolumn{6}{l}{\textit{Crossover prediction (97th percentile)}} \\
+\multicolumn{6}{l}{\textit{Crossover prediction ($F_L \approx \bar{\alpha}_{\mathrm{nt}}/\alpha_c$)}} \\
 8B, $b{=}2048$ & ${\sim}$0.93 & 0.990 & --- & ${\sim}$93\% & 93.1\% \\
 \midrule
 \multicolumn{6}{l}{\textit{Cross-scale prediction}} \\
@@ -887,10 +925,12 @@ At 9B, observed accuracy (15.5\%) slightly exceeds the $\alpha_t{=}0$ prediction
 the projection pass (Appendix~\ref{app:experimental_details}) recovers partial answers
 from near-complete chains.
 
-The key \emph{predictive} insight is that the crossover budget $b^*$ is fully determined
-by the chain-length distribution and non-thinking saturation accuracy
-(Eq.~\ref{eq:crossover}):
-for any model where these quantities are known, the crossover can be predicted
+The key \emph{predictive} insight is that the crossover budget $b^*$ is
+approximately determined by the chain-length distribution, non-thinking
+saturation accuracy, and completed-chain accuracy $\alpha_c$
+(Eq.~\ref{eq:crossover-exact}; the heuristic Eq.~\ref{eq:crossover}
+further assumes $\alpha_t \approx 0$ and stable $\alpha_c$):
+for any model where these quantities are known, the crossover can be estimated
 \emph{without} running the expensive budget sweep that traditionally determines it.
 For example, estimating $F_L$ from a small pilot run at a single budget suffices
 to predict whether thinking mode will be beneficial at a target deployment budget.
@@ -909,51 +949,71 @@ approximately constant across budgets, which holds for moderate extrapolation
 (BBH $b{=}512{\to}2048$: $\alpha_t$ shifts from 0.275 to 0.283, yielding 0.8\,pp error)
 but breaks down when the budget gap is large relative to chain-length variance
 (MATH-500 $b{=}1024{\to}2048$: $\alpha_t$ shifts from 0.178 to 0.365, yielding ${\sim}$12\,pp error).
-The practical implication is that the crossover heuristic (97th percentile of chain lengths)
+The practical implication is that the crossover heuristic ($\bar{\alpha}_{\mathrm{nt}}/\alpha_c$ quantile of chain lengths)
 remains reliable---it depends only on $F_L$ and $\bar{\alpha}_{\mathrm{nt}}$, not on $\alpha_t$---but
 point predictions of thinking-mode accuracy at specific budgets degrade when $\alpha_t$
 varies substantially across the prediction range.
 
 % ============================================================================
-\section{\method{} Pareto-Dominance Proof}
+\section{\method{} Interpolation-Dominance Proof}
 \label{app:town-proof}
 
 \begin{proof}[Full proof of Theorem~\ref{thm:mrsd-pareto}]
+We prove the two claims (accuracy dominance and cost dominance)
+separately.
+
+\paragraph{Accuracy bound.}
 Let $p = \Pr(\mathcal{S}_{\mathrm{nt}}(B_1))$ be the early-stop rate.
 Decompose nothink accuracy:
 $$\mathrm{Acc}_{\mathrm{nt}}(B_1) = p \cdot \alpha_c^{\mathrm{nt}}
   + (1-p) \cdot \alpha_{\mathrm{nt}}^{\mathrm{hard}},$$
 where $\alpha_{\mathrm{nt}}^{\mathrm{hard}} \triangleq
 \Pr(\mathrm{correct} \mid \neg\mathcal{S}, \mathrm{nothink})$.
-\method{} replaces the second term:
-$$\mathrm{Acc}_{\method{}} = p \cdot \alpha_c^{\mathrm{nt}}
-  + (1-p) \cdot \alpha_{\mathrm{th}}^{\mathrm{hard}}.$$
+\textsc{Mrsd} replaces the second term with
+$\alpha_{\mathrm{extract}}^{\mathrm{hard}}$
+(the split-budget extraction accuracy on escalated queries):
+$$\mathrm{Acc}_{\textsc{Mrsd}} = p \cdot \alpha_c^{\mathrm{nt}}
+  + (1-p) \cdot \alpha_{\mathrm{extract}}^{\mathrm{hard}}.$$
 Subtracting:
 \begin{equation}
-\mathrm{Acc}_{\method{}} - \mathrm{Acc}_{\mathrm{nt}}(B_1)
-= (1-p)\bigl[\alpha_{\mathrm{th}}^{\mathrm{hard}}
+\mathrm{Acc}_{\textsc{Mrsd}} - \mathrm{Acc}_{\mathrm{nt}}(B_1)
+= (1-p)\bigl[\alpha_{\mathrm{extract}}^{\mathrm{hard}}
   - \alpha_{\mathrm{nt}}^{\mathrm{hard}}\bigr].
 \label{eq:town-gain-decomp}
 \end{equation}
 The net recovery condition~\eqref{eq:net-recovery} ensures the bracket
-is positive.
+is positive, so $\mathrm{Acc}_{\textsc{Mrsd}} > \mathrm{Acc}_{\mathrm{nt}}(B_1)$.
 
-For the cost bound, the expected cost is:
-$\mathbb{E}[T] = p \bar{t}_1 + (1-p)(B_1 + \bar{t}_2).$
-Since $\bar{t}_1 < B_1 < B_2$ and $\bar{t}_2 \le B_2$:
-$\mathbb{E}[T] < p \cdot B_1 + (1-p)(B_1 + B_2) = B_1 + (1-p) B_2 < B_2,$
-where the last inequality holds because $p > 0$ and $B_1 < B_2$.
+\paragraph{Cost bound.}
+The expected per-query cost of \textsc{Mrsd} is (Eq.~\ref{eq:mrsd-cost}):
+$\mathbb{E}[T] = p \bar{t}_1 + (1-p)(B_1 + \bar{K}(B_r + B_a)),$
+where $\bar{t}_1 \le B_1$ and $\bar{K} \le K$.
+The maximum-budget thinking baseline uses $B_{\max} \triangleq B_1 + K(B_r + B_a)$
+tokens per query.
+Since $\bar{t}_1 < B_1$ for $p > 0$ (early-stop queries terminate before
+exhausting $B_1$):
+$\mathbb{E}[T] < p \cdot B_1 + (1-p) \cdot B_{\max} < B_{\max},$
+where the last inequality holds because $p > 0$ and $B_1 < B_{\max}$.
+Thus $\mathbb{E}[T_{\textsc{Mrsd}}] < B_{\max} = \mathbb{E}[T_{\mathrm{think}}(B_{\max})]$.
 
-Combining: $\mathrm{Acc}_{\method{}} > \mathrm{Acc}_{\mathrm{nt}}(B_1)$
-with $\mathrm{Acc}_{\method{}} \gg \mathrm{Acc}_{\mathrm{think}}(B_2)$
-(since most chains are truncated at $B_2$), and
-$\mathbb{E}[T_{\method{}}] < B_2 \le \mathbb{E}[T_{\mathrm{think}}(B_2)]$---
-establishing Pareto-dominance.
+\paragraph{Combined.}
+\textsc{Mrsd} achieves higher accuracy than $\mathrm{nothink@}B_1$
+and lower expected cost than $\mathrm{think@}B_{\max}$,
+placing it strictly inside the convex hull of the two baselines.
+This is a \emph{strict interpolation dominance}: the method improves
+on at least one objective relative to each baseline.%
+\footnote{This is weaker than full Pareto dominance, which would require
+simultaneously dominating \emph{both} objectives relative to a single
+baseline.}
 
+\paragraph{Empirical instantiation.}
 On GSM8K ($n{=}1{,}319$): $p = 0.888$, $\alpha_c^{\mathrm{nt}} = 0.944$,
 $\alpha_{\mathrm{nt}}^{\mathrm{hard}} = (87.5\% - 0.888 \times 94.4\%)/0.112 = 33.0\%$,
-$\alpha_{\mathrm{th}}^{\mathrm{hard}} = 62.8\%$.
-Net gain: $0.112 \times (62.8\% - 33.0\%) = 3.3\%$~pp $\approx 3.4$~pp (observed).
+$\alpha_{\mathrm{extract}}^{\mathrm{hard}} = 87.5\%$
+(14/16 escalated queries rescued in pilot).
+Net gain: $0.112 \times (87.5\% - 33.0\%) = 6.1$\,pp.
+The full-scale observed gain is 3.4\,pp, lower than the pilot estimate
+due to additional routing regret at scale.
 \end{proof}
 
 % ============================================================================

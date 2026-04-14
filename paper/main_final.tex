@@ -62,7 +62,7 @@
 \graphicspath{{../results/paper_figures/}}
 
 % ---------- Title ----------
-\title{The Coupling Tax: How Shared Token Budgets Waste Chain-of-Thought Reasoning}
+\title{The Coupling Tax: How Shared Token Budgets Undermine Visible Chain-of-Thought Under Fixed Output Limits}
 
 \author{
   Anonymous Author(s)
@@ -77,15 +77,14 @@
 % ============================================================================
 \begin{abstract}
 Chain-of-thought (CoT) reasoning is widely believed to improve LLM accuracy by allowing models to ``think longer.''
-We identify a fundamental architectural inefficiency in this paradigm: coupling the reasoning trace and final answer in a single output stream forces them to compete for a shared token budget---what we call the \couplingtax{}.
-When reasoning chains complete naturally, thinking mode achieves near-perfect accuracy ($\alpha_c \approx 98\%$); the real failure mode is truncation, not reasoning quality.
+We identify a fundamental inefficiency we call the \couplingtax{}: when reasoning traces and final answers share a single output-token budget, they compete for capacity, and truncation---not reasoning quality---becomes the dominant failure mode.
+The tax requires two conditions: (i)~the reasoning chain typically exceeds the budget, causing truncation waste, and (ii)~the model possesses a distinct non-thinking mode that can answer without generating a reasoning chain.
 Through systematic experiments on GSM8K ($n{=}1{,}319$), MATH-500 ($n{=}500$), and five BIG-Bench Hard tasks ($n{=}1{,}187$) with Qwen3 models at three scales (8B, 9B, 27B) under fixed output-token budgets, we show that non-thinking mode outperforms thinking mode at every budget $\leq$2048, with gaps exceeding 40 percentage points on harder benchmarks.
-We develop a truncation-waste decomposition---$\mathrm{Acc}_{\mathrm{think}}(b) = \alpha_c \cdot F_L(b) + \alpha_t \cdot (1-F_L(b))$---that predicts the crossover budget from chain-length statistics alone and explains the inverse scaling with model size ($2.1\times$ amplification from 8B to 9B/27B, associated with longer reasoning chains that overflow the budget more severely).
-As an exploratory probe, we test whether the tax can be mitigated via \splitbudget{}---allocating separate token budgets for reasoning and answering.
-A pilot ($n{=}200$) shows gains on GSM8K (+5.0\,pp, where nothink accuracy has saturated).
-On MATH-500, \emph{decoupled answer generation}---the core mechanism---recovers +25.4\,pp over standard thinking on hard samples.
-Full-scale evaluation ($n{=}500$, same hardware as baselines) confirms the gains definitively: split-budget generation at $B_{\text{think}}{=}4096$ achieves 74.0\% [70.0, 77.7]---exceeding nothink@1024 (59.8\%) by +14.2\,pp with the 95\% CI lower bound well above 59.8\%.
-We scope these findings to Qwen-family open reasoning models with explicit think mode under fixed output-token budgets on structured reasoning tasks.
+We develop a truncation-waste decomposition---$\mathrm{Acc}_{\mathrm{think}}(b) = \alpha_c \cdot F_L(b) + \alpha_t \cdot (1-F_L(b))$---that predicts the crossover budget from chain-length statistics alone and explains the inverse scaling with model size within the Qwen family ($2.1\times$ amplification from 8B to 9B/27B, associated with longer reasoning chains).
+Cross-architecture experiments on DeepSeek-R1-Distill-Llama-8B confirm that truncation waste is universal, but the end-to-end tax depends on availability of an efficient alternative mode---DeepSeek's prompt-based nothink produces near-zero tax because it does not change the model's generation behavior.
+As a proof-of-concept mitigation, we test \splitbudget{}---allocating separate budgets for reasoning and answering.
+Full-scale evaluation ($n{=}500$, same hardware as baselines) confirms gains: split-budget generation at $B_{\text{think}}{=}4096$ achieves 74.0\% [70.0, 77.7]---exceeding nothink@1024 (59.8\%) by +14.2\,pp.
+We scope these findings to models with architecturally distinct thinking and non-thinking modes under fixed output-token budgets on structured reasoning tasks.
 \end{abstract}
 
 % ============================================================================

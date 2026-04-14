@@ -115,14 +115,25 @@ bash collect_results.sh
 - 8B think@1024/2048 (HF engine)
 - 9B nothink@256/512/1024
 
-## Remote server
+## Remote servers
 
-- SSH: `ssh -p 11839 -i ~/.ssh/kun_ed25519 root@216.81.151.3`,`ssh root@216.81.245.127 -p 15276 -i ~/.ssh/kun_ed25519`
-- GPU: 1 × A100 x 2
+### Server 1: A100 (2×A100-SXM4-80GB)
+- SSH: `ssh root@216.81.248.128 -p 11323 -i ~/.ssh/kun_ed25519`
 - Code dir: `/workspace/nips-adathink/`
 - Results: `/workspace/nips-adathink/results/`（含 deepseek/, fulltest/, fulltest_27b/）
+
+### Server 2: A100 (1×A100-80GB)
+- SSH: `ssh root@216.81.245.125 -p 13857 -i ~/.ssh/kun_ed25519`
+- Code dir: `/workspace/nips-adathink/`
+- Note: no screen, use nohup
+
+### Server 3: H800 (2×H800-80GB)
+- SSH: `sshpass -p '123456' ssh -p 30022 -o StrictHostKeyChecking=no 'wujn@root@ssh-439.default@222.223.106.147'`
+- Code dir: `/workspace/nips-adathink/`
+
+### Common
 - Activate: `source .venv/bin/activate`
-- Background: `screen -dmS adathink bash -c '...'`
+- Background: `screen -dmS adathink bash -c '...'` (or nohup on Server 2)
 - HF mirror: `export HF_ENDPOINT=https://hf-mirror.com`
 
 ### 本地已同步结果

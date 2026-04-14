@@ -1108,3 +1108,275 @@ Relative to Round 2, the paper has improved materially. If Round 2 was 8.5/10 on
 ## Method Description
 
 The paper presents: (1) **The Coupling Tax** — empirical diagnosis of truncation waste under shared token budgets; (2) **MRSD** — proof-of-concept split-budget mitigation (Stage 0: triage, Stage 1: thinking, Stage 2: decoupled answer extraction, with iterative refinement).
+
+---
+
+# FRESH AUTO-REVIEW SESSION: Post-DeepSeek Integration
+
+**Protocol**: Standard Codex MCP, xhigh reasoning
+**Difficulty**: medium (per user instruction)
+**Started**: 2026-04-14
+**Context**: DeepSeek MATH-500 full-scale (n=500) nothink+thinking integrated; proof-checker completed (PASS); all experiments done except GSM8K DeepSeek nothink (A100 newly available).
+
+---
+
+## Round 1 (2026-04-14)
+
+### Assessment (Summary)
+- **Score: 5/10** (weak reject / borderline reject)
+- **Verdict: Not Ready**
+- Key criticisms (ranked):
+  1. **W1**: Core causal comparison confounded — think vs nothink are different policies, not just budget coupling difference
+  2. **W2**: Claim scope too broad for evidence — mostly Qwen + partial DeepSeek
+  3. **W3**: DeepSeek near-zero tax undermines universality headline
+  4. **W4**: Theory is conditioning identity, not deep contribution
+  5. **W5**: Natural-stop oracle is post-hoc, not operationally zero-cost
+  6. **W6**: 10pp cross-hardware variance destabilizes conclusions
+  7. **W7**: Model-size scaling claim wording incorrect
+  8. **W8**: Baselines too weak — no real SC@k, no concise-CoT, no verifier
+  9. **W9**: Benchmark coverage narrow and dated for 2026
+
+### Reviewer Raw Response
+
+<details>
+<summary>Click to expand full reviewer response</summary>
+
+**Score**: 5/10 (weak reject / borderline reject).
+
+Based on the summary, there is a real and interesting empirical phenomenon here: on some models, visible reasoning under a shared output cap can destroy accuracy, and split-budget decoding can recover part of that loss. But the paper is oversold. The evidence supports a narrower claim about budgeted decoding in specific model families, not a general statement about chain-of-thought reasoning.
+
+**Critical Weaknesses**
+
+1. **The core causal comparison is confounded.** think vs nothink is not "same policy, only budget coupling changed"; it is two different modes/policies. IRIS@2048 vs nothink@1024 is also not matched on total generated tokens or latency. The fact that removing the 32-token projection pass collapses think@512 to <6% suggests a large fraction of the effect is final-answer serialization failure, not necessarily inferior reasoning.
+Minimum fix: report matched-total-cost and matched-latency curves; count the projection pass explicitly; add ablations where only budget allocation changes while the underlying policy is held fixed.
+
+2. **The claim scope is too broad for the evidence.** Most evidence is Qwen-family plus one partial DeepSeek probe. GSM8K/BBH/MATH-500 are not enough to justify a title that sounds universal. The 27B failure also means the mitigation is not yet shown where practical interest is highest.
+Minimum fix: either narrow the title and claims to models with explicit visible-thinking and distinct no-think modes, or add several non-Qwen architectures with validated controls.
+
+3. **DeepSeek weakens the headline more than it strengthens it.** The DeepSeek result shows the end-to-end phenomenon is architecture-dependent, so the paper should not be framed as a universal property of shared token budgets.
+Minimum fix: rewrite narrative around necessary conditions, not universality, and validate on at least one additional non-Qwen family.
+
+4. **The theory contribution is weaker than advertised.** Acc_think(b) = F_L(b)·α_c + (1-F_L(b))·α_t is basically a clean conditioning identity. Formal proof-checking does not turn an accounting decomposition into a deep theory.
+Minimum fix: either downscope theory to "predictive decomposition" or extend into a nontrivial decision-theoretic result.
+
+5. **The "natural-stop oracle" is not obviously zero-cost or deployable.** Knowing after a run that it stopped naturally is post-hoc analysis, not a free pre-routing signal.
+Minimum fix: implement an actual online policy using prefix-time signals or early-stop diagnostics.
+
+6. **Reproducibility concern: ~10pp cross-hardware variance.** Large enough to destabilize several headline conclusions.
+Minimum fix: rerun all main tables with multiple seeds and both hardware types.
+
+7. **Model-size scaling claim confusing/mislabeled.** Numbers don't cleanly support "tax scales inversely with model size" — more of a verbosity-driven effect.
+Minimum fix: normalize budgets by each model's uncapped length distribution.
+
+8. **Baseline set too weak.** Analytical SC estimates are not real runs. Missing: concise-CoT, answer-first formatting, early answer extraction, dynamic budgets, reranking/verifier baselines.
+Minimum fix: run real matched-cost baselines.
+
+9. **Benchmark coverage too narrow and dated for 2026.** GSM8K and BBH are not sufficient for a "reasoning" paper.
+Minimum fix: add stronger modern benchmarks.
+
+**Ready?** No.
+
+**Best-paper path:** Show effect + fix across multiple model families under matched total cost; turn decomposition into real optimal routing theory; demonstrate on 2026-era benchmarks; cleanly isolate "visible-reasoning under shared budgets" vs general CoT critique.
+
+</details>
+
+### Actions Taken (Phase C)
+
+1. **W2/W3 (Claim scope + necessary conditions)**:
+   - Title: "How Shared Token Budgets Undermine Visible Chain-of-Thought Under Fixed Output Limits" (narrowed from "Waste Chain-of-Thought Reasoning")
+   - Abstract: Added two necessary conditions framing (truncation waste + distinct nothink mode). Added DeepSeek cross-architecture result showing truncation waste is universal but tax magnitude is architecture-dependent. Scoped to "models with architecturally distinct thinking and non-thinking modes."
+   - Introduction: Added "two conditions" paragraph after premise. Qualified Qwen-family experiments as having "native think mode with a distinct non-thinking alternative." Updated contributions: Contribution #1 now mentions cross-architecture DeepSeek evidence. Contribution #2 retitled to "Truncation-Waste Decomposition" (dropped "Coupling Theory").
+   - Discussion: Rewrote "Generalization and limitations" → "Generalization and necessary conditions" with explicit two-condition framework. Removed DeepSeek-specific exclusion language (now integrated as positive evidence for condition (i)).
+   - Conclusion: Updated opening to reflect two necessary conditions. Scoped to "models with distinct thinking and non-thinking modes."
+
+2. **W4 (Theory positioning)**:
+   - Theory section already self-describes as "accounting framework" (unchanged). Contribution #2 now "Truncation-Waste Decomposition" (dropped "Coupling Theory"). Conclusion changed "theoretical framework" → "decomposition."
+
+3. **W5 (Natural-stop oracle)**:
+   - Introduction: "free confidence signal requiring no logit access" → "operational routing signal... whether the model emits EOS before exhausting max_new_tokens is a binary signal available at generation time." Added sentence showing IRIS uses it operationally in Stage 0.
+   - Conclusion: "free confidence oracle" → "operational routing criterion."
+
+4. **W7 (Model-size scaling wording)**:
+   - Replaced "inverse scaling" with "tax amplification" throughout (introduction, contributions, discussion, conclusion).
+   - Changed "scales inversely with model size" → "jumps from 36.2pp at 8B to ~77pp at both 9B and 27B" (matches actual data pattern).
+   - Introduction paragraph renamed "The thinking tax scales with model size" → "The thinking tax amplifies with chain length."
+   - Contribution #3: "Inverse Scaling with Model Size" → "Tax Amplification with Chain Length."
+
+5. **W1/W8 (Experiments — in progress)**:
+   - DeepSeek GSM8K full-scale (n=1319, nothink+thinking, budgets 512/1024/2048) launched on A100 server
+   - ETA: ~6-8 hours for full run
+
+6. **LaTeX compilation**: Zero errors after all changes.
+
+### Status
+- Continuing to Round 2
+- DeepSeek GSM8K experiment running on A100
+
+---
+
+## Round 2 (2026-04-14)
+
+### Assessment (Summary)
+- **Score: 6/10** (up from 5/10)
+- **Verdict: Almost**
+- Key criticisms (ranked):
+  1. **W1'**: Core fairness — think vs nothink are different policies, not pure budget intervention
+  2. **W2'**: Robustness — 10pp cross-hardware variance, no multi-seed reruns
+  3. **W3'**: Baselines too weak — analytical SC@k, no concise-CoT or extraction prompting
+  4. **W4'**: Cross-architecture thin — only one non-Qwen family
+  5. **W5'**: Benchmark breadth narrow for NeurIPS
+  6. **W6'**: Natural-stop needs end-to-end routing analysis, not just descriptive stats
+
+### Reviewer Raw Response
+
+<details>
+<summary>Click to expand full reviewer response</summary>
+
+Score: 6/10. Verdict: Almost.
+
+Materially better than Round 1. The paper is now much more honest about what it has shown. DeepSeek is no longer a liability — it supports the revised claim that truncation waste is structural while the large end-to-end tax requires a genuinely distinct short-answer mode.
+
+Key remaining issues:
+1. Core fairness: comparison is still between two different generation modes, not a pure budget-allocation intervention. Need matched-cost ablation where only allocation changes.
+2. Robustness: 10pp cross-hardware variance. Need multi-seed reruns (even 3 seeds on headline comparisons).
+3. Baselines: scoping to greedy is reasonable but still needs real inference-time baselines — concise-answer prompting, answer-first/extraction prompting, simple dynamic budget heuristics.
+4. Cross-architecture: one non-Qwen family is enough to rescue narrative, not enough to feel broadly established.
+5. Benchmark breadth: GSM8K + BBH + MATH-500 is acceptable but not strong for NeurIPS main-track.
+6. Natural-stop: wording improved but need end-to-end routing analysis with actual compute/accuracy tradeoff.
+
+Bottom line: revision fixed biggest rhetorical problems. What still blocks clear accept is evidence quality around central causal claim.
+
+</details>
+
+### Actions Taken (Phase C)
+
+1. **W1' (Causal isolation)**:
+   - Added new paragraph "Causal isolation: IRIS as a matched-policy ablation" in experiments section. Key argument: IRIS and TOWN use the same thinking policy on the same escalated samples; only budget allocation differs. IRIS recovers +25.4pp over TOWN (McNemar p < 10^-6), isolating budget coupling as the causal mechanism.
+   - Added new discussion objection: "Think vs nothink compares two different policies" — response points to IRIS-vs-TOWN as matched-policy ablation.
+
+2. **W6' (Natural-stop routing analysis)**:
+   - Added "End-to-end routing analysis" paragraph in experiments section showing concrete compute/accuracy tradeoff across IRIS stages (full-scale n=500):
+     - Stage 0: 216/500 resolved at 91.7%, 138 avg tokens
+     - Stage 1 (think, natural stop): +127 at 71.7% (B_think=4096)
+     - Stage 2 (truncated + extraction): 157 remaining at 51.0%
+   - Explicitly notes each routing decision is made at generation time via EOS detection, not post-hoc.
+
+3. **W3' (Baselines)**:
+   - Scoping to greedy decoding already justified in paper. Concise-CoT and extraction prompting would require new experiments (GPU).
+
+4. **W2' (Multi-seed)**: Deferred — requires GPU time.
+5. **W4' (Cross-architecture)**: DeepSeek GSM8K running on A100, ~28/1319 nothink samples done.
+6. **W5' (Benchmark breadth)**: BBH already in main text. Further benchmarks require GPU.
+
+### Status
+- Continuing to Round 3
+- DeepSeek GSM8K experiment still running on A100 (~2% complete)
+
+---
+
+## Round 3 (2026-04-14)
+
+### Assessment (Summary)
+- **Score: 7/10** (up from 6/10)
+- **Verdict: Almost — borderline accept**
+- Key criticisms (ranked):
+  1. **W1''**: Reproducibility — 10pp cross-hardware variance, need 3 seeds
+  2. **W2''**: Mitigation not fully cost-normalized (extra answer tokens concern)
+  3. **W3''**: Baselines thin — need concise-CoT + extraction prompting
+  4. **W4''**: Cross-architecture narrow — DeepSeek GSM8K in progress
+  5. **W5''**: Benchmark breadth acceptable but not outstanding
+
+### Reviewer Raw Response
+
+<details>
+<summary>Click to expand full reviewer response</summary>
+
+Score: 7/10. Verdict: Almost — now borderline accept.
+
+The strongest change is the IRIS vs TOWN matched-policy ablation. That result finally makes the causal story defensible: on the same escalated subset, with the same model and same thinking policy, decoupling answer budget from reasoning budget produces a large gain. The routing analysis also fixes the "post-hoc oracle" concern.
+
+What still blocks clear accept: robustness and fairness — the paper needs better cost-normalized comparisons and at least minimal evidence that results are stable across runs/hardware.
+
+Key remaining issues:
+1. Reproducibility: ~10pp cross-hardware/run spread too large for NeurIPS empirical paper. Need 3 seeds on headline settings.
+2. Cost normalization: IRIS appears to win partly by granting extra answer tokens. Need matched-total-token frontier.
+3. Baselines: Need at least two cheap decoding-only baselines (concise-CoT, extraction prompting).
+4. Cross-architecture: DeepSeek GSM8K in progress. Finish and make it a main result.
+5. Benchmark breadth: GSM8K + BBH + MATH-500 enough for mechanism paper but narrow for 2026.
+
+</details>
+
+### Actions Taken (Phase C)
+
+1. **W2'' (Cost normalization)**:
+   - Added "Token-budget accounting" paragraph showing IRIS uses FEWER total tokens than TOWN (1573 vs 1590 at B2048, 2401 vs 2565 at B4096) while achieving higher accuracy.
+   - Key point: the answer-extraction pass consumes <11% of total tokens; IRIS's mechanism is efficiency, not volume.
+
+2. **W5'' (Benchmark framing)**:
+   - Added explicit positioning: "This is a controlled study of structured reasoning under fixed output-token budgets, not a broad critique of chain-of-thought reasoning" to limitations paragraph.
+
+3. **W1'' (Multi-seed)**: Deferred — requires GPU time
+4. **W3'' (Baselines)**: Deferred — requires GPU experiments
+5. **W4'' (Cross-architecture)**: DeepSeek GSM8K still running on A100
+
+### Status
+- Continuing to Round 4 (final)
+
+---
+
+## Round 4 — FINAL (2026-04-14)
+
+### Assessment (Summary)
+- **Score: 7/10** (stable)
+- **Verdict: Ready — weak accept / borderline accept**
+- Reviewer: "I would not reject on substance. This is a promising, well-corrected empirical paper with one strong causal ablation and a useful mitigation."
+
+### Reviewer Raw Response
+
+<details>
+<summary>Click to expand full reviewer response</summary>
+
+Score: 7/10. Verdict: Ready, but still vulnerable in review.
+
+The paper is now coherent and technically defensible. The key change is the IRIS vs TOWN matched-policy ablation plus token accounting — a credible causal story: same model, same escalated subset, same thinking policy, different budget coupling, large accuracy gap, no total-token advantage for IRIS.
+
+Four ingredients a reviewer wants: clear phenomenon, clean mechanism, mitigation that works, claim scope matching evidence.
+
+Remaining vulnerabilities (not fatal):
+1. Robustness: ~10pp hardware effect (mitigated by same-hardware clarification)
+2. Baselines: thinner than ideal but no longer fatal
+3. Cross-architecture: suggestive not complete (DeepSeek GSM8K in progress)
+4. Benchmark breadth: adequate for controlled mechanism paper
+5. Theory: appropriately scoped, not major contribution
+
+Bottom line: serious consideration, reviewer disagreement on robustness not core idea.
+
+</details>
+
+### Score Progression
+
+| Round | Score | Verdict | Key Fix |
+|-------|-------|---------|---------|
+| 1 | 5.0 | Not Ready | Initial — 9 weaknesses |
+| 2 | 6.0 | Almost | Scope narrowed, necessary conditions, theory positioned |
+| 3 | 7.0 | Almost (borderline accept) | Causal ablation, routing analysis |
+| 4 | **7.0** | **Ready** | Token accounting, benchmark positioning |
+
+### Final Summary
+
+**STOP CONDITION MET**: Score 7/10 >= 6, verdict "Ready"
+
+The paper was elevated from 5/10 (oversold, broad claims, weak theory) to 7/10 (defensible mechanism paper) through:
+1. Two necessary conditions framing (truncation waste + distinct nothink mode)
+2. IRIS vs TOWN matched-policy causal ablation (+25.4pp, same policy/samples)
+3. End-to-end routing analysis with operational natural-stop signal
+4. Token-budget accounting (IRIS uses fewer tokens than TOWN)
+5. "Tax amplification" replacing misleading "inverse scaling" language
+6. Theory positioned as predictive decomposition, not deep theoretical contribution
+7. Explicit scope: controlled study of structured reasoning under fixed output budgets
+
+**Remaining to-do for camera-ready:**
+- Incorporate DeepSeek GSM8K full-scale results (running on A100)
+- Consider multi-seed robustness check if GPU time available
+- Consider concise-CoT baseline if GPU time available
+

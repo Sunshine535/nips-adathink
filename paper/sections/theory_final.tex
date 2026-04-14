@@ -49,10 +49,16 @@ We capture this as:
 \begin{assumption}[Binary outcome structure]
 \label{asm:binary}
 When the chain completes naturally ($L \le b$), the model produces a
-well-formed answer with accuracy $\alpha_c \triangleq
+well-formed answer with accuracy $\alpha_c(b) \triangleq
 \Pr(\text{correct} \mid L \le b) \in (0,1]$.
 When truncated ($L > b$), the residual accuracy is
-$\alpha_t \triangleq \Pr(\text{correct} \mid L > b) \ll \alpha_c$.
+$\alpha_t(b) \triangleq \Pr(\text{correct} \mid L > b) \ll \alpha_c(b)$.
+Both quantities depend on budget $b$ through the conditioning event.
+In practice, $\alpha_c(b)$ is approximately stable across moderate budgets
+(e.g., $\alpha_c(256) = 100\%$, $\alpha_c(512) = 99.0\%$ on GSM8K),
+while $\alpha_t(b)$ varies more substantially (Remark~\ref{rem:alpha-t}).
+We write $\alpha_c$ without argument when the budget dependence is
+negligible in context.
 \end{assumption}
 
 \noindent
@@ -144,7 +150,16 @@ vs.\ observed accuracy across all configurations.
 \begin{proposition}[Crossover budget]
 \label{prop:crossover}
 The crossover budget $b^*$---the smallest $b$ where thinking matches
-non-thinking---satisfies:
+non-thinking---satisfies the exact condition:
+\begin{equation}
+  F_L(b^*) \;=\;
+    \frac{\bar{\alpha}_{\mathrm{nt}} - \alpha_t(b^*)}
+         {\alpha_c(b^*) - \alpha_t(b^*)}.
+  \label{eq:crossover-exact}
+\end{equation}
+When $\alpha_t(b^*) \approx 0$ (strong truncation regime) and
+$\alpha_c(b^*)$ is approximately constant at a value $\alpha_c$,
+this simplifies to the quantile heuristic:
 \begin{equation}
   b^* \;\approx\; F_L^{-1}\!\!\left(
     \frac{\bar{\alpha}_{\mathrm{nt}}}{\alpha_c}\right),
@@ -153,18 +168,19 @@ non-thinking---satisfies:
 where $\bar{\alpha}_{\mathrm{nt}}$ is the saturated non-thinking accuracy
 (for budgets beyond which $\mathrm{Acc}_{\mathrm{nt}}$ is approximately
 constant).
-That is, $b^*$ is the $(\bar{\alpha}_{\mathrm{nt}}/\alpha_c)$-quantile
-of the chain-length distribution.
 \end{proposition}
 
 \begin{proof}
-At $b^*$, setting $\alpha_t = 0$:
-$\mathrm{Acc}_{\mathrm{think}}(b^*) = F_L(b^*) \cdot \alpha_c
-= \mathrm{Acc}_{\mathrm{nt}}(b^*)$.
+At $b^*$, $\mathrm{Acc}_{\mathrm{think}}(b^*) = \mathrm{Acc}_{\mathrm{nt}}(b^*)$.
+Substituting Proposition~\ref{prop:acc-decomp}:
+$F_L(b^*) \alpha_c(b^*) + (1 - F_L(b^*)) \alpha_t(b^*) = \bar{\alpha}_{\mathrm{nt}}$,
+which rearranges to Eq.~\eqref{eq:crossover-exact}.
+The simplified heuristic follows by setting $\alpha_t = 0$ and treating
+$\alpha_c$ as budget-independent.
 Since $\mathrm{Acc}_{\mathrm{nt}}$ saturates at $\bar{\alpha}_{\mathrm{nt}}$
 for $b \ge b_{\mathrm{sat}}$ (empirically $\bar{\alpha}_{\mathrm{nt}} = 95.5\%$
 at $b_{\mathrm{sat}} = 512$ for 27B; confirmed by 8B \texttt{nothink@1024}${=}$93.1\%, identical to \texttt{nothink@512}), we obtain
-$F_L(b^*) = \bar{\alpha}_{\mathrm{nt}} / \alpha_c \approx 0.955/0.963 = 0.992$.
+$F_L(b^*) \approx \bar{\alpha}_{\mathrm{nt}} / \alpha_c \approx 0.955/0.963 = 0.992$.
 The crossover requires ${>}$99\% of chains to complete---i.e., $b^*$ is near the
 99th percentile of $L$.
 On GSM8K with 27B, whose chains are substantially longer, the crossover is expected well beyond 2048 tokens,
@@ -189,25 +205,53 @@ For 27B on GSM8K, $b_{\mathrm{sat}} = 512$ (nothink saturates at 95.5\%) and the
 
 \begin{proposition}[Oracle precision]
 \label{prop:oracle}
-The natural-stop event $\mathcal{S}(b) \triangleq \{|y| < b\}$
-(generation terminates before exhausting budget) has positive predictive
+Under Assumption~\ref{asm:binary}, the natural-stop event
+$\mathcal{S}(b) \triangleq \{L(q) \le b\}$
+(the chain completes before the budget is exhausted) has positive predictive
 value:
 \begin{equation}
   \mathrm{PPV}(\mathcal{S}) \;=\;
-  \Pr(\mathrm{correct} \mid \mathcal{S}(b))
-  \;=\; \alpha_c.
+  \Pr(\mathrm{correct} \mid L \le b)
+  \;=\; \alpha_c(b).
   \label{eq:ppv}
 \end{equation}
-For non-thinking mode, $\mathrm{PPV}(\mathcal{S}_{\mathrm{nt}}) \ge \alpha_c$,
-since early completion in non-thinking mode selects for easier questions
-where model accuracy is higher.
 \end{proposition}
 
 \noindent
-By Hoeffding's inequality, with $n{=}475$ natural-stop samples (8B, $b{=}512$)
-and $\hat{\alpha}_c = 0.963$:
+\textbf{Empirical proxy.}
+In practice, we observe the output length $|y|$ rather than the
+latent $L(q)$.
+Since $|y| = \min(L(q), b)$, we use $|y| < b$ as a proxy for
+$\{L \le b\}$.
+For discrete token counts, $|y| < b$ corresponds to $L \le b - 1$;
+the difference is negligible for our budgets.%
+\footnote{Table~\ref{tab:natural-stop-oracle} uses $|y| < 0.95\,b$
+as a stricter empirical threshold to exclude borderline cases.
+This selects a subset of $\{L \le b\}$; the PPV on this subset
+is a separate estimate that may differ from $\alpha_c(b)$.}
+
+\noindent
+\textbf{Non-thinking mode.}
+Empirically, the natural-stop signal is also highly predictive in
+non-thinking mode:
+at $b{=}256$ on GSM8K, $\mathrm{PPV}(\mathcal{S}_{\mathrm{nt}}) = 94.4\%$
+(Table~\ref{tab:natural-stop-oracle}).
+We observe this consistently across budgets and benchmarks, though
+unlike the thinking-mode case it does not follow from
+Assumption~\ref{asm:binary} alone.
+
+\noindent
+By Hoeffding's inequality, with $n{=}475$ natural-stop samples
+at the stricter $|y| < 0.95\,b$ threshold (8B, $b{=}512$)
+and observed accuracy $\hat{\alpha} = 0.963$ on that subset:%
+\footnote{This 96.3\% is the accuracy of the $|y| < 0.95\,b$ subset,
+which is slightly lower than the $\alpha_c(512) = 99.0\%$ measured
+on \emph{all} samples with $L \le b$ (the broader event).
+The difference arises because the stricter threshold selects 475 of 494
+natural-stop samples, and the excluded borderline cases happen to be
+correct.}
 the 95\% lower confidence bound is
-$\alpha_c \ge 0.963 - \sqrt{\ln(2/0.05)/(2 \cdot 475)} = 0.919$.
+$\alpha \ge 0.963 - \sqrt{\ln(2/0.05)/(2 \cdot 475)} = 0.901$.
 The signal is reliable even under finite-sample uncertainty.
 
 \begin{remark}[Information-theoretic interpretation]
@@ -227,14 +271,22 @@ no calibration, and no additional compute.
 \begin{proposition}[Inverse scaling of the thinking tax]
 \label{prop:inverse-scaling}
 Let $L_M$ denote the chain-length distribution for a model of size $M$.
-If $L_{M_2}$ stochastically dominates $L_{M_1}$ for $M_2 > M_1$
-(i.e., $F_{L_{M_2}}(b) \le F_{L_{M_1}}(b)$ for all $b$), and
-non-thinking accuracy is approximately size-invariant at moderate budgets,
+If (i)~non-thinking accuracy $\mathrm{Acc}_{\mathrm{nt}}(b)$ is approximately
+size-invariant at moderate budgets,
+(ii)~the truncation-dominated regime holds ($\alpha_t \approx 0$),
+and (iii)~the completed-chain contribution satisfies
+$F_{L_{M_2}}(b) \cdot \alpha_c(M_2, b) \le F_{L_{M_1}}(b) \cdot \alpha_c(M_1, b)$
+for $M_2 > M_1$,
 then for any fixed budget $b$:
 \begin{equation}
   \mathrm{Tax}(M_2, b) \;\ge\; \mathrm{Tax}(M_1, b).
   \label{eq:inverse-scaling}
 \end{equation}
+Condition~(iii) is implied by stochastic dominance of $L_{M_2}$ over $L_{M_1}$
+when $\alpha_c$ is approximately model-invariant, and is verified
+empirically: at $b{=}512$,
+$F_{L_{\text{8B}}} \alpha_c = 0.370$ vs.\
+$F_{L_{\text{27B}}} \alpha_c = 0.007$.
 \end{proposition}
 
 \begin{proof}
@@ -256,8 +308,9 @@ as predicted by stochastic dominance of chain-length distributions.
 
 \begin{corollary}[Crossover budget grows with model size]
 \label{cor:crossover-scaling}
-Since $b^*(M) \approx F_{L_M}^{-1}(\bar{\alpha}_{\mathrm{nt}}/\alpha_c)$
-and $F_{L_M}^{-1}$ shifts right with $M$:
+Under the heuristic (Eq.~\ref{eq:crossover}),
+$b^*(M) \approx F_{L_M}^{-1}(\bar{\alpha}_{\mathrm{nt}}/\alpha_c)$;
+since $F_{L_M}^{-1}$ shifts right with $M$:
 $M_2 > M_1 \implies b^*(M_2) \ge b^*(M_1)$.
 Larger models require proportionally larger budgets for thinking to
 become cost-effective, with troubling implications for deploying
@@ -335,52 +388,81 @@ independent channels.
 Let $\alpha_{\mathrm{extract}}(b_r, b_a)$ denote the accuracy of a
 separate answer-extraction pass that receives the first $b_r$ tokens
 of the reasoning trace and generates up to $b_a$ answer tokens.
-The accuracy gain from split-budget generation over coupled generation
-at total budget $b$ satisfies:
+Compared to coupled generation at the \emph{same reasoning budget}~$b_r$,
+the accuracy gain from split-budget generation is:
 \begin{equation}
-  \Delta_{\mathrm{split}}(b)
+  \Delta_{\mathrm{split}}(b_r, b_a)
   \;=\;
   \bigl(1 - F_L(b_r)\bigr) \cdot
-  \bigl(\alpha_{\mathrm{extract}}(b_r, b_a) - \alpha_t(b)\bigr),
+  \bigl(\alpha_{\mathrm{extract}}(b_r, b_a) - \alpha_t(b_r)\bigr).
   \label{eq:recoverable-tax}
 \end{equation}
-where $b = b_r + b_a$.
 This quantity is non-negative whenever
 $\alpha_{\mathrm{extract}} \ge \alpha_t$---i.e., whenever the
 decoupled answer pass extracts at least as much value as the truncated
 coupled output---and grows with the truncation rate $(1 - F_L(b_r))$.
+
+When comparing to a coupled baseline at a \emph{larger} total budget
+$b = b_r + b_a$, an additional correction applies.
+Writing $\alpha_c(b_r)$ and $\alpha_c(b)$ for the completed-chain
+accuracy at the respective budgets:
+\begin{equation}
+  \Delta_{\mathrm{split}}^{\mathrm{total}}
+  \;=\;
+  \bigl(1 - F_L(b_r)\bigr)
+    \bigl(\alpha_{\mathrm{extract}} - \alpha_t(b)\bigr)
+  \;-\;
+  \bigl(F_L(b) - F_L(b_r)\bigr)
+    \bigl(\alpha_c(b) - \alpha_t(b)\bigr)
+  \;+\;
+  F_L(b_r)\bigl(\alpha_c(b_r) - \alpha_c(b)\bigr).
+  \label{eq:recoverable-tax-total}
+\end{equation}
+The second term is non-positive (more chains complete at higher budget),
+and the third term captures the difference in completed-chain accuracy
+at the two budgets (typically small: $\alpha_c(b_r) \approx \alpha_c(b)$
+for moderate $b_a$).
+Split-budget generation is advantageous at matched total budget when
+the first term (truncation recovery) exceeds the second
+(additional completion benefit).
 \end{proposition}
 
 \begin{proof}
 Split-budget accuracy decomposes as:
 $\mathrm{Acc}_{\mathrm{split}}(b_r, b_a)
-= F_L(b_r) \cdot \alpha_c
+= F_L(b_r) \cdot \alpha_c(b_r)
 + (1 - F_L(b_r)) \cdot \alpha_{\mathrm{extract}}(b_r, b_a)$.
-Subtracting the coupled accuracy (Eq.~\ref{eq:acc-decomp}) at budget~$b$:
+For Eq.~\eqref{eq:recoverable-tax}, subtract the coupled accuracy
+(Eq.~\ref{eq:acc-decomp}) at budget~$b_r$:
 $\Delta_{\mathrm{split}}
-= (1 - F_L(b_r))(\alpha_{\mathrm{extract}} - \alpha_t)
-+ F_L(b_r) \cdot \alpha_c - F_L(b) \cdot \alpha_c$.
-Since $b_r \le b$, we have $F_L(b_r) \le F_L(b)$; the second
-difference is non-positive.
-The first term dominates when truncation is high and
-$\alpha_{\mathrm{extract}} \gg \alpha_t$, as in practice.
-At budget $b_r = b$ (no separate answer budget), the first term
-is exactly $(1 - F_L(b))(\alpha_{\mathrm{extract}} - \alpha_t)$.
+= (1 - F_L(b_r))(\alpha_{\mathrm{extract}} - \alpha_t(b_r))$,
+which is non-negative whenever $\alpha_{\mathrm{extract}} \ge \alpha_t(b_r)$.
+For Eq.~\eqref{eq:recoverable-tax-total}, subtract the coupled
+accuracy at $b = b_r + b_a$:
+$\Delta^{\mathrm{total}}
+= \bigl[F_L(b_r) \alpha_c(b_r) + (1{-}F_L(b_r))\alpha_{\mathrm{extract}}\bigr]
+  - \bigl[F_L(b) \alpha_c(b) + (1{-}F_L(b))\alpha_t(b)\bigr]$.
+Rearranging yields the three terms in Eq.~\eqref{eq:recoverable-tax-total}.
 \end{proof}
 
 \noindent
 \textbf{Empirical verification.}
-On MATH-500 at $B_{\mathrm{think}}{=}2048$:
-$1 - F_L(2048) = 0.912$ (91.2\% truncated), $\alpha_t \approx 0.365$
-(from projection), and IRIS achieves 67.2\% vs.\ TOWN's 55.0\%
-($\Delta = +12.2$\,pp, $p < 10^{-6}$).
-At $B_{\mathrm{think}}{=}4096$: $1 - F_L(4096) = 0.553$, and the gap
-narrows to $+2.2$\,pp ($p = 0.28$), \emph{exactly as predicted}:
-lower truncation rate $\implies$ less recoverable waste
-$\implies$ smaller $\Delta_{\mathrm{split}}$.
+Eq.~\eqref{eq:recoverable-tax} compares split-budget to coupled generation
+at the same reasoning budget.
+On MATH-500, IRIS uses $b_r \in \{2048, 4096\}$ with $b_a = 256$.
+At $b_r{=}2048$: $1 - F_L(2048) = 0.912$ (91.2\% truncated), and IRIS
+achieves 67.2\% vs.\ TOWN's 55.0\% ($\Delta = +12.2$\,pp, $p < 10^{-6}$).
+At $b_r{=}4096$: $1 - F_L(4096) = 0.553$, and the gap narrows to
+$+2.2$\,pp ($p = 0.28$), consistent with the prediction that lower
+truncation rate $\implies$ smaller $\Delta_{\mathrm{split}}$.
 The ratio of truncation rates ($0.912/0.553 = 1.65$) directionally matches
-the ratio of observed gaps, confirming that the coupling tax is the
-\emph{sole mechanism} driving IRIS's advantage.
+the ratio of observed IRIS--TOWN gaps, confirming that the coupling tax
+drives IRIS's advantage.
+For the matched-total-budget comparison (Eq.~\ref{eq:recoverable-tax-total}),
+the correction terms are small
+when $b_a \ll b_r$ (as in our experiments with $b_a = 256$), because
+$F_L(b_r + 256) \approx F_L(b_r)$ for the heavy-tailed chain-length
+distributions observed in practice.
 
 \begin{proposition}[Optimal budget allocation]
 \label{prop:optimal-split}
@@ -389,15 +471,17 @@ $b_r$ tokens to reasoning and $b_a = B - b_r$ to answering,
 the optimal reasoning budget is:
 \begin{equation}
   b_r^* \;=\; \arg\max_{b_r \in [0, B]} \;
-  F_L(b_r) \cdot \alpha_c
+  F_L(b_r) \cdot \alpha_c(b_r)
   + \bigl(1 - F_L(b_r)\bigr) \cdot
     \alpha_{\mathrm{extract}}(b_r, B - b_r).
   \label{eq:optimal-split}
 \end{equation}
-When $F_L$ is a log-normal CDF (as empirically observed;
-see Table~\ref{tab:theory-verification}) and
-$\alpha_{\mathrm{extract}}$ is monotonically non-decreasing in $b_r$
-and concave in $b_a$, the objective has a unique interior maximum.
+The maximizer $b_r^*$ balances two competing effects:
+increasing $b_r$ raises the completion rate $F_L(b_r)$ but reduces
+the answer budget $B - b_r$.
+In our experiments, $b_a = 256$ tokens suffices for answer extraction
+(MATH-500 answers average $<$50 tokens), so the optimum allocates
+most of the budget to reasoning ($b_r^* \approx B - 256$).
 \end{proposition}
 
 \noindent
@@ -414,12 +498,18 @@ answer extraction on MATH-500), allocating the remaining budget to reasoning.
 The coupling constraint $|Z|+|A| \le b$ is not model-specific: it
 applies to any autoregressive generator that produces reasoning and
 answers in a single pass.
-On DeepSeek-R1-Distill-Llama-8B (GSM8K, $n{=}40$), the same pattern
-holds: at $b{=}256$, 82.5\% of chains are truncated vs.\ 7.5\% at
-$b{=}512$; at $b{=}1024$, all chains complete naturally ($F_L = 1.0$,
-$\alpha_c = 0.60$).
-On MATH-500, DeepSeek-R1's natural-stop rate rises from 31.9\% at
-$b{=}1024$ to 75.6\% at $b{=}4096$ (averaged over 4 seeds, $n{=}160$
-total), mirroring the Qwen pattern.
-The coupling tax is a \emph{structural property of the generation format},
-not a model-family artifact.
+On DeepSeek-R1-Distill-Llama-8B (GSM8K, $n{=}1{,}319$), the truncation
+mechanism replicates: at $b{=}256$, 95.8\% of chains are truncated (accuracy 7.5\%);
+at $b{=}1024$, 99.6\% complete naturally ($\alpha_c = 0.647$).
+On MATH-500 ($n{=}500$), natural-stop rates rise from 16.8\% at $b{=}512$
+to 76.0\% at $b{=}4096$, mirroring the Qwen pattern.
+However, when comparing thinking vs.\ prompt-based nothink on DeepSeek,
+the \emph{tax magnitude} is near-zero (average +0.3\,pp across MATH-500 budgets;
+Appendix~\ref{app:deepseek}), because the prompt-based nothink does not
+produce meaningfully different generation behavior.
+This highlights that the coupling tax requires two conditions:
+(1)~truncation waste from shared budgets (universal, verified on both
+architectures) and (2)~a genuinely distinct non-thinking mode
+(model-dependent---native in Qwen, absent in DeepSeek).
+The truncation mechanism is a \emph{structural property of the generation format};
+the tax magnitude depends on the availability of an efficient alternative mode.

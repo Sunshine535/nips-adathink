@@ -1,25 +1,27 @@
 % conclusion_final.tex — loaded by main_final.tex
 
-We presented the \couplingtax{}: a systematic empirical and theoretical study showing that coupling reasoning and answering under a shared token budget imposes a dramatic accuracy penalty below a task- and model-specific \emph{crossover budget}---${\sim}$2048 tokens on GSM8K, with the crossover shifting to even higher budgets on harder benchmarks (MATH-500)---with the tax scaling inversely with model size.
-Our failure-mode analysis reveals the causal mechanism: 98.6\% of thinking responses are truncated at budget 256, vs.\ only 11.2\% in non-thinking mode.
-We scope this finding to Qwen-family open reasoning models with explicit \texttt{<think>} mode under fixed output-token budgets.
+We presented the \couplingtax{}: a systematic empirical study showing that coupling reasoning and answering under a shared token budget imposes a dramatic accuracy penalty below a task- and model-specific \emph{crossover budget}---${\sim}$2048 tokens on GSM8K, with the crossover shifting to even higher budgets on harder benchmarks (MATH-500)---with the tax amplifying with model size within the Qwen family.
+Our failure-mode analysis reveals that 98.6\% of thinking responses are truncated at budget 256, vs.\ only 11.2\% in non-thinking mode.
+The tax requires two necessary conditions: truncation waste (structural, confirmed across architectures including DeepSeek-R1) and an architecturally distinct non-thinking mode (model-dependent---present in Qwen3, absent in DeepSeek's prompt-based nothink).
+We scope this finding to models with distinct thinking and non-thinking modes under fixed output-token budgets.
 Our formal truncation-waste decomposition (Propositions~\ref{prop:acc-decomp}--\ref{prop:inverse-scaling}) explains these phenomena quantitatively, predicting the crossover budget from chain-length statistics alone.
 
-The natural-stop signal provides a free confidence oracle with 99.0\% positive predictive value, motivating \method{} (\fullmethod{}), a training-free inference framework that allocates \emph{separate} budgets for reasoning and answering via \splitbudget{}.
+The natural-stop signal---whether the model emits EOS before exhausting the budget---provides an operational routing criterion with 99.0\% positive predictive value, used by \method{} (\fullmethod{}) to triage easy queries before escalating to \splitbudget{}.
 \method{} achieves \textbf{94.0\%} accuracy on GSM8K at 235 avg tokens (+5.0\,pp over nothink@256, pilot $n{=}200$)---the only method to improve beyond the nothink plateau.
 On MATH-500, \method{}'s core mechanism---decoupled answer generation---recovers +25.4\,pp on hard samples requiring escalation.
 Full-scale evaluation ($n{=}500$, same hardware) confirms that IRIS surpasses the nothink ceiling: IRIS@2048 achieves \textbf{67.2\%} \ci{63.0}{71.2} and IRIS@4096 achieves \textbf{74.0\%} \ci{70.0}{77.7}, exceeding nothink@1024 (59.8\%) by +7.4\,pp and +14.2\,pp respectively---with CI lower bounds above 59.8\%.
 The cross-budget gain of +6.8\,pp from $B_{\text{think}}{=}2048$ to 4096 (McNemar $p{=}0.0004$) confirms that the split-budget mechanism scales with the thinking budget.
 
-Our theoretical framework makes testable predictions: the crossover budget scales with the 97th percentile of chain-length distributions (Proposition~\ref{prop:crossover}), the tax grows with model size via stochastic dominance of chain lengths (Proposition~\ref{prop:inverse-scaling}), and the budget multiplier for thinking to become cost-effective is at least $4\times$ on GSM8K (Corollary~\ref{cor:multiplier}), with harder benchmarks requiring even larger multipliers.
-As frontier models grow and chains lengthen, these results suggest the thinking tax will worsen---not improve---making adaptive routing between reasoning modes essential.
+Our decomposition makes testable predictions: the crossover budget scales with the 97th percentile of chain-length distributions (Proposition~\ref{prop:crossover}), the tax amplifies with chain length via stochastic dominance (Proposition~\ref{prop:inverse-scaling}), and the budget multiplier for thinking to become cost-effective is at least $4\times$ on GSM8K (Corollary~\ref{cor:multiplier}), with harder benchmarks requiring even larger multipliers.
+Within the Qwen family, as models produce longer chains, the thinking tax worsens---making adaptive routing between reasoning modes essential for budget-constrained deployment.
 
 The practical implication is clear: for budget-constrained deployment below the crossover, the question is not \emph{how long} to think, but \emph{whether} to think at all.
 Above the crossover, thinking mode recovers its advantage---making crossover estimation a prerequisite for optimal mode selection.
 
 \paragraph{Limitations.}
-Our study focuses on structured reasoning tasks (mathematical, logical, symbolic); the tax may differ for tasks where CoT is structurally essential, such as multi-hop reasoning requiring intermediate retrieval, code generation requiring iterative debugging, or agentic workflows with tool use, or stochastic decoding regimes where best-of-$K$/self-consistency can amortize the truncation cost.
-Experiments on BIG-Bench Hard (Appendix~\ref{app:bbh}) extend the finding beyond mathematics, but comprehensive validation on natural language understanding or open-ended generation remains future work.
+This is a controlled study of structured reasoning under fixed output-token budgets, not a broad critique of chain-of-thought reasoning.
+Our study focuses on mathematical, logical, and symbolic reasoning tasks; the tax may differ for tasks where CoT provides qualitatively different value, such as multi-hop reasoning requiring intermediate retrieval, code generation requiring iterative debugging, or agentic workflows with tool use, or stochastic decoding regimes where best-of-$K$/self-consistency can amortize the truncation cost.
+Experiments on BIG-Bench Hard (\S\ref{sec:finding:bbh}) extend the finding beyond mathematics to logical and symbolic reasoning, but comprehensive validation on natural language understanding or open-ended generation remains future work.
 The cascade requires sufficiently large thinking budgets: at 27B scale with $B_{\text{think}}{=}512$, \method{} falls below nothink baselines; while $B_{\text{think}}{=}2048$ resolves this for 8B, the larger-scale budget calibration remains open.
 Full-scale evaluation ($n{=}500$) confirms the think budget ablation: IRIS@2048 (67.2\%) and IRIS@4096 (74.0\%) both exceed nothink@1024 (59.8\%) on identical hardware, resolving the cross-run variance confound that affected earlier pilot comparisons.
 \method{}'s split-budget allocation could be further enhanced with learned budget ratios or task-specific calibration of the reasoning--answering split---we leave this to future work.

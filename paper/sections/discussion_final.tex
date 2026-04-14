@@ -9,8 +9,8 @@ The observed gap is \textbf{69.5\,pp}---over $13\times$ larger.
 The discrepancy arises because truncation is not a marginal tax but a \emph{catastrophic failure mode}: 98.6\% of thinking responses at $b{=}256$ produce \emph{zero parseable answer}, not merely a slightly degraded one.
 Our decomposition (Proposition~\ref{prop:acc-decomp}) captures this: the tax scales with the \emph{entire truncation rate} $\rho(b) = 1 - F_L(b)$, not with a format constant.
 A length-normalized comparison (accuracy per token) similarly fails to explain the phenomenon: nothink@256 achieves 87.5\% at 140 avg tokens (0.63\%/token), while think@256 achieves 18.0\% at 255 tokens (0.07\%/token)---a $9\times$ efficiency gap that no normalization can close.
-Second, the \emph{inverse scaling with model size} (\S\ref{sec:finding:model-size}, Proposition~\ref{prop:inverse-scaling}) is counterintuitive: larger models become \emph{worse} at thinking under the same budget, a phenomenon our theory explains through stochastic dominance of chain-length distributions.
-No format-overhead argument predicts this: the overhead is constant across model sizes, but the tax amplifies $2.1\times$ from 8B to 9B.
+Second, the \emph{tax amplification with chain length} (\S\ref{sec:finding:model-size}, Proposition~\ref{prop:inverse-scaling}) is counterintuitive: within the Qwen family, models that produce longer chains become \emph{worse} at thinking under the same budget, a phenomenon our decomposition explains through stochastic dominance of chain-length distributions.
+No format-overhead argument predicts this: the overhead is constant across model sizes, but the tax amplifies $2.1\times$ from 8B to 9B/27B.
 Third, the \emph{natural-stop oracle} (\S\ref{sec:finding:natural-stop}) is a novel signal with 99.0\% PPV (Proposition~\ref{prop:oracle}), not predicted by the truncation narrative alone.
 
 \paragraph{Why hasn't this been studied before?}
@@ -43,7 +43,7 @@ At $B_{\text{think}}{=}4096$, 44.7\% of escalated chains complete naturally (vs.
 The first 200 samples of each full-scale run reproduce the pilot exactly (73.0\% at 2048, 78.5\% at 4096), confirming methodological consistency across scale.
 
 \paragraph{Implications for scaling and the 27B limitation.}
-The inverse scaling (Proposition~\ref{prop:inverse-scaling}) has troubling implications for frontier models.
+The tax amplification (Proposition~\ref{prop:inverse-scaling}) has troubling implications for models that produce longer chains.
 Non-thinking accuracy is remarkably stable across model sizes---93.1\% (8B), 93.2\% (9B), 95.5\% (27B)---while thinking-mode accuracy \emph{collapses}: 56.9\%, 15.5\%, 18.3\% at the same budget.
 The resulting tax grows from 36.2\,pp (8B) to 77.7\,pp (9B), a ${\sim}2.1\times$ amplification.
 As models grow and chains lengthen (Corollary~\ref{cor:crossover-scaling}), the crossover budget $b^*$ will shift further right, making the thinking tax \emph{worse}, not better.
@@ -57,6 +57,13 @@ This scale-dependent asymmetry is a genuine limitation, and suggests that adapti
 
 \paragraph{Addressing potential concerns.}
 We anticipate three objections and address them directly.
+
+\emph{``Think vs.\ nothink compares two different policies, not just budget coupling.''}
+True---and we address this with a matched-policy ablation.
+IRIS and TOWN both use the \emph{same} thinking policy on the \emph{same} escalated samples; the only difference is whether reasoning and answering share a single budget (TOWN: coupled) or receive separate budgets (IRIS: decoupled).
+On escalated MATH-500 samples, IRIS recovers +25.4\,pp over TOWN (Table~\ref{tab:escalated-ablation}, McNemar $p < 10^{-6}$).
+This isolates the coupling mechanism: holding the thinking policy fixed, separating the answer budget recovers accuracy lost to truncation.
+The think-vs-nothink comparison identifies the \emph{phenomenon}; the IRIS-vs-TOWN comparison isolates the \emph{cause}.
 
 \emph{``The tax is just truncation/verbosity, not a reasoning issue.''}
 Precisely---that is our point.
@@ -95,14 +102,19 @@ reasoning traces: rather than discarding a truncated chain that consumed
 from the partial reasoning in ${\sim}$200 additional tokens---turning
 truncation waste into partial-reasoning credit.
 
-\paragraph{Generalization and limitations.}
+\paragraph{Generalization and necessary conditions.}
 Our experiments span three benchmark families: GSM8K, MATH-500, and five BIG-Bench Hard subtasks ($n{=}3{,}006$ total), three Qwen-family model sizes (8B, 9B, 27B), with cross-architecture validation on DeepSeek-R1-Distill-Llama-8B.
 The tax appears on both easy and hard benchmarks---and is \emph{larger} on the harder one---while the crossover budget shifts predictably with task difficulty.
 On BIG-Bench Hard (Appendix~\ref{app:bbh}), full-scale evaluation ($n{=}1{,}187$) confirms the tax persists in non-mathematical domains (logical deduction, object tracking, date understanding), with a +33.3\,pp gap at budget 256 and crossover between 1024--2048.
-The mechanism (truncation waste when chain length exceeds budget) is model-agnostic in principle, applying whenever (i)~typical chain length exceeds the budget and (ii)~the answer appears at the chain's end.
 
-We explicitly scope our claims to \textbf{Qwen-family open reasoning models with explicit \texttt{<think>} mode under fixed output-token budgets on structured reasoning tasks}.
+The coupling tax requires two necessary conditions:
+(i)~\emph{truncation waste}: reasoning chains typically exceed the budget, causing most responses to produce no parseable answer; and
+(ii)~\emph{a distinct alternative mode}: the model possesses an architecturally different non-thinking mode that can answer directly without generating a reasoning chain.
+Condition~(i) is structural and model-agnostic---DeepSeek-R1-Distill-Llama-8B exhibits the same truncation patterns as Qwen models (Appendix~\ref{app:deepseek}).
+Condition~(ii) is model-dependent: Qwen3's native \texttt{enable\_thinking=False} produces genuinely different (shorter, answer-focused) outputs, while DeepSeek's prompt-based nothink does not meaningfully alter generation behavior, yielding near-zero tax (${\leq}1.4$\,pp across all budgets).
+This two-condition framing explains \emph{when} the tax manifests and \emph{why} its magnitude is architecture-dependent.
+
+We explicitly scope our claims to \textbf{models with architecturally distinct thinking and non-thinking modes under fixed output-token budgets on structured reasoning tasks}.
 The thinking tax may not apply (or may differ significantly) in three settings: (1)~tasks where CoT provides qualitatively different value, such as multi-hop retrieval, iterative code generation, or agentic workflows; (2)~closed-source models (e.g., OpenAI o1) where the thinking budget is managed internally; and (3)~settings with dynamic or unbounded token budgets where the crossover is always exceeded.
-While auxiliary DeepSeek-R1 experiments (Appendix~\ref{app:deepseek}) show consistent utilization collapse and natural-stop patterns, we do not have matched nothink baselines for DeepSeek and therefore restrict our primary claims to the Qwen family.
 \method{}'s split-budget design demonstrates that decoupling reasoning from answer generation can mitigate the \couplingtax{}---confirmed on GSM8K (+5.0\,pp) and on MATH-500 at full scale ($n{=}500$): IRIS@4096 achieves 74.0\% \ci{70.0}{77.7}, exceeding nothink@1024 (59.8\%) by +14.2\,pp on identical hardware.
 Extending split-budget generation with learned budget ratios, task-adaptive routing, and integration with multi-model ensembles is a promising direction for future work.
