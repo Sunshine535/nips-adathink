@@ -28,7 +28,16 @@ For a model $\mathcal{M}$ and question $q$, let $L(q) \in \mathbb{N}$
 denote the \emph{natural chain length}---the total number of output tokens
 the model would generate in thinking mode if unconstrained
 (i.e., $b \to \infty$), including both the reasoning trace and the
-final answer.
+final answer.%
+\footnote{We assume $\Pr(L < \infty) = 1$---the model terminates
+almost surely under unconstrained generation.
+We state this explicitly because the
+CDF $F_L$ and its (generalized) inverse are well-defined only when
+this holds.
+All experiments enforce a finite generation cap via
+\texttt{max\_new\_tokens}, which makes the observed $L$ bounded;
+the assumption concerns the latent unconstrained $L$ used in the
+theoretical framework.}
 Let $F_L(t) \triangleq \Pr(L \le t)$ denote the CDF of $L$ over the
 question distribution $q \sim \mathcal{Q}$.
 \end{definition}
@@ -150,39 +159,58 @@ vs.\ observed accuracy across all configurations.
 \begin{proposition}[Crossover budget]
 \label{prop:crossover}
 The crossover budget $b^*$---the smallest $b$ where thinking matches
-non-thinking---satisfies the exact condition:
+non-thinking---satisfies the exact condition
+(provided $\alpha_c(b^*) > \alpha_t(b^*)$):
 \begin{equation}
   F_L(b^*) \;=\;
-    \frac{\bar{\alpha}_{\mathrm{nt}} - \alpha_t(b^*)}
+    \frac{\mathrm{Acc}_{\mathrm{nt}}(b^*) - \alpha_t(b^*)}
          {\alpha_c(b^*) - \alpha_t(b^*)}.
   \label{eq:crossover-exact}
 \end{equation}
-When $\alpha_t(b^*) \approx 0$ (strong truncation regime) and
-$\alpha_c(b^*)$ is approximately constant at a value $\alpha_c$,
+When $b^* \ge b_{\mathrm{sat}}$ (so
+$\mathrm{Acc}_{\mathrm{nt}}(b^*) = \bar{\alpha}_{\mathrm{nt}}$),
+$\alpha_t(b^*) \approx 0$ (strong truncation regime), and
+$\alpha_c(b^*)$ is approximately constant at a value $\alpha_c$
+satisfying $\bar{\alpha}_{\mathrm{nt}} \le \alpha_c$,
 this simplifies to the quantile heuristic:
 \begin{equation}
   b^* \;\approx\; F_L^{-1}\!\!\left(
     \frac{\bar{\alpha}_{\mathrm{nt}}}{\alpha_c}\right),
   \label{eq:crossover}
 \end{equation}
-where $\bar{\alpha}_{\mathrm{nt}}$ is the saturated non-thinking accuracy
-(for budgets beyond which $\mathrm{Acc}_{\mathrm{nt}}$ is approximately
-constant).
+where $\bar{\alpha}_{\mathrm{nt}}$ is the saturated non-thinking accuracy,
+$b_{\mathrm{sat}}$ is the budget at which $\mathrm{Acc}_{\mathrm{nt}}$
+approximately saturates, and
+$F_L^{-1}(u) \triangleq \inf\{t : F_L(t) \ge u\}$ is the
+generalized inverse CDF.%
+\footnote{The heuristic requires
+$\bar{\alpha}_{\mathrm{nt}} / \alpha_c \le 1$; if non-thinking accuracy
+exceeds completed-chain thinking accuracy ($\bar{\alpha}_{\mathrm{nt}} >
+\alpha_c$), the crossover does not exist---thinking never surpasses
+non-thinking at any budget.}
 \end{proposition}
 
 \begin{proof}
 At $b^*$, $\mathrm{Acc}_{\mathrm{think}}(b^*) = \mathrm{Acc}_{\mathrm{nt}}(b^*)$.
 Substituting Proposition~\ref{prop:acc-decomp}:
-$F_L(b^*) \alpha_c(b^*) + (1 - F_L(b^*)) \alpha_t(b^*) = \bar{\alpha}_{\mathrm{nt}}$,
-which rearranges to Eq.~\eqref{eq:crossover-exact}.
-The simplified heuristic follows by setting $\alpha_t = 0$ and treating
+$F_L(b^*) \alpha_c(b^*) + (1 - F_L(b^*)) \alpha_t(b^*) = \mathrm{Acc}_{\mathrm{nt}}(b^*)$,
+which rearranges to Eq.~\eqref{eq:crossover-exact}
+whenever $\alpha_c(b^*) \neq \alpha_t(b^*)$.
+The simplified heuristic follows by additionally assuming
+$b^* \ge b_{\mathrm{sat}}$,
+setting $\alpha_t = 0$, and treating
 $\alpha_c$ as budget-independent.
 Since $\mathrm{Acc}_{\mathrm{nt}}$ saturates at $\bar{\alpha}_{\mathrm{nt}}$
 for $b \ge b_{\mathrm{sat}}$ (empirically $\bar{\alpha}_{\mathrm{nt}} = 95.5\%$
-at $b_{\mathrm{sat}} = 512$ for 27B; confirmed by 8B \texttt{nothink@1024}${=}$93.1\%, identical to \texttt{nothink@512}), we obtain
-$F_L(b^*) \approx \bar{\alpha}_{\mathrm{nt}} / \alpha_c \approx 0.955/0.963 = 0.992$.
-The crossover requires ${>}$99\% of chains to complete---i.e., $b^*$ is near the
-99th percentile of $L$.
+at $b_{\mathrm{sat}} = 512$ for 27B; confirmed by 8B \texttt{nothink@1024}${=}$93.1\%, identical to \texttt{nothink@512}), the target quantile is
+$F_L(b^*) \approx \bar{\alpha}_{\mathrm{nt}} / \alpha_c$.
+For 27B on GSM8K, $\bar{\alpha}_{\mathrm{nt}} = 0.955$.
+The 27B $\alpha_c(512)$ cannot be reliably estimated from only
+${\sim}$9 natural-stop samples ($F_L(512) = 0.7\%$);
+assuming $\alpha_c$ is approximately model-invariant
+(supported by 8B's $\alpha_c(512) = 0.990$, based on 494 samples):
+$F_L(b^*) \approx 0.955 / 0.990 = 0.965$---the crossover requires
+${\sim}$97\% of chains to complete.
 On GSM8K with 27B, whose chains are substantially longer, the crossover is expected well beyond 2048 tokens,
 consistent with the observation that thinking has not matched non-thinking at any tested budget.
 For 8B, with shorter chains, the crossover occurs at a lower budget but still exceeds 512 tokens.
@@ -194,7 +222,11 @@ The budget multiplier $\gamma \triangleq b^*/b_{\mathrm{sat}}$ quantifies
 the token overhead for thinking to become viable.
 Since $b_{\mathrm{sat}}$ is determined by answer length (not chain length):
 $\gamma = F_L^{-1}(\bar{\alpha}_{\mathrm{nt}}/\alpha_c) \big/ b_{\mathrm{sat}}$.
-On MATH-500: $\gamma > 2048/1024 = 2\times$, since thinking has not yet caught non-thinking at $b{=}2048$ (Table~\ref{tab:math500-tax-full}), confirming that harder tasks demand larger multipliers.
+On MATH-500, nothink accuracy has not fully saturated by $b{=}2048$
+(59.8\% at 1024, 64.4\% at 2048), so $b_{\mathrm{sat}} \ge 2048$;
+since thinking has not caught non-thinking at $b{=}2048$
+(Table~\ref{tab:math500-tax-full}), $b^* > 2048$, confirming
+that harder tasks demand larger budgets for thinking to become viable.
 For 27B on GSM8K, $b_{\mathrm{sat}} = 512$ (nothink saturates at 95.5\%) and the crossover is not reached at the tested budgets, implying $\gamma \gg 1$.
 \end{corollary}
 
@@ -250,9 +282,13 @@ on \emph{all} samples with $L \le b$ (the broader event).
 The difference arises because the stricter threshold selects 475 of 494
 natural-stop samples, and the excluded borderline cases happen to be
 correct.}
-the 95\% lower confidence bound is
-$\alpha \ge 0.963 - \sqrt{\ln(2/0.05)/(2 \cdot 475)} = 0.901$.
-The signal is reliable even under finite-sample uncertainty.
+the 95\% lower confidence bound on this proxy PPV
+(treating the 475 samples as i.i.d.\ draws from the question
+distribution) is
+$\hat{\alpha} - \sqrt{\ln(2/0.05)/(2 \cdot 475)} = 0.963 - 0.062 = 0.901$.
+This bounds the proxy PPV (on the $|y|<0.95\,b$ subset), not $\alpha_c(b)$
+itself, but confirms that the natural-stop signal is reliable even under
+finite-sample uncertainty.
 
 \begin{remark}[Information-theoretic interpretation]
 Early stopping implies the model's conditional entropy
@@ -290,12 +326,14 @@ $F_{L_{\text{27B}}} \alpha_c = 0.007$.
 \end{proposition}
 
 \begin{proof}
-From Proposition~\ref{thm:thinking-tax}:
+From Proposition~\ref{thm:thinking-tax} with $\alpha_t \approx 0$ (condition~(ii)):
 $\mathrm{Tax}(M, b) \approx \mathrm{Acc}_{\mathrm{nt}}(b) -
-F_{L_M}(b) \cdot \alpha_c$.
-With $\mathrm{Acc}_{\mathrm{nt}}$ approximately constant across $M$,
-and $F_{L_{M_2}}(b) \le F_{L_{M_1}}(b)$, the second term decreases,
-increasing the tax.
+F_{L_M}(b) \cdot \alpha_c(M, b)$.
+By condition~(i), the first term is approximately constant across $M$.
+By condition~(iii),
+$F_{L_{M_2}}(b) \cdot \alpha_c(M_2, b)
+\le F_{L_{M_1}}(b) \cdot \alpha_c(M_1, b)$,
+so the second term is smaller for the larger model, increasing the tax.
 \end{proof}
 
 \noindent
@@ -308,13 +346,16 @@ as predicted by stochastic dominance of chain-length distributions.
 
 \begin{corollary}[Crossover budget grows with model size]
 \label{cor:crossover-scaling}
-Under the heuristic (Eq.~\ref{eq:crossover}),
-$b^*(M) \approx F_{L_M}^{-1}(\bar{\alpha}_{\mathrm{nt}}/\alpha_c)$;
-since $F_{L_M}^{-1}$ shifts right with $M$:
+Under the heuristic (Eq.~\ref{eq:crossover}), if
+$\bar{\alpha}_{\mathrm{nt}}$ and $\alpha_c$ are approximately
+model-invariant and $L_{M_2}$ stochastically dominates $L_{M_1}$
+(i.e., $F_{L_{M_2}}(b) \le F_{L_{M_1}}(b)$ for all $b$),
+then
+$b^*(M) \approx F_{L_M}^{-1}(\bar{\alpha}_{\mathrm{nt}}/\alpha_c)$
+shifts right with $M$:
 $M_2 > M_1 \implies b^*(M_2) \ge b^*(M_1)$.
 Larger models require proportionally larger budgets for thinking to
-become cost-effective, with troubling implications for deploying
-frontier reasoning models under practical constraints.
+become cost-effective.
 \end{corollary}
 
 % ---------------------------------------------------------------------------
@@ -322,9 +363,17 @@ frontier reasoning models under practical constraints.
 \label{sec:theory:bridge}
 % ---------------------------------------------------------------------------
 
-The decomposition framework reveals the \emph{structural cause} of
+The decomposition framework reveals a \emph{major structural cause} of
 the thinking tax: the coupling constraint $|Z| + |A| \le b$ forces
-reasoning and answering to compete for the same token budget.
+reasoning and answering to compete for the same token budget.%
+\footnote{When $\alpha_c \approx \bar{\alpha}_{\mathrm{nt}}$ (completed
+thinking is as accurate as non-thinking), truncation waste accounts for
+essentially the entire tax.
+If $\alpha_c < \bar{\alpha}_{\mathrm{nt}}$ (thinking is intrinsically
+less accurate even when completed), a residual tax persists beyond what
+decoupling can eliminate.
+On GSM8K at $b{=}512$, $\alpha_c = 99.0\% > \bar{\alpha}_{\mathrm{nt}}
+= 93.1\%$, so truncation is the dominant mechanism in our setting.}
 This suggests a direct remedy: \emph{decouple} the two stages by
 allocating separate budgets.
 
@@ -347,8 +396,8 @@ This observation motivates \emph{split-budget generation}
 truncation, we \emph{accept} it and recover its value through a
 decoupled answer pass.
 The truncation-waste framework provides the theoretical foundation
-(identifying the coupling constraint as the sole mechanism behind the
-tax), while the split-budget framework provides the operational remedy
+(identifying the coupling constraint as the dominant mechanism behind the
+tax when $\alpha_c \ge \bar{\alpha}_{\mathrm{nt}}$), while the split-budget framework provides the operational remedy
 (eliminating the constraint by separating reasoning and answering
 into independent passes).
 
@@ -388,6 +437,14 @@ independent channels.
 Let $\alpha_{\mathrm{extract}}(b_r, b_a)$ denote the accuracy of a
 separate answer-extraction pass that receives the first $b_r$ tokens
 of the reasoning trace and generates up to $b_a$ answer tokens.
+Assume that chains which complete within $b_r$ retain their coupled
+accuracy $\alpha_c(b_r)$---i.e., completed chains are used directly
+without re-extraction.%
+\footnote{In practice, this is implemented by checking for a
+natural-stop signal: if the thinking chain terminates before $b_r$,
+its answer is used directly; extraction applies only to truncated chains.
+Without this bypass, completed chains could be harmed by the extraction
+pass, invalidating the decomposition.}
 Compared to coupled generation at the \emph{same reasoning budget}~$b_r$,
 the accuracy gain from split-budget generation is:
 \begin{equation}
@@ -422,9 +479,14 @@ The second term is non-positive (more chains complete at higher budget),
 and the third term captures the difference in completed-chain accuracy
 at the two budgets (typically small: $\alpha_c(b_r) \approx \alpha_c(b)$
 for moderate $b_a$).
-Split-budget generation is advantageous at matched total budget when
-the first term (truncation recovery) exceeds the second
-(additional completion benefit).
+Since $\Delta^{\mathrm{total}}_{\mathrm{split}}$ is the sum of all
+three terms, split-budget generation is advantageous at matched total
+budget when the positive first term (truncation recovery) outweighs the
+sum of the non-positive second term and the (typically small) third term.
+In our experiments, $b_a = 256$ and
+$\alpha_c(b_r) \approx \alpha_c(b_r + 256)$, so the third term
+is negligible and the sufficient condition reduces to
+the first term exceeding the magnitude of the second.
 \end{proposition}
 
 \begin{proof}

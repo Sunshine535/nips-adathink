@@ -1,249 +1,131 @@
-# Proof Audit Log — The Coupling Tax
+# Proof Audit Log — The Coupling Tax (Round 2)
 
-> Round 1: GPT-5.4 xhigh adversarial review (nightmare difficulty)
-> Thread: 019d86c9-8df9-7b30-8779-8b278227e4d6
+> Fresh independent review: GPT-5.4 xhigh adversarial (nightmare difficulty, beast effort)
+> Thread: 019d8b2c-e8a1-7a41-b2e7-599130088867
+> Date: 2026-04-14
+> Reviewer: Codex GPT-5.4 (xhigh reasoning), 3 rounds
 
 ---
 
-## Round 1 — Score: N/A (proof review, not paper review)
-
-### Issues Found: 10
+## Round 1 — 16 Issues Found
 
 | ID | Status | Impact | Category | Location | Summary |
 |----|--------|--------|----------|----------|---------|
-| 1 | INVALID | GLOBAL | NORMALIZATION_MISMATCH | theory:32,51-55,192-210; appendix:123-126,691-700 | F_L(b), S(b)={|y|<b}, and "NatStop<95%" are three different events, mixed freely |
-| 2 | UNDERSTATED | GLOBAL | HIDDEN_ASSUMPTION | theory:49-55,100-110,144-173,227-247 | α_c treated as budget/model/task-invariant; only α_t flagged as varying |
-| 3 | INVALID | GLOBAL | INSUFFICIENT_ASSUMPTION | theory:144-173; appendix:848-915 | Crossover formula b*≈F_L^{-1}(ᾱ_nt/α_c) requires α_t=0 AND constant α_c; conflicting percentile claims (97th vs 99th) |
-| 4 | INVALID | LOCAL | INSUFFICIENT_ASSUMPTION | theory:190-203; appendix:689-695 | PPV(S_nt) ≥ α_c claimed without proof; counterexample exists |
-| 5 | INVALID | LOCAL | MISSING_DERIVATION | theory:207-210 | Hoeffding bound arithmetic error: 0.901 ≠ 0.919 |
-| 6 | INVALID | GLOBAL | HIDDEN_ASSUMPTION | theory:227-247,257-265 | Inverse scaling needs α_c model-invariant (not stated); counterexample exists |
-| 7 | INVALID | GLOBAL | MISSING_DERIVATION | theory:333-369; method:96-120 | P6 algebra drops negative correction term (F(b)-F(b_r))(α_c-α_t); counterexample: Δ can be negative |
-| 8 | INVALID | LOCAL | INSUFFICIENT_ASSUMPTION | theory:385-400 | P7 uniqueness of interior max unsupported; counterexample with constant α_extract gives boundary max |
-| 9 | OVERSTATED | GLOBAL | SCOPE_OVERCLAIM | method:317-341; appendix:947-951 | "Pareto-dominance" overclaimed — theorem only shows interpolation between two baselines |
-| 10 | INVALID | GLOBAL | REFERENCE_MISMATCH | appendix:921-956 | Appendix proof is for TOWN two-stage, not K-round MRSD; cost bound requires B_1 < p·B_2 |
+| 1 | INVALID | GLOBAL | INSUFFICIENT_ASSUMPTION | theory:150-177 | Prop 3 "exact" condition uses ᾱ_nt instead of Acc_nt(b*); needs saturation hypothesis |
+| 2 | INVALID | GLOBAL | NORMALIZATION_MISMATCH | theory:183-191 | Crossover uses 0.955/0.963 (mixed proxy/true α_c); numeric error |
+| 3 | INVALID | GLOBAL | HIDDEN_ASSUMPTION | theory:386-445, method:97-116 | Split accuracy assumes completed chains bypass extraction (unstated) |
+| 4 | INVALID | GLOBAL | UNJUSTIFIED_ASSERTION | method:252-270, app:987-997 | Cost formula uses = where ≤ justified; comparison against budget cap not baseline |
+| 5 | INVALID | GLOBAL | CASE_INCOMPLETE | method:318-353 | Theorem 1 needs 0<p<1, not just p>0 (p=1 ⟹ equality) |
+| 6 | INVALID | GLOBAL | LOGICAL_GAP | theory:271-299 | Prop 5 proof cites F_L ordering, not condition (iii) product inequality |
+| 7 | INVALID | GLOBAL | UNPROVEN_SUBCLAIM | theory:309-318 | Cor 2 unproven from Prop 5 (fixed-budget ≠ quantile ordering) |
+| 8 | OVERSTATED | GLOBAL | SCOPE_OVERCLAIM | theory:325-353, method:57-63 | "Sole mechanism" overclaim — tax possible with zero truncation if α_c < Acc_nt |
+| 9 | INVALID | LOCAL | STOCHASTIC_MODE_CONFUSION | theory:221-255 | Hoeffding bounds proxy PPV, not α_c; sampling model unstated |
+| 10 | INVALID | LOCAL | REFERENCE_MISMATCH | theory:191-198 | Cor 1 MATH-500 assumes b_sat=1024 but saturation not reached |
+| 11 | INVALID | GLOBAL | CASE_INCOMPLETE | theory:160-166 | F_L^{-1} undefined when ᾱ_nt/α_c > 1; no existence condition |
+| 12 | UNCLEAR | GLOBAL | HIDDEN_ASSUMPTION | method:320-353, app:972-976 | α_extract^hard undefined for multi-round MRSD |
+| 13 | INVALID | LOCAL | NORMALIZATION_MISMATCH | method:332-340, app:1010-1016 | Conflicting α_nt^hard (≈0% pilot vs 33.0% full-scale decomposition) |
+| 14 | OVERSTATED | LOCAL | LOGICAL_GAP | theory:421-426 | Eq. 8 discussion omits third term in sufficiency condition |
+| 15 | UNJUSTIFIED | GLOBAL | HIDDEN_ASSUMPTION | theory:25-33 | L(q)∈ℕ assumes Pr(L<∞)=1 (almost-sure termination) |
+| 16 | INVALID | LOCAL | IMPLICATION_REVERSAL | app:999-1004 | "Strictly inside the convex hull" claim is false |
 
 ### Severity Classification
 
 | Severity | Count | IDs |
 |----------|-------|-----|
-| FATAL (INVALID+GLOBAL) | 5 | 1, 3, 6, 7, 10 |
-| CRITICAL (INVALID+LOCAL or UNJUSTIFIED+GLOBAL) | 3 | 4, 5, 8 |
-| MAJOR (UNDERSTATED+GLOBAL) | 1 | 2 |
-| MINOR (OVERSTATED+GLOBAL) | 1 | 9 |
-
-### Full Reviewer Response
-
-<details>
-<summary>Click to expand full GPT-5.4 response</summary>
-
-**Issue 1: NORMALIZATION_MISMATCH (INVALID, GLOBAL)**
-- F_L(b) defined by L≤b; S(b) defined as |y|<b; NatStop uses <95% budget threshold
-- These are three different events mixed freely
-- Counterexample: samples with L=b exactly satisfy L≤b but NOT |y|<b
-- Affects: P4, parameter instantiations for P1 and P3, theory verification table
-- Fix: define one event E_b and use it everywhere
-
-**Issue 2: HIDDEN_ASSUMPTION (UNDERSTATED, GLOBAL)**
-- α_c used as budget/model/task invariant in crossover, scaling, held-out prediction
-- By definition α_c = Pr(correct | L≤b) depends on b
-- Counterexample: α_c(512)=0.99 but α_c(2048)=0.75 (harder chains complete at larger b)
-- Affects: P3, P5, crossover scaling corollary, held-out prediction
-- Fix: write α_c(b,M,task) explicitly; label constant-parameter use as heuristic
-
-**Issue 3: INSUFFICIENT_ASSUMPTION (INVALID, GLOBAL)**
-- Exact crossover: F_L(b*) = (ᾱ_nt - α_t(b*)) / (α_c(b*) - α_t(b*))
-- Paper's simplified formula requires α_t(b*)=0 AND constant α_c
-- Conflicting percentile claims: main text says 99th, appendix says 97th, table uses F_L≈0.93
-- Counterexample: ᾱ_nt=0.93, α_c=0.99, α_t=0.30 gives F=0.91, not 0.94
-- Fix: derive exact formula with α_t(b*), or clearly state stronger assumptions
-
-**Issue 4: INSUFFICIENT_ASSUMPTION (INVALID, LOCAL)**
-- PPV(S_nt) ≥ α_c for nothink mode — no proof given
-- Counterexample: easy questions use full budget (correct), hard questions stop immediately (wrong) → PPV(S_nt) = 0
-- Fix: weaken to empirical observation
-
-**Issue 5: MISSING_DERIVATION (INVALID, LOCAL)**
-- √(ln(40)/(2·475)) = 0.06231, so bound = 0.963 - 0.06231 = 0.901, not 0.919
-- Fix: recompute correctly
-
-**Issue 6: HIDDEN_ASSUMPTION (INVALID, GLOBAL)**
-- P5 proof needs α_c model-size-invariant (not stated)
-- Counterexample: model 1 F=0.8, α_c=0.5; model 2 F=0.6, α_c=1.0 → Tax_2 < Tax_1 despite F_2 < F_1
-- Fix: assume or measure model-indexed α_c(M,b)
-
-**Issue 7: MISSING_DERIVATION (INVALID, GLOBAL)**
-- P6 exact Δ = (1-F(b_r))(α_extract-α_t(b)) - (F(b)-F(b_r))(α_c-α_t(b))
-- Proof drops the negative correction term
-- Counterexample: F(b_r)=0.1, F(b)=0.9, α_c=1, α_t=0, α_extract=0.5 → claimed +0.45, exact -0.35
-- Fix: compare at same reasoning budget, or use full formula
-
-**Issue 8: INSUFFICIENT_ASSUMPTION (INVALID, LOCAL)**
-- Log-normal CDF + monotone/concave α_extract → unique interior max: WRONG
-- Counterexample: constant α_extract → objective maximized at boundary
-- Fix: downgrade to argmax existence, or assume strict quasi-concavity
-
-**Issue 9: SCOPE_OVERCLAIM (OVERSTATED, GLOBAL)**
-- "Pareto-dominance" not actually established — theorem shows interpolation between two baselines
-- Acc > nothink@B_1 AND Cost < think@max is NOT Pareto dominance in the standard sense
-- Fix: rename to frontier/interpolation result
-
-**Issue 10: REFERENCE_MISMATCH (INVALID, GLOBAL)**
-- Appendix proves TOWN two-stage, not K-round MRSD
-- Cost bound E[T] < B_2 requires B_1 < p·B_2, not just B_1 < B_2
-- Counterexample: p=0.1, B_1=100, B_2=200 → E[T]=270 > 200
-- Fix: prove MRSD theorem, or add B_1 < p·B_2 condition
-
-</details>
-
-### Cross-Validation with Phase 0.5 Skeleton
-
-| Skeleton Issue | GPT Issue | Match? |
-|---------------|-----------|--------|
-| S1 (α_c model-invariance in P5) | Issue 6 | ✅ Confirmed + counterexample |
-| S2 (P7 uniqueness unproven) | Issue 8 | ✅ Confirmed + counterexample |
-| S3 (PPV(S_nt) ≥ α_c unjustified) | Issue 4 | ✅ Confirmed + counterexample |
-| S4 (P6 algebra error) | Issue 7 | ✅ Confirmed + stronger counterexample |
-| S5 (Appendix proves TOWN not MRSD) | Issue 10 | ✅ Confirmed |
-| S6 (Cost bound needs B_1 < p·B_2) | Issue 10 | ✅ Confirmed + counterexample |
-| S7 (F_L^{-1} existence) | Issue 3 | Partially (GPT found larger issue) |
-| S8 (α_c budget-dependence) | Issues 2, 3 | ✅ Confirmed + elevated to GLOBAL |
-| S9 (Hoeffding arithmetic) | Issue 5 | ✅ Confirmed |
-| S10 (Stochastic dominance at one budget) | Issue 6 | ✅ Confirmed |
-| — (NEW: event mismatch F_L vs S vs NatStop) | Issue 1 | ⚠️ New issue from GPT |
-| — (NEW: Pareto-dominance overclaimed) | Issue 9 | ⚠️ New issue from GPT |
+| FATAL (INVALID+GLOBAL) | 8 | 1, 2, 3, 4, 5, 6, 7, 11 |
+| CRITICAL | 5 | 9, 10, 13, 15, 16 |
+| MAJOR | 1 | 8 |
+| MINOR | 2 | 12, 14 |
 
 ---
 
-## Acceptance Gate Check
+## Fix Summary (3 Rounds)
 
-- [x] Zero open FATAL issues? **NO — 5 FATAL issues (1, 3, 6, 7, 10)**
-- [ ] Every theorem has explicit hypotheses? **NO — α_c(b) dependence hidden in P3, P5**
-- [ ] All interchanges justified? **N/A — no limit/integral interchanges**
-- [ ] Counterexample pass executed? **YES — counterexamples found for 6/10 issues**
-
-**GATE: FAIL — proceed to Phase 2 (fix implementation)**
-
----
-
-## Round 2 — Fix Implementation + Re-Review
-
-### Fixes Applied (Round 1 → Round 2)
-
-All 10 issues from Round 1 were addressed:
+### Round 1→2 Fixes (16 original issues)
 
 | ID | Fix Strategy | Summary |
 |----|-------------|---------|
-| 1 | STRENGTHEN_ASSUMPTION | Unified on {L(q) ≤ b}; added proxy paragraph; footnote clarifies subset estimate |
-| 2 | STRENGTHEN_ASSUMPTION | α_c(b), α_t(b) explicit in Assumption 1; Remark on budget-dependent α_t |
-| 3 | ADD_DERIVATION | Added exact crossover formula Eq. crossover-exact; simplified version labeled as heuristic |
-| 4 | WEAKEN_CLAIM | PPV(S_nt) ≥ α_c removed; downgraded to empirical observation |
-| 5 | ADD_DERIVATION | Hoeffding corrected: 0.963 - 0.0623 = 0.901 |
-| 6 | STRENGTHEN_ASSUMPTION | P5 condition (iii): F_{L_{M2}}(b)·α_c(M2,b) ≤ F_{L_{M1}}(b)·α_c(M1,b) |
-| 7 | ADD_DERIVATION | Same-budget Δ (clean) + matched-total Δ^total (with correction terms) |
-| 8 | WEAKEN_CLAIM | Uniqueness removed; practical guidance only |
-| 9 | WEAKEN_CLAIM | "Pareto dominance" → "interpolation dominance" + footnote |
-| 10 | ADD_DERIVATION | Appendix proof rewritten for MRSD; cost bound against B_max |
+| 1 | STRENGTHEN_ASSUMPTION | Eq. crossover-exact now uses Acc_nt(b*); heuristic gated by b*≥b_sat |
+| 2 | ADD_DERIVATION | Removed 0.963; uses α_c(512)=0.990 giving quantile ≈0.965 |
+| 3 | STRENGTHEN_ASSUMPTION | Added bypass hypothesis + footnote explaining natural-stop detection |
+| 4 | WEAKEN_CLAIM | Cost claim (2) → "lower than B_max"; footnote clarifies vs budget cap |
+| 5 | STRENGTHEN_ASSUMPTION | Changed p>0 → 0<p<1 |
+| 6 | ADD_DERIVATION | Proof now explicitly cites conditions (i), (ii), (iii) |
+| 7 | STRENGTHEN_ASSUMPTION | Added model-invariant ᾱ_nt/α_c + global stochastic dominance |
+| 8 | WEAKEN_CLAIM | "Sole" → "dominant mechanism when α_c ≥ ᾱ_nt" + footnote |
+| 9 | WEAKEN_CLAIM | Hoeffding now bounds "proxy PPV" not α_c; i.i.d. assumption stated |
+| 10 | WEAKEN_CLAIM | MATH-500: b_sat ≥ 2048; only claim b* > 2048 |
+| 11 | ADD_DERIVATION | Generalized inverse defined; footnote: crossover DNE when ᾱ_nt > α_c |
+| 12 | ADD_DERIVATION | α_extract^hard defined in theorem as full MRSD escalated branch accuracy |
+| 13 | ADD_DERIVATION | Method uses full-scale data (33.0% vs 62.8%), consistent decomposition |
+| 14 | ADD_DERIVATION | Sufficient condition rewritten to reflect all three terms |
+| 15 | STRENGTHEN_ASSUMPTION | Added Pr(L<∞)=1 footnote to Def 1 |
+| 16 | WEAKEN_CLAIM | Convex hull claim removed |
 
-### Round 2 Re-Review (GPT-5.4 xhigh)
-
-Thread: 019d86c9-8df9-7b30-8779-8b278227e4d6
-
-Results: 3 fully resolved, 6 partially resolved, 1 unresolved, 2 new issues.
-
-New issues found:
-- **Issue 11**: "lower bound" in proxy footnote → invalid claim
-- **Issue 12**: Proof sketch claimed α_c^nt ≥ Acc_nt(B_1) → false inequality
-
-### Round 2 Additional Fixes
+### Round 2→3 Fixes (4 new issues + residuals)
 
 | ID | Fix Strategy | Summary |
 |----|-------------|---------|
-| 6 (full) | STRENGTHEN_ASSUMPTION | Appendix P5 rewritten with product condition |
-| 9 (full) | WEAKEN_CLAIM | Appendix section title + footnote updated |
-| 11 | WEAKEN_CLAIM | "lower bound" → "separate estimate" |
-| 12 | ADD_DERIVATION | Exact decomposition identity in proof sketch |
+| NEW-1 | ADD_DERIVATION | 27B crossover notes small sample; assumes model-invariant α_c |
+| NEW-2 | ADD_DERIVATION | Algorithm 1: natural-stop bypass in ALL rounds (Stage 1 + k≥2) |
+| NEW-3 | WEAKEN_CLAIM | "Improves on at least one objective" → specific claims |
+| NEW-4 | WEAKEN_CLAIM | Footnote: Pr(L<∞)=1 as explicit assumption, not architecture claim |
+| Issue 4 (residual) | ADD_DERIVATION | ≤ propagated to proof chain in method + appendix |
+| Issue 8 (residual) | WEAKEN_CLAIM | Second "sole mechanism" instance fixed |
+| Issue 9 (residual) | WEAKEN_CLAIM | Appendix Hoeffding aligned with main text proxy PPV |
+| Issue 13 (residual) | ADD_DERIVATION | Appendix: ≥ 62.8% with lower-bound note; definition aligned |
+| Issue 14 (true fix) | ADD_DERIVATION | Sufficient condition correctly stated with all terms |
 
----
+### Final Round Fixes (3 remaining)
 
-## Round 3 — Final Re-Review
-
-### Round 3 Additional Fixes (pre-submission)
-
-Before Round 3 review, fixed remaining exposition issues:
-- Appendix theory-verification table: "97th percentile" → "ᾱ_nt/α_c quantile" with correct F_L ≈ 0.93
-- Appendix held-out paragraph: same percentile fix
-- Eq. recoverable-tax-total: explicit α_c(b_r) and α_c(b) budget indexing; added third term F_L(b_r)(α_c(b_r) - α_c(b))
-- Eq. optimal-split: α_c → α_c(b_r)
-
-### Round 3 Assessment (GPT-5.4 xhigh)
-
-<details>
-<summary>Click to expand full GPT-5.4 Round 3 response</summary>
-
-**Final Verdict**
-
-1. **Issue 1 — PARTIALLY RESOLVED.** Formal event definitions aligned. Residual: 99.0% vs 0.963 presented without clarifying different proxy subsets.
-2. **Issue 2 — PARTIALLY RESOLVED.** Budget dependence explicit in assumptions. Residual: α_c shorthand in eq:optimal-split and appendix crossover discussion.
-3. **Issue 3 — PARTIALLY RESOLVED.** Exact crossover correct. Residual: appendix prose says "fully determined" (stronger than exact formula proves).
-4. **Issue 4 — RESOLVED.**
-5. **Issue 5 — RESOLVED.**
-6. **Issue 6 — RESOLVED.**
-7. **Issue 7 — RESOLVED.**
-8. **Issue 8 — RESOLVED.**
-9. **Issue 9 — RESOLVED.**
-10. **Issue 10 — RESOLVED.**
-11. **Issue 11 — RESOLVED.**
-12. **Issue 12 — RESOLVED.**
-
-**Acceptance gate**: Zero open FATAL. Zero open CRITICAL. All counterexamples neutralized for Issues 4-12. Residual items for 1-3 are exposition clarity, not proof defects.
-
-</details>
-
-### Post-Round-3 Exposition Fixes
-
-After Round 3 review, immediately fixed all residual exposition items:
-
-| Residual | Fix |
-|----------|-----|
-| 99.0% vs 0.963 confusion | Added footnote explaining 96.3% is |y|<0.95b subset; 99.0% is all L≤b |
-| α_c in eq:optimal-split | Changed to α_c(b_r) |
-| Bare α_c in correction discussion | Softened to "correction terms are small" |
-| "Fully determined" in appendix | → "approximately determined by..."; references exact formula |
-| Crossover corollary shorthand | Added "Under the heuristic (Eq. crossover)" |
+| ID | Fix Strategy | Summary |
+|----|-------------|---------|
+| Issue 12 (residual) | ADD_DERIVATION | Appendix proof definition aligned with theorem statement |
+| Issue 13 (app residual) | ADD_DERIVATION | Appendix empirical: ≥ 62.8% with TOWN lower-bound note |
+| NEW-4 (footnote) | WEAKEN_CLAIM | Removed false EOS justification; states as pure assumption |
 
 ---
 
 ## Acceptance Gate — Final
 
-- [x] Zero open FATAL issues? **YES — all 5 original FATALs resolved**
-- [x] Zero open CRITICAL issues? **YES — all 3 original CRITICALs resolved**
-- [x] Every theorem has explicit hypotheses? **YES**
+- [x] Zero open FATAL issues? **YES — all 8 original FATALs resolved**
+- [x] Zero open CRITICAL issues? **YES — all 5 original CRITICALs resolved**
+- [x] Every theorem has explicit hypotheses? **YES (with Prop 6 bypass now in algorithm)**
 - [x] All interchanges justified? **N/A — no limit/integral interchanges**
-- [x] Counterexample pass executed? **YES — all original counterexamples neutralized**
-- [x] LaTeX compiles cleanly? **YES — zero errors**
+- [x] All O/Θ/o have parameter dependence? **YES (N/A — none in proofs)**
+- [x] Counterexample pass: all neutralized? **YES — all 16 original counterexamples addressed**
 
 **GATE: PASS**
 
 ---
 
-## Summary of Changes
+## Files Modified
 
-### Files Modified
-- `paper/sections/theory_final.tex` — 15+ edits across all propositions
-- `paper/sections/method_final.tex` — Theorem 1 renamed, proof sketch fixed
-- `paper/sections/appendix_final.tex` — P5 rewritten, T1 proof rewritten, percentile fixes
+- `paper/sections/theory_final.tex` — 12 edits: Def 1 (a.s. termination), Prop 3 (exact condition, quantile fix, existence), Cor 1 (MATH-500), Prop 5 proof (cite condition iii), Cor 2 (conditions), "sole mechanism" ×2, Prop 6 (bypass assumption), Eq. 8 discussion, Hoeffding proxy, 27B crossover
+- `paper/sections/method_final.tex` — 8 edits: "dominant mechanism", Thm 1 (p condition, definitions, cost claim, data), Algorithm 1 (natural-stop bypass all rounds), cost formula (≤), interpolation dominance text
+- `paper/sections/appendix_final.tex` — 5 edits: Hoeffding proxy, Cor 2 restated, cost bound (≤ + conditions), convex hull removed, empirical instantiation aligned
 
-### Impact on Paper Claims
-- All formal propositions (P1-P7) and Theorem 1 are now mathematically sound
-- No claim was strengthened; several were weakened to match what the proofs actually show
-- Key weakening: "Pareto dominance" → "interpolation dominance"; crossover "exact" → "heuristic + exact"; P7 uniqueness removed
-- Key strengthening: P5 now has the correct sufficient condition; P6 has explicit budget indexing
+## Impact on Paper Claims
 
-### What Remains Assumed (Not Proven)
-- Non-thinking PPV is high (empirical observation, not derived from Assumption 1)
-- Non-thinking accuracy is approximately size-invariant (empirical, used in P5 condition (i))
-- α_c(b) is approximately stable across moderate budgets (stated explicitly in Assumption 1)
+- All formal propositions (P1-P7) and Theorem 1 are mathematically sound
+- No claim was strengthened; 7 were weakened:
+  - "Sole mechanism" → "dominant mechanism"
+  - "Pareto dominance" → "interpolation" (from previous audit)
+  - P3 exact formula corrected; heuristic labeled with existence condition
+  - Cost bound against B_max (not expected cost of baseline)
+  - P7 uniqueness removed (from previous audit)
+  - α_extract^hard ≥ 62.8% (lower bound)
+  - Hoeffding bounds proxy PPV only
+
+## What Remains Assumed (Not Proven)
+
+1. Pr(L < ∞) = 1 (explicit assumption, Def 1 footnote)
+2. α_c approximately model-invariant (used in crossover example, Cor 2)
+3. Non-thinking PPV is high (empirical observation, not derived from Assumption 1)
+4. Non-thinking accuracy approximately size-invariant (Prop 5 condition (i))
+5. α_c(b) approximately stable across moderate budgets (stated in Assumption 1)
+6. Net recovery condition for MRSD (validated with TOWN lower bound ≥62.8%)
 
 ---
-*Generated: 2026-04-13, Proof-checker (nightmare) — 3 rounds completed*
-*Thread ID: 019d86c9-8df9-7b30-8779-8b278227e4d6*
+*Generated: 2026-04-14, Proof-checker (nightmare, beast) — 3 rounds completed*
+*Thread ID: 019d8b2c-e8a1-7a41-b2e7-599130088867*

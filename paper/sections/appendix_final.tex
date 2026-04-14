@@ -725,9 +725,10 @@ but does not follow from Assumption~\ref{asm:binary-restated} alone.
 \end{proposition}
 
 \noindent
-By Hoeffding's inequality, with $n{=}475$ natural-stop samples (8B, $b{=}512$)
-and $\hat{\alpha}_c = 0.963$:
-the 95\% lower confidence bound is $\alpha_c \ge 0.901$.
+By Hoeffding's inequality, with $n{=}475$ samples from the
+$|y| < 0.95\,b$ proxy subset (8B, $b{=}512$)
+and observed proxy PPV $\hat{\alpha} = 0.963$:
+the 95\% lower confidence bound on this proxy PPV is $\ge 0.901$.
 
 \begin{remark}[Information-theoretic interpretation]
 Early stopping implies the model's conditional entropy
@@ -783,8 +784,10 @@ Kaplan-Meier estimation accounts for right-censored chains that hit the budget c
 
 \begin{corollary}[Crossover budget grows with model size (restated)]
 \label{cor:crossover-scaling-restated}
-Since $b^*(M) \approx F_{L_M}^{-1}(\bar{\alpha}_{\mathrm{nt}}/\alpha_c)$
-and $F_{L_M}^{-1}$ shifts right with $M$:
+If $\bar{\alpha}_{\mathrm{nt}}$ and $\alpha_c$ are approximately
+model-invariant and $L_{M_2}$ stochastically dominates $L_{M_1}$,
+then $b^*(M) \approx F_{L_M}^{-1}(\bar{\alpha}_{\mathrm{nt}}/\alpha_c)$
+shifts right with $M$:
 $M_2 > M_1 \implies b^*(M_2) \ge b^*(M_1)$.
 Larger models require proportionally larger budgets for thinking to
 become cost-effective.
@@ -971,7 +974,9 @@ where $\alpha_{\mathrm{nt}}^{\mathrm{hard}} \triangleq
 \Pr(\mathrm{correct} \mid \neg\mathcal{S}, \mathrm{nothink})$.
 \textsc{Mrsd} replaces the second term with
 $\alpha_{\mathrm{extract}}^{\mathrm{hard}}$
-(the split-budget extraction accuracy on escalated queries):
+(the accuracy of the complete escalated branch, including
+all refinement rounds and majority vote, on queries that
+exhaust the Stage~0 budget):
 $$\mathrm{Acc}_{\textsc{Mrsd}} = p \cdot \alpha_c^{\mathrm{nt}}
   + (1-p) \cdot \alpha_{\mathrm{extract}}^{\mathrm{hard}}.$$
 Subtracting:
@@ -985,35 +990,40 @@ The net recovery condition~\eqref{eq:net-recovery} ensures the bracket
 is positive, so $\mathrm{Acc}_{\textsc{Mrsd}} > \mathrm{Acc}_{\mathrm{nt}}(B_1)$.
 
 \paragraph{Cost bound.}
-The expected per-query cost of \textsc{Mrsd} is (Eq.~\ref{eq:mrsd-cost}):
-$\mathbb{E}[T] = p \bar{t}_1 + (1-p)(B_1 + \bar{K}(B_r + B_a)),$
+By Eq.~\eqref{eq:mrsd-cost},
+$\mathbb{E}[T] \le p \bar{t}_1 + (1-p)(B_1 + \bar{K}(B_r + B_a)),$
 where $\bar{t}_1 \le B_1$ and $\bar{K} \le K$.
 The maximum-budget thinking baseline uses $B_{\max} \triangleq B_1 + K(B_r + B_a)$
 tokens per query.
-Since $\bar{t}_1 < B_1$ for $p > 0$ (early-stop queries terminate before
-exhausting $B_1$):
-$\mathbb{E}[T] < p \cdot B_1 + (1-p) \cdot B_{\max} < B_{\max},$
-where the last inequality holds because $p > 0$ and $B_1 < B_{\max}$.
-Thus $\mathbb{E}[T_{\textsc{Mrsd}}] < B_{\max} = \mathbb{E}[T_{\mathrm{think}}(B_{\max})]$.
+Since $\bar{t}_1 < B_1$ when early-stop queries exist
+(they terminate before exhausting $B_1$):
+$\mathbb{E}[T] \le p \cdot B_1 + (1-p) \cdot B_{\max} < B_{\max},$
+where the last inequality holds because $0 < p < 1$ and $B_1 < B_{\max}$.
+Thus $\mathbb{E}[T_{\textsc{Mrsd}}] < B_{\max}$.
 
 \paragraph{Combined.}
 \textsc{Mrsd} achieves higher accuracy than $\mathrm{nothink@}B_1$
-and lower expected cost than $\mathrm{think@}B_{\max}$,
-placing it strictly inside the convex hull of the two baselines.
-This is a \emph{strict interpolation dominance}: the method improves
-on at least one objective relative to each baseline.%
+and lower expected cost than the worst-case budget $B_{\max}$.
+This is a \emph{strict interpolation}: the method improves
+accuracy over one baseline while staying within budget.%
 \footnote{This is weaker than full Pareto dominance, which would require
 simultaneously dominating \emph{both} objectives relative to a single
-baseline.}
+baseline.
+The cost comparison is against $B_{\max}$ (the worst-case token
+allocation), not against the expected cost of a think-mode baseline
+that may also early-stop.}
 
 \paragraph{Empirical instantiation.}
 On GSM8K ($n{=}1{,}319$): $p = 0.888$, $\alpha_c^{\mathrm{nt}} = 0.944$,
-$\alpha_{\mathrm{nt}}^{\mathrm{hard}} = (87.5\% - 0.888 \times 94.4\%)/0.112 = 33.0\%$,
-$\alpha_{\mathrm{extract}}^{\mathrm{hard}} = 87.5\%$
-(14/16 escalated queries rescued in pilot).
-Net gain: $0.112 \times (87.5\% - 33.0\%) = 6.1$\,pp.
-The full-scale observed gain is 3.4\,pp, lower than the pilot estimate
-due to additional routing regret at scale.
+$\alpha_{\mathrm{nt}}^{\mathrm{hard}} = (87.5\% - 0.888 \times 94.4\%)/0.112 = 33.0\%$.
+The escalated branch achieves
+$\alpha_{\mathrm{extract}}^{\mathrm{hard}} \ge 62.8\%$
+(93/148 routed queries correct using think@512 in the
+\town{} cascade---a lower bound, since the full \method{}
+pipeline adds decoupled extraction on truncated chains).
+Net gain: $0.112 \times (62.8\% - 33.0\%) = 3.3$\,pp,
+consistent with the observed 3.4\,pp improvement of \method{} over
+\texttt{nothink@256}.
 \end{proof}
 
 % ============================================================================

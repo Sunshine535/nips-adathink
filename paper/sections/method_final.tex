@@ -57,9 +57,10 @@ truncated---making the first term negligible and the second term dominant
 but small ($\alpha_t \approx 0$).
 
 The coupling constraint in Eq.~\eqref{eq:coupling-constraint} is the
-\emph{sole} mechanism behind the thinking tax: if reasoning and answering
-could draw from separate budgets, truncated reasoning would not destroy
-the model's ability to emit a correct answer.
+\emph{dominant} mechanism behind the thinking tax in the
+truncation-dominated regime ($\alpha_c \ge \bar{\alpha}_{\mathrm{nt}}$):
+if reasoning and answering could draw from separate budgets, truncated
+reasoning would not destroy the model's ability to emit a correct answer.
 This observation motivates the split-budget framework.
 
 % ---------------------------------------------------------------------------
@@ -155,8 +156,12 @@ The full procedure is given in Algorithm~\ref{alg:mrsd}.
 \Statex \textbf{Stage 1: First think-then-extract round}
 \State $Z_1 \leftarrow \mathcal{M}_{\mathrm{think}}(q,\; B_r)$
   \Comment{Generate reasoning trace (may truncate)}
+\If{$|Z_1| < B_r$}
+  \Comment{Natural stop $\Rightarrow$ chain complete; use directly}
+  \State \Return $\mathrm{answer}(Z_1),\; |y_0| + |Z_1|$
+\EndIf
 \State $y_1 \leftarrow \mathcal{M}_{\mathrm{nothink}}(q \,\|\, Z_1,\; B_a)$
-  \Comment{Decoupled answer extraction}
+  \Comment{Decoupled answer extraction (truncated chains only)}
 \State $\hat{a}_1 \leftarrow \mathrm{answer}(y_1)$
 
 \medskip
@@ -166,8 +171,14 @@ The full procedure is given in Algorithm~\ref{alg:mrsd}.
     \Comment{Previous answer as hint}
   \State $Z_k \leftarrow \mathcal{M}_{\mathrm{think}}(
     q \,\|\, \text{``Previous attempt: } \mathrm{hint}_k \text{''},\; B_r)$
-  \State $y_k \leftarrow \mathcal{M}_{\mathrm{nothink}}(q \,\|\, Z_k,\; B_a)$
-  \State $\hat{a}_k \leftarrow \mathrm{answer}(y_k)$
+  \If{$|Z_k| < B_r$}
+    \State $\hat{a}_k \leftarrow \mathrm{answer}(Z_k)$
+      \Comment{Complete chain: use directly}
+  \Else
+    \State $y_k \leftarrow \mathcal{M}_{\mathrm{nothink}}(q \,\|\, Z_k,\; B_a)$
+    \State $\hat{a}_k \leftarrow \mathrm{answer}(y_k)$
+      \Comment{Truncated: extract}
+  \EndIf
   \If{$\hat{a}_k = \hat{a}_{k-1}$}
     \Comment{Convergence: consecutive agreement}
     \State \Return $\hat{a}_k, \; B_1 + k \cdot (B_r + B_a)$
@@ -253,15 +264,16 @@ against fixed-mode baselines and self-consistency.
 Let $p$ denote the fraction of queries resolved at Stage~0
 (natural-stop rate at budget $B_1$), and let $\bar{K}$ denote the
 average number of refinement rounds for escalated queries.
-The expected per-query token cost is:
+The expected per-query token cost is upper-bounded by:
 \begin{equation}
   \label{eq:mrsd-cost}
   \mathbb{E}[T_{\textsc{Mrsd}}]
-  \;=\; p \cdot \bar{t}_1
+  \;\le\; p \cdot \bar{t}_1
   \;+\; (1-p) \cdot \bigl(B_1 + \bar{K} \cdot (B_r + B_a)\bigr),
 \end{equation}
 where $\bar{t}_1 \le B_1$ is the average token cost of queries that
-stop naturally.
+stop naturally (equality holds when escalated queries always exhaust
+their budgets).
 On GSM8K with $B_1{=}256$, $B_r{=}512$, $B_a{=}128$: $p = 0.888$,
 $\bar{t}_1 = 133$, $\bar{K} \approx 1.5$, giving
 $\mathbb{E}[T] = 0.888 \times 133 + 0.112 \times (256 + 1.5 \times 640)
@@ -312,8 +324,8 @@ vs.\ only 15.4\% for standard truncated thinking
 (pilot, $n{=}200$).
 
 \paragraph{Interpolation dominance.}
-Both \town{} and \textsc{Mrsd} strictly improve on at least one
-objective relative to each single-mode baseline:
+\textsc{Mrsd} achieves higher accuracy than \texttt{nothink@}$B_1$ and
+lower cost than the worst-case budget allocation $B_{\max}$:
 
 \begin{theorem}[\textsc{Mrsd} interpolation dominance]
 \label{thm:mrsd-pareto}
@@ -322,16 +334,28 @@ If the \emph{net recovery condition}
   \label{eq:net-recovery}
   \alpha_{\mathrm{extract}}^{\mathrm{hard}} > \alpha_{\mathrm{nt}}^{\mathrm{hard}}
 \end{equation}
-holds (split-budget generation on escalated queries achieves higher
-accuracy than non-thinking alone) and the triage early-stop rate
-$p > 0$, then \textsc{Mrsd} achieves:
+holds---where $\alpha_{\mathrm{extract}}^{\mathrm{hard}}$ is the
+accuracy of the complete escalated branch (including all refinement rounds
+and majority vote) on queries that exhaust the Stage~0 budget,
+and $\alpha_{\mathrm{nt}}^{\mathrm{hard}}$ is the non-thinking
+accuracy on the same subset---and the triage early-stop rate satisfies
+$0 < p < 1$, then \textsc{Mrsd} achieves:
 \begin{enumerate}[nosep,leftmargin=*]
-  \item Higher accuracy than \texttt{nothink@}$B_1$, and
-  \item Lower expected cost than \texttt{think@}$(B_1 + K(B_r + B_a))$.
+  \item Strictly higher accuracy than \texttt{nothink@}$B_1$, and
+  \item Lower expected token cost than the maximum budget
+    $B_{\max} \triangleq B_1 + K(B_r + B_a)$.
 \end{enumerate}
-On GSM8K (pilot, $n{=}200$), the condition is satisfied:
-$\alpha_{\mathrm{extract}}^{\mathrm{hard}} = 87.5\%$ (14/16 escalated
-queries rescued) vs.\ $\alpha_{\mathrm{nt}}^{\mathrm{hard}} \approx 0\%$.
+On GSM8K ($n{=}1{,}319$), the condition is satisfied:
+at full scale, $\alpha_{\mathrm{nt}}^{\mathrm{hard}} = 33.0\%$
+(derived from the decomposition $p = 0.888$,
+$\alpha_c^{\mathrm{nt}} = 94.4\%$;
+Appendix~\ref{app:town-proof}), while the escalated branch
+achieves $\alpha_{\mathrm{extract}}^{\mathrm{hard}} \ge 62.8\%$
+(93/148 escalated queries correct using think@512 alone in the
+\town{} cascade; see Appendix~\ref{app:town-simulation}---the
+full \method{} pipeline with decoupled extraction can only
+improve upon this, since it adds an answer-recovery pass on
+truncated chains).
 
 \textbf{Caveat:} the accuracy dominance is over \texttt{nothink@}$B_1$---the triage budget.
 If nothink accuracy improves substantially when $B_1$ is doubled
@@ -350,11 +374,19 @@ $\mathrm{Acc}_{\textsc{Mrsd}} = p \cdot \alpha_c^{\mathrm{nt}}
 + (1-p) \cdot \alpha_{\mathrm{extract}}^{\mathrm{hard}}$.
 Subtracting: $\mathrm{Acc}_{\textsc{Mrsd}} - \mathrm{Acc}_{\mathrm{nt}}(B_1)
 = (1-p)(\alpha_{\mathrm{extract}}^{\mathrm{hard}} - \alpha_{\mathrm{nt}}^{\mathrm{hard}}) > 0$
-by the net recovery condition (full proof in Appendix~\ref{app:town-proof}).
-For cost: the expected cost (Eq.~\ref{eq:mrsd-cost}) satisfies
-$\mathbb{E}[T] = p \bar{t}_1 + (1-p)(B_1 + \bar{K}(B_r + B_a))
-< B_1 + K(B_r + B_a)$ whenever $p > 0$, since $\bar{t}_1 < B_1$
-for early-stop queries.
+by the net recovery condition and $1 - p > 0$
+(full proof in Appendix~\ref{app:town-proof}).
+For cost: let $B_{\max} = B_1 + K(B_r + B_a)$.
+By Eq.~\eqref{eq:mrsd-cost},
+$\mathbb{E}[T] \le p \bar{t}_1 + (1-p)(B_1 + \bar{K}(B_r + B_a))
+< p \cdot B_1 + (1-p) \cdot B_{\max} < B_{\max}$
+whenever $0 < p < 1$, since $\bar{t}_1 < B_1$
+for early-stop queries and $\bar{K} \le K$.%
+\footnote{This compares against the \emph{maximum budget allocation}
+$B_{\max}$, not the expected cost of a think-mode baseline that may
+also early-stop.
+The claim is that \textsc{Mrsd}'s adaptive allocation is strictly
+cheaper than the worst-case budget $B_{\max}$.}
 \end{proof}
 
 % ---------------------------------------------------------------------------
