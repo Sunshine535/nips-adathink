@@ -452,8 +452,10 @@ def generate_decoupled_answer(
             "End with a single line: Final answer: <number>."
         ),
         "math500": (
-            "You are an expert mathematician. Solve the following problem step by step. "
-            "Put your final answer inside \\boxed{}."
+            "You are an expert mathematician. I have done most of the reasoning already. "
+            "Your job is ONLY to extract or compute the final answer and output it in the form "
+            "\\boxed{ANSWER}. Do not re-solve or re-explain. Do not output anything after the \\boxed{}. "
+            "The answer may be a number, fraction, expression, or interval — use LaTeX format."
         ),
     }
     system_text = ANSWER_SYSTEM.get(benchmark, ANSWER_SYSTEM["gsm8k"])
@@ -642,9 +644,26 @@ def run_iris_sample(
     )
     pred_s3, source_s3 = parse_prediction_dispatch(answer_text, benchmark)
 
+    # Retry mechanism: if extraction fell back to last-number on math500, retry with doubled budget
+    tokens_s3_retry = 0
+    retry_used = False
+    if benchmark == "math500" and source_s3 == "fallback_last":
+        retry_used = True
+        answer_text2, tokens_s3_retry, _ = generate_decoupled_answer(
+            model, tokenizer, question, thinking_trace,
+            answer_budget=b_answer * 2, benchmark=benchmark,
+        )
+        pred_s3_retry, source_s3_retry = parse_prediction_dispatch(answer_text2, benchmark)
+        # Use retry if it produces a proper boxed answer
+        if source_s3_retry == "boxed":
+            answer_text = answer_text2
+            pred_s3 = pred_s3_retry
+            source_s3 = source_s3_retry
+
     result["stage3"] = {
         "text": answer_text,
-        "tokens": tokens_s3,
+        "tokens": tokens_s3 + tokens_s3_retry,
+        "retry_used": retry_used,
         "elapsed": round(elapsed_s3, 4),
         "pred": pred_s3,
         "pred_source": source_s3,
@@ -653,7 +672,7 @@ def run_iris_sample(
     result["final_stage"] = 3
     result["pred"] = pred_s3
     result["pred_source"] = f"s3_{source_s3}"
-    result["tokens_total"] = tokens_s1 + s2_result["n_tokens_used"] + tokens_s3
+    result["tokens_total"] = tokens_s1 + s2_result["n_tokens_used"] + tokens_s3 + tokens_s3_retry
     result["elapsed_total"] = round(elapsed_s1 + s2_result["elapsed_s"] + elapsed_s3, 4)
     result["stop_reason"] = f"stage3_after_{s2_result['stop_reason']}"
 
