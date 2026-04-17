@@ -76,11 +76,13 @@ accuracy to 56.9\%.
 
 \begin{table}[t]
 \centering
-\caption{\textbf{Failure-mode decomposition} on GSM8K ($n{=}1{,}319$, Qwen3-8B).
+\caption{\textbf{Failure-mode decomposition} on GSM8K (Qwen3-8B, seed 42).
+Budget 256 row uses full test set ($n{=}1{,}319$); budget 512 row reports both
+the $n{=}200$ pilot (starred rows) and the full-scale accuracy (56.9\% think,
+93.1\% nothink) confirmed at $n{=}1{,}319$.
 Thinking mode's poor accuracy is almost entirely explained by truncation:
 the vast majority of responses never produce a final answer.
 Non-thinking mode's token-efficient format avoids this failure mode entirely.
-Think@512 overall accuracy is 56.9\% (HuggingFace engine, greedy decoding).
 95\% bootstrap CIs from 10k paired resamples.}
 \label{tab:failure-decomp}
 \small
@@ -96,15 +98,15 @@ Truncated (hit budget) & 98.6\% & 11.2\% & 62.0\% & 0.2\% \\
 \;\;Acc.\ among truncated & 16.8\% & 32.4\% & 32.2\% & --- \\
 Has final answer & 0.4\% & --- & 5.3\% & --- \\
 \midrule
-\textbf{Overall accuracy} & 18.0\% & 87.5\% & 57.5\%$^*$ & 93.4\%$^\dagger$ \\
-\textbf{Tax (paired bootstrap)} & \multicolumn{2}{c}{69.5pp \ci{66.9}{72.0}} & \multicolumn{2}{c}{---} \\
+\textbf{Overall accuracy} & 18.0\% & 87.5\% & 56.9\%$^*$ & 93.1\%$^\dagger$ \\
+\textbf{Tax (paired bootstrap)} & \multicolumn{2}{c}{69.5pp \ci{66.9}{72.0}} & \multicolumn{2}{c}{36.2pp} \\
 \bottomrule
 \end{tabular}
 \vspace{1mm}
 
 \footnotesize
-$^*$HuggingFace engine, greedy decoding (56.9\% on full $n{=}1{,}319$; 57.5\% on $n{=}200$ subset).
-$^\dagger$Nothink@512 column from $n{=}200$ subset (seed=42); full-set accuracy is 93.1\% ($n{=}1{,}319$).
+$^*$Think@512 overall accuracy: 56.9\% on full $n{=}1{,}319$ (HuggingFace engine, greedy decoding); natural-stop rate 37.4\%, truncated 62.6\%.
+$^\dagger$Nothink@512 overall accuracy: 93.1\% on full $n{=}1{,}319$; natural-stop rate 99.7\%.
 \vspace{-2mm}
 \end{table}
 

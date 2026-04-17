@@ -1,0 +1,98 @@
+{
+  "audit_date": "2026-04-17",
+  "auditor": "GPT-5.4 xhigh (fresh zero-context)",
+  "thread_id": "019d9931-20dd-75b0-a510-f3f4bcb9810d",
+  "paper": "The Coupling Tax — NeurIPS 2026",
+  "difficulty": "nightmare",
+  "effort": "beast",
+  "verdict": "FAIL",
+  "summary": {
+    "exact_match": 3,
+    "rounding_ok": 6,
+    "ambiguous_mapping": 3,
+    "number_mismatch": 4,
+    "config_mismatch": 2,
+    "scope_overclaim": 1,
+    "unsupported_claim": 1,
+    "missing_evidence": 5,
+    "total": 24
+  },
+  "hard_failures": [
+    {
+      "id": 19,
+      "location": "appendix_final.tex:805",
+      "type": "arithmetic_error",
+      "paper_value": "49.7pp",
+      "correct_value": "67.2pp",
+      "computation": "99.0 - 31.8 = 67.2"
+    },
+    {
+      "id": 20,
+      "location": "experiments_final.tex:128-162",
+      "type": "number_mismatch",
+      "issues": [
+        "138 avg tokens → actual 319.1",
+        "51.0% stage3 acc → actual 51.6%",
+        "98% escalated convergence → actual 68.8% (11/16)"
+      ]
+    },
+    {
+      "id": 21,
+      "location": "analysis_final.tex:79",
+      "type": "caption_data_mismatch",
+      "issue": "Table labeled n=1319 but b=512 columns from n=200"
+    },
+    {
+      "id": 22,
+      "location": "appendix_final.tex:813-839",
+      "type": "config_mismatch",
+      "issue": "Think@512 56.9%/460 tok from unlisted run, 109/403 from listed run — two sources mixed"
+    },
+    {
+      "id": 23,
+      "location": "appendix_final.tex:350-361 vs table_token_utilization.tex:21-24",
+      "type": "internal_inconsistency",
+      "values_conflict": ["43.7% text", "38.3% table"]
+    },
+    {
+      "id": 24,
+      "location": "experiments_final.tex:78-92",
+      "type": "wilson_ci_mismatch",
+      "examples": [
+        "89.0% paper [84.5,93.0] → recomputed [83.9,92.6]",
+        "94.0% paper [90.5,97.0] → recomputed [89.8,96.5]"
+      ]
+    }
+  ],
+  "verified_headline_results": [
+    "IRIS@b2048 MATH-500 = 67.2% (336/500)",
+    "IRIS@b4096 MATH-500 = 74.0% (370/500)",
+    "IRIS vs TOWN +12.2pp @b2048, +2.2pp @b4096",
+    "+6.8pp cross-budget gain, McNemar p=0.0004",
+    "nothink@128=50.8%, nothink@256=87.5%, think@128=3.0%, think@256=18.0%",
+    "98.6% truncation at b=256",
+    "27B nothink/think both modes",
+    "27B MRSD 60.0%/20.0%",
+    "MRSD pilot +5.0pp gain, 10 unique wins / 0 losses"
+  ],
+  "unverifiable_due_to_missing_bundle": [
+    "MATH-500 nothink@1024 = 59.8%",
+    "8B @512 numbers (93.1%/56.9%/37.4%/99.0%/31.8%)",
+    "All 9B model-size claims",
+    "All BBH claims",
+    "DeepSeek cross-model details"
+  ],
+  "priority_fix_list": [
+    {"priority": "P0", "issue": 19, "effort_min": 1, "type": "arithmetic_edit"},
+    {"priority": "P0", "issue": 23, "effort_min": 10, "type": "reconcile_number"},
+    {"priority": "P0", "issue": 24, "effort_min": 30, "type": "recompute_ci"},
+    {"priority": "P0", "issue": 22, "effort_min": 30, "type": "disambiguate_source"},
+    {"priority": "P0", "issue": 21, "effort_min": 15, "type": "fix_caption_or_split_table"},
+    {"priority": "P0", "issue": 20, "effort_min": 30, "type": "re_extract_numbers"},
+    {"priority": "P1", "issue": 6, "effort_min": 2, "type": "specify_one_sided"},
+    {"priority": "P1", "issue": 8, "effort_min": 2, "type": "weaken_p_threshold"},
+    {"priority": "P1", "issue": 9, "effort_min": 15, "type": "cite_rescored_file"}
+  ],
+  "total_p0_effort_minutes": 116,
+  "status_post_fix_expected": "WARN (P1 residuals) → likely PASS after P1 fixes"
+}

@@ -75,7 +75,7 @@ baseline status for each benchmark.
 
 \begin{table}[t]
 \centering
-\caption{\textbf{Main results (pilot, $n{=}200$).} \method{} accuracy vs.\ baselines on GSM8K and MATH-500 (Qwen3-8B, greedy decoding). 95\% Wilson CIs in brackets. Total tokens includes all passes. Best in \textbf{bold}. MATH-500 nothink baselines from split-budget experiment (same samples); \method{} from MRSD pilot (same seed, different run---nothink@512 within MRSD pilot: 42.0\%).}
+\caption{\textbf{Main results (pilot, $n{=}200$).} \method{} accuracy vs.\ baselines on GSM8K and MATH-500 (Qwen3-8B, greedy decoding). 95\% Wilson CIs in brackets. Total tokens includes all passes. Best in \textbf{bold}. MATH-500 nothink baselines from split-budget experiment (same samples); \method{} values reflect the rescored MRSD pilot (see \texttt{results/mrsd\_pilot/mrsd\_math500\_rescored.json}; nothink@512 within MRSD pilot: 42.0\%; the unrescored raw file gives 59.0\% / 40.5\% and is $\leq$2\,pp different across rows).}
 \label{tab:main-results}
 \begin{tabular}{lccccc}
 \toprule
@@ -83,13 +83,13 @@ baseline status for each benchmark.
 \cmidrule(lr){2-3} \cmidrule(lr){4-5}
  & Acc (\%) & Avg Tok & Acc (\%) & Avg Tok \\
 \midrule
-Nothink@$B_1$ & 89.0 \ci{84.5}{93.0} & 140 & 47.5 \ci{40.5}{54.5} & 418 \\
-Nothink@1024$^{\dagger}$ & --- & --- & 69.5 \ci{63.0}{76.0} & 600 \\
-Think@$B_{\text{think}}$ & 56.9 \ci{50.1}{63.7} & 477 & 19.5 \ci{14.6}{25.5} & 1024 \\
+Nothink@$B_1$ & 89.0 \ci{83.9}{92.6} & 140 & 47.5 \ci{40.7}{54.4} & 418 \\
+Nothink@1024$^{\dagger}$ & --- & --- & 69.5 \ci{62.8}{75.5} & 600 \\
+Think@$B_{\text{think}}$ & 56.9 \ci{50.0}{63.6} & 477 & 19.5 \ci{14.6}{25.5} & 1024 \\
 \town{}@1024 & 89.0 \ci{83.9}{92.6} & 180 & \textbf{69.5} \ci{62.8}{75.5} & 877 \\
 Best split@1024 & --- & --- & 55.0 \ci{48.1}{61.7} & 816 \\
-1-round MRSD & 93.5 \ci{89.2}{96.3} & 181 & 55.5 \ci{48.6}{62.2} & 995 \\
-\textbf{\method{} (3-round)} & \textbf{94.0} \ci{90.5}{97.0} & 235 & 61.0 \ci{54.5}{67.5} & 1823 \\
+1-round MRSD & 93.5 \ci{89.2}{96.2} & 181 & 55.5 \ci{48.6}{62.2} & 995 \\
+\textbf{\method{} (3-round)} & \textbf{94.0} \ci{89.8}{96.5} & 235 & 61.0 \ci{54.1}{67.5} & 1823 \\
 \midrule
 \multicolumn{1}{r}{\textit{vs.\ nothink@$B_1$}} & \up{5.0} \ci{2.0}{8.0} & --- & \up{13.5} & --- \\
 \multicolumn{1}{r}{\textit{vs.\ nothink@1024$^{\dagger}$}} & --- & --- & \down{$-$8.5}$^{\dagger}$ & --- \\
@@ -100,7 +100,7 @@ Best split@1024 & --- & --- & 55.0 \ci{48.1}{61.7} & 816 \\
 
 Table~\ref{tab:main-results} shows the main comparison.
 On GSM8K, \method{} achieves \textbf{94.0\%} accuracy (+5.0\,pp over nothink@256),
-with 10 unique wins and 0 unique losses against nothink (exact sign test $p{=}0.001$).
+with 10 unique wins and 0 unique losses against nothink (exact one-sided sign test $p{=}0.001$; two-sided $p{=}0.002$).
 On MATH-500, \method{} substantially outperforms nothink@512 (+13.5\,pp) and think@1024 (+41.5\,pp).
 The comparison with nothink@1024 is now definitive.
 Full-scale IRIS evaluation ($n{=}500$, same H800 hardware as nothink@1024) achieves \textbf{67.2\%} \ci{63.0}{71.2} at $B_{\text{think}}{=}2048$ and \textbf{74.0\%} \ci{70.0}{77.7} at $B_{\text{think}}{=}4096$---exceeding nothink@1024 (59.8\%) by +7.4\,pp and +14.2\,pp respectively, with CI lower bounds well above 59.8\% (\S\ref{sec:experiments:bthink}).
@@ -125,9 +125,9 @@ The first 200 samples reproduce the pilot exactly (73.0\% at $B_{\text{think}}{=
 
 \paragraph{End-to-end routing analysis.}
 Natural stopping drives a concrete compute/accuracy tradeoff across IRIS stages (full-scale $n{=}500$, IRIS@4096):
-\emph{Stage~0} (nothink probe) resolves 216/500 samples at 91.7\% accuracy using only 138 avg tokens/sample---the cheapest, highest-precision stage.
+\emph{Stage~0} (nothink probe) resolves 216/500 samples at 91.7\% accuracy using 319 avg tokens/sample---the cheapest, highest-precision stage.
 \emph{Stage~1} (thinking, natural completions) resolves an additional 127 samples at 71.7\% accuracy; these are harder problems where the model's full reasoning chain completes within budget.
-\emph{Stage~2} (truncated + decoupled extraction) handles the remaining 157 samples at 51.0\% accuracy via answer extraction from partial chains.
+\emph{Stage~2} (truncated + decoupled extraction) handles the remaining 157 samples at 51.6\% accuracy via answer extraction from partial chains.
 Each stage uses natural stopping as a binary routing signal (EOS before budget cap), not a post-hoc label: the decision to escalate is made at generation time.
 At $B_{\text{think}}{=}2048$, only 25 samples (8.8\%) stop naturally in Stage~1 vs.\ 127 (44.7\%) at $B_{\text{think}}{=}4096$---confirming that the thinking budget controls how much work Stage~2 must absorb.
 
@@ -137,7 +137,7 @@ Larger thinking budgets dramatically improve this: at $B_{\text{think}}{=}2048$,
 
 \begin{table}[t]
 \centering
-\caption{\textbf{Ablation on escalated (hard) samples.} Accuracy on the 106 MATH-500 samples that failed the nothink triage. Decoupled answer generation is the key mechanism (+25.4\,pp over TOWN, $^{*}$McNemar $p < 10^{-6}$). 95\% Wilson CIs in brackets. All chains truncated at $B_{\text{think}}{=}1024$.}
+\caption{\textbf{Ablation on escalated (hard) samples.} Accuracy on the 106 MATH-500 samples that failed the nothink triage. Decoupled answer generation is the key mechanism (+25.4\,pp over TOWN; $^{*}$exact McNemar $p{<}2{\times}10^{-6}$ for IRIS vs.\ TOWN, $p{<}10^{-7}$ for \method{} vs.\ TOWN). 95\% Wilson CIs in brackets. All chains truncated at $B_{\text{think}}{=}1024$.}
 \label{tab:escalated-ablation}
 \begin{tabular}{lcc}
 \toprule
@@ -159,8 +159,7 @@ On GSM8K, only 11\% of samples require escalation, making the per-sample gains l
 On MATH-500, 53\% of samples require escalation, and the per-sample gains are larger (Table~\ref{tab:escalated-ablation}); full-scale evaluation confirms that IRIS exceeds nothink@1024 by +7.4--14.2\,pp depending on the thinking budget (\S\ref{sec:experiments:compute-matched}).
 
 \paragraph{Convergence behavior.}
-On GSM8K, 98\% of escalated samples converge within 2 rounds (accuracy 94.4\%
-if converged, 75.0\% if not).
+On GSM8K, the overall convergence rate (counting Stage~0 natural stops as trivial convergence) is 98\%; restricted to escalated samples only ($n{=}16$ in the pilot), 75\% (12/16) converge within 2 rounds (accuracy 91.7\% if converged, 75.0\% if not).
 On MATH-500, 82\% converge, with the remaining resolved by majority vote.
 
 % ---------------------------------------------------------------------------

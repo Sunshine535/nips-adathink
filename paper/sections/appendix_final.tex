@@ -802,7 +802,7 @@ Here we present the complete analysis.
 
 At $b{=}512$ with Qwen3-8B, 37.4\% of samples terminate before consuming
 95\% of their token budget (Table~\ref{tab:natural-stop-oracle}).
-Among these, accuracy is \textbf{99.0\%}; among truncated samples, only 31.8\%---a 49.7\,pp gap.
+Among these, accuracy is \textbf{99.0\%}; among truncated samples, only 31.8\%---a 67.2\,pp gap.
 A stricter definition requiring an explicit ``Final answer'' marker selects only 6.1\% but achieves 93.8\%.
 The effect generalizes to DeepSeek-R1-8B (Table~\ref{tab:natural-stop-oracle}).
 
@@ -819,7 +819,10 @@ The \textbf{oracle} upper bound (95.8\%) leaves a 4.9\,pp gap reflecting routing
 \begin{table}[ht]
 \centering
 \caption{\textbf{Routing baseline comparison} on GSM8K (Qwen3-8B, $n{=}1{,}319$).
-All budget-matched routers use the same 11.2\% routing rate as \method{}.}
+All budget-matched routers use the same 11.2\% routing rate as \method{}.
+Think@512 row reports values from the routing analysis run (seed~11,
+accuracy 65.2\%); the main-paper seed~42 run gives 56.9\% at similar
+avg tokens, with identical qualitative conclusions.}
 \label{tab:routing_baselines}
 \small
 \begin{tabular}{@{}lcccccc@{}}
@@ -827,7 +830,7 @@ All budget-matched routers use the same 11.2\% routing rate as \method{}.}
 \textbf{Method} & \textbf{Acc.\,(\%)} & \textbf{Avg Tok.} & \textbf{Route\,\%} & \textbf{Recov.} & \textbf{Regret} & \textbf{Net\,$\Delta$} \\
 \midrule
 NoThink@256 & 87.5 & 146 & 0.0 & 0 & 0 & 0 \\
-Think@512 & 56.9 & 460 & 100.0 & 109 & 403 & $-$294 \\
+Think@512 & 65.2 & 477 & 100.0 & 109 & 403 & $-$294 \\
 \midrule
 Random & $85.0{\pm}0.5$ & $200{\pm}1$ & 11.2 & 12.7 & 45.6 & $-$32.9 \\
 Inverse Token-Length & 83.5 & 200 & 11.2 & 1 & 54 & $-$53 \\

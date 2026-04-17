@@ -22,8 +22,12 @@ import time
 from collections import Counter
 from datetime import datetime, timezone
 
+import sys
 import torch
 from datasets import load_dataset
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from benchmarks import parse_prediction_math, is_correct_math
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 log = logging.getLogger(__name__)
@@ -179,6 +183,25 @@ def load_gsm8k(n_samples, seed):
     return items
 
 
+def load_math500(n_samples, seed):
+    ds = load_dataset("HuggingFaceH4/MATH-500", split="test")
+    samples = list(ds)
+    random.seed(seed)
+    random.shuffle(samples)
+    selected = samples[:n_samples] if n_samples > 0 else samples
+    items = []
+    for raw in selected:
+        items.append({"question": raw["problem"], "gold": raw["answer"]})
+    return items
+
+
+def load_benchmark(benchmark, n_samples, seed):
+    if benchmark == "math500":
+        return load_math500(n_samples, seed)
+    else:
+        return load_gsm8k(n_samples, seed)
+
+
 def main():
     parser = argparse.ArgumentParser(description="Non-thinking mode baseline")
     parser.add_argument("--model", default="Qwen/Qwen3-8B")
@@ -201,7 +224,7 @@ def main():
     model, tokenizer = load_model_and_tokenizer(args.model, args.device_map)
 
     log.info(f"Loading {args.benchmark} (n={args.n_samples})...")
-    items = load_gsm8k(args.n_samples, args.seed)
+    items = load_benchmark(args.benchmark, args.n_samples, args.seed)
     log.info(f"Loaded {len(items)} items")
 
     results = {}
@@ -228,11 +251,16 @@ def main():
                 if not hit_budget:
                     early_stops += 1
 
-                pred, has_final, pred_source = parse_prediction(text, strict_final_only=False)
-                if has_final:
-                    has_finals += 1
-
-                c = is_correct(pred, item["gold"])
+                if args.benchmark == "math500":
+                    pred, has_final, pred_source = parse_prediction_math(text, strict_final_only=False)
+                    if has_final:
+                        has_finals += 1
+                    c = is_correct_math(pred, item["gold"])
+                else:
+                    pred, has_final, pred_source = parse_prediction(text, strict_final_only=False)
+                    if has_final:
+                        has_finals += 1
+                    c = is_correct(pred, item["gold"])
                 if c:
                     correct += 1
 
