@@ -358,7 +358,10 @@ of samples stopping naturally.
 But at $b{=}512$, utilization drops to \textbf{89.8\%}, with an average
 of only 477 tokens consumed out of 512 available.
 
-The pattern is even more dramatic for DeepSeek-R1 on GSM8K: at $b{=}256$, utilization exceeds 100\% (the model consumes its entire budget on 95.8\% of samples), but at $b{=}1{,}024$ utilization drops to \textbf{43.7\%} ($447/1{,}024$ avg tokens consumed), with 99.6\% of samples stopping naturally---more than half the budget is wasted on padding (full-scale, $n{=}1{,}319$; Table~\ref{tab:deepseek-gsm8k}).
+The pattern is even more dramatic for DeepSeek-R1 on GSM8K.
+Full-scale numbers (Table~\ref{tab:deepseek-gsm8k}) show utilization dropping from 100\% at $b{=}256$ to just 43.7\% ($447/1{,}024$) at $b{=}1{,}024$.
+The pilot run reported in Table~\ref{tab:token-utilization} ($n{=}40$) shows a consistent trend: 103\%, 73.5\%, 38.3\%.
+Both runs confirm the same qualitative effect---DeepSeek-R1's chain-length distribution saturates well below $b{=}1{,}024$, so more than half the budget is wasted on padding.
 
 % ============================================================================
 \section{Difficulty Distribution and Impossible Questions}

@@ -7,7 +7,7 @@ We scope this finding to models with distinct thinking and non-thinking modes un
 Our formal truncation-waste decomposition (Propositions~\ref{prop:acc-decomp}--\ref{prop:inverse-scaling}) explains these phenomena quantitatively, predicting the crossover budget from chain-length statistics alone.
 
 The natural-stop signal---whether the model emits EOS before exhausting the budget---provides an operational routing criterion with 99.0\% positive predictive value, used by \method{} (\fullmethod{}) to triage easy queries before escalating to \splitbudget{}.
-\method{} achieves \textbf{94.0\%} accuracy on GSM8K at 235 avg tokens (+5.0\,pp over nothink@256, pilot $n{=}200$)---the only method to improve beyond the nothink plateau.
+\method{} achieves \textbf{94.0\%} accuracy on GSM8K at 235 avg tokens (+5.0\,pp over nothink@256, pilot $n{=}200$)---exceeding the nothink plateau, which 1-round IRIS (93.5\%) also clears under decoupled answering.
 On MATH-500, \method{}'s core mechanism---decoupled answer generation---recovers +25.4\,pp on hard samples requiring escalation.
 Full-scale evaluation ($n{=}500$, same hardware) confirms that IRIS surpasses the nothink ceiling: IRIS@2048 achieves \textbf{67.2\%} \ci{63.0}{71.2} and IRIS@4096 achieves \textbf{74.0\%} \ci{70.0}{77.7}, exceeding nothink@1024 (59.8\%) by +7.4\,pp and +14.2\,pp respectively---with CI lower bounds above 59.8\%.
 The cross-budget gain of +6.8\,pp from $B_{\text{think}}{=}2048$ to 4096 (McNemar $p{=}0.0004$) confirms that the split-budget mechanism scales with the thinking budget.
