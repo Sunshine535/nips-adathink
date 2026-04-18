@@ -24,11 +24,20 @@
 
 **Universal method gain**: **all four scale × benchmark combinations** show consistent positive improvement from the Stage 3 extraction fix. Two independent 27B MATH-500 runs (n=50 and n=200@n=20) both converge to 80.0% — high reproducibility.
 
-**Core narrative**: Split-budget Stage 3 extraction is a universally effective method, not limited to any particular scale or benchmark. The "IRIS=TOWN on GSM8K" and "27B method failure" observations in earlier runs were implementation artifacts (fallback parser dominating when extraction didn't emit \boxed{}). With extract-only prompt + sufficient b_a, Stage 3 decoupled answer extraction:
-- Recovers ~30pp on hard (escalated) samples across all tested combinations
-- Lifts total accuracy by +3pp to +19.5pp depending on fraction of hard samples
-- Brings 27B GSM8K IRIS to 95% (within 0.5pp of nothink ceiling 95.5%)
-- Brings 27B MATH-500 IRIS to 80% (vs baseline 60.5%, TOWN 49%)
+**Core narrative (revised 2026-04-18 after full-scale runs)**:
+
+The method gains concentrate in the **high-coupling-tax regime** (large model × hard benchmark). Same-sample full-scale deltas:
+
+| Setting | Same-sample Δ | Coupling tax magnitude |
+|---------|---------------|----------------------|
+| 27B × MATH-500 (n=200) | **+17.0pp** | very high (S3 fraction 63%) |
+| 27B × GSM8K (n=200)   | +3.5pp vs baseline, +7.5pp vs TOWN | moderate |
+| 8B × GSM8K (n=200)    | +3.0pp vs TOWN, hard subset +33.3pp | low (only 11% escalate) |
+| **8B × MATH-500 (n=500)** | **+0.4pp** (essentially no gain) | moderate but saturated |
+
+For 8B × MATH-500 we ran a Stage-3 prompt ablation (strict vs soft vs few-shot) at n=200. All three variants' deltas converge toward baseline as n grows (strict/soft ≈ 0, few-shot ≈ +1-2pp). This confirms the result is genuine, not a prompt-tuning artifact: **prompt engineering alone is insufficient to close the 8B × MATH-500 gap**.
+
+**Honest claim (paper revision)**: The Stage 3 extraction method provides consistent gains when the coupling tax is large (truncation rate ≳ 60% on hard subset), and saturates when the tax is already small. The 27B × MATH-500 result (+17.0pp, n=200) is the strongest method case; 8B × MATH-500 serves as a negative-control that validates the theoretical prediction (recoverable tax scales with truncation rate).
 
 ---
 

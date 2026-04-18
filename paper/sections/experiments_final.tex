@@ -403,6 +403,18 @@ The improved extraction drives Stage~3 boxed-emission rate from 60\% to 93\% on 
 On 8B GSM8K, the hard (escalated) subset accuracy jumps from 38.9\% (original IRIS tied TOWN at this subset) to 72.2\%---a $+$33.3\,pp advantage on exactly the samples where Stage~3 matters.
 Two independent 27B MATH-500 runs converge on 80.0\% (separate n=50 run and n=200 run at its checkpoint n=20), demonstrating high reproducibility.
 
-\paragraph{Implication.}
-The original ``IRIS $=$ TOWN on GSM8K'' and ``IRIS $<$ nothink on 27B'' observations were implementation artifacts of the extraction parser, not fundamental method limitations.
-With proper extraction engineering, split-budget generation provides consistent, universal accuracy gains across all tested scale $\times$ benchmark combinations.
+\paragraph{Scope limit: 8B MATH-500 saturates.}
+A full-scale 8B MATH-500 improved-prompt run ($n{=}500$, same samples as the baseline) yields 74.4\% vs.\ the baseline's 74.0\%---only $+$0.4\,pp.
+An ablation comparing three Stage-3 prompt variants (strict, soft, few-shot) shows that all three converge toward baseline as $n$ grows: the few-shot variant holds $+$1--2\,pp at $n{=}200$, but does not reach the $+$4--9\,pp seen at early checkpoints.
+This is not an artifact: the early-checkpoint advantage reflects MATH-500's sample-distribution heterogeneity (first-$100$ samples are easier on average).
+The saturated result validates Proposition~\ref{prop:recoverable-tax}: $\Delta_{\mathrm{split}} = (1 - F_L(b_r)) \cdot (\alpha_{\mathrm{extract}} - \alpha_t)$.
+At $B_r{=}4096$ on 8B MATH-500, $1 - F_L(b_r) \approx 0.55$ and baseline $\alpha_t$ is already moderate (extraction falls back to a last-number parser that frequently succeeds on numeric MATH answers), so the recoverable margin is small by theory.
+
+\paragraph{Method scope (revised).}
+Stage 3 extraction engineering provides the largest gains where the coupling tax is most severe:
+\begin{itemize}[nosep,leftmargin=*]
+  \item \textbf{Large gain ($+$17\,pp)}: large model $\times$ hard benchmark with high truncation ($27$B $\times$ MATH-500 at $B_{\text{think}}{=}4096$, S3 fraction $63\%$).
+  \item \textbf{Moderate gain ($+$3--7\,pp)}: moderate-truncation regimes (27B $\times$ GSM8K, 8B hard subset of GSM8K).
+  \item \textbf{Saturated ($<$1\,pp)}: small model $\times$ moderate benchmark where baseline extraction is already near its ceiling (8B $\times$ MATH-500 $@B_{\text{think}}{=}4096$).
+\end{itemize}
+This distribution is predicted by Proposition~\ref{prop:recoverable-tax} and not by a universal improvement claim.

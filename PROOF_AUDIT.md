@@ -129,3 +129,41 @@
 ---
 *Generated: 2026-04-14, Proof-checker (nightmare, beast) — 3 rounds completed*
 *Thread ID: 019d8b2c-e8a1-7a41-b2e7-599130088867*
+
+---
+
+## Round 4 — Delta Audit (2026-04-18)
+
+> Lightweight delta audit triggered after paper-claim-audit introduced 46 lines of edits in `appendix_final.tex`. `theory_final.tex` and `method_final.tex` unchanged (0 diff lines).
+> Thread: 019d9ec1-f173-7e42-983f-054a6346e6ae
+
+### Scope
+
+Only 3 appendix edits reviewed:
+1. DeepSeek utilization sourcing clarification (prose only)
+2. Arithmetic fix `49.7pp → 67.2pp` in Finding 2 prose
+3. Routing-baseline Think@512 row: `56.9/460 → 65.2/477` + caption note on seed 11 vs seed 42
+
+### Verdict
+
+**PASS** — No new proof regressions.
+
+Codex GPT-5.4 xhigh confirmed:
+- No theorem/proposition statement or proof depends on the edited numerical values
+- Proof-critical constants remain unchanged: $\alpha_c^{\mathrm{nt}}=94.4\%$, $\alpha_{\mathrm{nt}}^{\mathrm{hard}}=33.0\%$, $\alpha_{\mathrm{extract}}^{\mathrm{hard}}$ untouched
+- Internal consistency verified: no residual `49.7` in final build; Think@512 discrepancy now explicitly disambiguated in caption
+- Edit 1 is pure prose — no displayed equation, quantifier, or assumption changes
+
+### Acceptance Gate — Cumulative
+
+- [x] Zero open FATAL: **YES**
+- [x] Zero open CRITICAL: **YES**
+- [x] Every theorem has explicit hypotheses: **YES**
+- [x] All O/Θ/o have parameter dependence: **YES (N/A — none in proofs)**
+- [x] All counterexamples neutralized: **YES (16/16 from Round 1-3; 0 new in Round 4)**
+
+**GATE: PASS** (sustained from Round 3)
+
+---
+*Round 4 Generated: 2026-04-18, Proof-checker (nightmare, beast) — delta audit*
+*Thread ID: 019d9ec1-f173-7e42-983f-054a6346e6ae*
