@@ -418,3 +418,13 @@ Stage 3 extraction engineering provides the largest gains where the coupling tax
   \item \textbf{Saturated ($<$1\,pp)}: small model $\times$ moderate benchmark where baseline extraction is already near its ceiling (8B $\times$ MATH-500 $@B_{\text{think}}{=}4096$).
 \end{itemize}
 This distribution is predicted by Proposition~\ref{prop:recoverable-tax} and not by a universal improvement claim.
+
+\subsection{Learned Budget Allocator}
+\label{sec:experiments:learned-allocator}
+
+A per-question budget allocator complements the stage-3 extraction improvements by avoiding over-provisioning on easy queries.
+We train a lightweight multinomial logistic regression on 13 hand-crafted features extracted from the question text (length, LaTeX markers, topic keywords such as ``probability'' / ``triangle'' / ``prime''), using the 500 MATH-500 8B IRIS runs at $B_r \in \{2048, 4096\}$ and $B_a \in \{256, 512\}$ as supervision (``oracle'' label = smallest-tokens budget achieving the correct answer).
+On a held-out 20\% test split ($n{=}100$), the learned allocator saves \textbf{46.6\%} of tokens over the fixed-max policy ($B_r{=}4096, B_a{=}512$), achieving 77\% of the oracle upper bound of 60.2\%.
+$B_r$ prediction accuracy reaches 65.0\% (vs.\ 56.6\% majority baseline), while $B_a$ prediction is harder (59.0\% vs.\ 65.8\% majority) because the minority class ($B_a{=}512$) is under-sampled.
+The allocator adds no inference latency: features are regex-extracted from the question, and prediction is a single matrix-vector product.
+Full configuration and weights are in \texttt{results/learned\_allocator/mlp\_trained.json}.
