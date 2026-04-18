@@ -1,0 +1,26 @@
+{
+  "source": "results/iris_improved_20260417/8b_math500_b4096_ba512_n500/checkpoint_iris_500.json",
+  "benchmark": "MATH-500 (n=500, 8B, seed=42)",
+  "analysis": "Feasibility of soft routing vs IRIS binary natural-stop",
+  "stage1_natural_stop_subset": {
+    "n": 216,
+    "acc_baseline_binary": 0.917,
+    "avg_tokens": 321,
+    "correct_samples": {"n": 198, "avg_tokens": 316},
+    "wrong_samples": {"n": 18, "avg_tokens": 373}
+  },
+  "logistic_regression_1feat": {
+    "feature": "tokens_total (normalized)",
+    "bias": 2.560,
+    "weight_tokens": -0.648,
+    "prediction_range": [0.805, 0.982]
+  },
+  "threshold_sweep": {
+    "tau_0.85": {"accepted_n": 192, "accepted_acc": 0.917, "escalated_n": 24, "escalated_acc": 0.917},
+    "tau_0.90": {"accepted_n": 146, "accepted_acc": 0.959, "escalated_n": 70, "escalated_acc": 0.829},
+    "tau_0.92": {"accepted_n": 117, "accepted_acc": 0.957, "escalated_n": 99, "escalated_acc": 0.869},
+    "tau_0.95": {"accepted_n": 70, "accepted_acc": 0.971, "escalated_n": 146, "escalated_acc": 0.890}
+  },
+  "finding": "Soft routing over binary natural-stop provides no net accuracy gain on this workload. At tau=0.90, uncertain subset (n=70) already has 82.9% accuracy — stage-2 escalation (72% on escalated hard subset) would likely degrade it. Binary natural-stop threshold is empirically well-calibrated for IRIS.",
+  "future_work": "Soft routing may help when stage-0 confidence signals include log-probabilities or learned question embeddings (not available in current runs). Collecting logprob data requires --log_logprobs flag on IRIS runs."
+}
