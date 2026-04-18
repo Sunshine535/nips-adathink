@@ -446,19 +446,42 @@ def generate_decoupled_answer(
     Returns (answer_text, n_tokens, elapsed).
     """
     # Build a prompt that includes the thinking context
+    # PROMPT_VARIANT selects extraction strategy:
+    #   "strict"  = original improved (extract-only, forbids re-solving) — best for large models
+    #   "soft"    = prefer boxed but allow re-solving — better for small models
+    #   "fewshot" = soft + few-shot boxed examples
+    prompt_variant = os.environ.get("IRIS_PROMPT_VARIANT", "strict")
+
     ANSWER_SYSTEM = {
         "gsm8k": (
             "You are a careful math solver. Solve the problem step by step briefly. "
             "End with a single line: Final answer: <number>."
         ),
-        "math500": (
-            "You are an expert mathematician. I have done most of the reasoning already. "
-            "Your job is ONLY to extract or compute the final answer and output it in the form "
-            "\\boxed{ANSWER}. Do not re-solve or re-explain. Do not output anything after the \\boxed{}. "
-            "The answer may be a number, fraction, expression, or interval — use LaTeX format."
-        ),
+        "math500": {
+            "strict": (
+                "You are an expert mathematician. I have done most of the reasoning already. "
+                "Your job is ONLY to extract or compute the final answer and output it in the form "
+                "\\boxed{ANSWER}. Do not re-solve or re-explain. Do not output anything after the \\boxed{}. "
+                "The answer may be a number, fraction, expression, or interval — use LaTeX format."
+            ),
+            "soft": (
+                "You are an expert mathematician. Use the reasoning above to produce the final answer. "
+                "If the reasoning is clear, just extract the answer; otherwise complete the computation briefly. "
+                "End with \\boxed{ANSWER} in LaTeX format (number, fraction, expression, or interval)."
+            ),
+            "fewshot": (
+                "You are an expert mathematician. Use the reasoning above to produce the final answer. "
+                "If the reasoning is clear, just extract it; otherwise complete the computation briefly. "
+                "Always end with \\boxed{ANSWER} in LaTeX.\n\n"
+                "Examples:\n"
+                "  Integer answer: \\boxed{42}\n"
+                "  Fraction: \\boxed{\\frac{3}{4}}\n"
+                "  Expression: \\boxed{x^2 + 1}\n"
+                "  Interval: \\boxed{(0, 2]}"
+            ),
+        }[prompt_variant] if benchmark == "math500" else None,
     }
-    system_text = ANSWER_SYSTEM.get(benchmark, ANSWER_SYSTEM["gsm8k"])
+    system_text = ANSWER_SYSTEM.get(benchmark) or ANSWER_SYSTEM["gsm8k"]
 
     # We include the thinking trace as assistant's partial response
     # and ask the model to conclude with an answer
