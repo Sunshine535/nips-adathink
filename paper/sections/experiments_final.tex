@@ -366,6 +366,14 @@ The diagnosis is \textbf{budget insufficiency}: 27B generates longer chains than
 This motivates the net recovery condition (Eq.~\ref{eq:net-recovery}): the cascade requires a model-size-specific minimum $B_{\text{think}}$.
 Detailed 27B results and analysis are in Appendix~\ref{app:27b-nothink}.
 
+\paragraph{27B nothink saturation at extended budget.}
+To verify that raising the budget does not help nothink (nothink is already chain-length-unbound), we run 27B nothink at $B{=}4096$ on GSM8K ($n{=}200$, seed=42, H800).
+Result: accuracy = \textbf{98.0\%} (196/200) with avg\_tokens $=$ 255 and 100\% early-stop rate.
+The per-budget trajectory on the full $n{=}1{,}319$ set is nothink@128{=}9.9\%, @256{=}65.1\%, @512{=}\textbf{95.5\%} (avg\_tok $=$ 249, early\_stop $=$ 96.9\%).
+From $B{=}512$ to $B{=}4096$ (8$\times$ budget), nothink accuracy moves from 95.5\% to 98.0\%---effectively saturated, with avg\_tokens barely changing (249 $\to$ 255).
+This confirms nothink's chain-length independence on 27B GSM8K.
+The corresponding 27B thinking@4096 is in progress and reported upon completion.
+
 % ---------------------------------------------------------------------------
 \subsection{Stage 3 Extraction Improvements}
 \label{sec:experiments:improved}
