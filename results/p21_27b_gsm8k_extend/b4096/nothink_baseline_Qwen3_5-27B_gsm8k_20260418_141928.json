@@ -1,0 +1,3633 @@
+{
+  "meta": {
+    "method": "nothink_baseline",
+    "timestamp": "20260418_141928",
+    "model": "Qwen/Qwen3.5-27B",
+    "benchmark": "gsm8k",
+    "n_samples": 200,
+    "budgets": [
+      4096
+    ],
+    "seed": 42
+  },
+  "results": {
+    "nothink_4096": {
+      "accuracy": 0.98,
+      "avg_tokens": 254.71,
+      "early_stop_rate": 1.0,
+      "has_final_rate": 0.0
+    },
+    "thinking_4096": {
+      "accuracy": 0.875,
+      "avg_tokens": 1996.685,
+      "early_stop_rate": 0.735,
+      "has_final_rate": 0.11
+    }
+  },
+  "per_sample": {
+    "nothink_4096": [
+      {
+        "idx": 0,
+        "pred": "52",
+        "correct": true,
+        "tokens": 223,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 1,
+        "pred": "5",
+        "correct": true,
+        "tokens": 158,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 2,
+        "pred": "83",
+        "correct": true,
+        "tokens": 270,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 3,
+        "pred": "10",
+        "correct": true,
+        "tokens": 181,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 4,
+        "pred": "70",
+        "correct": true,
+        "tokens": 303,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 5,
+        "pred": "36",
+        "correct": true,
+        "tokens": 209,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 6,
+        "pred": "48",
+        "correct": true,
+        "tokens": 165,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 7,
+        "pred": "16",
+        "correct": true,
+        "tokens": 188,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 8,
+        "pred": "8",
+        "correct": true,
+        "tokens": 206,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 9,
+        "pred": "48",
+        "correct": true,
+        "tokens": 130,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 10,
+        "pred": "90",
+        "correct": true,
+        "tokens": 86,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 11,
+        "pred": "10",
+        "correct": true,
+        "tokens": 128,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 12,
+        "pred": "2",
+        "correct": true,
+        "tokens": 389,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 13,
+        "pred": "45000",
+        "correct": true,
+        "tokens": 222,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 14,
+        "pred": "18",
+        "correct": true,
+        "tokens": 187,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 15,
+        "pred": "140",
+        "correct": true,
+        "tokens": 104,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 16,
+        "pred": "17",
+        "correct": true,
+        "tokens": 385,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 17,
+        "pred": "68",
+        "correct": true,
+        "tokens": 227,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 18,
+        "pred": "8",
+        "correct": true,
+        "tokens": 164,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 19,
+        "pred": "14",
+        "correct": true,
+        "tokens": 109,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 20,
+        "pred": "50",
+        "correct": true,
+        "tokens": 268,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 21,
+        "pred": "100",
+        "correct": true,
+        "tokens": 228,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 22,
+        "pred": "125",
+        "correct": true,
+        "tokens": 234,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 23,
+        "pred": "48",
+        "correct": true,
+        "tokens": 254,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 24,
+        "pred": "15400",
+        "correct": true,
+        "tokens": 282,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 25,
+        "pred": "250",
+        "correct": true,
+        "tokens": 188,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 26,
+        "pred": "18",
+        "correct": true,
+        "tokens": 422,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 27,
+        "pred": "1490",
+        "correct": true,
+        "tokens": 312,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 28,
+        "pred": "11",
+        "correct": true,
+        "tokens": 128,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 29,
+        "pred": "106",
+        "correct": true,
+        "tokens": 304,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 30,
+        "pred": "138",
+        "correct": true,
+        "tokens": 368,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 31,
+        "pred": "15",
+        "correct": true,
+        "tokens": 187,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 32,
+        "pred": "4",
+        "correct": true,
+        "tokens": 190,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 33,
+        "pred": "82",
+        "correct": true,
+        "tokens": 226,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 34,
+        "pred": "2",
+        "correct": true,
+        "tokens": 316,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 35,
+        "pred": "51",
+        "correct": true,
+        "tokens": 286,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 36,
+        "pred": "4",
+        "correct": true,
+        "tokens": 198,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 37,
+        "pred": "100",
+        "correct": true,
+        "tokens": 182,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 38,
+        "pred": "25",
+        "correct": true,
+        "tokens": 313,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 39,
+        "pred": "188",
+        "correct": true,
+        "tokens": 226,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 40,
+        "pred": "30",
+        "correct": true,
+        "tokens": 171,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 41,
+        "pred": "30",
+        "correct": true,
+        "tokens": 129,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 42,
+        "pred": "240",
+        "correct": false,
+        "tokens": 107,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 43,
+        "pred": "7",
+        "correct": true,
+        "tokens": 179,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 44,
+        "pred": "350",
+        "correct": true,
+        "tokens": 416,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 45,
+        "pred": "2",
+        "correct": true,
+        "tokens": 316,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 46,
+        "pred": "36",
+        "correct": true,
+        "tokens": 188,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 47,
+        "pred": "2",
+        "correct": true,
+        "tokens": 643,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 48,
+        "pred": "14",
+        "correct": true,
+        "tokens": 204,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 49,
+        "pred": "33",
+        "correct": true,
+        "tokens": 132,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 50,
+        "pred": "21",
+        "correct": true,
+        "tokens": 157,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 51,
+        "pred": "175",
+        "correct": true,
+        "tokens": 358,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 52,
+        "pred": "60",
+        "correct": true,
+        "tokens": 229,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 53,
+        "pred": "49",
+        "correct": true,
+        "tokens": 135,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 54,
+        "pred": "1800",
+        "correct": true,
+        "tokens": 255,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 55,
+        "pred": "27",
+        "correct": true,
+        "tokens": 160,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 56,
+        "pred": "16",
+        "correct": true,
+        "tokens": 233,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 57,
+        "pred": "49",
+        "correct": true,
+        "tokens": 332,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 58,
+        "pred": "6",
+        "correct": true,
+        "tokens": 163,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 59,
+        "pred": "32",
+        "correct": true,
+        "tokens": 240,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 60,
+        "pred": "168",
+        "correct": true,
+        "tokens": 373,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 61,
+        "pred": "225",
+        "correct": true,
+        "tokens": 242,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 62,
+        "pred": "50",
+        "correct": true,
+        "tokens": 235,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 63,
+        "pred": "45",
+        "correct": true,
+        "tokens": 290,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 64,
+        "pred": "7",
+        "correct": true,
+        "tokens": 144,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 65,
+        "pred": "800",
+        "correct": true,
+        "tokens": 324,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 66,
+        "pred": "22",
+        "correct": true,
+        "tokens": 196,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 67,
+        "pred": "235",
+        "correct": true,
+        "tokens": 209,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 68,
+        "pred": "3",
+        "correct": true,
+        "tokens": 282,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 69,
+        "pred": "2",
+        "correct": true,
+        "tokens": 305,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 70,
+        "pred": "3000",
+        "correct": true,
+        "tokens": 380,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 71,
+        "pred": "300",
+        "correct": true,
+        "tokens": 311,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 72,
+        "pred": "20",
+        "correct": true,
+        "tokens": 293,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 73,
+        "pred": "130",
+        "correct": true,
+        "tokens": 148,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 74,
+        "pred": "1",
+        "correct": true,
+        "tokens": 179,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 75,
+        "pred": "8",
+        "correct": true,
+        "tokens": 254,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 76,
+        "pred": "50",
+        "correct": true,
+        "tokens": 265,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 77,
+        "pred": "3",
+        "correct": true,
+        "tokens": 428,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 78,
+        "pred": "5",
+        "correct": true,
+        "tokens": 207,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 79,
+        "pred": "110",
+        "correct": true,
+        "tokens": 163,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 80,
+        "pred": "1300",
+        "correct": true,
+        "tokens": 464,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 81,
+        "pred": "16",
+        "correct": true,
+        "tokens": 155,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 82,
+        "pred": "80",
+        "correct": true,
+        "tokens": 180,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 83,
+        "pred": "45",
+        "correct": true,
+        "tokens": 252,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 84,
+        "pred": "36",
+        "correct": true,
+        "tokens": 179,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 85,
+        "pred": "5",
+        "correct": true,
+        "tokens": 361,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 86,
+        "pred": "9",
+        "correct": true,
+        "tokens": 246,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 87,
+        "pred": "36",
+        "correct": true,
+        "tokens": 184,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 88,
+        "pred": "60",
+        "correct": true,
+        "tokens": 169,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 89,
+        "pred": "9",
+        "correct": true,
+        "tokens": 187,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 90,
+        "pred": "1",
+        "correct": true,
+        "tokens": 230,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 91,
+        "pred": "30",
+        "correct": true,
+        "tokens": 217,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 92,
+        "pred": "70000",
+        "correct": true,
+        "tokens": 302,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 93,
+        "pred": "34",
+        "correct": true,
+        "tokens": 235,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 94,
+        "pred": "13",
+        "correct": true,
+        "tokens": 311,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 95,
+        "pred": "306",
+        "correct": true,
+        "tokens": 196,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 96,
+        "pred": "55",
+        "correct": true,
+        "tokens": 271,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 97,
+        "pred": "24",
+        "correct": true,
+        "tokens": 172,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 98,
+        "pred": "75",
+        "correct": true,
+        "tokens": 154,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 99,
+        "pred": "24",
+        "correct": true,
+        "tokens": 195,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 100,
+        "pred": "50",
+        "correct": true,
+        "tokens": 330,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 101,
+        "pred": "110",
+        "correct": true,
+        "tokens": 204,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 102,
+        "pred": "452",
+        "correct": true,
+        "tokens": 339,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 103,
+        "pred": "30",
+        "correct": true,
+        "tokens": 241,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 104,
+        "pred": "80",
+        "correct": true,
+        "tokens": 180,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 105,
+        "pred": "3",
+        "correct": true,
+        "tokens": 356,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 106,
+        "pred": "120",
+        "correct": true,
+        "tokens": 116,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 107,
+        "pred": "172",
+        "correct": true,
+        "tokens": 343,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 108,
+        "pred": "70",
+        "correct": true,
+        "tokens": 192,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 109,
+        "pred": "13",
+        "correct": true,
+        "tokens": 232,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 110,
+        "pred": "150",
+        "correct": true,
+        "tokens": 304,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 111,
+        "pred": "10",
+        "correct": false,
+        "tokens": 229,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 112,
+        "pred": "1",
+        "correct": true,
+        "tokens": 517,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 113,
+        "pred": "250",
+        "correct": true,
+        "tokens": 227,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 114,
+        "pred": "3",
+        "correct": true,
+        "tokens": 155,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 115,
+        "pred": "15",
+        "correct": true,
+        "tokens": 230,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 116,
+        "pred": "12",
+        "correct": true,
+        "tokens": 157,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 117,
+        "pred": "60",
+        "correct": true,
+        "tokens": 224,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 118,
+        "pred": "3",
+        "correct": true,
+        "tokens": 256,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 119,
+        "pred": "9.00",
+        "correct": true,
+        "tokens": 407,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 120,
+        "pred": "140000",
+        "correct": true,
+        "tokens": 206,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 121,
+        "pred": "6",
+        "correct": false,
+        "tokens": 159,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 122,
+        "pred": "2400",
+        "correct": true,
+        "tokens": 264,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 123,
+        "pred": "4",
+        "correct": true,
+        "tokens": 106,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 124,
+        "pred": "79",
+        "correct": true,
+        "tokens": 580,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 125,
+        "pred": "300",
+        "correct": true,
+        "tokens": 180,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 126,
+        "pred": "91",
+        "correct": true,
+        "tokens": 356,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 127,
+        "pred": "8",
+        "correct": true,
+        "tokens": 128,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 128,
+        "pred": "120",
+        "correct": true,
+        "tokens": 139,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 129,
+        "pred": "350",
+        "correct": true,
+        "tokens": 182,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 130,
+        "pred": "2600",
+        "correct": true,
+        "tokens": 314,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 131,
+        "pred": "10",
+        "correct": true,
+        "tokens": 265,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 132,
+        "pred": "26",
+        "correct": true,
+        "tokens": 443,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 133,
+        "pred": "7",
+        "correct": true,
+        "tokens": 236,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 134,
+        "pred": "31",
+        "correct": true,
+        "tokens": 212,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 135,
+        "pred": "975",
+        "correct": true,
+        "tokens": 365,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 136,
+        "pred": "20",
+        "correct": true,
+        "tokens": 314,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 137,
+        "pred": "120",
+        "correct": true,
+        "tokens": 307,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 138,
+        "pred": "220",
+        "correct": true,
+        "tokens": 208,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 139,
+        "pred": "87",
+        "correct": true,
+        "tokens": 197,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 140,
+        "pred": "300",
+        "correct": true,
+        "tokens": 175,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 141,
+        "pred": "30",
+        "correct": true,
+        "tokens": 350,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 142,
+        "pred": "17",
+        "correct": true,
+        "tokens": 537,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 143,
+        "pred": "16",
+        "correct": true,
+        "tokens": 147,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 144,
+        "pred": "7",
+        "correct": true,
+        "tokens": 256,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 145,
+        "pred": "81",
+        "correct": true,
+        "tokens": 303,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 146,
+        "pred": "5",
+        "correct": true,
+        "tokens": 90,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 147,
+        "pred": "9",
+        "correct": true,
+        "tokens": 262,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 148,
+        "pred": "10",
+        "correct": true,
+        "tokens": 203,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 149,
+        "pred": "24",
+        "correct": true,
+        "tokens": 276,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 150,
+        "pred": "5",
+        "correct": true,
+        "tokens": 182,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 151,
+        "pred": "50",
+        "correct": true,
+        "tokens": 155,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 152,
+        "pred": "48",
+        "correct": true,
+        "tokens": 189,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 153,
+        "pred": "25",
+        "correct": true,
+        "tokens": 90,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 154,
+        "pred": "96",
+        "correct": true,
+        "tokens": 264,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 155,
+        "pred": "25",
+        "correct": true,
+        "tokens": 210,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 156,
+        "pred": "180",
+        "correct": true,
+        "tokens": 326,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 157,
+        "pred": "21",
+        "correct": true,
+        "tokens": 79,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 158,
+        "pred": "1200",
+        "correct": true,
+        "tokens": 172,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 159,
+        "pred": "255",
+        "correct": true,
+        "tokens": 208,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 160,
+        "pred": "4",
+        "correct": true,
+        "tokens": 225,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 161,
+        "pred": "10",
+        "correct": true,
+        "tokens": 191,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 162,
+        "pred": "700",
+        "correct": true,
+        "tokens": 182,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 163,
+        "pred": "38",
+        "correct": true,
+        "tokens": 124,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 164,
+        "pred": "32",
+        "correct": true,
+        "tokens": 158,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 165,
+        "pred": "30",
+        "correct": true,
+        "tokens": 228,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 166,
+        "pred": "16",
+        "correct": true,
+        "tokens": 137,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 167,
+        "pred": "40",
+        "correct": true,
+        "tokens": 361,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 168,
+        "pred": "288",
+        "correct": true,
+        "tokens": 172,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 169,
+        "pred": "1100",
+        "correct": true,
+        "tokens": 264,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 170,
+        "pred": "20",
+        "correct": true,
+        "tokens": 236,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 171,
+        "pred": "2",
+        "correct": true,
+        "tokens": 186,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 172,
+        "pred": "1040000",
+        "correct": false,
+        "tokens": 2189,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 173,
+        "pred": "9",
+        "correct": true,
+        "tokens": 179,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 174,
+        "pred": "132",
+        "correct": true,
+        "tokens": 191,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 175,
+        "pred": "93",
+        "correct": true,
+        "tokens": 285,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 176,
+        "pred": "4",
+        "correct": true,
+        "tokens": 239,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 177,
+        "pred": "85",
+        "correct": true,
+        "tokens": 195,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 178,
+        "pred": "33",
+        "correct": true,
+        "tokens": 186,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 179,
+        "pred": "12",
+        "correct": true,
+        "tokens": 246,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 180,
+        "pred": "7200",
+        "correct": true,
+        "tokens": 205,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 181,
+        "pred": "60",
+        "correct": true,
+        "tokens": 150,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 182,
+        "pred": "44",
+        "correct": true,
+        "tokens": 253,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 183,
+        "pred": "113",
+        "correct": true,
+        "tokens": 410,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 184,
+        "pred": "43500",
+        "correct": true,
+        "tokens": 366,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 185,
+        "pred": "720",
+        "correct": true,
+        "tokens": 110,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 186,
+        "pred": "50",
+        "correct": true,
+        "tokens": 254,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 187,
+        "pred": "24",
+        "correct": true,
+        "tokens": 155,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 188,
+        "pred": "43",
+        "correct": true,
+        "tokens": 186,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 189,
+        "pred": "30",
+        "correct": true,
+        "tokens": 229,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 190,
+        "pred": "23",
+        "correct": true,
+        "tokens": 367,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 191,
+        "pred": "251",
+        "correct": true,
+        "tokens": 283,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 192,
+        "pred": "35",
+        "correct": true,
+        "tokens": 166,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 193,
+        "pred": "50",
+        "correct": true,
+        "tokens": 1501,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 194,
+        "pred": "82",
+        "correct": true,
+        "tokens": 139,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 195,
+        "pred": "2100",
+        "correct": true,
+        "tokens": 295,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 196,
+        "pred": "3",
+        "correct": true,
+        "tokens": 332,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 197,
+        "pred": "12",
+        "correct": true,
+        "tokens": 179,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 198,
+        "pred": "11",
+        "correct": true,
+        "tokens": 224,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 199,
+        "pred": "12",
+        "correct": true,
+        "tokens": 309,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      }
+    ],
+    "thinking_4096": [
+      {
+        "idx": 0,
+        "pred": "52",
+        "correct": true,
+        "tokens": 926,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 1,
+        "pred": "5",
+        "correct": true,
+        "tokens": 766,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 2,
+        "pred": "83",
+        "correct": true,
+        "tokens": 1065,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 3,
+        "pred": "10",
+        "correct": true,
+        "tokens": 3076,
+        "hit_budget": false,
+        "has_final": true,
+        "pred_source": "final_answer"
+      },
+      {
+        "idx": 4,
+        "pred": "70",
+        "correct": true,
+        "tokens": 1135,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 5,
+        "pred": "36",
+        "correct": true,
+        "tokens": 941,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 6,
+        "pred": "48",
+        "correct": true,
+        "tokens": 813,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 7,
+        "pred": "16",
+        "correct": true,
+        "tokens": 1217,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 8,
+        "pred": "8",
+        "correct": true,
+        "tokens": 1322,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 9,
+        "pred": "48",
+        "correct": true,
+        "tokens": 981,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 10,
+        "pred": "90",
+        "correct": true,
+        "tokens": 4096,
+        "hit_budget": true,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 11,
+        "pred": "10",
+        "correct": true,
+        "tokens": 2207,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 12,
+        "pred": "2",
+        "correct": true,
+        "tokens": 2260,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 13,
+        "pred": "45000",
+        "correct": true,
+        "tokens": 945,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 14,
+        "pred": "18",
+        "correct": true,
+        "tokens": 791,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 15,
+        "pred": "140",
+        "correct": true,
+        "tokens": 596,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 16,
+        "pred": "1",
+        "correct": false,
+        "tokens": 4096,
+        "hit_budget": true,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 17,
+        "pred": "68",
+        "correct": true,
+        "tokens": 635,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 18,
+        "pred": "8",
+        "correct": true,
+        "tokens": 842,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 19,
+        "pred": "14",
+        "correct": true,
+        "tokens": 750,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 20,
+        "pred": "50",
+        "correct": true,
+        "tokens": 1594,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 21,
+        "pred": "100",
+        "correct": true,
+        "tokens": 927,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 22,
+        "pred": "125",
+        "correct": true,
+        "tokens": 1727,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 23,
+        "pred": "48",
+        "correct": true,
+        "tokens": 1558,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 24,
+        "pred": "15400",
+        "correct": true,
+        "tokens": 4096,
+        "hit_budget": true,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 25,
+        "pred": "250",
+        "correct": true,
+        "tokens": 4096,
+        "hit_budget": true,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 26,
+        "pred": "18",
+        "correct": true,
+        "tokens": 3472,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 27,
+        "pred": "1490",
+        "correct": true,
+        "tokens": 2467,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 28,
+        "pred": "11",
+        "correct": true,
+        "tokens": 961,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 29,
+        "pred": "106.12",
+        "correct": false,
+        "tokens": 4096,
+        "hit_budget": true,
+        "has_final": true,
+        "pred_source": "final_answer"
+      },
+      {
+        "idx": 30,
+        "pred": "138",
+        "correct": true,
+        "tokens": 1107,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 31,
+        "pred": "15.00",
+        "correct": true,
+        "tokens": 4096,
+        "hit_budget": true,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 32,
+        "pred": "4",
+        "correct": true,
+        "tokens": 774,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 33,
+        "pred": "82",
+        "correct": true,
+        "tokens": 1082,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 34,
+        "pred": "2",
+        "correct": true,
+        "tokens": 4096,
+        "hit_budget": true,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 35,
+        "pred": "51",
+        "correct": true,
+        "tokens": 1314,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 36,
+        "pred": "4",
+        "correct": true,
+        "tokens": 913,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 37,
+        "pred": "100",
+        "correct": true,
+        "tokens": 4096,
+        "hit_budget": true,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 38,
+        "pred": "25",
+        "correct": true,
+        "tokens": 1248,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 39,
+        "pred": "188",
+        "correct": true,
+        "tokens": 1447,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 40,
+        "pred": "30",
+        "correct": true,
+        "tokens": 1928,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 41,
+        "pred": "30",
+        "correct": true,
+        "tokens": 599,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 42,
+        "pred": "240",
+        "correct": false,
+        "tokens": 631,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 43,
+        "pred": "7",
+        "correct": true,
+        "tokens": 838,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 44,
+        "pred": "350",
+        "correct": true,
+        "tokens": 1516,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 45,
+        "pred": "15",
+        "correct": false,
+        "tokens": 4096,
+        "hit_budget": true,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 46,
+        "pred": "36",
+        "correct": true,
+        "tokens": 1186,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 47,
+        "pred": "2",
+        "correct": true,
+        "tokens": 4096,
+        "hit_budget": true,
+        "has_final": true,
+        "pred_source": "final_answer"
+      },
+      {
+        "idx": 48,
+        "pred": "14",
+        "correct": true,
+        "tokens": 690,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 49,
+        "pred": "33",
+        "correct": true,
+        "tokens": 653,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 50,
+        "pred": "21",
+        "correct": true,
+        "tokens": 4096,
+        "hit_budget": true,
+        "has_final": true,
+        "pred_source": "final_answer"
+      },
+      {
+        "idx": 51,
+        "pred": "1/4",
+        "correct": false,
+        "tokens": 4096,
+        "hit_budget": true,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 52,
+        "pred": "60",
+        "correct": true,
+        "tokens": 997,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 53,
+        "pred": "49",
+        "correct": true,
+        "tokens": 870,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 54,
+        "pred": "1800",
+        "correct": true,
+        "tokens": 968,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 55,
+        "pred": "27",
+        "correct": true,
+        "tokens": 971,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 56,
+        "pred": "16",
+        "correct": true,
+        "tokens": 4096,
+        "hit_budget": true,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 57,
+        "pred": "49",
+        "correct": true,
+        "tokens": 1161,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 58,
+        "pred": "6",
+        "correct": true,
+        "tokens": 1252,
+        "hit_budget": false,
+        "has_final": true,
+        "pred_source": "final_answer"
+      },
+      {
+        "idx": 59,
+        "pred": "72",
+        "correct": false,
+        "tokens": 4096,
+        "hit_budget": true,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 60,
+        "pred": "168",
+        "correct": true,
+        "tokens": 1185,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 61,
+        "pred": "225",
+        "correct": true,
+        "tokens": 4096,
+        "hit_budget": true,
+        "has_final": true,
+        "pred_source": "final_answer"
+      },
+      {
+        "idx": 62,
+        "pred": "50",
+        "correct": true,
+        "tokens": 744,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 63,
+        "pred": "3",
+        "correct": false,
+        "tokens": 4096,
+        "hit_budget": true,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 64,
+        "pred": "7",
+        "correct": true,
+        "tokens": 1086,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 65,
+        "pred": "800",
+        "correct": true,
+        "tokens": 1482,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 66,
+        "pred": "22",
+        "correct": true,
+        "tokens": 834,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 67,
+        "pred": "235",
+        "correct": true,
+        "tokens": 4096,
+        "hit_budget": true,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 68,
+        "pred": "3",
+        "correct": true,
+        "tokens": 3382,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 69,
+        "pred": "2",
+        "correct": true,
+        "tokens": 1202,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 70,
+        "pred": "3000",
+        "correct": true,
+        "tokens": 2347,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 71,
+        "pred": "300",
+        "correct": true,
+        "tokens": 1729,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 72,
+        "pred": "20",
+        "correct": true,
+        "tokens": 1033,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 73,
+        "pred": "130",
+        "correct": true,
+        "tokens": 4096,
+        "hit_budget": true,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 74,
+        "pred": "2",
+        "correct": false,
+        "tokens": 4096,
+        "hit_budget": true,
+        "has_final": true,
+        "pred_source": "final_answer"
+      },
+      {
+        "idx": 75,
+        "pred": "8",
+        "correct": true,
+        "tokens": 4096,
+        "hit_budget": true,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 76,
+        "pred": "50",
+        "correct": true,
+        "tokens": 4096,
+        "hit_budget": true,
+        "has_final": true,
+        "pred_source": "final_answer"
+      },
+      {
+        "idx": 77,
+        "pred": "3",
+        "correct": true,
+        "tokens": 1285,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 78,
+        "pred": "5",
+        "correct": true,
+        "tokens": 4096,
+        "hit_budget": true,
+        "has_final": true,
+        "pred_source": "final_answer"
+      },
+      {
+        "idx": 79,
+        "pred": "110",
+        "correct": true,
+        "tokens": 4096,
+        "hit_budget": true,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 80,
+        "pred": "1300",
+        "correct": true,
+        "tokens": 1487,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 81,
+        "pred": "16",
+        "correct": true,
+        "tokens": 652,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 82,
+        "pred": "80",
+        "correct": true,
+        "tokens": 912,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 83,
+        "pred": "3",
+        "correct": false,
+        "tokens": 4096,
+        "hit_budget": true,
+        "has_final": true,
+        "pred_source": "final_answer"
+      },
+      {
+        "idx": 84,
+        "pred": "36",
+        "correct": true,
+        "tokens": 915,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 85,
+        "pred": "0.75",
+        "correct": false,
+        "tokens": 4096,
+        "hit_budget": true,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 86,
+        "pred": "9",
+        "correct": true,
+        "tokens": 835,
+        "hit_budget": false,
+        "has_final": true,
+        "pred_source": "final_answer"
+      },
+      {
+        "idx": 87,
+        "pred": "36",
+        "correct": true,
+        "tokens": 4096,
+        "hit_budget": true,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 88,
+        "pred": "60",
+        "correct": true,
+        "tokens": 965,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 89,
+        "pred": "9",
+        "correct": true,
+        "tokens": 991,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 90,
+        "pred": "1",
+        "correct": true,
+        "tokens": 1199,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 91,
+        "pred": "30",
+        "correct": true,
+        "tokens": 852,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 92,
+        "pred": "-10000",
+        "correct": false,
+        "tokens": 4096,
+        "hit_budget": true,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 93,
+        "pred": "34",
+        "correct": true,
+        "tokens": 1208,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 94,
+        "pred": "13",
+        "correct": true,
+        "tokens": 740,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 95,
+        "pred": "306",
+        "correct": true,
+        "tokens": 2417,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 96,
+        "pred": "55",
+        "correct": true,
+        "tokens": 839,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 97,
+        "pred": "24",
+        "correct": true,
+        "tokens": 1374,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 98,
+        "pred": "75",
+        "correct": true,
+        "tokens": 2264,
+        "hit_budget": false,
+        "has_final": true,
+        "pred_source": "final_answer"
+      },
+      {
+        "idx": 99,
+        "pred": "24",
+        "correct": true,
+        "tokens": 937,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 100,
+        "pred": "50.00",
+        "correct": true,
+        "tokens": 2468,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 101,
+        "pred": "110",
+        "correct": true,
+        "tokens": 935,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 102,
+        "pred": "23",
+        "correct": false,
+        "tokens": 4096,
+        "hit_budget": true,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 103,
+        "pred": "30",
+        "correct": true,
+        "tokens": 878,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 104,
+        "pred": "80",
+        "correct": true,
+        "tokens": 758,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 105,
+        "pred": "3.00",
+        "correct": true,
+        "tokens": 4096,
+        "hit_budget": true,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 106,
+        "pred": "120",
+        "correct": true,
+        "tokens": 666,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 107,
+        "pred": "172",
+        "correct": true,
+        "tokens": 1509,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 108,
+        "pred": "70",
+        "correct": true,
+        "tokens": 1718,
+        "hit_budget": false,
+        "has_final": true,
+        "pred_source": "final_answer"
+      },
+      {
+        "idx": 109,
+        "pred": "13",
+        "correct": true,
+        "tokens": 818,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 110,
+        "pred": "150",
+        "correct": true,
+        "tokens": 4096,
+        "hit_budget": true,
+        "has_final": true,
+        "pred_source": "final_answer"
+      },
+      {
+        "idx": 111,
+        "pred": "18",
+        "correct": true,
+        "tokens": 4096,
+        "hit_budget": true,
+        "has_final": true,
+        "pred_source": "final_answer"
+      },
+      {
+        "idx": 112,
+        "pred": "1",
+        "correct": true,
+        "tokens": 4096,
+        "hit_budget": true,
+        "has_final": true,
+        "pred_source": "final_answer"
+      },
+      {
+        "idx": 113,
+        "pred": "250",
+        "correct": true,
+        "tokens": 1016,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 114,
+        "pred": "3",
+        "correct": true,
+        "tokens": 670,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 115,
+        "pred": "15",
+        "correct": true,
+        "tokens": 921,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 116,
+        "pred": "12",
+        "correct": true,
+        "tokens": 822,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 117,
+        "pred": "60",
+        "correct": true,
+        "tokens": 1000,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 118,
+        "pred": "3",
+        "correct": true,
+        "tokens": 631,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 119,
+        "pred": "0.75",
+        "correct": false,
+        "tokens": 4096,
+        "hit_budget": true,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 120,
+        "pred": "140000",
+        "correct": true,
+        "tokens": 4096,
+        "hit_budget": true,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 121,
+        "pred": "6",
+        "correct": false,
+        "tokens": 2498,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 122,
+        "pred": "2400",
+        "correct": true,
+        "tokens": 4096,
+        "hit_budget": true,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 123,
+        "pred": "4",
+        "correct": true,
+        "tokens": 868,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 124,
+        "pred": "79",
+        "correct": true,
+        "tokens": 2692,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 125,
+        "pred": "300",
+        "correct": true,
+        "tokens": 1308,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 126,
+        "pred": "91",
+        "correct": true,
+        "tokens": 1551,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 127,
+        "pred": "8",
+        "correct": true,
+        "tokens": 610,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 128,
+        "pred": "120",
+        "correct": true,
+        "tokens": 1272,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 129,
+        "pred": "40",
+        "correct": false,
+        "tokens": 4096,
+        "hit_budget": true,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 130,
+        "pred": "2600",
+        "correct": true,
+        "tokens": 1202,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 131,
+        "pred": "10",
+        "correct": true,
+        "tokens": 910,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 132,
+        "pred": "4",
+        "correct": false,
+        "tokens": 4096,
+        "hit_budget": true,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 133,
+        "pred": "7",
+        "correct": true,
+        "tokens": 1247,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 134,
+        "pred": "31",
+        "correct": true,
+        "tokens": 1096,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 135,
+        "pred": "975",
+        "correct": true,
+        "tokens": 2613,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 136,
+        "pred": "1",
+        "correct": false,
+        "tokens": 4096,
+        "hit_budget": true,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 137,
+        "pred": "120",
+        "correct": true,
+        "tokens": 805,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 138,
+        "pred": "220",
+        "correct": true,
+        "tokens": 782,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 139,
+        "pred": "87",
+        "correct": true,
+        "tokens": 475,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 140,
+        "pred": "300",
+        "correct": true,
+        "tokens": 878,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 141,
+        "pred": "30",
+        "correct": true,
+        "tokens": 4096,
+        "hit_budget": true,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 142,
+        "pred": "12",
+        "correct": false,
+        "tokens": 4096,
+        "hit_budget": true,
+        "has_final": true,
+        "pred_source": "final_answer"
+      },
+      {
+        "idx": 143,
+        "pred": "16",
+        "correct": true,
+        "tokens": 854,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 144,
+        "pred": "7",
+        "correct": true,
+        "tokens": 1362,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 145,
+        "pred": "81",
+        "correct": true,
+        "tokens": 2148,
+        "hit_budget": false,
+        "has_final": true,
+        "pred_source": "final_answer"
+      },
+      {
+        "idx": 146,
+        "pred": "5",
+        "correct": true,
+        "tokens": 1032,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 147,
+        "pred": "9",
+        "correct": true,
+        "tokens": 702,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 148,
+        "pred": "10",
+        "correct": true,
+        "tokens": 958,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 149,
+        "pred": "24",
+        "correct": true,
+        "tokens": 1036,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 150,
+        "pred": "5.00",
+        "correct": true,
+        "tokens": 4096,
+        "hit_budget": true,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 151,
+        "pred": "75",
+        "correct": false,
+        "tokens": 2292,
+        "hit_budget": false,
+        "has_final": true,
+        "pred_source": "final_answer"
+      },
+      {
+        "idx": 152,
+        "pred": "48",
+        "correct": true,
+        "tokens": 2195,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 153,
+        "pred": "25",
+        "correct": true,
+        "tokens": 830,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 154,
+        "pred": "96",
+        "correct": true,
+        "tokens": 798,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 155,
+        "pred": "25",
+        "correct": true,
+        "tokens": 1419,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 156,
+        "pred": "180",
+        "correct": true,
+        "tokens": 1257,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 157,
+        "pred": "21",
+        "correct": true,
+        "tokens": 860,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 158,
+        "pred": "1200",
+        "correct": true,
+        "tokens": 673,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 159,
+        "pred": "250",
+        "correct": false,
+        "tokens": 4096,
+        "hit_budget": true,
+        "has_final": true,
+        "pred_source": "final_answer"
+      },
+      {
+        "idx": 160,
+        "pred": "4",
+        "correct": true,
+        "tokens": 673,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 161,
+        "pred": "10",
+        "correct": true,
+        "tokens": 646,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 162,
+        "pred": "700",
+        "correct": true,
+        "tokens": 708,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 163,
+        "pred": "38",
+        "correct": true,
+        "tokens": 4096,
+        "hit_budget": true,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 164,
+        "pred": "3",
+        "correct": false,
+        "tokens": 4096,
+        "hit_budget": true,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 165,
+        "pred": "30",
+        "correct": true,
+        "tokens": 3356,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 166,
+        "pred": "16",
+        "correct": true,
+        "tokens": 966,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 167,
+        "pred": "40",
+        "correct": true,
+        "tokens": 4096,
+        "hit_budget": true,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 168,
+        "pred": "288",
+        "correct": true,
+        "tokens": 677,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 169,
+        "pred": "1100",
+        "correct": true,
+        "tokens": 985,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 170,
+        "pred": "20",
+        "correct": true,
+        "tokens": 1042,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 171,
+        "pred": "2",
+        "correct": true,
+        "tokens": 906,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 172,
+        "pred": "240",
+        "correct": false,
+        "tokens": 4096,
+        "hit_budget": true,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 173,
+        "pred": "9",
+        "correct": true,
+        "tokens": 720,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 174,
+        "pred": "132",
+        "correct": true,
+        "tokens": 996,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 175,
+        "pred": "93",
+        "correct": true,
+        "tokens": 913,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 176,
+        "pred": "4",
+        "correct": true,
+        "tokens": 783,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 177,
+        "pred": "85",
+        "correct": true,
+        "tokens": 2000,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 178,
+        "pred": "33.00",
+        "correct": true,
+        "tokens": 3652,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 179,
+        "pred": "12",
+        "correct": true,
+        "tokens": 907,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 180,
+        "pred": "7200",
+        "correct": true,
+        "tokens": 4096,
+        "hit_budget": true,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 181,
+        "pred": "60",
+        "correct": true,
+        "tokens": 1366,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 182,
+        "pred": "44",
+        "correct": true,
+        "tokens": 4096,
+        "hit_budget": true,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 183,
+        "pred": "70.00",
+        "correct": false,
+        "tokens": 4096,
+        "hit_budget": true,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 184,
+        "pred": "43500",
+        "correct": true,
+        "tokens": 953,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 185,
+        "pred": "720",
+        "correct": true,
+        "tokens": 4096,
+        "hit_budget": true,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 186,
+        "pred": "50",
+        "correct": true,
+        "tokens": 723,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 187,
+        "pred": "24",
+        "correct": true,
+        "tokens": 822,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 188,
+        "pred": "43",
+        "correct": true,
+        "tokens": 606,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 189,
+        "pred": "30",
+        "correct": true,
+        "tokens": 1147,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 190,
+        "pred": "23",
+        "correct": true,
+        "tokens": 2247,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 191,
+        "pred": "22",
+        "correct": false,
+        "tokens": 4096,
+        "hit_budget": true,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 192,
+        "pred": "35",
+        "correct": true,
+        "tokens": 2524,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 193,
+        "pred": "-110",
+        "correct": false,
+        "tokens": 4096,
+        "hit_budget": true,
+        "has_final": true,
+        "pred_source": "final_answer"
+      },
+      {
+        "idx": 194,
+        "pred": "82",
+        "correct": true,
+        "tokens": 725,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 195,
+        "pred": "2100",
+        "correct": true,
+        "tokens": 1848,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 196,
+        "pred": "3",
+        "correct": true,
+        "tokens": 2023,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 197,
+        "pred": "12",
+        "correct": true,
+        "tokens": 4096,
+        "hit_budget": true,
+        "has_final": true,
+        "pred_source": "final_answer"
+      },
+      {
+        "idx": 198,
+        "pred": "11",
+        "correct": true,
+        "tokens": 1417,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      },
+      {
+        "idx": 199,
+        "pred": "12",
+        "correct": true,
+        "tokens": 870,
+        "hit_budget": false,
+        "has_final": false,
+        "pred_source": "last_number"
+      }
+    ]
+  }
+}

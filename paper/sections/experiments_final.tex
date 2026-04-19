@@ -372,7 +372,15 @@ Result: accuracy = \textbf{98.0\%} (196/200) with avg\_tokens $=$ 255 and 100\% 
 The per-budget trajectory on the full $n{=}1{,}319$ set is nothink@128{=}9.9\%, @256{=}65.1\%, @512{=}\textbf{95.5\%} (avg\_tok $=$ 249, early\_stop $=$ 96.9\%).
 From $B{=}512$ to $B{=}4096$ (8$\times$ budget), nothink accuracy moves from 95.5\% to 98.0\%---effectively saturated, with avg\_tokens barely changing (249 $\to$ 255).
 This confirms nothink's chain-length independence on 27B GSM8K.
-The corresponding 27B thinking@4096 is in progress and reported upon completion.
+
+\paragraph{Coupling tax persists at extended budget (27B GSM8K).}
+The paired same-sample comparison at $B{=}4096$ on 27B GSM8K ($n{=}200$, seed=42, H800) delivers the decisive test of the coupling-tax theory.
+Nothink@4096 reaches \textbf{98.0\%} at avg\_tokens $=$ 255 (all natural-stop, no budget consumption).
+Thinking@4096 reaches only \textbf{87.5\%} at avg\_tokens $=$ 1997 (27\% of samples hit the 4096-token budget, 73\% natural-stop).
+The paired $2{\times}2$ contingency table yields: both correct 174, both wrong 3, nothink wins 22, thinking wins \textbf{1}.
+McNemar's continuity-corrected $\chi^2 = 17.39$ on 1 df, two-sided exact binomial $p < 10^{-5}$.
+Thus, on 22 out of 23 discordant samples ($95.7\%$), nothink beats thinking despite using \textbf{7.8$\times$ fewer tokens} (255 vs.\ 1997).
+The crossover budget $b^*$ at which thinking overtakes nothink on 27B GSM8K is therefore \emph{above} 4096---direct empirical support for Proposition~\ref{prop:crossover}.
 
 % ---------------------------------------------------------------------------
 \subsection{Stage 3 Extraction Improvements}
