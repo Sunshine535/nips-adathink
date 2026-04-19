@@ -724,7 +724,7 @@ def load_math500_for_iris(n_samples: int, seed: int) -> List[Dict]:
     idxs = list(range(len(samples)))
     random.seed(seed)
     random.shuffle(idxs)
-    selected = samples[:n_samples]
+    selected = [samples[i] for i in idxs[:n_samples]]
     items = []
     for s in selected:
         items.append({
