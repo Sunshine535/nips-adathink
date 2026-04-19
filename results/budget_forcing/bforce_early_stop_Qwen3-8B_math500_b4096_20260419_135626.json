@@ -1,0 +1,1618 @@
+{
+  "meta": {
+    "model": "Qwen/Qwen3-8B",
+    "benchmark": "math500",
+    "n_samples": 200,
+    "budget": 4096,
+    "variant": "early_stop",
+    "seed": 42,
+    "elapsed_s": 29448.094056367874
+  },
+  "summary": {
+    "accuracy": 0.72,
+    "avg_tokens": 3164.04,
+    "n_correct": 144
+  },
+  "per_sample": [
+    {
+      "idx": 0,
+      "gold": "-\\sqrt{3}",
+      "pred": "-\\sqrt{3}",
+      "correct": 1,
+      "tokens": 4096,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 1,
+      "gold": "x \\in [-2,7]",
+      "pred": "[-2, 7]",
+      "correct": 0,
+      "tokens": 2181,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 2,
+      "gold": "2",
+      "pred": "2",
+      "correct": 1,
+      "tokens": 1938,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 3,
+      "gold": "30^\\circ",
+      "pred": "sqrt(f(y)) ?",
+      "correct": 0,
+      "tokens": 4096,
+      "pred_source": "final_marker"
+    },
+    {
+      "idx": 4,
+      "gold": "-\\frac{\\pi}{6}",
+      "pred": "-\\frac{\\pi}{6}",
+      "correct": 1,
+      "tokens": 1812,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 5,
+      "gold": "3",
+      "pred": "3",
+      "correct": 1,
+      "tokens": 1756,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 6,
+      "gold": "41",
+      "pred": "41",
+      "correct": 1,
+      "tokens": 4096,
+      "pred_source": "final_marker"
+    },
+    {
+      "idx": 7,
+      "gold": "16",
+      "pred": "681,210 - 22,707 = 658,503",
+      "correct": 0,
+      "tokens": 4096,
+      "pred_source": "final_marker"
+    },
+    {
+      "idx": 8,
+      "gold": "\\cot x",
+      "pred": "\\cot x",
+      "correct": 1,
+      "tokens": 2285,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 9,
+      "gold": "3",
+      "pred": "3",
+      "correct": 1,
+      "tokens": 4096,
+      "pred_source": "final_marker"
+    },
+    {
+      "idx": 10,
+      "gold": "3",
+      "pred": "3",
+      "correct": 1,
+      "tokens": 4096,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 11,
+      "gold": "9",
+      "pred": "9",
+      "correct": 1,
+      "tokens": 4096,
+      "pred_source": "final_marker"
+    },
+    {
+      "idx": 12,
+      "gold": "\\frac{448}{15625}",
+      "pred": "\\dfrac{448}{15625}",
+      "correct": 1,
+      "tokens": 4096,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 13,
+      "gold": "2",
+      "pred": "2",
+      "correct": 1,
+      "tokens": 3572,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 14,
+      "gold": "2",
+      "pred": "2",
+      "correct": 1,
+      "tokens": 2952,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 15,
+      "gold": "5",
+      "pred": "5",
+      "correct": 1,
+      "tokens": 2312,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 16,
+      "gold": "31",
+      "pred": "31",
+      "correct": 1,
+      "tokens": 2295,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 17,
+      "gold": "-\\frac{35}{9}",
+      "pred": "-\\dfrac{35}{9}",
+      "correct": 1,
+      "tokens": 4096,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 18,
+      "gold": "10",
+      "pred": "10",
+      "correct": 1,
+      "tokens": 4096,
+      "pred_source": "final_marker"
+    },
+    {
+      "idx": 19,
+      "gold": "540",
+      "pred": "540",
+      "correct": 1,
+      "tokens": 4096,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 20,
+      "gold": "45",
+      "pred": "45",
+      "correct": 1,
+      "tokens": 1427,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 21,
+      "gold": "-\\frac{24}{25}",
+      "pred": "-\\dfrac{24}{25}",
+      "correct": 1,
+      "tokens": 4096,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 22,
+      "gold": "16",
+      "pred": "16",
+      "correct": 1,
+      "tokens": 4096,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 23,
+      "gold": "\\frac{\\sqrt{21}}{5}",
+      "pred": "\\dfrac{\\sqrt{21}}{5}",
+      "correct": 1,
+      "tokens": 3595,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 24,
+      "gold": "90^\\circ",
+      "pred": "90",
+      "correct": 0,
+      "tokens": 3607,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 25,
+      "gold": "59",
+      "pred": "59",
+      "correct": 1,
+      "tokens": 4096,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 26,
+      "gold": "17",
+      "pred": "17",
+      "correct": 1,
+      "tokens": 2629,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 27,
+      "gold": "288 \\pi",
+      "pred": "288\\",
+      "correct": 0,
+      "tokens": 4096,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 28,
+      "gold": "-13x+3",
+      "pred": "-13x + 3",
+      "correct": 1,
+      "tokens": 4096,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 29,
+      "gold": "5",
+      "pred": "5",
+      "correct": 1,
+      "tokens": 2095,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 30,
+      "gold": "\\frac{3840}{289}",
+      "pred": "64",
+      "correct": 0,
+      "tokens": 4096,
+      "pred_source": "fallback_last"
+    },
+    {
+      "idx": 31,
+      "gold": "\\dfrac{17}{50}",
+      "pred": "17/50",
+      "correct": 1,
+      "tokens": 4096,
+      "pred_source": "final_marker"
+    },
+    {
+      "idx": 32,
+      "gold": "14",
+      "pred": "0",
+      "correct": 0,
+      "tokens": 4096,
+      "pred_source": "final_marker"
+    },
+    {
+      "idx": 33,
+      "gold": "17",
+      "pred": "8 + 9 = 17",
+      "correct": 0,
+      "tokens": 4096,
+      "pred_source": "final_marker"
+    },
+    {
+      "idx": 34,
+      "gold": "255",
+      "pred": "255",
+      "correct": 1,
+      "tokens": 2340,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 35,
+      "gold": "13535",
+      "pred": "13535",
+      "correct": 1,
+      "tokens": 4096,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 36,
+      "gold": "32",
+      "pred": "32",
+      "correct": 1,
+      "tokens": 3669,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 37,
+      "gold": "46",
+      "pred": "46°",
+      "correct": 0,
+      "tokens": 4096,
+      "pred_source": "final_marker"
+    },
+    {
+      "idx": 38,
+      "gold": "\\text{(C)}",
+      "pred": "C",
+      "correct": 0,
+      "tokens": 1523,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 39,
+      "gold": "144",
+      "pred": "144",
+      "correct": 1,
+      "tokens": 4096,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 40,
+      "gold": "21",
+      "pred": "189",
+      "correct": 0,
+      "tokens": 4096,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 41,
+      "gold": "11,\\! 111,\\! 111,\\! 100",
+      "pred": "101111111100? Wait, but that's 12 digits",
+      "correct": 0,
+      "tokens": 4096,
+      "pred_source": "final_marker"
+    },
+    {
+      "idx": 42,
+      "gold": "2\\sqrt{113}",
+      "pred": "15",
+      "correct": 0,
+      "tokens": 4096,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 43,
+      "gold": "30^\\circ",
+      "pred": "30",
+      "correct": 0,
+      "tokens": 4096,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 44,
+      "gold": "23",
+      "pred": "23",
+      "correct": 1,
+      "tokens": 1790,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 45,
+      "gold": "1",
+      "pred": "The maximum value is 1",
+      "correct": 0,
+      "tokens": 4096,
+      "pred_source": "final_marker"
+    },
+    {
+      "idx": 46,
+      "gold": "2",
+      "pred": "2",
+      "correct": 1,
+      "tokens": 4096,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 47,
+      "gold": "\\frac{9}{100}",
+      "pred": "\\dfrac{9}{100}",
+      "correct": 1,
+      "tokens": 4096,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 48,
+      "gold": "3",
+      "pred": "3",
+      "correct": 1,
+      "tokens": 4096,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 49,
+      "gold": "1736",
+      "pred": "56 * 31",
+      "correct": 0,
+      "tokens": 4096,
+      "pred_source": "final_marker"
+    },
+    {
+      "idx": 50,
+      "gold": "2",
+      "pred": "The largest value of a is 2",
+      "correct": 0,
+      "tokens": 4096,
+      "pred_source": "final_marker"
+    },
+    {
+      "idx": 51,
+      "gold": "1 \\pm \\sqrt{19}",
+      "pred": "1 + \\sqrt{19}",
+      "correct": 0,
+      "tokens": 4096,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 52,
+      "gold": "x^8 + x^7 + x^6 + x^5 + x^4 + x^3 + x^2 + x + 1",
+      "pred": "The quotient is x^8 + x^7 + x^6 + x^5 + x^4 + x^3 + x^2 + x",
+      "correct": 0,
+      "tokens": 4096,
+      "pred_source": "final_marker"
+    },
+    {
+      "idx": 53,
+      "gold": "28",
+      "pred": "28",
+      "correct": 1,
+      "tokens": 4096,
+      "pred_source": "final_marker"
+    },
+    {
+      "idx": 54,
+      "gold": "203",
+      "pred": "203",
+      "correct": 1,
+      "tokens": 4096,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 55,
+      "gold": "17",
+      "pred": "17",
+      "correct": 1,
+      "tokens": 1508,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 56,
+      "gold": "103",
+      "pred": "103",
+      "correct": 1,
+      "tokens": 3622,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 57,
+      "gold": "8",
+      "pred": "8",
+      "correct": 1,
+      "tokens": 2504,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 58,
+      "gold": "\\text{even}",
+      "pred": "h(-x) = f(E) = sin(E) where E is sin(cos(sin(cos(sin(x)))))?",
+      "correct": 0,
+      "tokens": 4096,
+      "pred_source": "final_marker"
+    },
+    {
+      "idx": 59,
+      "gold": "\\text{ellipse}",
+      "pred": "ellipse",
+      "correct": 1,
+      "tokens": 4096,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 60,
+      "gold": "3",
+      "pred": "3",
+      "correct": 1,
+      "tokens": 3153,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 61,
+      "gold": "-41",
+      "pred": "-41",
+      "correct": 1,
+      "tokens": 1684,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 62,
+      "gold": "72",
+      "pred": "72",
+      "correct": 1,
+      "tokens": 1596,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 63,
+      "gold": "18",
+      "pred": "18",
+      "correct": 1,
+      "tokens": 2018,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 64,
+      "gold": "\\text{Evelyn}",
+      "pred": "Evelyn",
+      "correct": 1,
+      "tokens": 4096,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 65,
+      "gold": "33",
+      "pred": "33",
+      "correct": 1,
+      "tokens": 1883,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 66,
+      "gold": "9",
+      "pred": "9",
+      "correct": 1,
+      "tokens": 3726,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 67,
+      "gold": "6",
+      "pred": "6",
+      "correct": 1,
+      "tokens": 4096,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 68,
+      "gold": "4",
+      "pred": "4",
+      "correct": 1,
+      "tokens": 945,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 69,
+      "gold": "10",
+      "pred": "10",
+      "correct": 1,
+      "tokens": 1939,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 70,
+      "gold": "80",
+      "pred": "80",
+      "correct": 1,
+      "tokens": 4096,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 71,
+      "gold": "8",
+      "pred": "8",
+      "correct": 1,
+      "tokens": 3039,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 72,
+      "gold": "898",
+      "pred": "898",
+      "correct": 1,
+      "tokens": 4096,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 73,
+      "gold": "55^\\circ",
+      "pred": "[0",
+      "correct": 0,
+      "tokens": 4096,
+      "pred_source": "final_marker"
+    },
+    {
+      "idx": 74,
+      "gold": "9",
+      "pred": "9",
+      "correct": 1,
+      "tokens": 2420,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 75,
+      "gold": "\\begin{pmatrix} 1/5 \\\\ -18/5 \\end{pmatrix}",
+      "pred": "\\begin{pmatrix}\n\\dfrac{1}{5} \\\\\n-\\dfrac{18}{5}\n\\end{pmatrix}",
+      "correct": 0,
+      "tokens": 4039,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 76,
+      "gold": "7",
+      "pred": "7",
+      "correct": 1,
+      "tokens": 1635,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 77,
+      "gold": "-120",
+      "pred": "-120",
+      "correct": 1,
+      "tokens": 2784,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 78,
+      "gold": "2",
+      "pred": "0",
+      "correct": 0,
+      "tokens": 4096,
+      "pred_source": "final_marker"
+    },
+    {
+      "idx": 79,
+      "gold": "4210_{5}",
+      "pred": "4210",
+      "correct": 0,
+      "tokens": 2575,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 80,
+      "gold": "\\frac{3}{56}",
+      "pred": "8 is 448/56, so -259 + 448 = 189",
+      "correct": 0,
+      "tokens": 4096,
+      "pred_source": "final_marker"
+    },
+    {
+      "idx": 81,
+      "gold": "27",
+      "pred": "27",
+      "correct": 1,
+      "tokens": 4096,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 82,
+      "gold": "256",
+      "pred": "256",
+      "correct": 1,
+      "tokens": 2638,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 83,
+      "gold": "8",
+      "pred": "8",
+      "correct": 1,
+      "tokens": 2236,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 84,
+      "gold": "2",
+      "pred": "2",
+      "correct": 1,
+      "tokens": 4096,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 85,
+      "gold": "3R^2",
+      "pred": "3R²",
+      "correct": 0,
+      "tokens": 4096,
+      "pred_source": "final_marker"
+    },
+    {
+      "idx": 86,
+      "gold": "1",
+      "pred": "1",
+      "correct": 1,
+      "tokens": 2033,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 87,
+      "gold": "21",
+      "pred": "21",
+      "correct": 1,
+      "tokens": 4096,
+      "pred_source": "final_marker"
+    },
+    {
+      "idx": 88,
+      "gold": "6\\sqrt{2}",
+      "pred": "6\\sqrt{2}",
+      "correct": 1,
+      "tokens": 1965,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 89,
+      "gold": "144",
+      "pred": "144? Wait, but according to inclusion-exclusion, if |A ∪ B ∪ C| = 720, then the",
+      "correct": 0,
+      "tokens": 4096,
+      "pred_source": "final_marker"
+    },
+    {
+      "idx": 90,
+      "gold": "4",
+      "pred": "4",
+      "correct": 1,
+      "tokens": 1332,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 91,
+      "gold": "(2,\\infty)",
+      "pred": "Hmm, this is getting too tedious",
+      "correct": 0,
+      "tokens": 4096,
+      "pred_source": "final_marker"
+    },
+    {
+      "idx": 92,
+      "gold": "4",
+      "pred": "4",
+      "correct": 1,
+      "tokens": 1670,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 93,
+      "gold": "28",
+      "pred": "28",
+      "correct": 1,
+      "tokens": 1201,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 94,
+      "gold": "1251",
+      "pred": "1251",
+      "correct": 1,
+      "tokens": 1149,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 95,
+      "gold": "-4",
+      "pred": "-4",
+      "correct": 1,
+      "tokens": 2027,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 96,
+      "gold": "145^\\circ",
+      "pred": "same as before, 2(u + x + y + z + w + v) = 2*360° = 720°",
+      "correct": 0,
+      "tokens": 4096,
+      "pred_source": "final_marker"
+    },
+    {
+      "idx": 97,
+      "gold": "\\begin{pmatrix} -7 \\\\ 16 \\\\ 5 \\end{pmatrix}",
+      "pred": "sqrt(8100 + 900 + 900) = sqrt(9900)",
+      "correct": 0,
+      "tokens": 4096,
+      "pred_source": "final_marker"
+    },
+    {
+      "idx": 98,
+      "gold": "-\\frac{3}{8}",
+      "pred": "-\\dfrac{3}{8}",
+      "correct": 1,
+      "tokens": 4096,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 99,
+      "gold": "\\frac{1}{4}",
+      "pred": "\\dfrac{1}{4}",
+      "correct": 1,
+      "tokens": 3700,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 100,
+      "gold": "\\frac{16}{5}",
+      "pred": "no real solutions",
+      "correct": 0,
+      "tokens": 4096,
+      "pred_source": "final_marker"
+    },
+    {
+      "idx": 101,
+      "gold": "\\frac14",
+      "pred": "\\dfrac{1}{4}",
+      "correct": 0,
+      "tokens": 3144,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 102,
+      "gold": "22",
+      "pred": "22",
+      "correct": 1,
+      "tokens": 2615,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 103,
+      "gold": "480",
+      "pred": "480",
+      "correct": 1,
+      "tokens": 3192,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 104,
+      "gold": "\\sqrt{5}",
+      "pred": "\\sqrt{5}",
+      "correct": 1,
+      "tokens": 1516,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 105,
+      "gold": "\\frac{1}{3}",
+      "pred": "\\dfrac{1}{3}",
+      "correct": 1,
+      "tokens": 4096,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 106,
+      "gold": "\\frac{13}{15}",
+      "pred": "\\dfrac{13}{15}",
+      "correct": 1,
+      "tokens": 1208,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 107,
+      "gold": "\\frac 34",
+      "pred": "\\dfrac{3}{4}",
+      "correct": 0,
+      "tokens": 2611,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 108,
+      "gold": "\\frac{2}{21}",
+      "pred": "I think there are only 8 lines with three points",
+      "correct": 0,
+      "tokens": 4096,
+      "pred_source": "final_marker"
+    },
+    {
+      "idx": 109,
+      "gold": "12\\pi",
+      "pred": "12\\pi",
+      "correct": 1,
+      "tokens": 1692,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 110,
+      "gold": "2000",
+      "pred": "2000",
+      "correct": 1,
+      "tokens": 1016,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 111,
+      "gold": "\\sqrt{66}",
+      "pred": "13",
+      "correct": 0,
+      "tokens": 4096,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 112,
+      "gold": "-1",
+      "pred": "-1",
+      "correct": 1,
+      "tokens": 4096,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 113,
+      "gold": "\\frac43",
+      "pred": "\\dfrac{4}{3}",
+      "correct": 0,
+      "tokens": 3301,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 114,
+      "gold": "4495",
+      "pred": "4,495",
+      "correct": 1,
+      "tokens": 4096,
+      "pred_source": "final_marker"
+    },
+    {
+      "idx": 115,
+      "gold": "15",
+      "pred": "15",
+      "correct": 1,
+      "tokens": 4096,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 116,
+      "gold": "64",
+      "pred": "64",
+      "correct": 1,
+      "tokens": 4096,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 117,
+      "gold": "2107",
+      "pred": "2107",
+      "correct": 1,
+      "tokens": 2824,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 118,
+      "gold": "11\\sqrt2",
+      "pred": "11\\sqrt{2}",
+      "correct": 1,
+      "tokens": 1838,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 119,
+      "gold": "8",
+      "pred": "8",
+      "correct": 1,
+      "tokens": 3214,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 120,
+      "gold": "3\\sqrt{13}",
+      "pred": "3\\sqrt{13}",
+      "correct": 1,
+      "tokens": 1651,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 121,
+      "gold": "180^\\circ",
+      "pred": "180",
+      "correct": 0,
+      "tokens": 4096,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 122,
+      "gold": "13",
+      "pred": "13",
+      "correct": 1,
+      "tokens": 4096,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 123,
+      "gold": "30^\\circ",
+      "pred": "30",
+      "correct": 0,
+      "tokens": 2292,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 124,
+      "gold": "76^\\circ",
+      "pred": "76",
+      "correct": 0,
+      "tokens": 4096,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 125,
+      "gold": "\\frac{13}{4}",
+      "pred": "3",
+      "correct": 0,
+      "tokens": 4096,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 126,
+      "gold": "63",
+      "pred": "63",
+      "correct": 1,
+      "tokens": 4096,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 127,
+      "gold": "10,\\!080",
+      "pred": "10080",
+      "correct": 1,
+      "tokens": 2515,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 128,
+      "gold": "4",
+      "pred": "4",
+      "correct": 1,
+      "tokens": 2350,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 129,
+      "gold": "120",
+      "pred": "120",
+      "correct": 1,
+      "tokens": 4096,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 130,
+      "gold": "-1",
+      "pred": "-1",
+      "correct": 1,
+      "tokens": 1441,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 131,
+      "gold": "\\frac{14}{3}",
+      "pred": "\\dfrac{14}{3}",
+      "correct": 1,
+      "tokens": 2115,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 132,
+      "gold": "28",
+      "pred": "32",
+      "correct": 0,
+      "tokens": 4096,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 133,
+      "gold": "\\$36",
+      "pred": "36",
+      "correct": 0,
+      "tokens": 1692,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 134,
+      "gold": "15",
+      "pred": "15",
+      "correct": 1,
+      "tokens": 1765,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 135,
+      "gold": "0",
+      "pred": "0",
+      "correct": 1,
+      "tokens": 4096,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 136,
+      "gold": "\\frac{1}{8}",
+      "pred": "\\dfrac{1}{8}",
+      "correct": 1,
+      "tokens": 1131,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 137,
+      "gold": "(2,4)",
+      "pred": "(2, 4)",
+      "correct": 1,
+      "tokens": 3007,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 138,
+      "gold": "\\frac{1}{16}",
+      "pred": "\\dfrac{1}{16}",
+      "correct": 1,
+      "tokens": 4096,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 139,
+      "gold": "84",
+      "pred": "84",
+      "correct": 1,
+      "tokens": 1342,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 140,
+      "gold": "3 \\sqrt{5}",
+      "pred": "3\\sqrt{5}",
+      "correct": 1,
+      "tokens": 3703,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 141,
+      "gold": "47",
+      "pred": "47",
+      "correct": 1,
+      "tokens": 2629,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 142,
+      "gold": "x^3+3x-6",
+      "pred": "x^3 + 3x - 6",
+      "correct": 1,
+      "tokens": 2246,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 143,
+      "gold": "5x - 7y + 11z + 4 = 0",
+      "pred": "5x - 7y + 11z + 4 = 0",
+      "correct": 1,
+      "tokens": 4096,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 144,
+      "gold": "120",
+      "pred": "120",
+      "correct": 1,
+      "tokens": 2059,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 145,
+      "gold": "(15,-29)",
+      "pred": "(15, -29)",
+      "correct": 1,
+      "tokens": 1696,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 146,
+      "gold": "0",
+      "pred": "0",
+      "correct": 1,
+      "tokens": 2511,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 147,
+      "gold": "8",
+      "pred": "8",
+      "correct": 1,
+      "tokens": 2864,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 148,
+      "gold": "6",
+      "pred": "6",
+      "correct": 1,
+      "tokens": 1761,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 149,
+      "gold": "8 \\pi",
+      "pred": "8π? But let me check with another approach",
+      "correct": 0,
+      "tokens": 4096,
+      "pred_source": "final_marker"
+    },
+    {
+      "idx": 150,
+      "gold": "1",
+      "pred": "1",
+      "correct": 1,
+      "tokens": 2797,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 151,
+      "gold": "-2",
+      "pred": "1.618",
+      "correct": 0,
+      "tokens": 4096,
+      "pred_source": "fallback_last"
+    },
+    {
+      "idx": 152,
+      "gold": "331",
+      "pred": "k * 1 = k",
+      "correct": 0,
+      "tokens": 4096,
+      "pred_source": "final_marker"
+    },
+    {
+      "idx": 153,
+      "gold": "\\sqrt{53}",
+      "pred": "\\sqrt{53}",
+      "correct": 1,
+      "tokens": 1423,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 154,
+      "gold": "-2",
+      "pred": "-2",
+      "correct": 1,
+      "tokens": 2192,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 155,
+      "gold": "121",
+      "pred": "121",
+      "correct": 1,
+      "tokens": 3050,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 156,
+      "gold": "0",
+      "pred": "0",
+      "correct": 1,
+      "tokens": 4096,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 157,
+      "gold": "\\pi",
+      "pred": "\\pi",
+      "correct": 1,
+      "tokens": 4096,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 158,
+      "gold": "44",
+      "pred": "44",
+      "correct": 1,
+      "tokens": 3773,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 159,
+      "gold": "6+9i",
+      "pred": "6 + 9i",
+      "correct": 1,
+      "tokens": 2038,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 160,
+      "gold": "13",
+      "pred": "13",
+      "correct": 1,
+      "tokens": 4096,
+      "pred_source": "final_marker"
+    },
+    {
+      "idx": 161,
+      "gold": "-4",
+      "pred": "-4",
+      "correct": 1,
+      "tokens": 2448,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 162,
+      "gold": "\\text{(B)}",
+      "pred": "B",
+      "correct": 0,
+      "tokens": 4096,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 163,
+      "gold": "\\frac{17}{21}",
+      "pred": "\\dfrac{1}{2}",
+      "correct": 0,
+      "tokens": 4096,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 164,
+      "gold": "26000",
+      "pred": "26000",
+      "correct": 1,
+      "tokens": 2227,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 165,
+      "gold": "12",
+      "pred": "12",
+      "correct": 1,
+      "tokens": 2541,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 166,
+      "gold": "49",
+      "pred": "49",
+      "correct": 1,
+      "tokens": 3962,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 167,
+      "gold": "12",
+      "pred": "12",
+      "correct": 1,
+      "tokens": 2974,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 168,
+      "gold": "18",
+      "pred": "18",
+      "correct": 1,
+      "tokens": 1636,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 169,
+      "gold": "\\text{Navin}",
+      "pred": "34 - 33",
+      "correct": 0,
+      "tokens": 4096,
+      "pred_source": "final_marker"
+    },
+    {
+      "idx": 170,
+      "gold": "\\frac{13}{18}",
+      "pred": "\\dfrac{13}{18}",
+      "correct": 1,
+      "tokens": 3797,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 171,
+      "gold": "66",
+      "pred": "66",
+      "correct": 1,
+      "tokens": 2348,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 172,
+      "gold": "2\\sqrt{5}",
+      "pred": "2\\sqrt{5}",
+      "correct": 1,
+      "tokens": 3116,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 173,
+      "gold": "\\sqrt{51}",
+      "pred": "\\sqrt{51}",
+      "correct": 1,
+      "tokens": 4037,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 174,
+      "gold": "3",
+      "pred": "3",
+      "correct": 1,
+      "tokens": 2337,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 175,
+      "gold": "\\frac{11}{36}",
+      "pred": "\\dfrac{11}{36}",
+      "correct": 1,
+      "tokens": 3481,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 176,
+      "gold": "3 \\pm 2 \\sqrt{2}",
+      "pred": "$ x = 3 + 2\\sqrt{2} $ or $ x = 3 - 2\\sqrt{2} $",
+      "correct": 0,
+      "tokens": 4096,
+      "pred_source": "final_marker"
+    },
+    {
+      "idx": 177,
+      "gold": "23",
+      "pred": "23",
+      "correct": 1,
+      "tokens": 2170,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 178,
+      "gold": "0",
+      "pred": "0",
+      "correct": 1,
+      "tokens": 4096,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 179,
+      "gold": "75^\\circ",
+      "pred": "85",
+      "correct": 0,
+      "tokens": 4096,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 180,
+      "gold": "864 \\mbox{ inches}^2",
+      "pred": "864",
+      "correct": 0,
+      "tokens": 1702,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 181,
+      "gold": "60",
+      "pred": "60",
+      "correct": 1,
+      "tokens": 3295,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 182,
+      "gold": "56",
+      "pred": "56",
+      "correct": 1,
+      "tokens": 1935,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 183,
+      "gold": "137 \\frac{1}{2}",
+      "pred": "137\\frac{1}{2}",
+      "correct": 1,
+      "tokens": 1836,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 184,
+      "gold": "\\begin{pmatrix} 16/49 \\\\ 48/49 \\\\ 24/49 \\end{pmatrix}",
+      "pred": "\\begin{pmatrix} \\dfrac{16}{49} \\\\ \\dfrac{48}{49} \\\\ \\dfrac{24}{49} \\end{pmatrix}",
+      "correct": 0,
+      "tokens": 3764,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 185,
+      "gold": "10",
+      "pred": "10",
+      "correct": 1,
+      "tokens": 3161,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 186,
+      "gold": "\\begin{pmatrix} -1/3 \\\\ 2/3 \\\\ 5/3 \\end{pmatrix}",
+      "pred": "v = (2/3)a + w = (2/3, 2/3, 2/3) + (1, 0,",
+      "correct": 0,
+      "tokens": 4096,
+      "pred_source": "final_marker"
+    },
+    {
+      "idx": 187,
+      "gold": "200",
+      "pred": "200",
+      "correct": 1,
+      "tokens": 1859,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 188,
+      "gold": "\\text{east}",
+      "pred": "East",
+      "correct": 1,
+      "tokens": 3493,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 189,
+      "gold": "1600",
+      "pred": "1600",
+      "correct": 1,
+      "tokens": 2505,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 190,
+      "gold": "2k",
+      "pred": "2k",
+      "correct": 1,
+      "tokens": 3484,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 191,
+      "gold": "7",
+      "pred": "7",
+      "correct": 1,
+      "tokens": 4096,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 192,
+      "gold": "\\frac{11+9a}{20}",
+      "pred": "\\dfrac{9a + 11}{20}",
+      "correct": 0,
+      "tokens": 1871,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 193,
+      "gold": "0",
+      "pred": "0",
+      "correct": 1,
+      "tokens": 1188,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 194,
+      "gold": "\\frac{11}{2}",
+      "pred": "\\dfrac{11}{2}",
+      "correct": 1,
+      "tokens": 2994,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 195,
+      "gold": "\\$32,\\!348",
+      "pred": "0",
+      "correct": 0,
+      "tokens": 4096,
+      "pred_source": "final_marker"
+    },
+    {
+      "idx": 196,
+      "gold": "4",
+      "pred": "4",
+      "correct": 1,
+      "tokens": 1509,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 197,
+      "gold": "(6,31,-1)",
+      "pred": "(6, 31, -1)",
+      "correct": 1,
+      "tokens": 4096,
+      "pred_source": "final_marker"
+    },
+    {
+      "idx": 198,
+      "gold": "30",
+      "pred": "30",
+      "correct": 1,
+      "tokens": 3485,
+      "pred_source": "boxed"
+    },
+    {
+      "idx": 199,
+      "gold": "\\{1\\pm\\sqrt{5},-2\\}",
+      "pred": "-1",
+      "correct": 0,
+      "tokens": 4096,
+      "pred_source": "boxed"
+    }
+  ]
+}
