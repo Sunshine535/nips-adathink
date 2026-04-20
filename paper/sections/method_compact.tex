@@ -60,7 +60,7 @@ Let $p$ denote the early-stop rate, $\bar{t}_1$ the average tokens for early-sto
   \mathbb{E}[T] = p \cdot \bar{t}_1 + (1 - p)(B_1 + \bar{t}_2) \approx 0.888 \times 133 + 0.112 \times 725 = \mathbf{199\text{ tokens}},
   \label{eq:town-cost}
 \end{equation}
-which is \textbf{2.3$\times$} cheaper than \texttt{think@512} (460 tokens).
+which is \textbf{2.4$\times$} cheaper than \texttt{think@512} (477 tokens).
 
 \paragraph{Analytical prediction.}
 \method{}'s accuracy decomposes as
@@ -81,7 +81,7 @@ then: (1)~$\mathrm{Acc}_{\method{}} > \mathrm{Acc}_{\mathrm{nt}}(B_1)$ (accuracy
 
 \noindent\emph{Sketch.}
 For (1): $\mathrm{Acc}_{\method{}} - \mathrm{Acc}_{\mathrm{nt}}(B_1) = (1-p)[\alpha_{\mathrm{th}}^{\mathrm{hard}} - \alpha_{\mathrm{nt}}^{\mathrm{hard}}] > 0$ by Eq.~\eqref{eq:net-recovery}.
-For (2): $\mathbb{E}[T_{\method{}}] \approx 199 < 460 = \mathbb{E}[T_{\mathrm{think}}(B_2)]$ since most samples ($p \approx 0.89$) resolve at $\bar{t}_1 \approx 133$ tokens.
+For (2): $\mathbb{E}[T_{\method{}}] \approx 199 < 477 = \mathbb{E}[T_{\mathrm{think}}(B_2)]$ since most samples ($p \approx 0.89$) resolve at $\bar{t}_1 \approx 133$ tokens.
 On GSM8K: $R^+ = 64$ recoveries vs.\ $R^- = 19$ regrets (net $+45$), confirming the condition (full derivation in Appendix~\ref{app:town-proof}).
 
 \noindent
