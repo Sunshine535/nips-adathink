@@ -563,11 +563,14 @@ def run_iris_sample(
     min_chunks: int = 2,
     total_budget_cap: Optional[int] = None,
     benchmark: str = "gsm8k",
+    online_stage2: bool = False,
 ) -> Dict:
     """Run the full IRIS three-stage cascade for a single question.
 
     Stage 1: nothink@B1 → accept if natural stop, else escalate
     Stage 2: adaptive thinking with entropy monitoring → stop at optimal point
+             (if online_stage2=True, chunk-by-chunk true early stop;
+              otherwise post-hoc trace truncation for analysis)
     Stage 3: decoupled answer generation with dedicated budget
 
     Args:
@@ -622,7 +625,11 @@ def run_iris_sample(
         b2_effective = b2_max
 
     prompt_s2 = build_prompt(question, tokenizer, enable_thinking=True, benchmark=benchmark)
-    s2_result = generate_adaptive_thinking(
+    stage2_fn = generate_adaptive_thinking
+    if online_stage2:
+        from iris_online_stage2 import generate_adaptive_thinking_online
+        stage2_fn = generate_adaptive_thinking_online
+    s2_result = stage2_fn(
         model, tokenizer, prompt_s2,
         max_think_tokens=b2_effective,
         chunk_size=chunk_size,
@@ -834,6 +841,10 @@ def main():
                         help="Minimum chunks before allowing early stop")
     parser.add_argument("--total_budget_cap", type=int, default=None,
                         help="Total token budget cap (if set, enforces B1+B2+B3 <= cap)")
+    parser.add_argument("--online_stage2", action="store_true", default=False,
+                        help="Use deployment-faithful chunk-by-chunk Stage 2 "
+                             "(n_tokens_generated == n_tokens_used); default is "
+                             "post-hoc trace-truncation accounting for analysis.")
 
     # Also run TOWN for comparison
     parser.add_argument("--run_town", action="store_true", default=False,
@@ -883,7 +894,7 @@ def main():
             b1=args.b1, b2_max=args.b2_max, b_answer=args.b_answer,
             chunk_size=args.chunk_size, tau_h=args.tau_h, tau_s=args.tau_s,
             min_chunks=args.min_chunks, total_budget_cap=args.total_budget_cap,
-            benchmark=args.benchmark,
+            benchmark=args.benchmark, online_stage2=args.online_stage2,
         )
 
         correct = is_correct_dispatch(result["pred"], item["gold"], args.benchmark)
