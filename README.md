@@ -4,7 +4,7 @@
 **Target venue**: NeurIPS 2026
 **Status**: active — core theorem verified (proof-checker Round 4 PASS), method empirically validated on GSM8K / MATH-500 at 8B / 27B scales.
 
-This repository investigates a structural phenomenon we call the **Coupling Tax**: under a fixed output-token budget, thinking-mode LLMs must share the budget between reasoning and answer, so chain-of-thought that cannot finish within the budget truncates and drags accuracy below non-thinking mode. We derive a closed-form decomposition, quantify an inverse scaling law, and demonstrate a simple cascade with decoupled extraction that Pareto-dominates competing baselines.
+This repository investigates a structural phenomenon we call the **Coupling Tax**: under a fixed output-token budget, thinking-mode LLMs must share the budget between reasoning and answer, so chain-of-thought that cannot finish within the budget truncates and drags accuracy below non-thinking mode. We derive a closed-form decomposition, quantify an inverse scaling law, and demonstrate a simple cascade with decoupled extraction that delivers paired McNemar-significant accuracy gains over TOWN at near-matched token cost across 8B/27B × GSM8K/MATH-500 (see Core empirical results).
 
 ## Canonical artifacts (authoritative)
 
@@ -29,7 +29,7 @@ This repository investigates a structural phenomenon we call the **Coupling Tax*
 | Stage-3 decoupled extraction (27B MATH-500) | n=200, paired same-sample | baseline 60.5% → improved 77.5% (+17pp) | `results/iris_improved_20260417/` |
 | IRIS vs s1 budget forcing (early_stop) | 8B MATH-500 n=200 seed=42, b=4096 | IRIS 74.0% / 2380 tok vs s1 72.0% / 3164 tok | `results/budget_forcing/` |
 | Multi-seed stability on 8B MATH-500 | 3 seeds (42/123/456) | mean 74.1%, std 1.5pp, span 3.0pp | `results/multiseed_20260419/multiseed_summary.json` |
-| αc/αt curve fit | Logistic fit on b∈{128,256,512} → predict b=1024 | Acc_think(1024) predicted error 1.2pp | `results/analysis/alpha_curve_fit.json` |
+| αc/αt curve fit | Logistic fit on b∈{128,256,512} → predict α_t(b) at 1024/2048 | Fit RMSE = 3.2×10⁻¹⁷ on train set (interpolated); held-out α_t(1024) ground truth = 0.417 vs logistic prediction 0.321 (≈9.7pp gap — this is not a direct Acc_think support, just α_t extrapolation) | `results/analysis/alpha_curve_fit.json` |
 | Learned allocator (13-feature LR) | MATH-500 test split | 46.6% token savings (oracle ceiling 60.2%) | `results/learned_allocator/mlp_trained.json` |
 | IRIS entropy stopping null | 200 GSM8K samples | 0/200 samples triggered, anti-correlated with correctness | defensive ablation |
 

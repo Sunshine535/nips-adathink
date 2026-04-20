@@ -21,7 +21,7 @@ All P0 blocks have data. Remaining work is engineering cleanup, not new experime
 | Stage-3 extraction improvement (27B MATH-500 60.5% → 77.5% same-sample) | ✅ complete | `results/iris_improved_20260417/27b_math500_b4096_ba512_n200/` |
 | Multi-seed IRIS 8B MATH-500 (3 seeds, mean 74.1%, std 1.5pp) | ✅ complete | `results/multiseed_20260419/multiseed_summary.json` |
 | Budget-forcing (s1 early_stop) comparison 8B MATH-500 | ✅ complete | `results/budget_forcing/bforce_early_stop_*.json` |
-| αc / αt curve fitting predicts Acc_think(1024) within 1.2pp | ✅ complete | `results/analysis/alpha_curve_fit.json` |
+| αc / αt curve fitting: logistic fit on b∈{128,256,512} (train RMSE ≈ 0), held-out α_t(1024) = 0.417 vs predicted 0.321 (≈9.7pp gap — extrapolation is imprecise; do NOT claim Acc_think within-1.2pp) | ⚠️ demoted | `results/analysis/alpha_curve_fit.json` |
 | Learned allocator 46.6% savings (77% of oracle) | ✅ complete | `results/learned_allocator/mlp_trained.json` |
 | IRIS entropy-stopping null result (0/200 triggered) | ✅ complete | defensive ablation in paper |
 | CTT (paired cross-mode KL) null result | ✅ complete (pivoted) | `results/ctt_pilot_{8b,27b}_gsm8k/analysis.json` |

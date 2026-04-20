@@ -1380,3 +1380,95 @@ The paper was elevated from 5/10 (oversold, broad claims, weak theory) to 7/10 (
 - Consider multi-seed robustness check if GPU time available
 - Consider concise-CoT baseline if GPU time available
 
+
+---
+
+## Round 1 — Nightmare (2026-04-21 03:25)
+
+> **Context**: Fresh /auto-review-loop with `difficulty: nightmare`. User goal: "I need a POSITIVE-results paper, not a negative-results-proving paper. Start experimenting on currently retained positive ideas." Four prior rounds at `medium` difficulty closed at 7.5/10. This session re-enters at `nightmare` — adversarial GPT-5.4 xhigh via MCP (`codex exec` CLI preferred per skill spec but timed out twice; MCP fallback with inlined evidence).
+
+### Assessment (Summary)
+- **Score**: 5.9/10
+- **Verdict**: almost
+- **Stop condition**: not met (score < 6)
+
+### Key verified claims (independently reproduced by reviewer)
+
+| Config | Paired counts | IRIS | TOWN | Δ | Avg tok IRIS/TOWN | McNemar |
+|--------|--------------|------|------|---|-------------------|---------|
+| 27B GSM8K b=4096 (n=200, NEW 2026-04-21) | both=180, oi=7, ot=0, nei=13 | 93.5% | 90.0% | +3.5pp | 1182 / 1162 | exact p=0.0156 |
+| 8B GSM8K b=512 (n=1319) | both=1133, oi=66, ot=2, nei=118 | 90.9% | 86.05% | +4.85pp | 204.35 / 203.56 | author's exact binomial: 2·2347/2^68 ≈ 1.59e-17; reviewer's cc-χ² p ≈ 2.17e-14 |
+| 27B MATH-500 b=4096 (n=200) | both=87, oi=68, ot=11, nei=34 | 77.5% | 49.0% | +28.5pp | 3672 / 3614 | exact p=3.54e-11 |
+| 27B GSM8K b=4096 nothink vs think (n=200) | both=174, ont=22, ot=1, nei=3 | 98.0% nt | 87.5% th | −10.5pp | 255 / 1997 | exact p=5.72e-6 |
+
+All four reproduce from cited JSONs.
+
+### Reviewer's flagged issues
+
+1. **"Pareto-dominates TOWN" is overclaim** — on all three verified wins, IRIS uses slightly more tokens than TOWN (+0.4% / +1.6% / +1.7%). Correct framing: "paired accuracy gain at near-matched token cost." s1 budget-forcing comparison IS a true Pareto win (+2.1pp × -27% tokens).
+2. **8B GSM8K p-value** discrepancy — summary quotes 1.6e-17; reviewer gets 8.18e-13 (their exact) / 2.17e-14 (cc-χ²). Author exact binomial matches 1.6e-17. Must document the McNemar variant used.
+3. **α_t 1.2pp claim** does NOT match alpha_curve_fit.json (actual held-out gap ≈ 9.7pp; the 1.2pp was a misquote). Demoted in README + EXPERIMENT_PLAN.
+4. **PAPER_CLAIM_AUDIT.md PASS** retains stale prose about 477 vs 460 — minor editorial cleanup needed.
+5. **sota_comparison.md 27B GSM8K** row was stale (pre-2026-04-21). Updated.
+
+### ONE critical experiment flagged
+
+Re-run **Qwen3.5-27B MATH-500 n=200 seed=42 with --online_stage2** on the exact paired subset. Success: IRIS within ±1pp of 77.5%, TOWN 49.0% preserved, `n_tokens_generated == n_tokens_used` per record. Upgrades the strongest positive method result from post-hoc to deployment-faithful.
+
+### Reviewer Raw Response
+
+<details>
+<summary>Click to expand full reviewer response</summary>
+
+- **Score**: 5.9/10
+- **Verdict**: almost
+
+- **Verified claims**:
+  - 4 raw artifacts spot-checked, paired counts recomputed from per-sample arrays.
+  - 27B GSM8K b=4096: n=200, both=180, only IRIS=7, only TOWN=0, neither=13; IRIS 93.5%, TOWN 90.0%; avg tokens 1181.64 vs 1161.86; exact two-sided McNemar p=0.015625.
+  - 8B GSM8K b=512 full-scale: n=1319, both=1133, only IRIS=66, only TOWN=2, neither=118; IRIS 90.9%, TOWN 86.05%; avg tokens 204.35 vs 203.56. The win is real and very strong.
+  - 27B MATH-500 b=4096: n=200, both=87, only IRIS=68, only TOWN=11, neither=34; IRIS 77.5%, TOWN 49.0%; avg tokens 3672.08 vs 3613.76; exact two-sided McNemar p=3.54e-11.
+  - 27B GSM8K crossover: nothink 98.0% vs think 87.5%, avg tokens 254.71 vs 1996.685, contingency 174/22/1/3; χ²_cc=17.39, exact two-sided p=5.72e-6.
+  - Online/post-hoc disclosure is real in code: run_iris.py:566 defaults online_stage2=False; run_iris.py:705 uses n_tokens_used in tokens_total; iris_online_stage2.py:13 explicitly states n_tokens_generated == n_tokens_used only for the online path.
+
+- **Unverified / suspicious claims**:
+  - 8B GSM8K p=1.6e-17 in summary — reviewer's recomputation gives 8.18e-13 exact / 2.17e-14 cc. Author's recomputation using exact binomial 2·Σ_{k≤2}C(68,k)/2^68 ≈ 1.59e-17 matches summary; methodological disagreement, not an error per se.
+  - "IRIS Pareto-dominates TOWN" is false on the verified trio: IRIS uses +0.4%/+1.6%/+1.7% more tokens.
+  - alpha_curve_fit.json does not substantiate "Acc_think(1024) within 1.2pp."
+  - PAPER_CLAIM_AUDIT.md PASS has stale contradictory prose about 477 vs 460.
+  - sota_comparison.md stale on 27B GSM8K.
+
+- **Weaknesses (ranked)**:
+  1. Headline IRIS wins are analysis-faithful, not deployment-faithful. Blocker for strong positive-method paper.
+  2. "Pareto-dominate TOWN" must become "paired accuracy gain at similar token cost."
+  3. Statistical hygiene in summary docs is loose (p-value mismatch).
+  4. 8B MATH-500 is boundary, not positive headline.
+  5. Secondary support claims less traceable than the four core results.
+
+- **ONE critical experiment**:
+  Re-run Qwen3.5-27B MATH-500 n=200 seed=42 IRIS with --online_stage2. Success: IRIS within ~1pp of 77.5%, still clearly beats TOWN 49.0%, every record has n_tokens_generated == n_tokens_used.
+
+- **Memory update**:
+  - 8B GSM8K summary p-value needs methodological note.
+  - "Pareto-dominates TOWN" false for verified trio.
+  - alpha_curve_fit.json does not support 1.2pp claim.
+  - PAPER_CLAIM_AUDIT.md PASS has stale prose.
+  - sota_comparison.md stale.
+
+</details>
+
+### Actions Taken (Round 1)
+
+| # | Fix | File / commit | Status |
+|---|-----|---------------|--------|
+| 1 | Launched CRITICAL experiment: `Qwen3.5-27B MATH-500 n=200 seed=42 --online_stage2` on H800 | PID 27998 remote, results/iris_online_20260421/27b_math500_n200/ | 🚀 running |
+| 2 | Remove "Pareto-dominates TOWN" overclaim | README.md, results/sota_comparison.md | ✅ fixed |
+| 3 | Document McNemar calc method (exact binomial) | results/sota_comparison.md | ✅ fixed |
+| 4 | Demote α_t 1.2pp claim (actual gap ≈ 9.7pp, extrapolation imprecise) | README.md, idea-stage/EXPERIMENT_PLAN.md | ✅ fixed |
+| 5 | Update stale 27B GSM8K section | results/sota_comparison.md | ✅ fixed |
+| 6 | Add 27B GSM8K new McNemar entry | results/mcnemar_summary.json (commit d4e0c03) | ✅ done |
+
+### Status
+- Continuing to Round 2 (score 5.9 < 6; need to re-verify after critical experiment data arrives)
+- Pending: H800 online-stage2 run (~15-18 h for full n=200 IRIS+TOWN; first checkpoint at n=25 in ~2h)
+- Difficulty: nightmare
