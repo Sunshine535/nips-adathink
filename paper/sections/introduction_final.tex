@@ -6,7 +6,7 @@
     \includegraphics[width=\linewidth]{fig_nothink_vs_thinking.pdf}
     \caption{\textbf{The Coupling Tax.}
     Non-thinking mode (blue) dramatically outperforms thinking mode (orange) at every matched token budget on GSM8K (Qwen3-8B, $n{=}1{,}319$).
-    At the 512-token budget, \texttt{nothink@512} achieves \textbf{93.1\%} accuracy with only 152 average tokens, while \texttt{think@512} reaches just \textbf{56.9\%} with 477 tokens---a \textbf{+36.2\,pp} accuracy advantage.
+    At the 512-token budget, \texttt{nothink@512} achieves \textbf{93.1\%} accuracy with only 152 average tokens, while \texttt{think@512} reaches just \textbf{56.9\%} with 460 tokens---a \textbf{+36.2\,pp} accuracy advantage.
     The gap widens further for the 27B model (Table~\ref{tab:model-size-scaling}), whose longer reasoning chains are more severely truncated.}
     \label{fig:nothink-vs-thinking}
 \end{figure}
@@ -22,8 +22,8 @@ The phenomenon requires two conditions: (i)~the model's reasoning chains typical
 \paragraph{The thinking tax.}
 Through systematic experiments on GSM8K and MATH-500 with three Qwen-family model sizes (8B, 9B, 27B)---all possessing native \texttt{<think>} mode with a distinct non-thinking alternative---we uncover a striking phenomenon that we term the \emph{thinking tax}: \textbf{below the crossover budget, non-thinking mode outperforms thinking mode at every tested budget, often by a wide margin} (Figure~\ref{fig:nothink-vs-thinking}).
 The crossover---where thinking finally matches non-thinking---has not been reached at budgets $\leq$512 on GSM8K; on MATH-500, it shifts even further right, beyond 2048 tokens.
-The headline result is stark: non-thinking mode with a 512-token budget achieves \textbf{93.1\%} accuracy using only 152 average tokens, while thinking mode with the \emph{same} budget reaches just \textbf{56.9\%}---requiring 477 average tokens.
-This is not a marginal difference: non-thinking is \textbf{36.2 percentage points more accurate} while consuming \textbf{3.1$\times$ fewer tokens}.
+The headline result is stark: non-thinking mode with a 512-token budget achieves \textbf{93.1\%} accuracy using only 152 average tokens, while thinking mode with the \emph{same} budget reaches just \textbf{56.9\%}---requiring 460 average tokens.
+This is not a marginal difference: non-thinking is \textbf{36.2 percentage points more accurate} while consuming \textbf{3.0$\times$ fewer tokens}.
 Even at the smaller 256-token budget, non-thinking (87.5\%) outperforms thinking@512 (56.9\%).
 On the harder MATH-500 benchmark, the tax is even larger: non-thinking@1024 achieves \textbf{59.8\%} vs.\ thinking@1024's \textbf{18.0\%}---a \textbf{41.8\,pp} gap.
 

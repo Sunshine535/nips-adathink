@@ -88,7 +88,7 @@ Since the same model achieves high accuracy in non-thinking mode, the collapse i
 The coupling tax is not merely an accuracy problem---it is a
 \emph{compute waste} problem with direct production implications.
 At $b{=}512$ on GSM8K, 62.0\% of thinking-mode responses are truncated,
-consuming an average of 477 tokens per query while producing no
+consuming an average of 460 tokens per query while producing no
 parseable answer.
 For a service processing 1M queries/day at this budget, switching
 from \texttt{think@512} to \texttt{nothink@512} eliminates
