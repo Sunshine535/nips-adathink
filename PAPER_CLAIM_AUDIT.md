@@ -102,7 +102,7 @@ Both issues resolved. All ≈40 material quantitative claims now reproduce again
 - **Fix:** Change "Baseline 90.0%" to "89.0%" and Δ from "+3.0" to "+4.0"; correct footnote to "TOWN 89.0% / IRIS ba=128 93.0% at n=200".
 
 ### Cross-reference gap (not a FAIL, but worth noting)
-- **Audit item:** "27B GSM8K same-sample comparison" — `experiments_final.tex:413` footnote says "A 27B GSM8K same-sample comparison is in progress (ongoing n=200 run at checkpoint n=100: 94.0%)." This claim is NOT in the scope list the audit brief gave, but flagged as "in progress." No evidence file cross-check required unless paper asserts completion.
+- **Audit item:** "27B GSM8K same-sample comparison" — `experiments_final.tex:413` footnote. As of 2026-04-21, this experiment is COMPLETE at n=200: IRIS 93.5% vs TOWN 90.0% (+3.5pp, 7/7 discordant favor IRIS, McNemar exact p=0.0156). Evidence: `results/iris_improved_20260420/27b_gsm8k_b4096/iris_Qwen3_5_27B_b1256_b24096_ba512_20260420_081937.json`. Footnote text updated accordingly in commit bbe3c25. Numbers reproduce.
 
 ## Notes
 
