@@ -1,108 +1,60 @@
-# AdaThink: Adaptive Test-Time Compute Control for LLMs
+# The Coupling Tax
 
----
+**Paper**: *The Coupling Tax: When Chain-of-Thought Costs More Than It Saves*
+**Target venue**: NeurIPS 2026
+**Status**: active — core theorem verified (proof-checker Round 4 PASS), method empirically validated on GSM8K / MATH-500 at 8B / 27B scales.
 
-## Quick Start
+This repository investigates a structural phenomenon we call the **Coupling Tax**: under a fixed output-token budget, thinking-mode LLMs must share the budget between reasoning and answer, so chain-of-thought that cannot finish within the budget truncates and drags accuracy below non-thinking mode. We derive a closed-form decomposition, quantify an inverse scaling law, and demonstrate a simple cascade with decoupled extraction that Pareto-dominates competing baselines.
 
-```bash
-# 1. Clone and enter project
-git clone https://github.com/Sunshine535/nips-adathink.git
-cd nips-adathink
+## Canonical artifacts (authoritative)
 
-# 2. One-command setup + run all experiments
-bash run.sh
+| What | Path |
+|------|------|
+| Paper source | `paper/main_final.tex` + `paper/sections/` |
+| Core theorem + proofs (verified R4) | `paper/sections/theory_final.tex` |
+| Current method proposal | `idea-stage/FINAL_PROPOSAL.md` |
+| Current experiment plan | `idea-stage/EXPERIMENT_PLAN.md` |
+| Literature landscape (Apr 2026) | `idea-stage/LITERATURE_LANDSCAPE.md` |
+| Claim-to-evidence audit | `PAPER_CLAIM_AUDIT.md` |
+| Narrative report (latest) | `NARRATIVE_REPORT.md` |
+| Data provenance | `DATA_PROVENANCE.md` |
 
-# 3. (Optional) Run in background for long experiments
-nohup bash run.sh > run.log 2>&1 &
-tail -f run.log
-```
+## Core empirical results
 
-### Check Completion
+| Finding | Setup | Result | Evidence |
+|---------|-------|--------|----------|
+| 27B GSM8K coupling tax at b=4096 | n=200, seed=42, McNemar paired | nothink 98.0% vs think 87.5% (−10.5pp), p<1e-5 | `results/p21_27b_gsm8k_extend/b4096/` |
+| 8B GSM8K IRIS vs TOWN (full-scale) | n=1319, seed=42, paired | IRIS 90.9% vs TOWN 86.0%, **p=1.6e-17** | `results/gap_fill_20260414/iris_gsm8k_8b_fullscale/` |
+| 27B MATH-500 IRIS vs TOWN | n=200, seed=42, paired | IRIS 77.5% vs TOWN 49.0% (+28.5pp), **p=3.5e-11** | `results/iris_improved_20260417/27b_math500_b4096_ba512_n200/` |
+| Stage-3 decoupled extraction (27B MATH-500) | n=200, paired same-sample | baseline 60.5% → improved 77.5% (+17pp) | `results/iris_improved_20260417/` |
+| IRIS vs s1 budget forcing (early_stop) | 8B MATH-500 n=200 seed=42, b=4096 | IRIS 74.0% / 2380 tok vs s1 72.0% / 3164 tok | `results/budget_forcing/` |
+| Multi-seed stability on 8B MATH-500 | 3 seeds (42/123/456) | mean 74.1%, std 1.5pp, span 3.0pp | `results/multiseed_20260419/multiseed_summary.json` |
+| αc/αt curve fit | Logistic fit on b∈{128,256,512} → predict b=1024 | Acc_think(1024) predicted error 1.2pp | `results/analysis/alpha_curve_fit.json` |
+| Learned allocator (13-feature LR) | MATH-500 test split | 46.6% token savings (oracle ceiling 60.2%) | `results/learned_allocator/mlp_trained.json` |
+| IRIS entropy stopping null | 200 GSM8K samples | 0/200 samples triggered, anti-correlated with correctness | defensive ablation |
 
-```bash
-cat results/.pipeline_done   # Shows PIPELINE_COMPLETE when all phases finish
-ls results/.phase_markers/   # See which individual phases completed
-```
+## Running experiments
 
-### Save and Send Results
+The paper's experiments are reproducible via `scripts/run_iris.py`, `scripts/run_nothink_baseline.py`, and `scripts/run_budget_forcing.py`. Full provenance for every paper claim is recorded in `DATA_PROVENANCE.md` and `results/mcnemar_summary.json`.
 
-```bash
-# Option A: Push to GitHub
-git add results/ logs/
-git commit -m "Experiment results"
-git push origin main
+Key scripts:
+- `scripts/run_iris.py` — IRIS / TOWN paired runner with Stage-3 decoupled extraction
+- `scripts/run_nothink_baseline.py` — nothink vs thinking matched-budget baseline
+- `scripts/run_budget_forcing.py` — Muennighoff s1-style budget forcing (early_stop, wait_extend)
+- `scripts/learned_allocator.py` — question-features allocator analysis
+- `scripts/run_ctt_pilot.py` — Coupling-Tax Tomography ablation (null result preserved)
+- `scripts/analysis/fit_alpha_curves.py` — αc/αt curve fitting
 
-# Option B: Package as tarball
-bash collect_results.sh
-# Output: results_archive/nips-adathink_results_YYYYMMDD_HHMMSS.tar.gz
-```
+## Repository status
 
-### Resume After Interruption
+The project pivoted in 2026-04 from an earlier "AdaThink / Dynamic Halting" direction to the current Coupling Tax framing after discovering the earlier evaluation protocol was flawed (train/eval on the same CSV, oracle-labeled stopping). All pre-pivot artifacts (README, PROJECT_FINAL_REPORT, FINAL_SUMMARY, Dynamic Halting controller, etc.) are preserved under `archive/pre_coupling_tax_pivot/` for reference but are no longer part of the canonical narrative. Do not mix evidence across the two eras.
 
-Re-run `bash run.sh` — completed phases are automatically skipped.
-To force re-run all phases: `FORCE_RERUN=1 bash run.sh`
+An earlier iteration of the refined proposal lives in `archive/refine-logs_v1/`. The current proposal is in `idea-stage/`.
 
-## Project Structure
+## Remote servers
 
-```
-nips-adathink/
-├── README.md
-├── setup.sh
-├── requirements.txt
-├── scripts/
-│   ├── gpu_utils.sh                         # Shared GPU auto-detection
-│   ├── run_all_experiments.sh               # Master orchestration
-│   ├── run_gsm8k_experiment.py              # Budget sweep (64/128/256)
-│   ├── run_gsm8k_policy_search.py           # Policy search controller
-│   ├── run_gsm8k_sc_baseline.py             # Self-consistency baseline
-│   ├── run_learned_budget_controller.py     # Learned controller training
-│   ├── run_value_budget_controller.py       # Value-based controller
-│   ├── run_template_budget_controller.py    # Template controller
-│   ├── run_parametric_budget_controller.py  # Parametric controller
-│   ├── run_8b_think_postprocess_after_seeds.py  # 8B dual-scale
-│   └── run_template_controller_significance.py  # Significance tests
-├── shared_scripts/
-├── results/
-└── docs/
-```
+- Server A — A100 @ 216.81.245.124:13627 (RunPod, intermittent)
+- Server B — A100 @ 216.81.245.126:13722 (RunPod, intermittent)
+- H800 — access via Mac jumphost (`mac2` → `ssh-439.default`)
 
-## Experiments
-
-| Phase | Experiment | Description | Est. GPU-hours |
-|-------|-----------|-------------|---------------|
-| 1 | Budget Sweep | Fixed budgets 64/128/256 on GSM8K (3 seeds) | ~60 |
-| 2 | Self-Consistency Baseline | SC@8 and SC@16 for comparison | ~40 |
-| 3 | Learned Controller | Train adaptive budget controller | ~80 |
-| 4 | Value Controller | Value-based budget allocation | ~80 |
-| 5 | Policy Search | Greedy policy search over budgets | ~60 |
-| 6 | 27B+8B Dual-Scale | Cross-scale validation | ~80 |
-| **Total** | | | **~400** |
-
-### Expected Outputs
-
-- `results/budget_sweep/` — Per-budget accuracy and token usage
-- `results/sc_baseline/` — Self-consistency accuracy
-- `results/learned_controller/` — Controller checkpoints and metrics
-- `results/value_controller/` — Value-based controller results
-- `results/policy_search/` — Policy search trajectories
-- `results/figures/` — Publication-quality PDFs
-
-### Expected Timeline
-
-Total estimated GPU hours: **~400** on 8× A100 80GB.
-Phases run sequentially; use `--from-phase N` or `--only-phase N` to resume or isolate phases.
-
-## Citation
-
-```bibtex
-@inproceedings{adathink2026,
-  title     = {AdaThink: Adaptive Test-Time Compute Control for LLMs},
-  author    = {Anonymous},
-  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
-  year      = {2026}
-}
-```
-
-## License
-
-MIT
+Details and data-sync procedures in `CLAUDE.md`.
