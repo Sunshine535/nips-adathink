@@ -1,0 +1,80 @@
+2026-04-15 09:18:47,595 INFO Loading model: Qwen/Qwen3.5-27B
+2026-04-15 09:18:48,317 INFO HTTP Request: HEAD https://hf-mirror.com/Qwen/Qwen3.5-27B/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-15 09:18:48,529 INFO HTTP Request: HEAD https://hf-mirror.com/api/resolve-cache/models/Qwen/Qwen3.5-27B/b7ca741b86de18df552fd2cc952861e04621a4bd/config.json "HTTP/1.1 200 OK"
+2026-04-15 09:18:48,877 INFO HTTP Request: HEAD https://hf-mirror.com/Qwen/Qwen3.5-27B/resolve/main/tokenizer_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-15 09:18:49,079 INFO HTTP Request: HEAD https://hf-mirror.com/api/resolve-cache/models/Qwen/Qwen3.5-27B/b7ca741b86de18df552fd2cc952861e04621a4bd/tokenizer_config.json "HTTP/1.1 200 OK"
+2026-04-15 09:18:49,423 INFO HTTP Request: HEAD https://hf-mirror.com/Qwen/Qwen3.5-27B/resolve/main/tokenizer_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-15 09:18:49,696 INFO HTTP Request: HEAD https://hf-mirror.com/api/resolve-cache/models/Qwen/Qwen3.5-27B/b7ca741b86de18df552fd2cc952861e04621a4bd/tokenizer_config.json "HTTP/1.1 200 OK"
+2026-04-15 09:18:50,085 INFO HTTP Request: GET https://hf-mirror.com/api/models/Qwen/Qwen3.5-27B/tree/main/additional_chat_templates?recursive=false&expand=false "HTTP/1.1 404 Not Found"
+2026-04-15 09:18:51,235 INFO HTTP Request: GET https://hf-mirror.com/api/models/Qwen/Qwen3.5-27B/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
+2026-04-15 09:18:52,390 INFO HTTP Request: GET https://hf-mirror.com/api/models/Qwen/Qwen3.5-27B "HTTP/1.1 200 OK"
+2026-04-15 09:18:53,271 INFO HTTP Request: HEAD https://hf-mirror.com/Qwen/Qwen3.5-27B/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-15 09:18:53,588 INFO HTTP Request: HEAD https://hf-mirror.com/api/resolve-cache/models/Qwen/Qwen3.5-27B/b7ca741b86de18df552fd2cc952861e04621a4bd/config.json "HTTP/1.1 200 OK"
+`torch_dtype` is deprecated! Use `dtype` instead!
+2026-04-15 09:18:54,264 INFO HTTP Request: HEAD https://hf-mirror.com/Qwen/Qwen3.5-27B/resolve/main/model.safetensors "HTTP/1.1 404 Not Found"
+2026-04-15 09:18:54,624 INFO HTTP Request: HEAD https://hf-mirror.com/Qwen/Qwen3.5-27B/resolve/main/model.safetensors.index.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-15 09:18:54,794 INFO HTTP Request: HEAD https://hf-mirror.com/api/resolve-cache/models/Qwen/Qwen3.5-27B/b7ca741b86de18df552fd2cc952861e04621a4bd/model.safetensors.index.json "HTTP/1.1 200 OK"
+2026-04-15 09:18:55,022 INFO HTTP Request: GET https://hf-mirror.com/api/models/Qwen/Qwen3.5-27B/revision/main "HTTP/1.1 200 OK"
+Fetching 11 files:   0%|          | 0/11 [00:00<?, ?it/s]Fetching 11 files: 100%|██████████| 11/11 [00:00<00:00, 15832.99it/s]
+The fast path is not available because one of the required library is not installed. Falling back to torch implementation. To install follow https://github.com/fla-org/flash-linear-attention#installation and https://github.com/Dao-AILab/causal-conv1d
+Loading weights:   0%|          | 0/851 [00:00<?, ?it/s]Loading weights:   0%|          | 1/851 [00:00<03:37,  3.92it/s]Loading weights:   2%|▏         | 15/851 [00:00<00:17, 49.04it/s]Loading weights:   3%|▎         | 27/851 [00:00<00:11, 71.76it/s]Loading weights:   5%|▍         | 42/851 [00:00<00:08, 95.78it/s]Loading weights:   7%|▋         | 61/851 [00:00<00:06, 120.96it/s]Loading weights:   9%|▉         | 77/851 [00:00<00:05, 130.01it/s]Loading weights:  11%|█         | 91/851 [00:00<00:05, 131.73it/s]Loading weights:  12%|█▏        | 105/851 [00:01<00:06, 110.12it/s]Loading weights:  14%|█▍        | 121/851 [00:01<00:05, 122.93it/s]Loading weights:  16%|█▌        | 135/851 [00:01<00:05, 127.23it/s]Loading weights:  18%|█▊        | 149/851 [00:01<00:05, 130.53it/s]Loading weights:  20%|█▉        | 168/851 [00:01<00:04, 144.25it/s]Loading weights:  22%|██▏       | 183/851 [00:01<00:04, 142.16it/s]Loading weights:  23%|██▎       | 198/851 [00:01<00:04, 137.56it/s]Loading weights:  25%|██▍       | 212/851 [00:01<00:05, 122.37it/s]Loading weights:  27%|██▋       | 227/851 [00:01<00:05, 122.18it/s]Loading weights:  28%|██▊       | 241/851 [00:02<00:04, 126.15it/s]Loading weights:  30%|███       | 258/851 [00:02<00:04, 130.49it/s]Loading weights:  33%|███▎      | 277/851 [00:02<00:03, 146.03it/s]Loading weights:  34%|███▍      | 292/851 [00:02<00:04, 130.65it/s]Loading weights:  36%|███▌      | 308/851 [00:02<00:04, 130.65it/s]Loading weights:  38%|███▊      | 325/851 [00:02<00:03, 138.03it/s]Loading weights:  40%|███▉      | 340/851 [00:02<00:03, 140.96it/s]Loading weights:  42%|████▏     | 355/851 [00:02<00:03, 139.88it/s]Loading weights:  43%|████▎     | 370/851 [00:03<00:03, 124.26it/s]Loading weights:  45%|████▌     | 386/851 [00:03<00:03, 128.31it/s]Loading weights:  48%|████▊     | 412/851 [00:03<00:02, 159.39it/s]Loading weights:  50%|█████     | 429/851 [00:03<00:02, 146.81it/s]Loading weights:  52%|█████▏    | 445/851 [00:03<00:02, 149.09it/s]Loading weights:  54%|█████▍    | 461/851 [00:03<00:02, 143.11it/s]Loading weights:  56%|█████▌    | 476/851 [00:03<00:02, 125.37it/s]Loading weights:  58%|█████▊    | 491/851 [00:03<00:02, 125.37it/s]Loading weights:  60%|█████▉    | 508/851 [00:04<00:02, 136.49it/s]Loading weights:  61%|██████▏   | 523/851 [00:04<00:02, 132.83it/s]Loading weights:  64%|██████▎   | 542/851 [00:04<00:02, 139.32it/s]Loading weights:  65%|██████▌   | 557/851 [00:04<00:02, 127.58it/s]Loading weights:  68%|██████▊   | 576/851 [00:04<00:02, 136.24it/s]Loading weights:  70%|██████▉   | 595/851 [00:04<00:01, 148.18it/s]Loading weights:  72%|███████▏  | 611/851 [00:04<00:01, 134.66it/s]Loading weights:  74%|███████▎  | 626/851 [00:04<00:01, 131.72it/s]Loading weights:  76%|███████▌  | 645/851 [00:05<00:01, 140.41it/s]Loading weights:  78%|███████▊  | 661/851 [00:05<00:01, 145.40it/s]Loading weights:  79%|███████▉  | 676/851 [00:05<00:01, 142.97it/s]Loading weights:  81%|████████  | 691/851 [00:05<00:01, 123.73it/s]Loading weights:  83%|████████▎ | 709/851 [00:05<00:01, 135.32it/s]Loading weights:  85%|████████▌ | 725/851 [00:05<00:00, 140.56it/s]Loading weights:  87%|████████▋ | 740/851 [00:05<00:00, 123.06it/s]Loading weights:  89%|████████▉ | 757/851 [00:05<00:00, 130.06it/s]Loading weights:  91%|█████████ | 771/851 [00:05<00:00, 132.49it/s]Loading weights:  92%|█████████▏| 785/851 [00:06<00:00, 134.26it/s]Loading weights:  94%|█████████▍| 804/851 [00:06<00:00, 138.80it/s]Loading weights:  96%|█████████▋| 820/851 [00:06<00:00, 144.35it/s]Loading weights:  98%|█████████▊| 836/851 [00:06<00:00, 139.04it/s]Loading weights: 100%|██████████| 851/851 [00:06<00:00, 128.55it/s]Loading weights: 100%|██████████| 851/851 [00:06<00:00, 129.74it/s]
+2026-04-15 09:19:05,187 INFO HTTP Request: HEAD https://hf-mirror.com/Qwen/Qwen3.5-27B/resolve/main/generation_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-15 09:19:05,410 INFO HTTP Request: HEAD https://hf-mirror.com/api/resolve-cache/models/Qwen/Qwen3.5-27B/b7ca741b86de18df552fd2cc952861e04621a4bd/generation_config.json "HTTP/1.1 200 OK"
+2026-04-15 09:19:05,788 INFO HTTP Request: HEAD https://hf-mirror.com/Qwen/Qwen3.5-27B/resolve/main/custom_generate/generate.py "HTTP/1.1 404 Not Found"
+2026-04-15 09:19:06,253 INFO HTTP Request: HEAD https://hf-mirror.com/datasets/HuggingFaceH4/MATH-500/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+2026-04-15 09:19:06,423 INFO HTTP Request: HEAD https://hf-mirror.com/api/resolve-cache/datasets/HuggingFaceH4/MATH-500/6e4ed1a2a79af7d8630a6b768ec859cb5af4d3be/README.md "HTTP/1.1 200 OK"
+2026-04-15 09:19:06,607 INFO HTTP Request: GET https://hf-mirror.com/api/resolve-cache/datasets/HuggingFaceH4/MATH-500/6e4ed1a2a79af7d8630a6b768ec859cb5af4d3be/README.md "HTTP/1.1 200 OK"
+2026-04-15 09:19:06,964 INFO HTTP Request: HEAD https://hf-mirror.com/datasets/HuggingFaceH4/MATH-500/resolve/6e4ed1a2a79af7d8630a6b768ec859cb5af4d3be/MATH-500.py "HTTP/1.1 404 Not Found"
+2026-04-15 09:19:07,726 INFO HTTP Request: HEAD https://s3.amazonaws.com/datasets.huggingface.co/datasets/datasets/HuggingFaceH4/MATH-500/HuggingFaceH4/MATH-500.py "HTTP/1.1 404 Not Found"
+2026-04-15 09:19:07,913 INFO HTTP Request: GET https://hf-mirror.com/api/datasets/HuggingFaceH4/MATH-500/revision/6e4ed1a2a79af7d8630a6b768ec859cb5af4d3be "HTTP/1.1 200 OK"
+2026-04-15 09:19:08,266 INFO HTTP Request: HEAD https://hf-mirror.com/datasets/HuggingFaceH4/MATH-500/resolve/6e4ed1a2a79af7d8630a6b768ec859cb5af4d3be/.huggingface.yaml "HTTP/1.1 404 Not Found"
+2026-04-15 09:19:08,896 INFO HTTP Request: GET https://hf-mirror.com/api/datasets/HuggingFaceH4/MATH-500/tree/6e4ed1a2a79af7d8630a6b768ec859cb5af4d3be/data?recursive=true&expand=false "HTTP/1.1 404 Not Found"
+2026-04-15 09:19:09,048 INFO HTTP Request: GET https://hf-mirror.com/api/datasets/HuggingFaceH4/MATH-500/tree/6e4ed1a2a79af7d8630a6b768ec859cb5af4d3be?recursive=false&expand=false "HTTP/1.1 200 OK"
+2026-04-15 09:19:09,398 INFO HTTP Request: HEAD https://hf-mirror.com/datasets/HuggingFaceH4/MATH-500/resolve/6e4ed1a2a79af7d8630a6b768ec859cb5af4d3be/dataset_infos.json "HTTP/1.1 404 Not Found"
+2026-04-15 09:19:09,782 INFO HTTP Request: HEAD https://hf-mirror.com/datasets/HuggingFaceH4/MATH-500/resolve/6e4ed1a2a79af7d8630a6b768ec859cb5af4d3be/test.jsonl "HTTP/1.1 307 Temporary Redirect"
+2026-04-15 09:19:10,059 INFO HTTP Request: HEAD https://hf-mirror.com/api/resolve-cache/datasets/HuggingFaceH4/MATH-500/6e4ed1a2a79af7d8630a6b768ec859cb5af4d3be/test.jsonl "HTTP/1.1 200 OK"
+2026-04-15 09:19:10,317 INFO HTTP Request: GET https://hf-mirror.com/api/resolve-cache/datasets/HuggingFaceH4/MATH-500/6e4ed1a2a79af7d8630a6b768ec859cb5af4d3be/test.jsonl "HTTP/1.1 200 OK"
+Generating test split: 0 examples [00:00, ? examples/s]Generating test split: 500 examples [00:00, 161022.11 examples/s]
+2026-04-15 09:19:10,868 INFO Loaded 200 math500 samples (seed=42)
+2026-04-15 09:19:10,868 INFO IRIS: B1=512, B2_max=4096, B_answer=256, chunk=32, tau_h=1.5, tau_s=50.0
+The following generation flags are not valid and may be ignored: ['temperature', 'top_p', 'top_k']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+2026-04-15 11:09:28,094 INFO   IRIS [20/200] acc=0.550  avg_tokens=3809  stages={1: 2, 2: 4, 3: 14}
+2026-04-15 12:43:37,170 INFO   IRIS [40/200] acc=0.700  avg_tokens=3567  stages={1: 7, 2: 8, 3: 25}
+2026-04-15 14:22:04,438 INFO   IRIS [60/200] acc=0.650  avg_tokens=3497  stages={1: 10, 2: 14, 3: 36}
+2026-04-15 16:18:36,623 INFO   IRIS [80/200] acc=0.650  avg_tokens=3596  stages={1: 14, 2: 15, 3: 51}
+2026-04-15 17:54:39,527 INFO   IRIS [100/200] acc=0.660  avg_tokens=3542  stages={1: 18, 2: 22, 3: 60}
+2026-04-15 19:32:32,321 INFO   IRIS [120/200] acc=0.650  avg_tokens=3517  stages={1: 21, 2: 28, 3: 71}
+2026-04-15 21:30:36,706 INFO   IRIS [140/200] acc=0.621  avg_tokens=3551  stages={1: 24, 2: 30, 3: 86}
+2026-04-15 23:29:55,428 INFO   IRIS [160/200] acc=0.594  avg_tokens=3606  stages={1: 27, 2: 32, 3: 101}
+2026-04-16 01:24:06,171 INFO   IRIS [180/200] acc=0.583  avg_tokens=3620  stages={1: 30, 2: 36, 3: 114}
+2026-04-16 03:23:18,243 INFO   IRIS [200/200] acc=0.605  avg_tokens=3611  stages={1: 34, 2: 40, 3: 126}
+2026-04-16 03:23:18,246 INFO 
+TOWN baseline: B1=512, B2=4096
+2026-04-16 05:12:21,772 INFO   TOWN [20/200] acc=0.400  avg_tokens=3826
+2026-04-16 06:46:43,617 INFO   TOWN [40/200] acc=0.475  avg_tokens=3572
+2026-04-16 08:24:15,607 INFO   TOWN [60/200] acc=0.517  avg_tokens=3521
+2026-04-16 10:11:58,927 INFO   TOWN [80/200] acc=0.500  avg_tokens=3567
+2026-04-16 11:56:37,329 INFO   TOWN [100/200] acc=0.520  avg_tokens=3495
+2026-04-16 13:45:00,430 INFO   TOWN [120/200] acc=0.508  avg_tokens=3515
+2026-04-16 15:40:12,142 INFO   TOWN [140/200] acc=0.507  avg_tokens=3567
+2026-04-16 17:45:51,692 INFO   TOWN [160/200] acc=0.481  avg_tokens=3611
+2026-04-16 19:47:51,500 INFO   TOWN [180/200] acc=0.483  avg_tokens=3628
+2026-04-16 21:41:13,807 INFO   TOWN [200/200] acc=0.490  avg_tokens=3614
+2026-04-16 21:41:13,811 INFO 
+Saved: /workspace/nips-adathink/results/gap_fill_20260414/iris_math500_27b_b4096/iris_Qwen3_5_27B_b1512_b24096_ba256_20260415_011847.json
+2026-04-16 21:41:13,812 INFO Saved CSV: /workspace/nips-adathink/results/gap_fill_20260414/iris_math500_27b_b4096/iris_Qwen3_5_27B_b1512_b24096_ba256_20260415_011847.csv
+2026-04-16 21:41:13,812 INFO 
+2026-04-16 21:41:13,812 INFO ======================================================================
+2026-04-16 21:41:13,812 INFO IRIS Results Summary
+2026-04-16 21:41:13,812 INFO ======================================================================
+2026-04-16 21:41:13,812 INFO   Model:               Qwen/Qwen3.5-27B
+2026-04-16 21:41:13,812 INFO   Benchmark:           math500 (n=200)
+2026-04-16 21:41:13,812 INFO   IRIS accuracy:       60.5%
+2026-04-16 21:41:13,812 INFO   IRIS avg tokens:     3611
+2026-04-16 21:41:13,812 INFO   Stage distribution:  {1: 34, 2: 40, 3: 126}
+2026-04-16 21:41:13,812 INFO   Stop reasons:        {'stage2_complete': 40, 'stage3_after_budget_exhausted': 113, 'stage1_natural_stop': 34, 'stage3_after_iris_entropy': 13}
+2026-04-16 21:41:13,812 INFO   Avg S2 savings:      9.7%
+2026-04-16 21:41:13,812 INFO   TOWN accuracy:       49.0%
+2026-04-16 21:41:13,812 INFO   TOWN avg tokens:     3614
+2026-04-16 21:41:13,812 INFO   IRIS vs TOWN:        +11.5pp acc, 0% fewer tokens
+2026-04-16 21:41:13,812 INFO ======================================================================
