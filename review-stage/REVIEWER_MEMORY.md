@@ -2,29 +2,39 @@
 
 Persistent reviewer memory across `/auto-review-loop` rounds. Each round appends — never delete. Fed back to GPT every round so it tracks its own suspicions.
 
-## Prior history (medium difficulty, pre-2026-04-21)
+## Context Reset (2026-04-23)
 
-- Previous 4 rounds at medium difficulty scored: 8.0 → 8.5 → 7.5 (rescored to best-paper scale)
-- Final medium-difficulty score: 7.5/10 ("Strong accept, not best paper yet")
-- Key pending items: DeepSeek full replication, DeepSeek IRIS experiments
-- DeepSeek MATH-500 full-scale n=500 nothink + thinking data integrated
-- Pivoted narrative from CTT hero to Stage-3 decoupled extraction (CTT mini-pilot null)
+Fresh start. Previous rounds (medium R1-R4 on MRSD pivot + nightmare R1 on IRIS) are archived.
 
-## Round 0 — external human-reviewer concerns (2026-04-20, entering Round 1 nightmare)
+### Current paper state
+- **Title**: "The Coupling Tax: When Chain-of-Thought Costs More Than It Saves"
+- **Method**: IRIS — 3-stage cascade (nothink triage → thinking → decoupled Stage-3 extraction)
+- **Key positive results** (all McNemar paired):
+  - 8B GSM8K n=1319: IRIS 90.9% vs TOWN 86.0%, p=1.6e-17
+  - 27B MATH-500 n=200: IRIS 77.5% vs TOWN 49.0%, p=3.5e-11
+  - 27B GSM8K n=200: IRIS 93.5% vs TOWN 90.0%, p=0.0156
+  - IRIS vs budget-forcing s1: +2.1pp at -27% tokens (Pareto win)
+  - Stage-3 extraction: +17pp (60.5%→77.5%) on 27B MATH-500
+  - 27B coupling tax crossover: nothink 98.0% vs think 87.5%, p<1e-5
+- **Negative/null results**: CTT tomography null (AUC≈0.5), entropy stopping 0/200, online-stage2 67.5% vs 77.5% post-hoc
+- **Baselines already implemented**: TOWN, budget-forcing early_stop (s1), nothink, thinking
+- **NOT yet implemented**: NoThinking prefill, DeepConf, JointThinking, BAEE, budget-forcing wait_extend
 
-External critique triggered this loop. Unresolved concerns the nightmare reviewer should verify:
+### What the human lead demands
+- Positive-results paper, NOT negative-results-proving paper
+- Full SOTA comparison: find same-category methods, implement from official GitHub, compare in unified environment
+- If results are negative, diagnose root cause before concluding
 
-- **Claim-audit state**: `PAPER_CLAIM_AUDIT.md` promoted to fresh PASS (commit `e03617c`, 2026-04-20). Prior 2026-04-17 Round-2 FAIL archived to `archive/pre_coupling_tax_pivot/PAPER_CLAIM_AUDIT_R2_FAIL_20260417.md`. Verify this holds on disk.
-- **Online vs post-hoc Stage 2**: `scripts/iris_online_stage2.py` exists + `--online_stage2` flag in `run_iris.py` (commit `a73e6c9`), but headline IRIS numbers (8B GSM8K 90.9%, 27B MATH-500 77.5%, multi-seed) are from the ORIGINAL post-hoc runner. Efficiency claims are effective-token accounting, not wall-clock. Watch for "deployment-faithful" being mis-applied.
-- **8B MATH-500 saturation**: Stage-3 improvement collapses to +0.4pp at n=500 and is non-significant on seed 123/456 (p=0.46, 0.86). Verify paper does not claim universal improvement.
-- **CTT null**: AUC≈0.5 on both 8B and 27B GSM8K. CTT must be presented strictly as ablation, never as method.
-- **477 vs 460 seed-mixing**: fix commit `fb5e334` reconciled 5 occurrences to 460 when paired with 56.9%. Verify no 477 remains mispaired.
-- **Stage-3 table 8B GSM8K row**: baseline corrected 90.0% → 89.0% with Δ+4.0pp (was +3.0pp).
-- **NEW evidence available to verify**: 27B GSM8K IRIS @ b=4096 n=200 run finished on H800 at 2026-04-20 22:02 UTC. checkpoint_iris_200.json shows acc=93.5%, avg_tok=1182, stages {1:122, 2:50, 3:28}. TOWN baseline started but not yet complete.
+### Known integrity issues to verify
+- 477 vs 460 token seed-mixing: should be fixed everywhere
+- Stage-3 table baseline: 89.0% not 90.0%
+- Post-hoc vs online accounting: headline IRIS numbers are post-hoc effective-token accounting
+- 8B MATH-500 IRIS vs TOWN: not significant (p=0.44 pooled)
 
-## Patterns being tracked
-
-- Evidence inflation: same-sample paired vs full-scale-pilot mixing.
-- Reproducibility gap: every table cell must trace to a specific JSON file.
-- "Online / adaptive / deployment-faithful" must not apply to post-hoc trace-truncation accounting.
-- Claim-audit must match the latest manuscript, not stale snapshots.
+## Round 1 — Score: 3/10 (2026-04-23)
+- **Suspicion**: Post-hoc accounting inflates IRIS from 67.5% (real) to 77.5% (post-hoc). This is the #1 credibility risk.
+- **Suspicion**: Stage-3 novelty unproven — without BAEE comparison, could be "just more answer budget"
+- **Suspicion**: Multi-seed claims mixing n=500 with n=200 — not a clean stability analysis
+- **Unresolved**: 5 mandatory SOTA baselines missing (DeepConf, SwiReasoning, Thinkless, BAEE, s1 wait_extend)
+- **Unresolved**: Framing as method paper vs phenomenon paper — reviewer says phenomenon is strong, method is not
+- **Patterns**: Evidence inflation tendency — watch for pilot being presented as definitive
