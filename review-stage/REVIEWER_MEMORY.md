@@ -38,3 +38,18 @@ Fresh start. Previous rounds (medium R1-R4 on MRSD pivot + nightmare R1 on IRIS)
 - **Unresolved**: 5 mandatory SOTA baselines missing (DeepConf, SwiReasoning, Thinkless, BAEE, s1 wait_extend)
 - **Unresolved**: Framing as method paper vs phenomenon paper — reviewer says phenomenon is strong, method is not
 - **Patterns**: Evidence inflation tendency — watch for pilot being presented as definitive
+
+## Round 2 — Score: 6-6.5/10 (2026-04-23)
+- **Previous suspicions addressed?**:
+  - Missing baselines: YES — SwiReasoning head-to-head run, s1 both variants, DeepConf/BAEE/Thinkless justified
+  - Stage-3 novelty: PARTIALLY — ablation is strong (47/49) but confounded by prompt difference (free-cont gets raw continuation, mode-switch gets extraction prompt)
+  - Post-hoc accounting: NOT ADDRESSED — still using 77.5% headline, online is 67.5%
+- **New suspicions**:
+  - MATH-500 IRIS vs SwiR: +0.6pp at n=200 is statistically meaningless without paired McNemar
+  - Ablation confound: free-continuation uses thinking-mode continuation, mode-switch uses nothink extraction prompt with "Final answer:" scaffold — not a pure mode-only test
+  - Multi-seed still mixes n=500 and n=200
+- **Unresolved**:
+  - Post-hoc vs online must be quarantined in every table
+  - Need paired same-sample McNemar for IRIS vs SwiR on MATH-500
+  - Need MATH-500 ablation
+  - Need pure mode-only ablation (same prompt, only enable_thinking differs)
