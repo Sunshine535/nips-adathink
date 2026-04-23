@@ -1,0 +1,1817 @@
+{
+  "meta": {
+    "model": "Qwen/Qwen3-8B",
+    "benchmark": "gsm8k",
+    "n_samples": 200,
+    "seed": 42,
+    "timestamp": "20260423_072138",
+    "b1": 256,
+    "b2_max": 512,
+    "b_answer": 128,
+    "ablation_type": "pure_mode_only"
+  },
+  "stages": {
+    "stage1_pass": 108,
+    "stage2_natural": 0,
+    "stage2_budget": 92
+  },
+  "accuracy": {
+    "town": 0.575,
+    "think_extract": 0.53,
+    "nothink_extract": 0.545
+  },
+  "mcnemar_think_vs_nothink": {
+    "n_stage3": 92,
+    "both": 0,
+    "think_only": 5,
+    "nothink_only": 8,
+    "neither": 79,
+    "discordant": 13
+  },
+  "per_sample": [
+    {
+      "idx": 0,
+      "gold": "52",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 1,
+      "gold": "5",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 2,
+      "gold": "83",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 3,
+      "gold": "10",
+      "stage": 1,
+      "correct_think": false,
+      "correct_nothink": false,
+      "correct_town": false
+    },
+    {
+      "idx": 4,
+      "gold": "70",
+      "stage": 3,
+      "correct_town": true,
+      "correct_think": false,
+      "correct_nothink": true,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 5,
+      "gold": "36",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 6,
+      "gold": "48",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 7,
+      "gold": "16",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 8,
+      "gold": "8",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 9,
+      "gold": "48",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 10,
+      "gold": "90",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 11,
+      "gold": "10",
+      "stage": 1,
+      "correct_think": false,
+      "correct_nothink": false,
+      "correct_town": false
+    },
+    {
+      "idx": 12,
+      "gold": "2",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 13,
+      "gold": "45000",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": true,
+      "think_tokens": 128,
+      "nothink_tokens": 47
+    },
+    {
+      "idx": 14,
+      "gold": "18",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 15,
+      "gold": "140",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 16,
+      "gold": "17",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 17,
+      "gold": "68",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 18,
+      "gold": "8",
+      "stage": 1,
+      "correct_think": false,
+      "correct_nothink": false,
+      "correct_town": false
+    },
+    {
+      "idx": 19,
+      "gold": "14",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 20,
+      "gold": "50",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 21,
+      "gold": "100",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 22,
+      "gold": "125",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 23,
+      "gold": "48",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 24,
+      "gold": "15400",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 25,
+      "gold": "250",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 26,
+      "gold": "18",
+      "stage": 3,
+      "correct_town": true,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 27,
+      "gold": "1490",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 28,
+      "gold": "11",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 29,
+      "gold": "106",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 30,
+      "gold": "138",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 31,
+      "gold": "15",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 32,
+      "gold": "4",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 33,
+      "gold": "82",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 34,
+      "gold": "2",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 35,
+      "gold": "51",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 36,
+      "gold": "4",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 37,
+      "gold": "100",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 38,
+      "gold": "25",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 39,
+      "gold": "188",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 40,
+      "gold": "30",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 41,
+      "gold": "30",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 42,
+      "gold": "150",
+      "stage": 1,
+      "correct_think": false,
+      "correct_nothink": false,
+      "correct_town": false
+    },
+    {
+      "idx": 43,
+      "gold": "7",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 44,
+      "gold": "350",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 45,
+      "gold": "2",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 46,
+      "gold": "36",
+      "stage": 1,
+      "correct_think": false,
+      "correct_nothink": false,
+      "correct_town": false
+    },
+    {
+      "idx": 47,
+      "gold": "2",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": true,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 48,
+      "gold": "14",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 49,
+      "gold": "33",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 50,
+      "gold": "21",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 51,
+      "gold": "175",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 52,
+      "gold": "60",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 53,
+      "gold": "49",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 54,
+      "gold": "1800",
+      "stage": 3,
+      "correct_town": true,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 55,
+      "gold": "27",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 56,
+      "gold": "16",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 57,
+      "gold": "49",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 58,
+      "gold": "6",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": true,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 59,
+      "gold": "32",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 60,
+      "gold": "168",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 61,
+      "gold": "225",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 62,
+      "gold": "50",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 63,
+      "gold": "45",
+      "stage": 3,
+      "correct_town": true,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 64,
+      "gold": "7",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 65,
+      "gold": "800",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 66,
+      "gold": "22",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 67,
+      "gold": "235",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 68,
+      "gold": "3",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 69,
+      "gold": "2",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 70,
+      "gold": "3000",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": true,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 71,
+      "gold": "300",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 72,
+      "gold": "20",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 73,
+      "gold": "130",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 74,
+      "gold": "1",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 75,
+      "gold": "8",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 76,
+      "gold": "50",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 77,
+      "gold": "3",
+      "stage": 3,
+      "correct_town": true,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 78,
+      "gold": "5",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 79,
+      "gold": "110",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 80,
+      "gold": "1300",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 81,
+      "gold": "16",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 82,
+      "gold": "80",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 83,
+      "gold": "45",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 84,
+      "gold": "36",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 85,
+      "gold": "5",
+      "stage": 3,
+      "correct_town": true,
+      "correct_think": false,
+      "correct_nothink": true,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 86,
+      "gold": "9",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 87,
+      "gold": "36",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 88,
+      "gold": "60",
+      "stage": 1,
+      "correct_think": false,
+      "correct_nothink": false,
+      "correct_town": false
+    },
+    {
+      "idx": 89,
+      "gold": "9",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 90,
+      "gold": "1",
+      "stage": 3,
+      "correct_town": true,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 91,
+      "gold": "30",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": true,
+      "think_tokens": 128,
+      "nothink_tokens": 21
+    },
+    {
+      "idx": 92,
+      "gold": "70000",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 93,
+      "gold": "34",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 94,
+      "gold": "13",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 95,
+      "gold": "306",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 96,
+      "gold": "55",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 97,
+      "gold": "24",
+      "stage": 3,
+      "correct_town": true,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 98,
+      "gold": "75",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 99,
+      "gold": "24",
+      "stage": 3,
+      "correct_town": true,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 100,
+      "gold": "50",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 101,
+      "gold": "110",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 102,
+      "gold": "452",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 103,
+      "gold": "30",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 104,
+      "gold": "80",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 105,
+      "gold": "3",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": true,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 106,
+      "gold": "120",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 107,
+      "gold": "172",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 108,
+      "gold": "70",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 109,
+      "gold": "13",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 110,
+      "gold": "150",
+      "stage": 3,
+      "correct_town": true,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 111,
+      "gold": "18",
+      "stage": 1,
+      "correct_think": false,
+      "correct_nothink": false,
+      "correct_town": false
+    },
+    {
+      "idx": 112,
+      "gold": "1",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": true,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 113,
+      "gold": "250",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 114,
+      "gold": "3",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 115,
+      "gold": "15",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 116,
+      "gold": "12",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 117,
+      "gold": "60",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 118,
+      "gold": "3",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 119,
+      "gold": "9",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 120,
+      "gold": "140000",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 121,
+      "gold": "3",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 122,
+      "gold": "2400",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 123,
+      "gold": "4",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 124,
+      "gold": "79",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 125,
+      "gold": "300",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 126,
+      "gold": "91",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 127,
+      "gold": "8",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 128,
+      "gold": "120",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 129,
+      "gold": "350",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 130,
+      "gold": "2600",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 131,
+      "gold": "10",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 132,
+      "gold": "26",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 133,
+      "gold": "7",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 134,
+      "gold": "31",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 135,
+      "gold": "975",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 136,
+      "gold": "20",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": true,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 137,
+      "gold": "120",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 138,
+      "gold": "220",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 139,
+      "gold": "87",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 140,
+      "gold": "300",
+      "stage": 3,
+      "correct_town": true,
+      "correct_think": false,
+      "correct_nothink": true,
+      "think_tokens": 128,
+      "nothink_tokens": 28
+    },
+    {
+      "idx": 141,
+      "gold": "30",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 142,
+      "gold": "17",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 143,
+      "gold": "16",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 144,
+      "gold": "7",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 145,
+      "gold": "81",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 146,
+      "gold": "5",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 147,
+      "gold": "9",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 148,
+      "gold": "10",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 149,
+      "gold": "24",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 150,
+      "gold": "5",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 151,
+      "gold": "50",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 152,
+      "gold": "48",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 153,
+      "gold": "25",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 154,
+      "gold": "96",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 155,
+      "gold": "25",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 156,
+      "gold": "180",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 157,
+      "gold": "21",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 158,
+      "gold": "1200",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 159,
+      "gold": "255",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 160,
+      "gold": "4",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 161,
+      "gold": "10",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 162,
+      "gold": "700",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 163,
+      "gold": "38",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 164,
+      "gold": "32",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 165,
+      "gold": "30",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 166,
+      "gold": "16",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 167,
+      "gold": "40",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 168,
+      "gold": "288",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 169,
+      "gold": "1100",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 170,
+      "gold": "20",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 171,
+      "gold": "2",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 172,
+      "gold": "2880000",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 173,
+      "gold": "9",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 174,
+      "gold": "132",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 175,
+      "gold": "93",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 176,
+      "gold": "4",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 177,
+      "gold": "85",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 178,
+      "gold": "33",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 179,
+      "gold": "12",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 180,
+      "gold": "7200",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 181,
+      "gold": "60",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 182,
+      "gold": "44",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 183,
+      "gold": "113",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 184,
+      "gold": "43500",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 185,
+      "gold": "720",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 186,
+      "gold": "50",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": true,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 187,
+      "gold": "24",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 188,
+      "gold": "43",
+      "stage": 3,
+      "correct_town": true,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 189,
+      "gold": "30",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 190,
+      "gold": "23",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 191,
+      "gold": "251",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 192,
+      "gold": "35",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 193,
+      "gold": "50",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 194,
+      "gold": "82",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 195,
+      "gold": "2100",
+      "stage": 3,
+      "correct_town": false,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 196,
+      "gold": "3",
+      "stage": 3,
+      "correct_town": true,
+      "correct_think": true,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    },
+    {
+      "idx": 197,
+      "gold": "12",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 198,
+      "gold": "11",
+      "stage": 1,
+      "correct_think": true,
+      "correct_nothink": true,
+      "correct_town": true
+    },
+    {
+      "idx": 199,
+      "gold": "12",
+      "stage": 3,
+      "correct_town": true,
+      "correct_think": false,
+      "correct_nothink": false,
+      "think_tokens": 128,
+      "nothink_tokens": 128
+    }
+  ]
+}

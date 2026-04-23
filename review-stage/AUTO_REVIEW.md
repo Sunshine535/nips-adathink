@@ -104,3 +104,59 @@ See REVIEWER_MEMORY.md Round 1 entry.
 ### Status
 - Phase C implementation starting
 - Round 1 documented
+
+---
+
+## Round 2 (2026-04-23 15:00 UTC)
+
+### Assessment (Summary)
+- **Score: 6-6.5/10** (main-track, if rewritten honestly), 4.5/10 (best-paper)
+- **Verdict: Borderline Accept (if honest framing)**
+- Key criticisms:
+  1. MATH-500 IRIS vs SwiR +0.6pp is not statistically significant at n=200
+  2. Ablation confounded: free-continuation gets raw thinking text, mode-switch gets extraction prompt
+  3. Post-hoc accounting still not quarantined
+  4. Multi-seed still mixes n=500 and n=200
+
+### Reviewer Raw Response
+
+<details>
+<summary>Click to expand full reviewer response</summary>
+
+Re-Score: Best-paper track: 4.5/10. NeurIPS main-track if rewritten honestly: 6/10 to 6.5/10 borderline accept.
+
+1. SwiReasoning comparison: mostly addresses. IRIS +0.6pp on MATH-500 is statistically meaningless at n=200. Supports "competitive and much cheaper" not "dominates."
+
+2. Stage-3 ablation: strong mechanism evidence but confounded. Free-continuation gets raw thinking continuation, mode-switch gets explicit extraction prompt and "Final answer:" scaffold. Need "same prompt, only enable_thinking differs" variant.
+
+3. Positive-results paper: yes, under narrower framing. "Split-budget mode-switch extraction is a cheap competitor to SwiR/s1 in a specific regime."
+
+4. Remaining minimum work: paired McNemar for IRIS vs SwiR/s1 on MATH-500; pure Stage-3 ablation; stop mixing n=500/n=200; label online vs post-hoc in every table.
+
+Baseline caveat: DeepConf/Thinkless dismissal acceptable if paper scoped to training-free, single-query inference. BAEE: include BAEE-style free-continuation ablation, note code not released.
+
+</details>
+
+### Actions Taken (Phase C)
+
+1. **Pure mode ablation script**: Created `run_pure_mode_ablation.py` — IDENTICAL prompt for both variants, only `enable_thinking` flag differs. Deployed on A100 (GSM8K) and H800 (MATH-500).
+2. **Statistical comparison**: IRIS vs SwiR on MATH-500: +0.9pp (p=0.81, not sig) at 26% fewer tokens. Framing: "competitive accuracy at much lower token cost."
+3. **SwiR GSM8K full-scale**: 92.49%@2079tok vs IRIS 90.9%@204tok — IRIS is 10× more token-efficient.
+4. **H800 ablation MATH-500**: Running (158/200 at last check).
+
+### Results (so far)
+
+Complete comparison:
+| Method | GSM8K full | Tok | MATH-500 | Tok |
+|--------|----------|-----|---------|-----|
+| IRIS | 90.9% | 204 | 74.4% | 2380 |
+| SwiR | 92.49% | 2079 | 73.5% | 3220 |
+| s1 early | — | — | 72.0% | 3164 |
+| s1 wait | — | — | 66.5% | 3234 |
+
+Mechanism ablation (GSM8K): TOWN 61%, FC 59%, MS 81.5% (McNemar 47/49, p≈0)
+
+### Status
+- Pure ablation experiments running on A100 + H800
+- Score progression: 3.0 → 6.0-6.5
+- Difficulty: nightmare
