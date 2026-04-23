@@ -160,3 +160,57 @@ Mechanism ablation (GSM8K): TOWN 61%, FC 59%, MS 81.5% (McNemar 47/49, p≈0)
 - Pure ablation experiments running on A100 + H800
 - Score progression: 3.0 → 6.0-6.5
 - Difficulty: nightmare
+
+---
+
+## Round 3 (2026-04-23 17:45 UTC)
+
+### Assessment (Summary)
+- **Score: 6.5/10** (main-track, borderline accept)
+- **Verdict: Revise, do not pivot. Submit after revisions.**
+- Key points:
+  1. Pure mode ablation kills "mode switch alone" claim — honest "mode-conditioned extraction prompting" is novel enough as part of paper
+  2. External baselines mostly sufficient — need paired same-sample MATH-500 table
+  3. Paper viable as: primary=Coupling Tax phenomenon, secondary=split-budget extraction interface
+
+### Reviewer Raw Response
+
+<details>
+<summary>Click to expand full reviewer response</summary>
+
+Score: Best-paper 5/10. Main NeurIPS 6.5/10 borderline accept.
+
+Pure ablation kills stronger claim. Honest claim: "Truncated reasoning can be rescued by extraction interface: feed prefix into instruction-following non-thinking completion with answer-extraction scaffold."
+
+External baselines mostly sufficient. SwiReasoning is key training-free comparator, IRIS looks genuinely useful: lower-token competitive performance. Need paired same-sample MATH-500 comparison.
+
+Final verdict: Revise, do not pivot. Paper is now viable with disciplined framing:
+- Primary: Coupling Tax phenomenon
+- Secondary: split-budget extraction interface
+- Do NOT claim "mode switch alone is causal" or "SOTA adaptive reasoning"
+- DO claim "competitive training-free inference with much lower token cost"
+
+Minimum remaining: (1) paired same-sample comparison, (2) label online vs post-hoc, (3) pure-mode null in main paper, (4) rephrase Stage-3, (5) drop mixed-n multi-seed headline.
+
+Submit after those revisions. Good enough for serious NeurIPS paper.
+
+</details>
+
+### Score Progression
+| Round | Score | Key Change |
+|-------|-------|------------|
+| R1 | 3/10 | Missing all external baselines |
+| R2 | 6-6.5/10 | SwiR + s1 + mechanism ablation complete |
+| R3 | 6.5/10 | Pure ablation confirms honest framing, reviewer says "submit after revisions" |
+
+### Remaining Revisions (paper-writing, no new experiments)
+1. Paired same-sample MATH-500 table (IRIS, SwiR, s1, TOWN, nothink on same 200 samples)
+2. Label every IRIS number as online vs post-hoc effective-token
+3. Include pure-mode null result in main paper (credibility)
+4. Rename Stage-3: "mode-conditioned extraction prompting"
+5. Drop mixed-n multi-seed from headlines
+
+### Status
+- Loop condition met: score ≥ 6, verdict = "submit after revisions"
+- Score progression: 3.0 → 6.25 → 6.5
+- Difficulty: nightmare

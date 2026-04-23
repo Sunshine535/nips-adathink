@@ -1,10 +1,18 @@
 {
-  "round": 2,
+  "round": 3,
   "threadId": "019db660-1205-7970-affa-1a50ca4e959f",
-  "status": "in_progress",
+  "status": "completed",
   "difficulty": "nightmare",
-  "last_score": 6.25,
-  "last_verdict": "borderline accept if rewritten honestly",
-  "pending_experiments": ["pure_ablation_gsm8k_a100", "pure_ablation_math500_h800"],
-  "timestamp": "2026-04-23T15:00:00"
+  "last_score": 6.5,
+  "last_verdict": "borderline accept — revise and submit",
+  "score_progression": [3.0, 6.25, 6.5],
+  "pending_experiments": [],
+  "remaining_revisions": [
+    "paired same-sample MATH-500 comparison table",
+    "label online vs post-hoc in every table",
+    "pure-mode null result in main paper",
+    "rename Stage-3 to mode-conditioned extraction prompting",
+    "drop mixed-n multi-seed headline"
+  ],
+  "timestamp": "2026-04-23T17:45:00"
 }
