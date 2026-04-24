@@ -212,7 +212,7 @@ def main():
     parser.add_argument("--output_dir", default="results/speculation")
     parser.add_argument("--device_map", default="auto")
     # Also run thinking mode for comparison
-    parser.add_argument("--also_thinking", action="store_true", default=True)
+    parser.add_argument("--also_thinking", action="store_true", default=False)
     args = parser.parse_args()
 
     random.seed(args.seed)

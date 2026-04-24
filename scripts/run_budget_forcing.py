@@ -92,7 +92,16 @@ def generate_with_forcing(model, tok, prompt, budget, variant):
                                   pad_token_id=tok.eos_token_id, eos_token_id=tok.eos_token_id)
         text += WAIT_TOKEN + tok.decode(out2[0][in_len2:], skip_special_tokens=True)
 
-    return text, gen_len
+    # Count ALL generated tokens including forced/injected
+    total_generated = gen_len
+    if variant == "early_stop" and not eos:
+        forced_tokens = len(out2[0][in_len2:])
+        total_generated = gen_len + forced_tokens
+    elif variant == "wait_extend" and eos and gen_len < budget // 2:
+        extended_tokens = len(out2[0][in_len2:])
+        total_generated = gen_len + extended_tokens
+
+    return text, total_generated
 
 
 def main():
