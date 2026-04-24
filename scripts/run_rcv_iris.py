@@ -168,12 +168,13 @@ def run_rcv_sample(model, tok, item, args):
                    "pred_source": s0_src, "elapsed": round(s0_elapsed, 3)}
 
     # === Stage 0 acceptance decision ===
+    use_stage0_gate = variant in ("full_rcv", "stage0_only")
     if s0_natural:
         s0_features = stage0_acceptance_features(
             item["q"], s0_pred, s0_text, s0_src, not s0_natural)
         r["stage0"]["features"] = s0_features
 
-        if variant == "full_rcv":
+        if use_stage0_gate:
             accept_score = (s0_features["answer_valid"] * 0.5
                             + (1.0 - s0_features["pred_is_none"]) * 0.3
                             + s0_features["parse_source_boxed"] * 0.2)
@@ -227,7 +228,8 @@ def run_rcv_sample(model, tok, item, args):
         "recoverability_features": pf, "extractor_margin": round(margin, 3),
     }
 
-    if variant == "full_rcv":
+    use_recover_gate = variant in ("full_rcv", "recover_only")
+    if use_recover_gate:
         decision = compute_rcv_decision(
             stage0_acceptance_features(item["q"], s0_pred, s0_text, s0_src, True),
             pf, args.tau_accept, args.tau_recover)
@@ -267,7 +269,8 @@ def main():
     p.add_argument("--b_answer", type=int, default=512)
     p.add_argument("--seed", type=int, default=42)
     p.add_argument("--variant", default="full_rcv",
-                   choices=["existing_fragment", "rcv_no_gate", "full_rcv"])
+                   choices=["existing_fragment", "rcv_no_gate", "full_rcv",
+                            "stage0_only", "recover_only"])
     p.add_argument("--tau_accept", type=float, default=0.7)
     p.add_argument("--tau_recover", type=float, default=0.5)
     p.add_argument("--output_dir", default="results/rcv_iris")
