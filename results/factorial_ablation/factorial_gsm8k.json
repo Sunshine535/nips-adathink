@@ -1,0 +1,2065 @@
+{
+  "meta": {
+    "model": "Qwen/Qwen3-8B",
+    "benchmark": "gsm8k",
+    "n": 200,
+    "seed": 42,
+    "ts": "20260424_004801",
+    "b1": 256,
+    "b2_max": 512,
+    "b_answer": 128
+  },
+  "stages": {
+    "stage1": 109,
+    "stage2_nat": 0,
+    "stage2_budget": 91
+  },
+  "accuracy_overall": {
+    "think_neutral": 0.515,
+    "think_extraction": 0.61,
+    "nothink_neutral": 0.56,
+    "nothink_extraction": 0.825
+  },
+  "accuracy_overall_town": 0.58,
+  "accuracy_stage3_only": {
+    "think_neutral": 1.098901098901099,
+    "think_extraction": 21.978021978021978,
+    "nothink_neutral": 10.989010989010989,
+    "nothink_extraction": 69.23076923076923
+  },
+  "mcnemar_stage3": {
+    "think_neutral_vs_think_extraction": {
+      "discordant": 21,
+      "think_neutral_only": 1,
+      "think_extraction_only": 20
+    },
+    "think_neutral_vs_nothink_neutral": {
+      "discordant": 11,
+      "think_neutral_only": 1,
+      "nothink_neutral_only": 10
+    },
+    "think_neutral_vs_nothink_extraction": {
+      "discordant": 64,
+      "think_neutral_only": 1,
+      "nothink_extraction_only": 63
+    },
+    "think_extraction_vs_nothink_neutral": {
+      "discordant": 24,
+      "think_extraction_only": 17,
+      "nothink_neutral_only": 7
+    },
+    "think_extraction_vs_nothink_extraction": {
+      "discordant": 47,
+      "think_extraction_only": 2,
+      "nothink_extraction_only": 45
+    },
+    "nothink_neutral_vs_nothink_extraction": {
+      "discordant": 55,
+      "nothink_neutral_only": 1,
+      "nothink_extraction_only": 54
+    }
+  },
+  "n_stage3": 91,
+  "per_sample": [
+    {
+      "idx": 0,
+      "gold": "52",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 1,
+      "gold": "5",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 2,
+      "gold": "83",
+      "stage": 3,
+      "town": true,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 3,
+      "gold": "10",
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": false,
+      "town": false,
+      "stage": 1
+    },
+    {
+      "idx": 4,
+      "gold": "70",
+      "stage": 3,
+      "town": true,
+      "think_neutral": false,
+      "think_extraction": true,
+      "nothink_neutral": false,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 5,
+      "gold": "36",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 6,
+      "gold": "48",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 7,
+      "gold": "16",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 8,
+      "gold": "8",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": false
+    },
+    {
+      "idx": 9,
+      "gold": "48",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 10,
+      "gold": "90",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 11,
+      "gold": "10",
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": false,
+      "town": false,
+      "stage": 1
+    },
+    {
+      "idx": 12,
+      "gold": "2",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": false
+    },
+    {
+      "idx": 13,
+      "gold": "45000",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": true,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 14,
+      "gold": "18",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 15,
+      "gold": "140",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 16,
+      "gold": "17",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": true,
+      "nothink_neutral": false,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 17,
+      "gold": "68",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 18,
+      "gold": "8",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 19,
+      "gold": "14",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 20,
+      "gold": "50",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 21,
+      "gold": "100",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 22,
+      "gold": "125",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 23,
+      "gold": "48",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 24,
+      "gold": "15400",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": true,
+      "nothink_neutral": false,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 25,
+      "gold": "250",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 26,
+      "gold": "18",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": true,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 27,
+      "gold": "1490",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": false
+    },
+    {
+      "idx": 28,
+      "gold": "11",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 29,
+      "gold": "106",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": false
+    },
+    {
+      "idx": 30,
+      "gold": "138",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": false
+    },
+    {
+      "idx": 31,
+      "gold": "15",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 32,
+      "gold": "4",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 33,
+      "gold": "82",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 34,
+      "gold": "2",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 35,
+      "gold": "51",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": false
+    },
+    {
+      "idx": 36,
+      "gold": "4",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 37,
+      "gold": "100",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 38,
+      "gold": "25",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 39,
+      "gold": "188",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 40,
+      "gold": "30",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 41,
+      "gold": "30",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 42,
+      "gold": "150",
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": false,
+      "town": false,
+      "stage": 1
+    },
+    {
+      "idx": 43,
+      "gold": "7",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 44,
+      "gold": "350",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": false
+    },
+    {
+      "idx": 45,
+      "gold": "2",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": false
+    },
+    {
+      "idx": 46,
+      "gold": "36",
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": false,
+      "town": false,
+      "stage": 1
+    },
+    {
+      "idx": 47,
+      "gold": "2",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": true,
+      "nothink_neutral": false,
+      "nothink_extraction": false
+    },
+    {
+      "idx": 48,
+      "gold": "14",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 49,
+      "gold": "33",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 50,
+      "gold": "21",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 51,
+      "gold": "175",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": false
+    },
+    {
+      "idx": 52,
+      "gold": "60",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 53,
+      "gold": "49",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 54,
+      "gold": "1800",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 55,
+      "gold": "27",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 56,
+      "gold": "16",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 57,
+      "gold": "49",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 58,
+      "gold": "6",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": true,
+      "nothink_neutral": false,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 59,
+      "gold": "32",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 60,
+      "gold": "168",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 61,
+      "gold": "225",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 62,
+      "gold": "50",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 63,
+      "gold": "45",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": true,
+      "nothink_neutral": false,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 64,
+      "gold": "7",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 65,
+      "gold": "800",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 66,
+      "gold": "22",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 67,
+      "gold": "235",
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": false,
+      "town": false,
+      "stage": 1
+    },
+    {
+      "idx": 68,
+      "gold": "3",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": true,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 69,
+      "gold": "2",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 70,
+      "gold": "3000",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": true,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 71,
+      "gold": "300",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 72,
+      "gold": "20",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 73,
+      "gold": "130",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 74,
+      "gold": "1",
+      "stage": 3,
+      "town": true,
+      "think_neutral": false,
+      "think_extraction": true,
+      "nothink_neutral": false,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 75,
+      "gold": "8",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": true,
+      "nothink_neutral": false,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 76,
+      "gold": "50",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 77,
+      "gold": "3",
+      "stage": 3,
+      "town": true,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 78,
+      "gold": "5",
+      "stage": 3,
+      "town": true,
+      "think_neutral": false,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 79,
+      "gold": "110",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 80,
+      "gold": "1300",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": true,
+      "nothink_neutral": false,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 81,
+      "gold": "16",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 82,
+      "gold": "80",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 83,
+      "gold": "45",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 84,
+      "gold": "36",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 85,
+      "gold": "5",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": false
+    },
+    {
+      "idx": 86,
+      "gold": "9",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 87,
+      "gold": "36",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 88,
+      "gold": "60",
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": false,
+      "town": false,
+      "stage": 1
+    },
+    {
+      "idx": 89,
+      "gold": "9",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 90,
+      "gold": "1",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 91,
+      "gold": "30",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 92,
+      "gold": "70000",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": false
+    },
+    {
+      "idx": 93,
+      "gold": "34",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": true,
+      "nothink_extraction": false
+    },
+    {
+      "idx": 94,
+      "gold": "13",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": false
+    },
+    {
+      "idx": 95,
+      "gold": "306",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 96,
+      "gold": "55",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 97,
+      "gold": "24",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": true,
+      "nothink_neutral": false,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 98,
+      "gold": "75",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 99,
+      "gold": "24",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 100,
+      "gold": "50",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 101,
+      "gold": "110",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 102,
+      "gold": "452",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": false
+    },
+    {
+      "idx": 103,
+      "gold": "30",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 104,
+      "gold": "80",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 105,
+      "gold": "3",
+      "stage": 3,
+      "town": true,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 106,
+      "gold": "120",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 107,
+      "gold": "172",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 108,
+      "gold": "70",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 109,
+      "gold": "13",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 110,
+      "gold": "150",
+      "stage": 3,
+      "town": true,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 111,
+      "gold": "18",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": false
+    },
+    {
+      "idx": 112,
+      "gold": "1",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": false
+    },
+    {
+      "idx": 113,
+      "gold": "250",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 114,
+      "gold": "3",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 115,
+      "gold": "15",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 116,
+      "gold": "12",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 117,
+      "gold": "60",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 118,
+      "gold": "3",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 119,
+      "gold": "9",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 120,
+      "gold": "140000",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 121,
+      "gold": "3",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": false
+    },
+    {
+      "idx": 122,
+      "gold": "2400",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 123,
+      "gold": "4",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 124,
+      "gold": "79",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": false
+    },
+    {
+      "idx": 125,
+      "gold": "300",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 126,
+      "gold": "91",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 127,
+      "gold": "8",
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": false,
+      "town": false,
+      "stage": 1
+    },
+    {
+      "idx": 128,
+      "gold": "120",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 129,
+      "gold": "350",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 130,
+      "gold": "2600",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": true,
+      "nothink_neutral": false,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 131,
+      "gold": "10",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": true,
+      "nothink_neutral": false,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 132,
+      "gold": "26",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": false
+    },
+    {
+      "idx": 133,
+      "gold": "7",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 134,
+      "gold": "31",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 135,
+      "gold": "975",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 136,
+      "gold": "20",
+      "stage": 3,
+      "town": true,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 137,
+      "gold": "120",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": true,
+      "nothink_neutral": false,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 138,
+      "gold": "220",
+      "stage": 3,
+      "town": true,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": true,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 139,
+      "gold": "87",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 140,
+      "gold": "300",
+      "stage": 3,
+      "town": true,
+      "think_neutral": false,
+      "think_extraction": true,
+      "nothink_neutral": false,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 141,
+      "gold": "30",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": false
+    },
+    {
+      "idx": 142,
+      "gold": "17",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 143,
+      "gold": "16",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 144,
+      "gold": "7",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 145,
+      "gold": "81",
+      "stage": 3,
+      "town": true,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 146,
+      "gold": "5",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 147,
+      "gold": "9",
+      "stage": 3,
+      "town": true,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 148,
+      "gold": "10",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 149,
+      "gold": "24",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": true,
+      "nothink_neutral": false,
+      "nothink_extraction": false
+    },
+    {
+      "idx": 150,
+      "gold": "5",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 151,
+      "gold": "50",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 152,
+      "gold": "48",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": false
+    },
+    {
+      "idx": 153,
+      "gold": "25",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 154,
+      "gold": "96",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": true,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 155,
+      "gold": "25",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 156,
+      "gold": "180",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": false
+    },
+    {
+      "idx": 157,
+      "gold": "21",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 158,
+      "gold": "1200",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 159,
+      "gold": "255",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": false
+    },
+    {
+      "idx": 160,
+      "gold": "4",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 161,
+      "gold": "10",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 162,
+      "gold": "700",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 163,
+      "gold": "38",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 164,
+      "gold": "32",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 165,
+      "gold": "30",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 166,
+      "gold": "16",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 167,
+      "gold": "40",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 168,
+      "gold": "288",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 169,
+      "gold": "1100",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 170,
+      "gold": "20",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 171,
+      "gold": "2",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 172,
+      "gold": "2880000",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": false
+    },
+    {
+      "idx": 173,
+      "gold": "9",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 174,
+      "gold": "132",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 175,
+      "gold": "93",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 176,
+      "gold": "4",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 177,
+      "gold": "85",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 178,
+      "gold": "33",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 179,
+      "gold": "12",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 180,
+      "gold": "7200",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 181,
+      "gold": "60",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 182,
+      "gold": "44",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 183,
+      "gold": "113",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 184,
+      "gold": "43500",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": true,
+      "nothink_neutral": false,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 185,
+      "gold": "720",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 186,
+      "gold": "50",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": true,
+      "nothink_neutral": false,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 187,
+      "gold": "24",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 188,
+      "gold": "43",
+      "stage": 3,
+      "town": true,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 189,
+      "gold": "30",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 190,
+      "gold": "23",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 191,
+      "gold": "251",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": true
+    },
+    {
+      "idx": 192,
+      "gold": "35",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 193,
+      "gold": "50",
+      "stage": 3,
+      "town": false,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": false
+    },
+    {
+      "idx": 194,
+      "gold": "82",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 195,
+      "gold": "2100",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 196,
+      "gold": "3",
+      "stage": 3,
+      "town": false,
+      "think_neutral": true,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": false
+    },
+    {
+      "idx": 197,
+      "gold": "12",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 198,
+      "gold": "11",
+      "think_neutral": true,
+      "think_extraction": true,
+      "nothink_neutral": true,
+      "nothink_extraction": true,
+      "town": true,
+      "stage": 1
+    },
+    {
+      "idx": 199,
+      "gold": "12",
+      "stage": 3,
+      "town": true,
+      "think_neutral": false,
+      "think_extraction": false,
+      "nothink_neutral": false,
+      "nothink_extraction": true
+    }
+  ]
+}
