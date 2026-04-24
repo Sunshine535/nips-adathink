@@ -1,56 +1,82 @@
-# Core A/B/C Comparison
+# Core A/B/C Comparison (Final — includes b2=512 experiment)
 
-## Setup
-- Model: Qwen/Qwen3-8B
-- Benchmark: MATH-500, n=100, seed=42
-- Config: b1=512, b2_max=4096, b_answer=512
-- Server: 3×A100-80GB (216.81.151.54), 1 GPU per variant
+## Experiment 1: b2=4096 (moderate truncation)
 
-## Results
+Setup: Qwen3-8B, MATH-500, n=100, seed=42, b1=512, b2_max=4096, b_answer=512
 
-| Variant | Config | Accuracy | Avg Tokens | Key Decisions |
-|---------|--------|----------|------------|---------------|
-| A. Existing Best Fragment | existing_fragment | 73.0% (73/100) | 2613 | EXTRACT_ALWAYS=42, S2_COMPLETE=12, ACCEPT_S0=46 |
-| B. New Method No Gate | rcv_no_gate | 73.0% (73/100) | 2613 | EXTRACT_ALWAYS=42, S2_COMPLETE=12, ACCEPT_S0=46 |
-| **C. Full RCV-IRIS** | **full_rcv** | **74.0% (74/100)** | **2613** | EXTRACT_S3=41, S2_COMPLETE=12, ACCEPT_S0=46, **FALLBACK_TOWN=1** |
+| Variant | Config | Accuracy | Avg Tokens | Decisions |
+|---------|--------|----------|------------|-----------|
+| A. Existing Fragment | existing_fragment | 73.0% | 2613 | EXTRACT_ALWAYS=42, S2=12, S0=46 |
+| B. New Method No Gate | rcv_no_gate | 73.0% | 2613 | EXTRACT_ALWAYS=42, S2=12, S0=46 |
+| C. Full RCV-IRIS | full_rcv | **74.0%** | 2613 | EXTRACT_S3=41, S2=12, S0=46, FALLBACK_TOWN=1 |
 
-## Paired Analysis (McNemar A vs C)
+McNemar A vs C: 1 discordant, C wins 1/1. Effect: +1.0pp on 1 sample (margin=0.0 sample).
 
-- Both correct: 73
-- A only correct: 0
-- C only correct: 1
-- Neither correct: 26
-- **Discordant: 1, C wins 1/1**
+## Experiment 2: b2=512 (tight truncation — gate-activation regime)
 
-## Critical Sample: idx=58
+Setup: Qwen3-8B, MATH-500, n=200, seed=42, b1=256, b2_max=512, b_answer=128
 
-- A/B decision: EXTRACT_ALWAYS → extraction failed → **wrong**
-- C decision: FALLBACK_TOWN (extractor_margin=0.0) → TOWN parse → **correct**
-- The RCV gate correctly detected that extraction would fail (margin=0.0) and fell back to TOWN.
+| Variant | Config | Accuracy | Avg Tokens | Decisions |
+|---------|--------|----------|------------|-----------|
+| A. Existing Fragment | existing_fragment | **40.5%** | 684 | EXTRACT_ALWAYS=167, ACCEPT_S0=33 |
+| B. New Method No Gate | rcv_no_gate | **40.5%** | 684 | EXTRACT_ALWAYS=167, ACCEPT_S0=33 |
+| C. Full RCV-IRIS | full_rcv | **40.5%** | 684 | EXTRACT_S3=159, ACCEPT_S0=33, **FALLBACK_TOWN=8** |
 
-## Interpretation
+McNemar A vs C: **0 discordant pairs** — identical outcomes despite 8 gate triggers.
 
-Per GPT-5.5 criteria:
+### Per-FALLBACK_TOWN Sample Analysis (b2=512)
 
-1. **C > A**: Yes, +1.0pp. C beats A on 1 discordant pair. Direction correct.
-2. **C > B**: Yes, same as above (B = A identically).
-3. **Effect size**: Small (1 sample out of 100). Gate only triggered once (1/42 Stage3 samples rejected).
-4. **Gate selectivity**: Very conservative — tau_recover=0.5 only catches margin=0.0 samples. Most margins are 0.5-1.0.
-5. **Token cost**: Identical (2613 tok for all). C runs both strict and soft extraction probes but only counts the used one.
+| Sample | A decision | A correct? | C decision | C correct? |
+|--------|-----------|-----------|------------|-----------|
+| 38 | EXTRACT_ALWAYS | False | FALLBACK_TOWN | False |
+| 58 | EXTRACT_ALWAYS | False | FALLBACK_TOWN | False |
+| 59 | EXTRACT_ALWAYS | False | FALLBACK_TOWN | False |
+| 64 | EXTRACT_ALWAYS | False | FALLBACK_TOWN | False |
+| 157 | EXTRACT_ALWAYS | False | FALLBACK_TOWN | False |
+| 162 | EXTRACT_ALWAYS | False | FALLBACK_TOWN | False |
+| 169 | EXTRACT_ALWAYS | False | FALLBACK_TOWN | False |
+| 188 | EXTRACT_ALWAYS | False | FALLBACK_TOWN | False |
 
-## Decision
+**All 8 gate-triggered samples: A extraction fails AND TOWN fallback also fails.** The gate correctly identifies low-recoverability prefixes, but the fallback is equally broken on these samples.
 
-**CONTINUE with caveats.**
+## Honest Interpretation
 
-The RCV mechanism shows correct directional signal: it identifies and avoids one bad extraction. But the effect is very small because:
-1. tau_recover=0.5 is too lenient (only catches margin=0.0)
-2. At b2=4096, most prefixes ARE recoverable (42/42 Stage3 passed except 1)
-3. Need tighter budget (b2=512/1024) to create more non-recoverable prefixes
+### Per GPT-5.5 Diagnosis Decision Rules
 
-## Recommended Next Steps
+The diagnosis stated:
+- If C > A consistently → new mechanism helps → proceed
+- If C ≈ A → new method only reuses old fragment → do not claim new mechanism
+- If C ≈ B → mechanism inactive/irrelevant → check mechanism logs
 
-1. Rerun with b2=512 or b2=1024 (more truncation → more gate activity)
-2. Sweep tau_recover from 0.3 to 0.8 to find optimal threshold
-3. Add Stage0 acceptance verifier with actual model-based check
-4. Run on GSM8K for cross-benchmark validation
-5. Multi-seed (42/123/456) for stability
+**Our result: C ≈ A ≈ B exactly at b2=512.**
+
+### Why the Gate Doesn't Help
+
+The feature-based recoverability gate triggers on samples with `extractor_margin = 0.0` (both strict and soft extraction completely fail to produce any parseable answer). On these samples:
+1. A's extraction fails (prediction = empty/garbage) → wrong
+2. C's FALLBACK_TOWN uses truncated thinking text → also wrong (TOWN parser also can't find answer in incomplete reasoning)
+
+The gate identifies HARD samples correctly but **there is no viable fallback** — if extraction fails, TOWN parsing of the same truncated thinking also fails. The gate moves decision but not outcome.
+
+### What Would Be Needed
+
+1. **Model-based verifier** (not feature-based): Use a cheap call to verify Stage0 answer correctness or prefix recoverability. This was marked optional in the diagnosis (`--enable_stage0_verifier` with model).
+2. **Alternative fallback action**: Instead of TOWN on same prefix, escalate to more thinking budget or retry extraction with different prompt.
+3. **Calibration data**: Train thresholds on held-out set, not hand-tuned.
+
+## Decision (per GPT-5.5 stop criteria)
+
+**REVISE METHOD.** The feature-based gate is directionally correct but makes zero accuracy difference on this benchmark. Per GPT-5.5's own criteria, this is a negative result for the current implementation. The underlying mechanism hypothesis (recoverability-calibrated routing) remains plausible but requires:
+- Model-based verifier, or
+- Better fallback action, or
+- Calibrated thresholds from dev data
+
+## Paper Implications
+
+1. **Cannot claim RCV-IRIS as new main method** — evidence does not support accuracy gain.
+2. **Can still claim**:
+   - Coupling Tax phenomenon (27B crossover p<1e-5)
+   - 2×2 factorial interaction (+37.4pp mode×prompt)
+   - Training-free Pareto-competitive with SwiR/s1 on MATH-500
+   - Honest negative: natural-stop routing is sufficient; acceptance verifier does not help above it
+3. **Must add to paper as a negative ablation**: "We tested a feature-based recoverability gate (RCV-IRIS variant C); at both moderate (b=4096) and tight (b=512) truncation regimes, it produced 0 or 1 discordant pair vs the no-gate baseline. This null result suggests that at feature-space, mode-conditioned extraction is already near-optimal; further gains require model-based verifiers."

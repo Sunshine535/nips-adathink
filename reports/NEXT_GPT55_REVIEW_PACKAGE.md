@@ -1,105 +1,154 @@
-# Package for GPT-5.5 Pro Review
+# Package for GPT-5.5 Pro Review (Final — after b2=4096 + b2=512 experiments)
 
-## 1. Summary of Changes
+## 1. Summary
 
-### Bug Fixes
-- `run_budget_forcing.py`: Token count now includes forced/extended tokens (was undercounting)
-- `run_nothink_baseline.py`: Fixed `--also_thinking` default from True to False
-- `benchmarks.py` normalize_latex: Confirmed NOT a bug (double-space compression, correct)
+GPT-5.5's recommended MAIN METHOD PATH (RCV-IRIS with feature-based acceptance and recoverability gates) was fully implemented and tested under both moderate (b2=4096) and tight (b2=512) truncation regimes.
 
-### New Code
-- `scripts/rcv_signals.py`: RCV feature computation (12 unit tests pass)
-- `scripts/run_rcv_iris.py`: Full RCV-IRIS runner with 3 variants (A/B/C)
-- `tests/test_rcv_signals.py`: Unit tests for RCV signals
+**Honest empirical verdict: the feature-based RCV gate does NOT improve accuracy.**
 
-### Reports Created
+Full details in `reports/CORE_COMPARISON.md`.
+
+## 2. Files Changed / Added
+
+### Code (all committed to main)
+- `scripts/rcv_signals.py` — NEW: RCV feature computation
+- `scripts/run_rcv_iris.py` — NEW: 5-variant runner (existing_fragment, rcv_no_gate, full_rcv, stage0_only, recover_only)
+- `scripts/make_sample_manifest.py` — NEW: canonical sample manifest
+- `scripts/run_budget_forcing.py` — FIXED: token count now includes forced/extended tokens
+- `scripts/run_nothink_baseline.py` — FIXED: --also_thinking default=False
+
+### Tests (all passing, 21 tests)
+- `tests/test_rcv_signals.py` — 12 tests
+- `tests/test_benchmarks.py` — 9 tests
+
+### Reports (13 required files)
 - `reports/CLAUDE_EXECUTION_PLAN.md`
 - `reports/LOCAL_REPO_SCAN.md`
 - `reports/GPT55_REPORT_EXTRACTION.md`
+- `reports/CURRENT_RESULT_AUDIT.md`
+- `reports/KEEP_REWRITE_ARCHIVE_PLAN.md`
 - `reports/BUG_FIX_LOG.md`
-- `reports/CORE_COMPARISON.md`
+- `reports/TEST_PLAN.md`
+- `reports/MINIMAL_EXPERIMENT_RESULTS.md`
+- `reports/CORE_COMPARISON.md` (updated with b2=512)
+- `reports/CLAIM_UPDATE_LOG.md`
+- `reports/PATCH_SUMMARY.md`
+- `reports/REMAINING_RISKS.md`
 - `reports/NEXT_GPT55_REVIEW_PACKAGE.md` (this file)
 
-## 2. Commands Run
+## 3. Commands Run
 
 ```bash
-# Unit tests
-python -m pytest tests/test_rcv_signals.py -q  # 12 passed
+# All tests pass
+python3 -m pytest tests/ -q  # 21/21 passed
 
-# A/B/C experiments on 3×A100-80GB
-CUDA_VISIBLE_DEVICES=0 python3 scripts/run_rcv_iris.py --variant existing_fragment --benchmark math500 --n_samples 100 --b1 512 --b2_max 4096 --b_answer 512 --seed 42
-CUDA_VISIBLE_DEVICES=1 python3 scripts/run_rcv_iris.py --variant rcv_no_gate --benchmark math500 --n_samples 100 --b1 512 --b2_max 4096 --b_answer 512 --seed 42
-CUDA_VISIBLE_DEVICES=2 python3 scripts/run_rcv_iris.py --variant full_rcv --benchmark math500 --n_samples 100 --b1 512 --b2_max 4096 --b_answer 512 --seed 42
+# A/B/C at b2=4096 (MATH-500, n=100)
+python3 scripts/run_rcv_iris.py --model Qwen/Qwen3-8B --benchmark math500 --n_samples 100 \
+  --b1 512 --b2_max 4096 --b_answer 512 --variant existing_fragment --seed 42
+# ... (and rcv_no_gate, full_rcv)
+
+# A/B/C at b2=512 (MATH-500, n=200) — on 3×A100
+python3 scripts/run_rcv_iris.py --model Qwen/Qwen3-8B --benchmark math500 --n_samples 200 \
+  --b1 256 --b2_max 512 --b_answer 128 --variant {existing_fragment,rcv_no_gate,full_rcv} --seed 42
 ```
 
-## 3. Result Tables
+## 4. Result Tables
 
-### Core A/B/C (MATH-500, 8B, n=100, seed=42)
+### b2=4096, MATH-500, n=100
 
 | Variant | Accuracy | Tokens | Gate Triggers |
 |---------|----------|--------|---------------|
-| A. Existing Fragment | 73.0% | 2613 | N/A |
-| B. No Gate | 73.0% | 2613 | N/A |
-| **C. Full RCV** | **74.0%** | **2613** | **1 FALLBACK_TOWN** |
+| A | 73.0% | 2613 | — |
+| B | 73.0% | 2613 | — |
+| C | **74.0%** | 2613 | 1 FALLBACK_TOWN |
 
 McNemar A vs C: 1 discordant, C wins 1/1.
 
-### External Baselines (from prior experiments)
+### b2=512, MATH-500, n=200 (DECISIVE NEGATIVE RESULT)
 
-| Method | MATH-500 Acc | Tokens | Training |
-|--------|-------------|--------|----------|
-| Nothink@512 | 59.8% | 590 | None |
-| s1 early_stop | 72.0% | 3164 | None |
-| SwiReasoning | 73.5% | 3220 | None |
-| IRIS (existing) | 74.4% | 2380 | None |
-| E1-Math-7B | 75.5% | 1405 | 8×A100 RL |
-| **RCV-IRIS** | **74.0%** | **2613** | **None** |
+| Variant | Accuracy | Tokens | Gate Triggers |
+|---------|----------|--------|---------------|
+| A | **40.5%** | 684 | — |
+| B | **40.5%** | 684 | — |
+| C | **40.5%** | 684 | 8 FALLBACK_TOWN |
 
-## 4. Mechanism Logs
+McNemar A vs C: **0 discordant pairs**. Eight samples where gate changed decision all ended up with same final outcome (all wrong).
 
-Sample 58 (the one gate-changed sample):
-- Extractor margin: 0.0 (both strict and soft extraction failed)
-- Gate decision: FALLBACK_TOWN (correctly avoided bad extraction)
-- A/B got this wrong (extraction failed), C got it right (TOWN fallback correct)
+## 5. Mechanism Logs
 
-All other 41 Stage3 samples: margin ≥ 0.5, gate approved extraction. Gate was conservative.
+### Where Gate Triggers (b2=512)
 
-## 5. Failed Tests
+All 8 FALLBACK_TOWN cases had `extractor_margin = 0.0` (both strict and soft extraction failed to produce parseable answer). In each case:
+- A extracted → empty/garbage → **wrong**
+- C fallbacks to TOWN (parse truncated thinking) → also **wrong**
 
-None. All 12 unit tests pass.
+The gate correctly identifies low-recoverability prefixes but the fallback is equally broken on these samples.
 
-## 6. Unresolved Questions
+### Stage0 Verifier Effect
 
-1. **Gate too conservative**: tau_recover=0.5 only triggered once. Need lower threshold or tighter budget to see more gate activity.
-2. **b2=4096 may be too generous**: Most prefixes are recoverable at this budget. Tighter budget (512/1024) would create more truncation and more gate opportunities.
-3. **Stage0 acceptance verifier**: Not yet tested with model-based verification (current is feature-based only). All natural-stop answers passed.
-4. **Only n=100**: Need larger n and multi-seed for statistical power.
-5. **Only MATH-500**: Need GSM8K cross-validation.
+- b2=4096: 46/46 natural-stop samples accepted (0 rejected by verifier)
+- b2=512: 33/33 natural-stop samples accepted (0 rejected)
 
-## 7. Does This Support the Original Diagnosis?
+The feature-based Stage0 verifier (`accept_score ≥ 0.7`) is effectively always-accept. Every natural-stop answer scores ≥ 0.7 because `answer_valid=1` covers most cases.
 
-**Partially YES.**
+## 6. Failed Tests
 
-- The RCV mechanism works directionally: it correctly identifies 1 unrecoverable extraction and improves accuracy.
-- BUT the effect is very small at b2=4096 because most prefixes are recoverable.
-- The diagnosis predicted this would help most in "high-truncation regimes" — b2=4096 is NOT high truncation for 8B on MATH-500.
-- **The real test must use b2=512 or b2=1024 where truncation is severe.**
+None in unit tests (21/21 pass).
 
-## 8. What GPT-5.5 Pro Should Review Next
+**Mechanism test failure**: Full RCV-IRIS does not beat existing_fragment on either experiment. Per GPT-5.5's own stop criteria:
+> "If Full RCV-IRIS does not beat both A and B on paired same-sample comparison: STOP."
 
-1. **Is +1.0pp on 1 discordant pair (n=100) sufficient signal?** Or is this noise?
-2. **Should we rerun at tighter budget (b2=512)?** This would create more Stage3 samples and more gate activity.
-3. **Is the feature-based gate sufficient, or do we need model-based verification?**
-4. **The recoverability margin distribution**: most are 0.5-1.0. Should the threshold be higher (0.7)?
-5. **Path forward**: Run b2=512/1024 sweep, then multi-seed, then cross-benchmark?
+We have reached this condition. Reporting honestly as required.
+
+## 7. Unresolved Questions
+
+1. Would a MODEL-BASED verifier (small generative check) work where features fail? (Not tested)
+2. Would different fallback action (e.g., "retry extraction with different prompt" instead of "TOWN parse same prefix") help? (Not tested)
+3. Would calibrated thresholds from held-out data help? (Not tested)
+4. Is MATH-500 8B the wrong regime for this mechanism, vs e.g. 27B MATH-500 where IRIS showed +17pp Stage-3 gain? (Would need 27B RCV A/B/C runs — compute-intensive)
+
+## 8. Does This Support the Original Diagnosis?
+
+**Partially yes, partially no.**
+
+✓ Diagnosis correctly identified that natural-stop alone is insufficient.
+✓ Diagnosis correctly flagged post-hoc accounting as a problem.
+✓ Diagnosis correctly identified the need for a 2×2 factorial (which we had run earlier with +37.4pp interaction).
+✗ Diagnosis hypothesized recoverability-calibrated routing would help; **empirically it does not** at the tested thresholds with feature-based scores.
+
+The core idea (recoverability control) may still be correct, but the specific implementation (hand-tuned feature-based gates) does not produce measurable improvement.
 
 ## 9. Current Method Status
 
 - A. Existing Best Positive Fragment Only: **YES** (variant=existing_fragment)
 - B. New MAIN METHOD Without New Mechanism: **YES** (variant=rcv_no_gate)
 - C. Full New MAIN METHOD: **YES** (variant=full_rcv)
-- C > A: **YES** (+1.0pp, 1/1 discordant)
-- C > B: **YES** (same)
-- Effect significant: **NOT YET** (n=100, 1 discordant pair)
+- Ablations implemented: **YES** (stage0_only, recover_only variants added)
+- **C > A**: NO. Tie at both b2=4096 (+1pp on 1 discordant, borderline) and b2=512 (0 discordant).
 
-## Decision: CONTINUE — RUN TIGHTER BUDGET
+## 10. Decision
+
+**STOP / RETURN TO GPT-5.5 PRO.**
+
+Per the diagnosis stop criteria: Full RCV-IRIS does not consistently beat existing fragment. Reporting this negative result honestly.
+
+The user instruction was "complete all GPT requirements and submit." Completed fully — including the honest negative outcome.
+
+## 11. What GPT-5.5 Pro Should Review Next
+
+1. **Is the feature-based gate the right design, or does the mechanism require a model-based verifier?**
+2. **Should we test on 27B where Stage-3 has much larger effect (+17pp)?** (compute-intensive)
+3. **Is the paper better off without RCV-IRIS?** — keep as "we tried a recoverability gate; it was a null ablation". Paper would stand on:
+   - Coupling Tax phenomenon (27B crossover p<1e-5)
+   - Mode × extraction factorial interaction (+37.4pp)
+   - Training-free Pareto-competitive with SwiReasoning and s1 at MATH-500
+4. **Should tau_recover/tau_accept be searched?** Currently hand-chosen at 0.5/0.7.
+
+## 12. Honesty Statement
+
+Per GPT-5.5's research integrity rules: not fabricating, not hiding, not cherry-picking. The RCV-IRIS mechanism as implemented and tested does not improve accuracy. The paper must either:
+- (a) Report RCV-IRIS as a negative ablation,
+- (b) Retry with model-based verifiers or alternative fallbacks (new experiments needed), or
+- (c) Drop RCV-IRIS entirely from the main contribution list.
+
+The existing strong results (Coupling Tax, factorial interaction, training-free competitive) remain valid and are the paper's actual contribution.
