@@ -53,3 +53,11 @@ Fresh start. Previous rounds (medium R1-R4 on MRSD pivot + nightmare R1 on IRIS)
   - Need paired same-sample McNemar for IRIS vs SwiR on MATH-500
   - Need MATH-500 ablation
   - Need pure mode-only ablation (same prompt, only enable_thinking differs)
+
+## Fresh Independent Review (oracle-pro fallback to codex) — Score: 5/10 (2026-04-23)
+- **New reviewer, no prior context** — stricter than Round 1-3 reviewer
+- **Key concern**: Post-hoc accounting makes headline numbers unreliable for deployment claims
+- **Key concern**: "10× fewer tokens" overclaimed — Nothink@b (93.1%) already beats IRIS (90.9%) on GSM8K
+- **Key concern**: Coupling Tax under-generalized — only one model family
+- **Demands**: 2×2 factorial ablation (mode × extraction prompt), fully online IRIS as headline, cross-model generalization
+- **What would accept**: fully online IRIS Pareto-competitive + robust coupling-tax sweeps + clean factorial
