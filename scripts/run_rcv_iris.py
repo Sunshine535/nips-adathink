@@ -252,7 +252,7 @@ def run_rcv_sample(model, tok, item, args):
     # stage0_only: ONLY strict probe (no recover gate)
     # recover_only: strict + soft probes + recover gate
 
-    run_soft_probe = variant in ("rcv_no_gate", "full_rcv", "recover_only")
+    run_soft_probe = variant in ("rcv_no_gate", "full_rcv", "recover_only", "full_rcv_majvote")
 
     strict_text, strict_tok, strict_elapsed = generate_extraction(
         model, tok, item["q"], s2_text, args.b_answer, bm, "strict")
@@ -269,7 +269,9 @@ def run_rcv_sample(model, tok, item, args):
 
     # Recoverability features (computed only if needed for gate)
     pf = None
-    use_recover_gate = variant in ("full_rcv", "recover_only")
+    use_recover_gate = variant in ("full_rcv", "recover_only", "full_rcv_majvote")
+    # V3: majvote variant overrides fallback_action
+    effective_fallback = "majority_vote" if variant == "full_rcv_majvote" else args.fallback_action
     if use_recover_gate:
         pf = prefix_recoverability_features(
             item["q"], s2_text, strict_pred, soft_pred, strict_src, soft_src)
@@ -293,11 +295,38 @@ def run_rcv_sample(model, tok, item, args):
             final_src = f"s3_{strict_src}"
             final_decision = "EXTRACT_STAGE3"
         else:
-            # FALLBACK_TOWN: parse from truncated thinking
+            # FALLBACK — action depends on effective_fallback
             town_pred, town_src = parse_answer(s2_text, bm)
-            final_pred = town_pred
-            final_src = f"town_{town_src}"
-            final_decision = "FALLBACK_TOWN"
+            if effective_fallback == "majority_vote":
+                # V3: Use majority vote across strict, soft, town candidates
+                candidates = []
+                for pred, src in [(strict_pred, f"s3_{strict_src}"),
+                                  (soft_pred, f"s3soft_{soft_src}"),
+                                  (town_pred, f"town_{town_src}")]:
+                    if pred is not None and str(pred).strip() != "":
+                        candidates.append((str(pred).strip(), src))
+                if not candidates:
+                    # None produced parseable answer — fall through to town_pred
+                    final_pred = town_pred
+                    final_src = f"town_{town_src}"
+                    final_decision = "FALLBACK_NONE_VALID"
+                else:
+                    # Majority vote
+                    from collections import Counter
+                    vote_counts = Counter(p for p, _ in candidates)
+                    top_pred, top_count = vote_counts.most_common(1)[0]
+                    # Find source of a winning pred
+                    for p, s in candidates:
+                        if p == top_pred:
+                            final_pred = p
+                            final_src = f"majvote_{s}"
+                            break
+                    final_decision = f"FALLBACK_MAJVOTE_{top_count}of{len(candidates)}"
+            else:
+                # Default: FALLBACK_TOWN
+                final_pred = town_pred
+                final_src = f"town_{town_src}"
+                final_decision = "FALLBACK_TOWN"
             # No additional model call — fallback_tokens stays 0
     else:
         # No gate: always extract
@@ -340,7 +369,10 @@ def main():
                    help="V2: Path to canonical sample manifest (enforces same-sample)")
     p.add_argument("--variant", default="full_rcv",
                    choices=["existing_fragment", "rcv_no_gate", "full_rcv",
-                            "stage0_only", "recover_only"])
+                            "stage0_only", "recover_only", "full_rcv_majvote"])
+    p.add_argument("--fallback_action", default="town_parse",
+                   choices=["town_parse", "majority_vote"],
+                   help="V3: fallback action when recoverability gate rejects extraction")
     p.add_argument("--tau_accept", type=float, default=0.7)
     p.add_argument("--tau_recover", type=float, default=0.5)
     p.add_argument("--output_dir", default="results/rcv_iris")
