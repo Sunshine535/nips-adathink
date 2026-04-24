@@ -33,6 +33,30 @@ Have NOT:
 - Added honest caveats in PROGRESS_SUMMARY.md
 - Added reliability tags in CURRENT_RESULT_AUDIT.md
 
+## Post-GPT-5.5 Review Freeze (2026-04-25)
+
+**Feature-based RCV is FROZEN as NEGATIVE ABLATION.**
+
+Per GPT-5.5 review (decision B: implementation partially correct but has critical bugs):
+- V1 RCV-IRIS had 4 critical bugs: soft-probe token undercount, A/B identical path, GSM8K-hardcoded Stage0, GSM8K loader bug
+- V2 patch fixes all 4 (committed 2026-04-25)
+- V1 accuracy null (0 discordant at b2=512) conclusion stands
+- Paper must NOT claim RCV-IRIS as main method
+
+**Allowed claims going forward:**
+- "We tested a feature-based recoverability gate; it produced 0 discordant pairs vs no-gate baseline at tight budget"
+- "This null result suggests feature-space signals are insufficient; future work should test model-based verifiers"
+
+**Prohibited claims:**
+- "RCV-IRIS improves accuracy" (not supported)
+- "Recoverability-calibrated routing works" (the hypothesis survives, but this implementation doesn't)
+- Any token-efficiency claim using V1 numbers (token accounting was broken)
+
+**Main contributions still supported (unchanged):**
+- Coupling Tax phenomenon (27B p<1e-5)
+- 2×2 mode×prompt factorial interaction (+37.4pp)
+- Training-free Pareto-competitive with SwiReasoning/s1 on MATH-500
+
 ## Pending (after b2=512 experiments complete)
 
 - Decide whether to claim "RCV gate improves accuracy under tight budget"

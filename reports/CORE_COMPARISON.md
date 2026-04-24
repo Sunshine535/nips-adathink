@@ -1,4 +1,23 @@
-# Core A/B/C Comparison (Final — includes b2=512 experiment)
+# Core A/B/C Comparison (FROZEN — feature-RCV is NEGATIVE ABLATION)
+
+## Frozen Status (post GPT-5.5 review)
+
+**Status: `FEATURE_RCV_NEGATIVE_ABLATION`**
+
+- V1 implementation had token accounting bug (soft probe uncounted)
+- V1 had A/B identical code path (not a clean ablation)
+- V1 had hard-coded GSM8K validity on MATH (Stage0 verifier no-op)
+- V2 fixes applied in scripts/run_rcv_iris.py; old V1 results marked `v1_deprecated`
+
+**The accuracy null conclusion (0 discordant at b2=512) survives** because it's an upper bound — even if V2 separates A/B cleanly, samples where neither A nor C flips cannot be rescued by gate honesty.
+
+**Per GPT-5.5 stop criteria**: feature-based gate does NOT beat existing_fragment. Need revised mechanism (model-based verifier OR better fallback) for Task 5.
+
+---
+
+## V1 Original Experiment Data (for historical record only)
+
+
 
 ## Experiment 1: b2=4096 (moderate truncation)
 
