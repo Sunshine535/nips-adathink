@@ -1,0 +1,7508 @@
+{
+  "meta": {
+    "model": "Qwen/Qwen3-8B",
+    "benchmark": "math500",
+    "n": 200,
+    "seed": 42,
+    "variant": "existing_fragment",
+    "b1": 256,
+    "b2_max": 512,
+    "b_answer": 128,
+    "tau_accept": 0.7,
+    "tau_recover": 0.5,
+    "timestamp": "20260424_203506",
+    "schema_version": 2,
+    "sample_manifest": "results/manifests/math500_n200_seed42.json",
+    "manifest_meta": {
+      "benchmark": "math500",
+      "dataset_id": "HuggingFaceH4/MATH-500",
+      "split": "test",
+      "n_samples": 200,
+      "seed": 42,
+      "schema_version": 2
+    }
+  },
+  "accuracy": 0.41,
+  "avg_tokens": 683.895,
+  "n_correct": 82,
+  "decisions": {
+    "EXTRACT_ALWAYS": 167,
+    "ACCEPT_STAGE0": 33
+  },
+  "token_breakdown": {
+    "avg_stage0": 244.71,
+    "avg_stage2": 427.52,
+    "avg_strict_probe": 11.665,
+    "avg_soft_probe": 0.0,
+    "avg_verifier": 0.0,
+    "total_all_generated": 136779
+  },
+  "per_sample": [
+    {
+      "idx": 164,
+      "order": 0,
+      "gold": "-\\sqrt{3}",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 8,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "100",
+        "pred_source": "fallback_last",
+        "elapsed": 11.993
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.242
+      },
+      "stage3": {
+        "strict_pred": "3",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "3",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 776,
+      "actual_model_generated_tokens": 776,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 383,
+      "order": 1,
+      "gold": "x \\in [-2,7]",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 8,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "7",
+        "pred_source": "fallback_last",
+        "elapsed": 10.966
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.901
+      },
+      "stage3": {
+        "strict_pred": "7",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "7",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 776,
+      "actual_model_generated_tokens": 776,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 45,
+      "order": 2,
+      "gold": "2",
+      "stage0_tokens": 165,
+      "stage2_tokens": 0,
+      "strict_probe_tokens": 0,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 165,
+        "natural_stop": true,
+        "pred": "2",
+        "pred_source": "boxed",
+        "elapsed": 7.041,
+        "features": {
+          "natural_stop": 1.0,
+          "pred_is_none": 0.0,
+          "pred_is_empty": 0.0,
+          "parse_source_boxed": 1.0,
+          "parse_source_fallback": 0.0,
+          "answer_valid": 1.0,
+          "answer_has_number": 1.0,
+          "answer_has_boxed": 1.0,
+          "answer_has_final_marker": 1.0,
+          "answer_length": 446,
+          "question_length_chars": 98,
+          "question_has_latex": 1.0
+        },
+        "decision": "ACCEPT"
+      },
+      "final_stage": 0,
+      "pred": "2",
+      "correct": true,
+      "tokens_total": 165,
+      "actual_model_generated_tokens": 165,
+      "decision": "ACCEPT_STAGE0"
+    },
+    {
+      "idx": 156,
+      "order": 3,
+      "gold": "30^\\circ",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 6,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "0",
+        "pred_source": "fallback_last",
+        "elapsed": 11.065
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.987
+      },
+      "stage3": {
+        "strict_pred": "90",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "90",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 774,
+      "actual_model_generated_tokens": 774,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 53,
+      "order": 4,
+      "gold": "-\\frac{\\pi}{6}",
+      "stage0_tokens": 244,
+      "stage2_tokens": 0,
+      "strict_probe_tokens": 0,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 244,
+        "natural_stop": true,
+        "pred": "-\\frac{\\pi}{6}",
+        "pred_source": "boxed",
+        "elapsed": 10.51,
+        "features": {
+          "natural_stop": 1.0,
+          "pred_is_none": 0.0,
+          "pred_is_empty": 0.0,
+          "parse_source_boxed": 1.0,
+          "parse_source_fallback": 0.0,
+          "answer_valid": 1.0,
+          "answer_has_number": 1.0,
+          "answer_has_boxed": 1.0,
+          "answer_has_final_marker": 1.0,
+          "answer_length": 660,
+          "question_length_chars": 79,
+          "question_has_latex": 1.0
+        },
+        "decision": "ACCEPT"
+      },
+      "final_stage": 0,
+      "pred": "-\\frac{\\pi}{6}",
+      "correct": true,
+      "tokens_total": 244,
+      "actual_model_generated_tokens": 244,
+      "decision": "ACCEPT_STAGE0"
+    },
+    {
+      "idx": 72,
+      "order": 5,
+      "gold": "3",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 5,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "3",
+        "pred_source": "fallback_last",
+        "elapsed": 10.97
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.028
+      },
+      "stage3": {
+        "strict_pred": "3",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "3",
+      "pred_source": "s3_fallback_last",
+      "correct": true,
+      "tokens_total": 773,
+      "actual_model_generated_tokens": 773,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 315,
+      "order": 6,
+      "gold": "41",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 4,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "7",
+        "pred_source": "fallback_last",
+        "elapsed": 11.071
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.177
+      },
+      "stage3": {
+        "strict_pred": "49",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "49",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 772,
+      "actual_model_generated_tokens": 772,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 209,
+      "order": 7,
+      "gold": "16",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 4,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "940",
+        "pred_source": "fallback_last",
+        "elapsed": 11.035
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.134
+      },
+      "stage3": {
+        "strict_pred": "13",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "13",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 772,
+      "actual_model_generated_tokens": 772,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 74,
+      "order": 8,
+      "gold": "\\cot x",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 3,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "2",
+        "pred_source": "fallback_last",
+        "elapsed": 11.072
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.047
+      },
+      "stage3": {
+        "strict_pred": "0",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "0",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 771,
+      "actual_model_generated_tokens": 771,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 333,
+      "order": 9,
+      "gold": "3",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 3,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "1",
+        "pred_source": "fallback_last",
+        "elapsed": 11.07
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.098
+      },
+      "stage3": {
+        "strict_pred": "3",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "3",
+      "pred_source": "s3_fallback_last",
+      "correct": true,
+      "tokens_total": 771,
+      "actual_model_generated_tokens": 771,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 403,
+      "order": 10,
+      "gold": "3",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 3,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "9",
+        "pred_source": "fallback_last",
+        "elapsed": 11.016
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.13
+      },
+      "stage3": {
+        "strict_pred": "2",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "2",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 771,
+      "actual_model_generated_tokens": 771,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 415,
+      "order": 11,
+      "gold": "9",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 4,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "34",
+        "pred_source": "fallback_last",
+        "elapsed": 11.026
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.115
+      },
+      "stage3": {
+        "strict_pred": "10",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "10",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 772,
+      "actual_model_generated_tokens": 772,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 92,
+      "order": 12,
+      "gold": "\\frac{448}{15625}",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 8,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "5",
+        "pred_source": "fallback_last",
+        "elapsed": 11.07
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.132
+      },
+      "stage3": {
+        "strict_pred": "0.0794",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "0.0794",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 776,
+      "actual_model_generated_tokens": 776,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 215,
+      "order": 13,
+      "gold": "2",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 7,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "1",
+        "pred_source": "fallback_last",
+        "elapsed": 11.004
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.057
+      },
+      "stage3": {
+        "strict_pred": "1",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "1",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 775,
+      "actual_model_generated_tokens": 775,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 479,
+      "order": 14,
+      "gold": "2",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 3,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "8",
+        "pred_source": "fallback_last",
+        "elapsed": 11.074
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.03
+      },
+      "stage3": {
+        "strict_pred": "2",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "2",
+      "pred_source": "s3_fallback_last",
+      "correct": true,
+      "tokens_total": 771,
+      "actual_model_generated_tokens": 771,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 59,
+      "order": 15,
+      "gold": "5",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 3,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "50",
+        "pred_source": "fallback_last",
+        "elapsed": 11.037
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.06
+      },
+      "stage3": {
+        "strict_pred": "5",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "5",
+      "pred_source": "s3_fallback_last",
+      "correct": true,
+      "tokens_total": 771,
+      "actual_model_generated_tokens": 771,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 368,
+      "order": 16,
+      "gold": "31",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 4,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "16",
+        "pred_source": "fallback_last",
+        "elapsed": 10.999
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.108
+      },
+      "stage3": {
+        "strict_pred": "31",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "31",
+      "pred_source": "s3_fallback_last",
+      "correct": true,
+      "tokens_total": 772,
+      "actual_model_generated_tokens": 772,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 163,
+      "order": 17,
+      "gold": "-\\frac{35}{9}",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 128,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "2",
+        "pred_source": "fallback_last",
+        "elapsed": 10.97
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.071
+      },
+      "stage3": {
+        "strict_pred": "1",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "1",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 896,
+      "actual_model_generated_tokens": 896,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 210,
+      "order": 18,
+      "gold": "10",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 3,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "4",
+        "pred_source": "fallback_last",
+        "elapsed": 11.009
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.023
+      },
+      "stage3": {
+        "strict_pred": "6",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "6",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 771,
+      "actual_model_generated_tokens": 771,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 251,
+      "order": 19,
+      "gold": "540",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 5,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "3",
+        "pred_source": "fallback_last",
+        "elapsed": 11.029
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.064
+      },
+      "stage3": {
+        "strict_pred": "540",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "540",
+      "pred_source": "s3_fallback_last",
+      "correct": true,
+      "tokens_total": 773,
+      "actual_model_generated_tokens": 773,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 443,
+      "order": 20,
+      "gold": "45",
+      "stage0_tokens": 220,
+      "stage2_tokens": 0,
+      "strict_probe_tokens": 0,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 220,
+        "natural_stop": true,
+        "pred": "45",
+        "pred_source": "boxed",
+        "elapsed": 9.425,
+        "features": {
+          "natural_stop": 1.0,
+          "pred_is_none": 0.0,
+          "pred_is_empty": 0.0,
+          "parse_source_boxed": 1.0,
+          "parse_source_fallback": 0.0,
+          "answer_valid": 1.0,
+          "answer_has_number": 1.0,
+          "answer_has_boxed": 1.0,
+          "answer_has_final_marker": 1.0,
+          "answer_length": 542,
+          "question_length_chars": 74,
+          "question_has_latex": 0.0
+        },
+        "decision": "ACCEPT"
+      },
+      "final_stage": 0,
+      "pred": "45",
+      "correct": true,
+      "tokens_total": 220,
+      "actual_model_generated_tokens": 220,
+      "decision": "ACCEPT_STAGE0"
+    },
+    {
+      "idx": 320,
+      "order": 21,
+      "gold": "-\\frac{24}{25}",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 7,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "-2,0",
+        "pred_source": "fallback_last",
+        "elapsed": 11.031
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.087
+      },
+      "stage3": {
+        "strict_pred": "24/25",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "24/25",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 775,
+      "actual_model_generated_tokens": 775,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 289,
+      "order": 22,
+      "gold": "16",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 4,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "1",
+        "pred_source": "fallback_last",
+        "elapsed": 10.92
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.791
+      },
+      "stage3": {
+        "strict_pred": "16",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "16",
+      "pred_source": "s3_fallback_last",
+      "correct": true,
+      "tokens_total": 772,
+      "actual_model_generated_tokens": 772,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 389,
+      "order": 23,
+      "gold": "\\frac{\\sqrt{21}}{5}",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 128,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "2",
+        "pred_source": "fallback_last",
+        "elapsed": 10.872
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.741
+      },
+      "stage3": {
+        "strict_pred": "21/25",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "21/25",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 896,
+      "actual_model_generated_tokens": 896,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 7,
+      "order": 24,
+      "gold": "90^\\circ",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 6,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "3",
+        "pred_source": "fallback_last",
+        "elapsed": 11.094
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.138
+      },
+      "stage3": {
+        "strict_pred": "60",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "60",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 774,
+      "actual_model_generated_tokens": 774,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 462,
+      "order": 25,
+      "gold": "59",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 4,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "10",
+        "pred_source": "fallback_last",
+        "elapsed": 10.932
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.998
+      },
+      "stage3": {
+        "strict_pred": "47",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "47",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 772,
+      "actual_model_generated_tokens": 772,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 249,
+      "order": 26,
+      "gold": "17",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 4,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "2",
+        "pred_source": "fallback_last",
+        "elapsed": 11.016
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.081
+      },
+      "stage3": {
+        "strict_pred": "15",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "15",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 772,
+      "actual_model_generated_tokens": 772,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 228,
+      "order": 27,
+      "gold": "288 \\pi",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 12,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "2",
+        "pred_source": "fallback_last",
+        "elapsed": 11.075
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.11
+      },
+      "stage3": {
+        "strict_pred": "6",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "6",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 780,
+      "actual_model_generated_tokens": 780,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 245,
+      "order": 28,
+      "gold": "-13x+3",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 3,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "2",
+        "pred_source": "fallback_last",
+        "elapsed": 11.024
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.294
+      },
+      "stage3": {
+        "strict_pred": "0",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "0",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 771,
+      "actual_model_generated_tokens": 771,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 211,
+      "order": 29,
+      "gold": "5",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 3,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "5",
+        "pred_source": "fallback_last",
+        "elapsed": 11.033
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.96
+      },
+      "stage3": {
+        "strict_pred": "5",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "5",
+      "pred_source": "s3_fallback_last",
+      "correct": true,
+      "tokens_total": 771,
+      "actual_model_generated_tokens": 771,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 129,
+      "order": 30,
+      "gold": "\\frac{3840}{289}",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 4,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "20",
+        "pred_source": "fallback_last",
+        "elapsed": 10.864
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.814
+      },
+      "stage3": {
+        "strict_pred": "24",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "24",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 772,
+      "actual_model_generated_tokens": 772,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 162,
+      "order": 31,
+      "gold": "\\dfrac{17}{50}",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 128,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "1",
+        "pred_source": "fallback_last",
+        "elapsed": 10.967
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.037
+      },
+      "stage3": {
+        "strict_pred": "34/100",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "34/100",
+      "pred_source": "s3_fallback_last",
+      "correct": true,
+      "tokens_total": 896,
+      "actual_model_generated_tokens": 896,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 223,
+      "order": 32,
+      "gold": "14",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 4,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "1.28",
+        "pred_source": "fallback_last",
+        "elapsed": 10.934
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.85
+      },
+      "stage3": {
+        "strict_pred": "26",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "26",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 772,
+      "actual_model_generated_tokens": 772,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 41,
+      "order": 33,
+      "gold": "17",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 4,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "2",
+        "pred_source": "fallback_last",
+        "elapsed": 10.905
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.019
+      },
+      "stage3": {
+        "strict_pred": "14",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "14",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 772,
+      "actual_model_generated_tokens": 772,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 278,
+      "order": 34,
+      "gold": "255",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 5,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "0",
+        "pred_source": "fallback_last",
+        "elapsed": 11.041
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.145
+      },
+      "stage3": {
+        "strict_pred": "255",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "255",
+      "pred_source": "s3_fallback_last",
+      "correct": true,
+      "tokens_total": 773,
+      "actual_model_generated_tokens": 773,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 21,
+      "order": 35,
+      "gold": "13535",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 5,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "7",
+        "pred_source": "fallback_last",
+        "elapsed": 11.054
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.127
+      },
+      "stage3": {
+        "strict_pred": "198",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "198",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 773,
+      "actual_model_generated_tokens": 773,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 434,
+      "order": 36,
+      "gold": "32",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 4,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "2",
+        "pred_source": "fallback_last",
+        "elapsed": 11.054
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.833
+      },
+      "stage3": {
+        "strict_pred": "32",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "32",
+      "pred_source": "s3_fallback_last",
+      "correct": true,
+      "tokens_total": 772,
+      "actual_model_generated_tokens": 772,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 68,
+      "order": 37,
+      "gold": "46",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 4,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "1",
+        "pred_source": "fallback_last",
+        "elapsed": 10.983
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.117
+      },
+      "stage3": {
+        "strict_pred": "46",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "46",
+      "pred_source": "s3_fallback_last",
+      "correct": true,
+      "tokens_total": 772,
+      "actual_model_generated_tokens": 772,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 227,
+      "order": 38,
+      "gold": "\\text{(C)}",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 3,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "2",
+        "pred_source": "fallback_last",
+        "elapsed": 10.92
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.106
+      },
+      "stage3": {
+        "strict_pred": null,
+        "strict_source": "none",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": null,
+      "pred_source": "s3_none",
+      "correct": false,
+      "tokens_total": 771,
+      "actual_model_generated_tokens": 771,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 151,
+      "order": 39,
+      "gold": "144",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 5,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "1",
+        "pred_source": "fallback_last",
+        "elapsed": 11.046
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.231
+      },
+      "stage3": {
+        "strict_pred": "144",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "144",
+      "pred_source": "s3_fallback_last",
+      "correct": true,
+      "tokens_total": 773,
+      "actual_model_generated_tokens": 773,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 369,
+      "order": 40,
+      "gold": "21",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 5,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "2",
+        "pred_source": "fallback_last",
+        "elapsed": 11.087
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.252
+      },
+      "stage3": {
+        "strict_pred": "108",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "108",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 773,
+      "actual_model_generated_tokens": 773,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 217,
+      "order": 41,
+      "gold": "11,\\! 111,\\! 111,\\! 100",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 13,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "9",
+        "pred_source": "fallback_last",
+        "elapsed": 11.108
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.182
+      },
+      "stage3": {
+        "strict_pred": "11111111100",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "11111111100",
+      "pred_source": "s3_fallback_last",
+      "correct": true,
+      "tokens_total": 781,
+      "actual_model_generated_tokens": 781,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 154,
+      "order": 42,
+      "gold": "2\\sqrt{113}",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 9,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "0",
+        "pred_source": "fallback_last",
+        "elapsed": 11.082
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.095
+      },
+      "stage3": {
+        "strict_pred": "2",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "2",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 777,
+      "actual_model_generated_tokens": 777,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 177,
+      "order": 43,
+      "gold": "30^\\circ",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 6,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "2,",
+        "pred_source": "fallback_last",
+        "elapsed": 11.027
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.141
+      },
+      "stage3": {
+        "strict_pred": "30",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "30",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 774,
+      "actual_model_generated_tokens": 774,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 397,
+      "order": 44,
+      "gold": "23",
+      "stage0_tokens": 246,
+      "stage2_tokens": 0,
+      "strict_probe_tokens": 0,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 246,
+        "natural_stop": true,
+        "pred": "23",
+        "pred_source": "boxed",
+        "elapsed": 10.615,
+        "features": {
+          "natural_stop": 1.0,
+          "pred_is_none": 0.0,
+          "pred_is_empty": 0.0,
+          "parse_source_boxed": 1.0,
+          "parse_source_fallback": 0.0,
+          "answer_valid": 1.0,
+          "answer_has_number": 1.0,
+          "answer_has_boxed": 1.0,
+          "answer_has_final_marker": 1.0,
+          "answer_length": 520,
+          "question_length_chars": 55,
+          "question_has_latex": 0.0
+        },
+        "decision": "ACCEPT"
+      },
+      "final_stage": 0,
+      "pred": "23",
+      "correct": true,
+      "tokens_total": 246,
+      "actual_model_generated_tokens": 246,
+      "decision": "ACCEPT_STAGE0"
+    },
+    {
+      "idx": 139,
+      "order": 45,
+      "gold": "1",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 3,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "2",
+        "pred_source": "fallback_last",
+        "elapsed": 10.992
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.059
+      },
+      "stage3": {
+        "strict_pred": "1",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "1",
+      "pred_source": "s3_fallback_last",
+      "correct": true,
+      "tokens_total": 771,
+      "actual_model_generated_tokens": 771,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 141,
+      "order": 46,
+      "gold": "2",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 3,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "3",
+        "pred_source": "fallback_last",
+        "elapsed": 11.0
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.067
+      },
+      "stage3": {
+        "strict_pred": "2",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "2",
+      "pred_source": "s3_fallback_last",
+      "correct": true,
+      "tokens_total": 771,
+      "actual_model_generated_tokens": 771,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 326,
+      "order": 47,
+      "gold": "\\frac{9}{100}",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 6,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "1",
+        "pred_source": "fallback_last",
+        "elapsed": 11.007
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.901
+      },
+      "stage3": {
+        "strict_pred": "0.24",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "0.24",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 774,
+      "actual_model_generated_tokens": 774,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 175,
+      "order": 48,
+      "gold": "3",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 3,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "3",
+        "pred_source": "fallback_last",
+        "elapsed": 10.925
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.889
+      },
+      "stage3": {
+        "strict_pred": "4",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "4",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 771,
+      "actual_model_generated_tokens": 771,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 170,
+      "order": 49,
+      "gold": "1736",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 4,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "2",
+        "pred_source": "fallback_last",
+        "elapsed": 10.916
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.967
+      },
+      "stage3": {
+        "strict_pred": "16",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "16",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 772,
+      "actual_model_generated_tokens": 772,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 88,
+      "order": 50,
+      "gold": "2",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 3,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "2",
+        "pred_source": "fallback_last",
+        "elapsed": 11.072
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.116
+      },
+      "stage3": {
+        "strict_pred": "2",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "2",
+      "pred_source": "s3_fallback_last",
+      "correct": true,
+      "tokens_total": 771,
+      "actual_model_generated_tokens": 771,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 96,
+      "order": 51,
+      "gold": "1 \\pm \\sqrt{19}",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 6,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "+6",
+        "pred_source": "fallback_last",
+        "elapsed": 11.058
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.141
+      },
+      "stage3": {
+        "strict_pred": "5",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "5",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 774,
+      "actual_model_generated_tokens": 774,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 439,
+      "order": 52,
+      "gold": "x^8 + x^7 + x^6 + x^5 + x^4 + x^3 + x^2 + x + 1",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 38,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "6",
+        "pred_source": "fallback_last",
+        "elapsed": 11.079
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.031
+      },
+      "stage3": {
+        "strict_pred": "1",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "1",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 806,
+      "actual_model_generated_tokens": 806,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 303,
+      "order": 53,
+      "gold": "28",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 4,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "42",
+        "pred_source": "fallback_last",
+        "elapsed": 11.074
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.095
+      },
+      "stage3": {
+        "strict_pred": "28",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "28",
+      "pred_source": "s3_fallback_last",
+      "correct": true,
+      "tokens_total": 772,
+      "actual_model_generated_tokens": 772,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 50,
+      "order": 54,
+      "gold": "203",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 5,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "8",
+        "pred_source": "fallback_last",
+        "elapsed": 11.082
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.103
+      },
+      "stage3": {
+        "strict_pred": "161",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "161",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 773,
+      "actual_model_generated_tokens": 773,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 199,
+      "order": 55,
+      "gold": "17",
+      "stage0_tokens": 231,
+      "stage2_tokens": 0,
+      "strict_probe_tokens": 0,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 231,
+        "natural_stop": true,
+        "pred": "17",
+        "pred_source": "boxed",
+        "elapsed": 9.946,
+        "features": {
+          "natural_stop": 1.0,
+          "pred_is_none": 0.0,
+          "pred_is_empty": 0.0,
+          "parse_source_boxed": 1.0,
+          "parse_source_fallback": 0.0,
+          "answer_valid": 1.0,
+          "answer_has_number": 1.0,
+          "answer_has_boxed": 1.0,
+          "answer_has_final_marker": 1.0,
+          "answer_length": 628,
+          "question_length_chars": 71,
+          "question_has_latex": 0.0
+        },
+        "decision": "ACCEPT"
+      },
+      "final_stage": 0,
+      "pred": "17",
+      "correct": true,
+      "tokens_total": 231,
+      "actual_model_generated_tokens": 231,
+      "decision": "ACCEPT_STAGE0"
+    },
+    {
+      "idx": 297,
+      "order": 56,
+      "gold": "103",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 128,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "7",
+        "pred_source": "fallback_last",
+        "elapsed": 10.955
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.965
+      },
+      "stage3": {
+        "strict_pred": "98",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "98",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 896,
+      "actual_model_generated_tokens": 896,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 131,
+      "order": 57,
+      "gold": "8",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 4,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "2",
+        "pred_source": "fallback_last",
+        "elapsed": 11.008
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.14
+      },
+      "stage3": {
+        "strict_pred": "12",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "12",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 772,
+      "actual_model_generated_tokens": 772,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 120,
+      "order": 58,
+      "gold": "\\text{even}",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 3,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "2",
+        "pred_source": "fallback_last",
+        "elapsed": 10.958
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.115
+      },
+      "stage3": {
+        "strict_pred": null,
+        "strict_source": "none",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": null,
+      "pred_source": "s3_none",
+      "correct": false,
+      "tokens_total": 771,
+      "actual_model_generated_tokens": 771,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 358,
+      "order": 59,
+      "gold": "\\text{ellipse}",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 3,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "40",
+        "pred_source": "fallback_last",
+        "elapsed": 11.033
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.094
+      },
+      "stage3": {
+        "strict_pred": null,
+        "strict_source": "none",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": null,
+      "pred_source": "s3_none",
+      "correct": false,
+      "tokens_total": 771,
+      "actual_model_generated_tokens": 771,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 180,
+      "order": 60,
+      "gold": "3",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 3,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "50",
+        "pred_source": "fallback_last",
+        "elapsed": 11.008
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.086
+      },
+      "stage3": {
+        "strict_pred": "2",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "2",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 771,
+      "actual_model_generated_tokens": 771,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 370,
+      "order": 61,
+      "gold": "-41",
+      "stage0_tokens": 205,
+      "stage2_tokens": 0,
+      "strict_probe_tokens": 0,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 205,
+        "natural_stop": true,
+        "pred": "-41",
+        "pred_source": "boxed",
+        "elapsed": 8.893,
+        "features": {
+          "natural_stop": 1.0,
+          "pred_is_none": 0.0,
+          "pred_is_empty": 0.0,
+          "parse_source_boxed": 1.0,
+          "parse_source_fallback": 0.0,
+          "answer_valid": 1.0,
+          "answer_has_number": 1.0,
+          "answer_has_boxed": 1.0,
+          "answer_has_final_marker": 1.0,
+          "answer_length": 504,
+          "question_length_chars": 118,
+          "question_has_latex": 1.0
+        },
+        "decision": "ACCEPT"
+      },
+      "final_stage": 0,
+      "pred": "-41",
+      "correct": true,
+      "tokens_total": 205,
+      "actual_model_generated_tokens": 205,
+      "decision": "ACCEPT_STAGE0"
+    },
+    {
+      "idx": 37,
+      "order": 62,
+      "gold": "72",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 4,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "72^\\circ",
+        "pred_source": "boxed",
+        "elapsed": 11.032
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.049
+      },
+      "stage3": {
+        "strict_pred": "72",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "72",
+      "pred_source": "s3_fallback_last",
+      "correct": true,
+      "tokens_total": 772,
+      "actual_model_generated_tokens": 772,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 160,
+      "order": 63,
+      "gold": "18",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 4,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "115",
+        "pred_source": "fallback_last",
+        "elapsed": 11.0
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.945
+      },
+      "stage3": {
+        "strict_pred": "18",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "18",
+      "pred_source": "s3_fallback_last",
+      "correct": true,
+      "tokens_total": 772,
+      "actual_model_generated_tokens": 772,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 4,
+      "order": 64,
+      "gold": "\\text{Evelyn}",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 4,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "4.25",
+        "pred_source": "fallback_last",
+        "elapsed": 10.899
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.799
+      },
+      "stage3": {
+        "strict_pred": null,
+        "strict_source": "none",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": null,
+      "pred_source": "s3_none",
+      "correct": false,
+      "tokens_total": 772,
+      "actual_model_generated_tokens": 772,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 93,
+      "order": 65,
+      "gold": "33",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 4,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "2",
+        "pred_source": "fallback_last",
+        "elapsed": 10.916
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.86
+      },
+      "stage3": {
+        "strict_pred": "36",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "36",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 772,
+      "actual_model_generated_tokens": 772,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 304,
+      "order": 66,
+      "gold": "9",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 3,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "10",
+        "pred_source": "fallback_last",
+        "elapsed": 11.062
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.145
+      },
+      "stage3": {
+        "strict_pred": "7",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "7",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 771,
+      "actual_model_generated_tokens": 771,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 188,
+      "order": 67,
+      "gold": "6",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 3,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "3",
+        "pred_source": "fallback_last",
+        "elapsed": 11.002
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.98
+      },
+      "stage3": {
+        "strict_pred": "1",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "1",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 771,
+      "actual_model_generated_tokens": 771,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 374,
+      "order": 68,
+      "gold": "4",
+      "stage0_tokens": 152,
+      "stage2_tokens": 0,
+      "strict_probe_tokens": 0,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 152,
+        "natural_stop": true,
+        "pred": "4",
+        "pred_source": "boxed",
+        "elapsed": 6.503,
+        "features": {
+          "natural_stop": 1.0,
+          "pred_is_none": 0.0,
+          "pred_is_empty": 0.0,
+          "parse_source_boxed": 1.0,
+          "parse_source_fallback": 0.0,
+          "answer_valid": 1.0,
+          "answer_has_number": 1.0,
+          "answer_has_boxed": 1.0,
+          "answer_has_final_marker": 1.0,
+          "answer_length": 402,
+          "question_length_chars": 86,
+          "question_has_latex": 0.0
+        },
+        "decision": "ACCEPT"
+      },
+      "final_stage": 0,
+      "pred": "4",
+      "correct": true,
+      "tokens_total": 152,
+      "actual_model_generated_tokens": 152,
+      "decision": "ACCEPT_STAGE0"
+    },
+    {
+      "idx": 453,
+      "order": 69,
+      "gold": "10",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 4,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "8",
+        "pred_source": "fallback_last",
+        "elapsed": 10.992
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.021
+      },
+      "stage3": {
+        "strict_pred": "10",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "10",
+      "pred_source": "s3_fallback_last",
+      "correct": true,
+      "tokens_total": 772,
+      "actual_model_generated_tokens": 772,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 94,
+      "order": 70,
+      "gold": "80",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 6,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "100",
+        "pred_source": "fallback_last",
+        "elapsed": 10.969
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.872
+      },
+      "stage3": {
+        "strict_pred": "80",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "80",
+      "pred_source": "s3_fallback_last",
+      "correct": true,
+      "tokens_total": 774,
+      "actual_model_generated_tokens": 774,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 468,
+      "order": 71,
+      "gold": "8",
+      "stage0_tokens": 206,
+      "stage2_tokens": 0,
+      "strict_probe_tokens": 0,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 206,
+        "natural_stop": true,
+        "pred": "8",
+        "pred_source": "boxed",
+        "elapsed": 8.855,
+        "features": {
+          "natural_stop": 1.0,
+          "pred_is_none": 0.0,
+          "pred_is_empty": 0.0,
+          "parse_source_boxed": 1.0,
+          "parse_source_fallback": 0.0,
+          "answer_valid": 1.0,
+          "answer_has_number": 1.0,
+          "answer_has_boxed": 1.0,
+          "answer_has_final_marker": 1.0,
+          "answer_length": 555,
+          "question_length_chars": 118,
+          "question_has_latex": 0.0
+        },
+        "decision": "ACCEPT"
+      },
+      "final_stage": 0,
+      "pred": "8",
+      "correct": true,
+      "tokens_total": 206,
+      "actual_model_generated_tokens": 206,
+      "decision": "ACCEPT_STAGE0"
+    },
+    {
+      "idx": 292,
+      "order": 72,
+      "gold": "898",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 3,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "211",
+        "pred_source": "fallback_last",
+        "elapsed": 11.026
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.969
+      },
+      "stage3": {
+        "strict_pred": "0",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "0",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 771,
+      "actual_model_generated_tokens": 771,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 340,
+      "order": 73,
+      "gold": "55^\\circ",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 6,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "84",
+        "pred_source": "fallback_last",
+        "elapsed": 11.046
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.102
+      },
+      "stage3": {
+        "strict_pred": "35",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "35",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 774,
+      "actual_model_generated_tokens": 774,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 407,
+      "order": 74,
+      "gold": "9",
+      "stage0_tokens": 236,
+      "stage2_tokens": 0,
+      "strict_probe_tokens": 0,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 236,
+        "natural_stop": true,
+        "pred": "9",
+        "pred_source": "boxed",
+        "elapsed": 10.185,
+        "features": {
+          "natural_stop": 1.0,
+          "pred_is_none": 0.0,
+          "pred_is_empty": 0.0,
+          "parse_source_boxed": 1.0,
+          "parse_source_fallback": 0.0,
+          "answer_valid": 1.0,
+          "answer_has_number": 1.0,
+          "answer_has_boxed": 1.0,
+          "answer_has_final_marker": 1.0,
+          "answer_length": 524,
+          "question_length_chars": 85,
+          "question_has_latex": 1.0
+        },
+        "decision": "ACCEPT"
+      },
+      "final_stage": 0,
+      "pred": "9",
+      "correct": true,
+      "tokens_total": 236,
+      "actual_model_generated_tokens": 236,
+      "decision": "ACCEPT_STAGE0"
+    },
+    {
+      "idx": 408,
+      "order": 75,
+      "gold": "\\begin{pmatrix} 1/5 \\\\ -18/5 \\end{pmatrix}",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 7,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "2",
+        "pred_source": "fallback_last",
+        "elapsed": 11.075
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.141
+      },
+      "stage3": {
+        "strict_pred": "6",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "6",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 775,
+      "actual_model_generated_tokens": 775,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 187,
+      "order": 76,
+      "gold": "7",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 3,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "75",
+        "pred_source": "fallback_last",
+        "elapsed": 10.951
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.882
+      },
+      "stage3": {
+        "strict_pred": "7",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "7",
+      "pred_source": "s3_fallback_last",
+      "correct": true,
+      "tokens_total": 771,
+      "actual_model_generated_tokens": 771,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 334,
+      "order": 77,
+      "gold": "-120",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 5,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "-8",
+        "pred_source": "fallback_last",
+        "elapsed": 11.045
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.112
+      },
+      "stage3": {
+        "strict_pred": "120",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "120",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 773,
+      "actual_model_generated_tokens": 773,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 213,
+      "order": 78,
+      "gold": "2",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 3,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "1",
+        "pred_source": "fallback_last",
+        "elapsed": 10.95
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.121
+      },
+      "stage3": {
+        "strict_pred": "1",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "1",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 771,
+      "actual_model_generated_tokens": 771,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 127,
+      "order": 79,
+      "gold": "4210_{5}",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 8,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "10",
+        "pred_source": "fallback_last",
+        "elapsed": 11.016
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.132
+      },
+      "stage3": {
+        "strict_pred": "5",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "5",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 776,
+      "actual_model_generated_tokens": 776,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 11,
+      "order": 80,
+      "gold": "\\frac{3}{56}",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 128,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "2",
+        "pred_source": "fallback_last",
+        "elapsed": 11.064
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.009
+      },
+      "stage3": {
+        "strict_pred": "1",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "1",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 896,
+      "actual_model_generated_tokens": 896,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 6,
+      "order": 81,
+      "gold": "27",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 4,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "27",
+        "pred_source": "fallback_last",
+        "elapsed": 11.004
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.073
+      },
+      "stage3": {
+        "strict_pred": "27",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "27",
+      "pred_source": "s3_fallback_last",
+      "correct": true,
+      "tokens_total": 772,
+      "actual_model_generated_tokens": 772,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 442,
+      "order": 82,
+      "gold": "256",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 13,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "256",
+        "pred_source": "fallback_last",
+        "elapsed": 10.992
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.883
+      },
+      "stage3": {
+        "strict_pred": "256",
+        "strict_source": "boxed",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "256",
+      "pred_source": "s3_boxed",
+      "correct": true,
+      "tokens_total": 781,
+      "actual_model_generated_tokens": 781,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 246,
+      "order": 83,
+      "gold": "8",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 3,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "8",
+        "pred_source": "fallback_last",
+        "elapsed": 11.057
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.033
+      },
+      "stage3": {
+        "strict_pred": "8",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "8",
+      "pred_source": "s3_fallback_last",
+      "correct": true,
+      "tokens_total": 771,
+      "actual_model_generated_tokens": 771,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 396,
+      "order": 84,
+      "gold": "2",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 3,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "16",
+        "pred_source": "fallback_last",
+        "elapsed": 11.105
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.115
+      },
+      "stage3": {
+        "strict_pred": "2",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "2",
+      "pred_source": "s3_fallback_last",
+      "correct": true,
+      "tokens_total": 771,
+      "actual_model_generated_tokens": 771,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 425,
+      "order": 85,
+      "gold": "3R^2",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 128,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "2",
+        "pred_source": "fallback_last",
+        "elapsed": 11.006
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.043
+      },
+      "stage3": {
+        "strict_pred": "2",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "2",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 896,
+      "actual_model_generated_tokens": 896,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 345,
+      "order": 86,
+      "gold": "1",
+      "stage0_tokens": 205,
+      "stage2_tokens": 0,
+      "strict_probe_tokens": 0,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 205,
+        "natural_stop": true,
+        "pred": "1",
+        "pred_source": "boxed",
+        "elapsed": 8.824,
+        "features": {
+          "natural_stop": 1.0,
+          "pred_is_none": 0.0,
+          "pred_is_empty": 0.0,
+          "parse_source_boxed": 1.0,
+          "parse_source_fallback": 0.0,
+          "answer_valid": 1.0,
+          "answer_has_number": 1.0,
+          "answer_has_boxed": 1.0,
+          "answer_has_final_marker": 1.0,
+          "answer_length": 446,
+          "question_length_chars": 66,
+          "question_has_latex": 1.0
+        },
+        "decision": "ACCEPT"
+      },
+      "final_stage": 0,
+      "pred": "1",
+      "correct": true,
+      "tokens_total": 205,
+      "actual_model_generated_tokens": 205,
+      "decision": "ACCEPT_STAGE0"
+    },
+    {
+      "idx": 89,
+      "order": 87,
+      "gold": "21",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 3,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "63",
+        "pred_source": "fallback_last",
+        "elapsed": 11.016
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.037
+      },
+      "stage3": {
+        "strict_pred": "3",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "3",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 771,
+      "actual_model_generated_tokens": 771,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 426,
+      "order": 88,
+      "gold": "6\\sqrt{2}",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 8,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "8",
+        "pred_source": "fallback_last",
+        "elapsed": 10.979
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.947
+      },
+      "stage3": {
+        "strict_pred": "2",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "2",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 776,
+      "actual_model_generated_tokens": 776,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 26,
+      "order": 89,
+      "gold": "144",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 5,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "4",
+        "pred_source": "fallback_last",
+        "elapsed": 10.877
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.917
+      },
+      "stage3": {
+        "strict_pred": "144",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "144",
+      "pred_source": "s3_fallback_last",
+      "correct": true,
+      "tokens_total": 773,
+      "actual_model_generated_tokens": 773,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 77,
+      "order": 90,
+      "gold": "4",
+      "stage0_tokens": 174,
+      "stage2_tokens": 0,
+      "strict_probe_tokens": 0,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 174,
+        "natural_stop": true,
+        "pred": "4",
+        "pred_source": "boxed",
+        "elapsed": 7.47,
+        "features": {
+          "natural_stop": 1.0,
+          "pred_is_none": 0.0,
+          "pred_is_empty": 0.0,
+          "parse_source_boxed": 1.0,
+          "parse_source_fallback": 0.0,
+          "answer_valid": 1.0,
+          "answer_has_number": 1.0,
+          "answer_has_boxed": 1.0,
+          "answer_has_final_marker": 1.0,
+          "answer_length": 449,
+          "question_length_chars": 39,
+          "question_has_latex": 0.0
+        },
+        "decision": "ACCEPT"
+      },
+      "final_stage": 0,
+      "pred": "4",
+      "correct": true,
+      "tokens_total": 174,
+      "actual_model_generated_tokens": 174,
+      "decision": "ACCEPT_STAGE0"
+    },
+    {
+      "idx": 184,
+      "order": 91,
+      "gold": "(2,\\infty)",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 28,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "1",
+        "pred_source": "fallback_last",
+        "elapsed": 11.021
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.173
+      },
+      "stage3": {
+        "strict_pred": "2",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "2",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 796,
+      "actual_model_generated_tokens": 796,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 262,
+      "order": 92,
+      "gold": "4",
+      "stage0_tokens": 146,
+      "stage2_tokens": 0,
+      "strict_probe_tokens": 0,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 146,
+        "natural_stop": true,
+        "pred": "4",
+        "pred_source": "boxed",
+        "elapsed": 6.267,
+        "features": {
+          "natural_stop": 1.0,
+          "pred_is_none": 0.0,
+          "pred_is_empty": 0.0,
+          "parse_source_boxed": 1.0,
+          "parse_source_fallback": 0.0,
+          "answer_valid": 1.0,
+          "answer_has_number": 1.0,
+          "answer_has_boxed": 1.0,
+          "answer_has_final_marker": 1.0,
+          "answer_length": 298,
+          "question_length_chars": 44,
+          "question_has_latex": 0.0
+        },
+        "decision": "ACCEPT"
+      },
+      "final_stage": 0,
+      "pred": "4",
+      "correct": true,
+      "tokens_total": 146,
+      "actual_model_generated_tokens": 146,
+      "decision": "ACCEPT_STAGE0"
+    },
+    {
+      "idx": 207,
+      "order": 93,
+      "gold": "28",
+      "stage0_tokens": 167,
+      "stage2_tokens": 0,
+      "strict_probe_tokens": 0,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 167,
+        "natural_stop": true,
+        "pred": "28",
+        "pred_source": "boxed",
+        "elapsed": 7.183,
+        "features": {
+          "natural_stop": 1.0,
+          "pred_is_none": 0.0,
+          "pred_is_empty": 0.0,
+          "parse_source_boxed": 1.0,
+          "parse_source_fallback": 0.0,
+          "answer_valid": 1.0,
+          "answer_has_number": 1.0,
+          "answer_has_boxed": 1.0,
+          "answer_has_final_marker": 1.0,
+          "answer_length": 565,
+          "question_length_chars": 143,
+          "question_has_latex": 0.0
+        },
+        "decision": "ACCEPT"
+      },
+      "final_stage": 0,
+      "pred": "28",
+      "correct": true,
+      "tokens_total": 167,
+      "actual_model_generated_tokens": 167,
+      "decision": "ACCEPT_STAGE0"
+    },
+    {
+      "idx": 182,
+      "order": 94,
+      "gold": "1251",
+      "stage0_tokens": 193,
+      "stage2_tokens": 0,
+      "strict_probe_tokens": 0,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 193,
+        "natural_stop": true,
+        "pred": "1251",
+        "pred_source": "fallback_last",
+        "elapsed": 8.313,
+        "features": {
+          "natural_stop": 1.0,
+          "pred_is_none": 0.0,
+          "pred_is_empty": 0.0,
+          "parse_source_boxed": 0.0,
+          "parse_source_fallback": 1.0,
+          "answer_valid": 0.0,
+          "answer_has_number": 1.0,
+          "answer_has_boxed": 0.0,
+          "answer_has_final_marker": 1.0,
+          "answer_length": 542,
+          "question_length_chars": 152,
+          "question_has_latex": 0.0
+        },
+        "decision": "ACCEPT"
+      },
+      "final_stage": 0,
+      "pred": "1251",
+      "correct": true,
+      "tokens_total": 193,
+      "actual_model_generated_tokens": 193,
+      "decision": "ACCEPT_STAGE0"
+    },
+    {
+      "idx": 95,
+      "order": 95,
+      "gold": "-4",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 6,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "1",
+        "pred_source": "fallback_last",
+        "elapsed": 11.064
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.049
+      },
+      "stage3": {
+        "strict_pred": "-4",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "-4",
+      "pred_source": "s3_fallback_last",
+      "correct": true,
+      "tokens_total": 774,
+      "actual_model_generated_tokens": 774,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 100,
+      "order": 96,
+      "gold": "145^\\circ",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 6,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "180",
+        "pred_source": "fallback_last",
+        "elapsed": 11.044
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.979
+      },
+      "stage3": {
+        "strict_pred": "85",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "85",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 774,
+      "actual_model_generated_tokens": 774,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 419,
+      "order": 97,
+      "gold": "\\begin{pmatrix} -7 \\\\ 16 \\\\ 5 \\end{pmatrix}",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 13,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "1",
+        "pred_source": "fallback_last",
+        "elapsed": 11.022
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.101
+      },
+      "stage3": {
+        "strict_pred": "10",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "10",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 781,
+      "actual_model_generated_tokens": 781,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 394,
+      "order": 98,
+      "gold": "-\\frac{3}{8}",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 3,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "2",
+        "pred_source": "fallback_last",
+        "elapsed": 11.11
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.959
+      },
+      "stage3": {
+        "strict_pred": "1",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "1",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 771,
+      "actual_model_generated_tokens": 771,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 155,
+      "order": 99,
+      "gold": "\\frac{1}{4}",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 5,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "4",
+        "pred_source": "fallback_last",
+        "elapsed": 10.923
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.955
+      },
+      "stage3": {
+        "strict_pred": "1/2",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "1/2",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 773,
+      "actual_model_generated_tokens": 773,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 230,
+      "order": 100,
+      "gold": "\\frac{16}{5}",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 3,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "3",
+        "pred_source": "fallback_last",
+        "elapsed": 11.059
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.15
+      },
+      "stage3": {
+        "strict_pred": "4",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "4",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 771,
+      "actual_model_generated_tokens": 771,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 362,
+      "order": 101,
+      "gold": "\\frac14",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 5,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "4",
+        "pred_source": "fallback_last",
+        "elapsed": 11.052
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.072
+      },
+      "stage3": {
+        "strict_pred": "1/4",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "1/4",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 773,
+      "actual_model_generated_tokens": 773,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 237,
+      "order": 102,
+      "gold": "22",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 4,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "82944",
+        "pred_source": "fallback_last",
+        "elapsed": 10.873
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.788
+      },
+      "stage3": {
+        "strict_pred": "14",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "14",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 772,
+      "actual_model_generated_tokens": 772,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 353,
+      "order": 103,
+      "gold": "480",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 5,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "2",
+        "pred_source": "fallback_last",
+        "elapsed": 10.878
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.786
+      },
+      "stage3": {
+        "strict_pred": "240",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "240",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 773,
+      "actual_model_generated_tokens": 773,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 85,
+      "order": 104,
+      "gold": "\\sqrt{5}",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 6,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "4",
+        "pred_source": "fallback_last",
+        "elapsed": 10.944
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.104
+      },
+      "stage3": {
+        "strict_pred": "5",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "5",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 774,
+      "actual_model_generated_tokens": 774,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 323,
+      "order": 105,
+      "gold": "\\frac{1}{3}",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 5,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "2",
+        "pred_source": "fallback_last",
+        "elapsed": 10.888
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.803
+      },
+      "stage3": {
+        "strict_pred": "1/3",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "1/3",
+      "pred_source": "s3_fallback_last",
+      "correct": true,
+      "tokens_total": 773,
+      "actual_model_generated_tokens": 773,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 171,
+      "order": 106,
+      "gold": "\\frac{13}{15}",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 7,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "15",
+        "pred_source": "fallback_last",
+        "elapsed": 11.018
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.0
+      },
+      "stage3": {
+        "strict_pred": "13/15",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "13/15",
+      "pred_source": "s3_fallback_last",
+      "correct": true,
+      "tokens_total": 775,
+      "actual_model_generated_tokens": 775,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 393,
+      "order": 107,
+      "gold": "\\frac 34",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 5,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "3",
+        "pred_source": "fallback_last",
+        "elapsed": 10.954
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.058
+      },
+      "stage3": {
+        "strict_pred": "3/4",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "3/4",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 773,
+      "actual_model_generated_tokens": 773,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 153,
+      "order": 108,
+      "gold": "\\frac{2}{21}",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 18,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "3",
+        "pred_source": "fallback_last",
+        "elapsed": 11.069
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.099
+      },
+      "stage3": {
+        "strict_pred": "2/21",
+        "strict_source": "boxed",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "2/21",
+      "pred_source": "s3_boxed",
+      "correct": true,
+      "tokens_total": 786,
+      "actual_model_generated_tokens": 786,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 313,
+      "order": 109,
+      "gold": "12\\pi",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 10,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "4",
+        "pred_source": "fallback_last",
+        "elapsed": 10.959
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.0
+      },
+      "stage3": {
+        "strict_pred": "12",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "12",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 778,
+      "actual_model_generated_tokens": 778,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 38,
+      "order": 110,
+      "gold": "2000",
+      "stage0_tokens": 203,
+      "stage2_tokens": 0,
+      "strict_probe_tokens": 0,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 203,
+        "natural_stop": true,
+        "pred": "2000",
+        "pred_source": "boxed",
+        "elapsed": 8.747,
+        "features": {
+          "natural_stop": 1.0,
+          "pred_is_none": 0.0,
+          "pred_is_empty": 0.0,
+          "parse_source_boxed": 1.0,
+          "parse_source_fallback": 0.0,
+          "answer_valid": 1.0,
+          "answer_has_number": 1.0,
+          "answer_has_boxed": 1.0,
+          "answer_has_final_marker": 1.0,
+          "answer_length": 573,
+          "question_length_chars": 166,
+          "question_has_latex": 1.0
+        },
+        "decision": "ACCEPT"
+      },
+      "final_stage": 0,
+      "pred": "2000",
+      "correct": true,
+      "tokens_total": 203,
+      "actual_model_generated_tokens": 203,
+      "decision": "ACCEPT_STAGE0"
+    },
+    {
+      "idx": 392,
+      "order": 111,
+      "gold": "\\sqrt{66}",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 4,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "-1",
+        "pred_source": "fallback_last",
+        "elapsed": 11.063
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.066
+      },
+      "stage3": {
+        "strict_pred": "13",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "13",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 772,
+      "actual_model_generated_tokens": 772,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 69,
+      "order": 112,
+      "gold": "-1",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 4,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "1",
+        "pred_source": "fallback_last",
+        "elapsed": 10.945
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.066
+      },
+      "stage3": {
+        "strict_pred": "-1",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "-1",
+      "pred_source": "s3_fallback_last",
+      "correct": true,
+      "tokens_total": 772,
+      "actual_model_generated_tokens": 772,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 106,
+      "order": 113,
+      "gold": "\\frac43",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 5,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "3",
+        "pred_source": "fallback_last",
+        "elapsed": 11.046
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.07
+      },
+      "stage3": {
+        "strict_pred": "4/3",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "4/3",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 773,
+      "actual_model_generated_tokens": 773,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 348,
+      "order": 114,
+      "gold": "4495",
+      "stage0_tokens": 215,
+      "stage2_tokens": 0,
+      "strict_probe_tokens": 0,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 215,
+        "natural_stop": true,
+        "pred": "4495",
+        "pred_source": "boxed",
+        "elapsed": 9.223,
+        "features": {
+          "natural_stop": 1.0,
+          "pred_is_none": 0.0,
+          "pred_is_empty": 0.0,
+          "parse_source_boxed": 1.0,
+          "parse_source_fallback": 0.0,
+          "answer_valid": 1.0,
+          "answer_has_number": 1.0,
+          "answer_has_boxed": 1.0,
+          "answer_has_final_marker": 1.0,
+          "answer_length": 440,
+          "question_length_chars": 26,
+          "question_has_latex": 1.0
+        },
+        "decision": "ACCEPT"
+      },
+      "final_stage": 0,
+      "pred": "4495",
+      "correct": true,
+      "tokens_total": 215,
+      "actual_model_generated_tokens": 215,
+      "decision": "ACCEPT_STAGE0"
+    },
+    {
+      "idx": 489,
+      "order": 115,
+      "gold": "15",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 6,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "0",
+        "pred_source": "fallback_last",
+        "elapsed": 11.007
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.992
+      },
+      "stage3": {
+        "strict_pred": "15",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "15",
+      "pred_source": "s3_fallback_last",
+      "correct": true,
+      "tokens_total": 774,
+      "actual_model_generated_tokens": 774,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 428,
+      "order": 116,
+      "gold": "64",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 4,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "16",
+        "pred_source": "fallback_last",
+        "elapsed": 10.968
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.069
+      },
+      "stage3": {
+        "strict_pred": "49",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "49",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 772,
+      "actual_model_generated_tokens": 772,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 158,
+      "order": 117,
+      "gold": "2107",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 6,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "2",
+        "pred_source": "fallback_last",
+        "elapsed": 10.959
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.822
+      },
+      "stage3": {
+        "strict_pred": "1441",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "1441",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 774,
+      "actual_model_generated_tokens": 774,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 31,
+      "order": 118,
+      "gold": "11\\sqrt2",
+      "stage0_tokens": 188,
+      "stage2_tokens": 0,
+      "strict_probe_tokens": 0,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 188,
+        "natural_stop": true,
+        "pred": "11\\sqrt{2}",
+        "pred_source": "boxed",
+        "elapsed": 7.955,
+        "features": {
+          "natural_stop": 1.0,
+          "pred_is_none": 0.0,
+          "pred_is_empty": 0.0,
+          "parse_source_boxed": 1.0,
+          "parse_source_fallback": 0.0,
+          "answer_valid": 1.0,
+          "answer_has_number": 1.0,
+          "answer_has_boxed": 1.0,
+          "answer_has_final_marker": 1.0,
+          "answer_length": 417,
+          "question_length_chars": 22,
+          "question_has_latex": 1.0
+        },
+        "decision": "ACCEPT"
+      },
+      "final_stage": 0,
+      "pred": "11\\sqrt{2}",
+      "correct": true,
+      "tokens_total": 188,
+      "actual_model_generated_tokens": 188,
+      "decision": "ACCEPT_STAGE0"
+    },
+    {
+      "idx": 244,
+      "order": 119,
+      "gold": "8",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 3,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "107",
+        "pred_source": "fallback_last",
+        "elapsed": 10.871
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.89
+      },
+      "stage3": {
+        "strict_pred": "7",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "7",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 771,
+      "actual_model_generated_tokens": 771,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 8,
+      "order": 120,
+      "gold": "3\\sqrt{13}",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 9,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "13",
+        "pred_source": "fallback_last",
+        "elapsed": 10.976
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.804
+      },
+      "stage3": {
+        "strict_pred": "13",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "13",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 777,
+      "actual_model_generated_tokens": 777,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 267,
+      "order": 121,
+      "gold": "180^\\circ",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 6,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "2",
+        "pred_source": "fallback_last",
+        "elapsed": 10.879
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.88
+      },
+      "stage3": {
+        "strict_pred": "90",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "90",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 774,
+      "actual_model_generated_tokens": 774,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 485,
+      "order": 122,
+      "gold": "13",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 4,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "4",
+        "pred_source": "fallback_last",
+        "elapsed": 11.091
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.878
+      },
+      "stage3": {
+        "strict_pred": "14",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "14",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 772,
+      "actual_model_generated_tokens": 772,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 233,
+      "order": 123,
+      "gold": "30^\\circ",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 6,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "7",
+        "pred_source": "fallback_last",
+        "elapsed": 11.001
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.878
+      },
+      "stage3": {
+        "strict_pred": "30",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "30",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 774,
+      "actual_model_generated_tokens": 774,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 261,
+      "order": 124,
+      "gold": "76^\\circ",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 4,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "9",
+        "pred_source": "fallback_last",
+        "elapsed": 10.899
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.897
+      },
+      "stage3": {
+        "strict_pred": "76",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "76",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 772,
+      "actual_model_generated_tokens": 772,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 401,
+      "order": 125,
+      "gold": "\\frac{13}{4}",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 3,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "2",
+        "pred_source": "fallback_last",
+        "elapsed": 10.881
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.974
+      },
+      "stage3": {
+        "strict_pred": "3",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "3",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 771,
+      "actual_model_generated_tokens": 771,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 291,
+      "order": 126,
+      "gold": "63",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 4,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "-2,",
+        "pred_source": "fallback_last",
+        "elapsed": 11.04
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.025
+      },
+      "stage3": {
+        "strict_pred": "49",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "49",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 772,
+      "actual_model_generated_tokens": 772,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 198,
+      "order": 127,
+      "gold": "10,\\!080",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 7,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "2",
+        "pred_source": "fallback_last",
+        "elapsed": 10.924
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.055
+      },
+      "stage3": {
+        "strict_pred": "10080",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "10080",
+      "pred_source": "s3_fallback_last",
+      "correct": true,
+      "tokens_total": 775,
+      "actual_model_generated_tokens": 775,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 132,
+      "order": 128,
+      "gold": "4",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 3,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "14",
+        "pred_source": "fallback_last",
+        "elapsed": 11.061
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.092
+      },
+      "stage3": {
+        "strict_pred": "4",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "4",
+      "pred_source": "s3_fallback_last",
+      "correct": true,
+      "tokens_total": 771,
+      "actual_model_generated_tokens": 771,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 324,
+      "order": 129,
+      "gold": "120",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 5,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "2",
+        "pred_source": "fallback_last",
+        "elapsed": 11.002
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.114
+      },
+      "stage3": {
+        "strict_pred": "100",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "100",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 773,
+      "actual_model_generated_tokens": 773,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 322,
+      "order": 130,
+      "gold": "-1",
+      "stage0_tokens": 201,
+      "stage2_tokens": 0,
+      "strict_probe_tokens": 0,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 201,
+        "natural_stop": true,
+        "pred": "-1",
+        "pred_source": "boxed",
+        "elapsed": 8.669,
+        "features": {
+          "natural_stop": 1.0,
+          "pred_is_none": 0.0,
+          "pred_is_empty": 0.0,
+          "parse_source_boxed": 1.0,
+          "parse_source_fallback": 0.0,
+          "answer_valid": 1.0,
+          "answer_has_number": 1.0,
+          "answer_has_boxed": 1.0,
+          "answer_has_final_marker": 1.0,
+          "answer_length": 426,
+          "question_length_chars": 71,
+          "question_has_latex": 0.0
+        },
+        "decision": "ACCEPT"
+      },
+      "final_stage": 0,
+      "pred": "-1",
+      "correct": true,
+      "tokens_total": 201,
+      "actual_model_generated_tokens": 201,
+      "decision": "ACCEPT_STAGE0"
+    },
+    {
+      "idx": 2,
+      "order": 131,
+      "gold": "\\frac{14}{3}",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 128,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "-1",
+        "pred_source": "fallback_last",
+        "elapsed": 10.888
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.77
+      },
+      "stage3": {
+        "strict_pred": "2",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "2",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 896,
+      "actual_model_generated_tokens": 896,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 18,
+      "order": 132,
+      "gold": "28",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 4,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "2,3",
+        "pred_source": "fallback_last",
+        "elapsed": 10.996
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.977
+      },
+      "stage3": {
+        "strict_pred": "56",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "56",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 772,
+      "actual_model_generated_tokens": 772,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 488,
+      "order": 133,
+      "gold": "\\$36",
+      "stage0_tokens": 186,
+      "stage2_tokens": 0,
+      "strict_probe_tokens": 0,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 186,
+        "natural_stop": true,
+        "pred": "36",
+        "pred_source": "boxed",
+        "elapsed": 7.952,
+        "features": {
+          "natural_stop": 1.0,
+          "pred_is_none": 0.0,
+          "pred_is_empty": 0.0,
+          "parse_source_boxed": 1.0,
+          "parse_source_fallback": 0.0,
+          "answer_valid": 1.0,
+          "answer_has_number": 1.0,
+          "answer_has_boxed": 1.0,
+          "answer_has_final_marker": 1.0,
+          "answer_length": 497,
+          "question_length_chars": 135,
+          "question_has_latex": 1.0
+        },
+        "decision": "ACCEPT"
+      },
+      "final_stage": 0,
+      "pred": "36",
+      "correct": false,
+      "tokens_total": 186,
+      "actual_model_generated_tokens": 186,
+      "decision": "ACCEPT_STAGE0"
+    },
+    {
+      "idx": 263,
+      "order": 134,
+      "gold": "15",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 4,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "2",
+        "pred_source": "fallback_last",
+        "elapsed": 11.003
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.971
+      },
+      "stage3": {
+        "strict_pred": "15",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "15",
+      "pred_source": "s3_fallback_last",
+      "correct": true,
+      "tokens_total": 772,
+      "actual_model_generated_tokens": 772,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 76,
+      "order": 135,
+      "gold": "0",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 3,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "2",
+        "pred_source": "fallback_last",
+        "elapsed": 10.914
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.932
+      },
+      "stage3": {
+        "strict_pred": "0",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "0",
+      "pred_source": "s3_fallback_last",
+      "correct": true,
+      "tokens_total": 771,
+      "actual_model_generated_tokens": 771,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 253,
+      "order": 136,
+      "gold": "\\frac{1}{8}",
+      "stage0_tokens": 199,
+      "stage2_tokens": 0,
+      "strict_probe_tokens": 0,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 199,
+        "natural_stop": true,
+        "pred": "\\frac{1}{8}",
+        "pred_source": "boxed",
+        "elapsed": 8.575,
+        "features": {
+          "natural_stop": 1.0,
+          "pred_is_none": 0.0,
+          "pred_is_empty": 0.0,
+          "parse_source_boxed": 1.0,
+          "parse_source_fallback": 0.0,
+          "answer_valid": 1.0,
+          "answer_has_number": 1.0,
+          "answer_has_boxed": 1.0,
+          "answer_has_final_marker": 1.0,
+          "answer_length": 578,
+          "question_length_chars": 78,
+          "question_has_latex": 0.0
+        },
+        "decision": "ACCEPT"
+      },
+      "final_stage": 0,
+      "pred": "\\frac{1}{8}",
+      "correct": true,
+      "tokens_total": 199,
+      "actual_model_generated_tokens": 199,
+      "decision": "ACCEPT_STAGE0"
+    },
+    {
+      "idx": 314,
+      "order": 137,
+      "gold": "(2,4)",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 6,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "2,",
+        "pred_source": "fallback_last",
+        "elapsed": 10.893
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.89
+      },
+      "stage3": {
+        "strict_pred": "4",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "4",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 774,
+      "actual_model_generated_tokens": 774,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 351,
+      "order": 138,
+      "gold": "\\frac{1}{16}",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 3,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "2,",
+        "pred_source": "fallback_last",
+        "elapsed": 11.023
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.907
+      },
+      "stage3": {
+        "strict_pred": "0",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "0",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 771,
+      "actual_model_generated_tokens": 771,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 471,
+      "order": 139,
+      "gold": "84",
+      "stage0_tokens": 223,
+      "stage2_tokens": 0,
+      "strict_probe_tokens": 0,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 223,
+        "natural_stop": true,
+        "pred": "84",
+        "pred_source": "boxed",
+        "elapsed": 9.539,
+        "features": {
+          "natural_stop": 1.0,
+          "pred_is_none": 0.0,
+          "pred_is_empty": 0.0,
+          "parse_source_boxed": 1.0,
+          "parse_source_fallback": 0.0,
+          "answer_valid": 1.0,
+          "answer_has_number": 1.0,
+          "answer_has_boxed": 1.0,
+          "answer_has_final_marker": 1.0,
+          "answer_length": 594,
+          "question_length_chars": 177,
+          "question_has_latex": 0.0
+        },
+        "decision": "ACCEPT"
+      },
+      "final_stage": 0,
+      "pred": "84",
+      "correct": true,
+      "tokens_total": 223,
+      "actual_model_generated_tokens": 223,
+      "decision": "ACCEPT_STAGE0"
+    },
+    {
+      "idx": 143,
+      "order": 140,
+      "gold": "3 \\sqrt{5}",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 3,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "3",
+        "pred_source": "fallback_last",
+        "elapsed": 10.949
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.956
+      },
+      "stage3": {
+        "strict_pred": "7",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "7",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 771,
+      "actual_model_generated_tokens": 771,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 449,
+      "order": 141,
+      "gold": "47",
+      "stage0_tokens": 187,
+      "stage2_tokens": 0,
+      "strict_probe_tokens": 0,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 187,
+        "natural_stop": true,
+        "pred": "47",
+        "pred_source": "boxed",
+        "elapsed": 8.005,
+        "features": {
+          "natural_stop": 1.0,
+          "pred_is_none": 0.0,
+          "pred_is_empty": 0.0,
+          "parse_source_boxed": 1.0,
+          "parse_source_fallback": 0.0,
+          "answer_valid": 1.0,
+          "answer_has_number": 1.0,
+          "answer_has_boxed": 1.0,
+          "answer_has_final_marker": 1.0,
+          "answer_length": 386,
+          "question_length_chars": 59,
+          "question_has_latex": 1.0
+        },
+        "decision": "ACCEPT"
+      },
+      "final_stage": 0,
+      "pred": "47",
+      "correct": true,
+      "tokens_total": 187,
+      "actual_model_generated_tokens": 187,
+      "decision": "ACCEPT_STAGE0"
+    },
+    {
+      "idx": 66,
+      "order": 142,
+      "gold": "x^3+3x-6",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 13,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "3",
+        "pred_source": "fallback_last",
+        "elapsed": 10.956
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.868
+      },
+      "stage3": {
+        "strict_pred": "6",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "6",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 781,
+      "actual_model_generated_tokens": 781,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 179,
+      "order": 143,
+      "gold": "5x - 7y + 11z + 4 = 0",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 19,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "2",
+        "pred_source": "fallback_last",
+        "elapsed": 11.046
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.099
+      },
+      "stage3": {
+        "strict_pred": "0",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "0",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 787,
+      "actual_model_generated_tokens": 787,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 133,
+      "order": 144,
+      "gold": "120",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 7,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "60",
+        "pred_source": "fallback_last",
+        "elapsed": 11.021
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.096
+      },
+      "stage3": {
+        "strict_pred": "120",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "120",
+      "pred_source": "s3_fallback_last",
+      "correct": true,
+      "tokens_total": 775,
+      "actual_model_generated_tokens": 775,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 144,
+      "order": 145,
+      "gold": "(15,-29)",
+      "stage0_tokens": 214,
+      "stage2_tokens": 0,
+      "strict_probe_tokens": 0,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 214,
+        "natural_stop": true,
+        "pred": "(15, -29)",
+        "pred_source": "boxed",
+        "elapsed": 9.081,
+        "features": {
+          "natural_stop": 1.0,
+          "pred_is_none": 0.0,
+          "pred_is_empty": 0.0,
+          "parse_source_boxed": 1.0,
+          "parse_source_fallback": 0.0,
+          "answer_valid": 1.0,
+          "answer_has_number": 1.0,
+          "answer_has_boxed": 1.0,
+          "answer_has_final_marker": 1.0,
+          "answer_length": 442,
+          "question_length_chars": 117,
+          "question_has_latex": 1.0
+        },
+        "decision": "ACCEPT"
+      },
+      "final_stage": 0,
+      "pred": "(15, -29)",
+      "correct": true,
+      "tokens_total": 214,
+      "actual_model_generated_tokens": 214,
+      "decision": "ACCEPT_STAGE0"
+    },
+    {
+      "idx": 406,
+      "order": 146,
+      "gold": "0",
+      "stage0_tokens": 111,
+      "stage2_tokens": 0,
+      "strict_probe_tokens": 0,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 111,
+        "natural_stop": true,
+        "pred": "0",
+        "pred_source": "boxed",
+        "elapsed": 4.687,
+        "features": {
+          "natural_stop": 1.0,
+          "pred_is_none": 0.0,
+          "pred_is_empty": 0.0,
+          "parse_source_boxed": 1.0,
+          "parse_source_fallback": 0.0,
+          "answer_valid": 1.0,
+          "answer_has_number": 1.0,
+          "answer_has_boxed": 1.0,
+          "answer_has_final_marker": 1.0,
+          "answer_length": 236,
+          "question_length_chars": 44,
+          "question_has_latex": 0.0
+        },
+        "decision": "ACCEPT"
+      },
+      "final_stage": 0,
+      "pred": "0",
+      "correct": true,
+      "tokens_total": 111,
+      "actual_model_generated_tokens": 111,
+      "decision": "ACCEPT_STAGE0"
+    },
+    {
+      "idx": 280,
+      "order": 147,
+      "gold": "8",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 3,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "2",
+        "pred_source": "fallback_last",
+        "elapsed": 11.052
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.818
+      },
+      "stage3": {
+        "strict_pred": "8",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "8",
+      "pred_source": "s3_fallback_last",
+      "correct": true,
+      "tokens_total": 771,
+      "actual_model_generated_tokens": 771,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 269,
+      "order": 148,
+      "gold": "6",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 3,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "2,",
+        "pred_source": "fallback_last",
+        "elapsed": 11.03
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.037
+      },
+      "stage3": {
+        "strict_pred": "6",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "6",
+      "pred_source": "s3_fallback_last",
+      "correct": true,
+      "tokens_total": 771,
+      "actual_model_generated_tokens": 771,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 466,
+      "order": 149,
+      "gold": "8 \\pi",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 5,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "8",
+        "pred_source": "fallback_last",
+        "elapsed": 10.851
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.744
+      },
+      "stage3": {
+        "strict_pred": "3",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "3",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 773,
+      "actual_model_generated_tokens": 773,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 208,
+      "order": 150,
+      "gold": "1",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 3,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "100",
+        "pred_source": "fallback_last",
+        "elapsed": 10.895
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.839
+      },
+      "stage3": {
+        "strict_pred": "1",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "1",
+      "pred_source": "s3_fallback_last",
+      "correct": true,
+      "tokens_total": 771,
+      "actual_model_generated_tokens": 771,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 145,
+      "order": 151,
+      "gold": "-2",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 3,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "-1",
+        "pred_source": "fallback_last",
+        "elapsed": 11.012
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.094
+      },
+      "stage3": {
+        "strict_pred": "1",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "1",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 771,
+      "actual_model_generated_tokens": 771,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 432,
+      "order": 152,
+      "gold": "331",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 3,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "1985",
+        "pred_source": "fallback_last",
+        "elapsed": 11.022
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.021
+      },
+      "stage3": {
+        "strict_pred": "0",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "0",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 771,
+      "actual_model_generated_tokens": 771,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 277,
+      "order": 153,
+      "gold": "\\sqrt{53}",
+      "stage0_tokens": 69,
+      "stage2_tokens": 0,
+      "strict_probe_tokens": 0,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 69,
+        "natural_stop": true,
+        "pred": "\\sqrt{53}",
+        "pred_source": "boxed",
+        "elapsed": 2.957,
+        "features": {
+          "natural_stop": 1.0,
+          "pred_is_none": 0.0,
+          "pred_is_empty": 0.0,
+          "parse_source_boxed": 1.0,
+          "parse_source_fallback": 0.0,
+          "answer_valid": 1.0,
+          "answer_has_number": 1.0,
+          "answer_has_boxed": 1.0,
+          "answer_has_final_marker": 1.0,
+          "answer_length": 240,
+          "question_length_chars": 45,
+          "question_has_latex": 1.0
+        },
+        "decision": "ACCEPT"
+      },
+      "final_stage": 0,
+      "pred": "\\sqrt{53}",
+      "correct": true,
+      "tokens_total": 69,
+      "actual_model_generated_tokens": 69,
+      "decision": "ACCEPT_STAGE0"
+    },
+    {
+      "idx": 341,
+      "order": 154,
+      "gold": "-2",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 4,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "-1",
+        "pred_source": "fallback_last",
+        "elapsed": 11.005
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.047
+      },
+      "stage3": {
+        "strict_pred": "-2",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "-2",
+      "pred_source": "s3_fallback_last",
+      "correct": true,
+      "tokens_total": 772,
+      "actual_model_generated_tokens": 772,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 465,
+      "order": 155,
+      "gold": "121",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 5,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "121",
+        "pred_source": "fallback_last",
+        "elapsed": 11.09
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.742
+      },
+      "stage3": {
+        "strict_pred": "121",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "121",
+      "pred_source": "s3_fallback_last",
+      "correct": true,
+      "tokens_total": 773,
+      "actual_model_generated_tokens": 773,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 317,
+      "order": 156,
+      "gold": "0",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 128,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "2",
+        "pred_source": "fallback_last",
+        "elapsed": 10.932
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.823
+      },
+      "stage3": {
+        "strict_pred": "2",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "2",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 896,
+      "actual_model_generated_tokens": 896,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 17,
+      "order": 157,
+      "gold": "\\pi",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 3,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "2",
+        "pred_source": "fallback_last",
+        "elapsed": 11.004
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.864
+      },
+      "stage3": {
+        "strict_pred": null,
+        "strict_source": "none",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": null,
+      "pred_source": "s3_none",
+      "correct": false,
+      "tokens_total": 771,
+      "actual_model_generated_tokens": 771,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 448,
+      "order": 158,
+      "gold": "44",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 4,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "17",
+        "pred_source": "fallback_last",
+        "elapsed": 11.026
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.813
+      },
+      "stage3": {
+        "strict_pred": "24",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "24",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 772,
+      "actual_model_generated_tokens": 772,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 20,
+      "order": 159,
+      "gold": "6+9i",
+      "stage0_tokens": 144,
+      "stage2_tokens": 0,
+      "strict_probe_tokens": 0,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 144,
+        "natural_stop": true,
+        "pred": "6 + 9i",
+        "pred_source": "boxed",
+        "elapsed": 6.189,
+        "features": {
+          "natural_stop": 1.0,
+          "pred_is_none": 0.0,
+          "pred_is_empty": 0.0,
+          "parse_source_boxed": 1.0,
+          "parse_source_fallback": 0.0,
+          "answer_valid": 1.0,
+          "answer_has_number": 1.0,
+          "answer_has_boxed": 1.0,
+          "answer_has_final_marker": 1.0,
+          "answer_length": 298,
+          "question_length_chars": 22,
+          "question_has_latex": 0.0
+        },
+        "decision": "ACCEPT"
+      },
+      "final_stage": 0,
+      "pred": "6 + 9i",
+      "correct": true,
+      "tokens_total": 144,
+      "actual_model_generated_tokens": 144,
+      "decision": "ACCEPT_STAGE0"
+    },
+    {
+      "idx": 130,
+      "order": 160,
+      "gold": "13",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 4,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "1",
+        "pred_source": "fallback_last",
+        "elapsed": 10.921
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.766
+      },
+      "stage3": {
+        "strict_pred": "13",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "13",
+      "pred_source": "s3_fallback_last",
+      "correct": true,
+      "tokens_total": 772,
+      "actual_model_generated_tokens": 772,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 238,
+      "order": 161,
+      "gold": "-4",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 128,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "9",
+        "pred_source": "fallback_last",
+        "elapsed": 10.976
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.973
+      },
+      "stage3": {
+        "strict_pred": "0",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "0",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 896,
+      "actual_model_generated_tokens": 896,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 296,
+      "order": 162,
+      "gold": "\\text{(B)}",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 3,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "1",
+        "pred_source": "fallback_last",
+        "elapsed": 11.036
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.05
+      },
+      "stage3": {
+        "strict_pred": null,
+        "strict_source": "none",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": null,
+      "pred_source": "s3_none",
+      "correct": false,
+      "tokens_total": 771,
+      "actual_model_generated_tokens": 771,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 286,
+      "order": 163,
+      "gold": "\\frac{17}{21}",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 3,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "1",
+        "pred_source": "fallback_last",
+        "elapsed": 11.011
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.751
+      },
+      "stage3": {
+        "strict_pred": "1",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "1",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 771,
+      "actual_model_generated_tokens": 771,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 336,
+      "order": 164,
+      "gold": "26000",
+      "stage0_tokens": 208,
+      "stage2_tokens": 0,
+      "strict_probe_tokens": 0,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 208,
+        "natural_stop": true,
+        "pred": "26000",
+        "pred_source": "boxed",
+        "elapsed": 8.847,
+        "features": {
+          "natural_stop": 1.0,
+          "pred_is_none": 0.0,
+          "pred_is_empty": 0.0,
+          "parse_source_boxed": 1.0,
+          "parse_source_fallback": 0.0,
+          "answer_valid": 1.0,
+          "answer_has_number": 1.0,
+          "answer_has_boxed": 1.0,
+          "answer_has_final_marker": 1.0,
+          "answer_length": 427,
+          "question_length_chars": 37,
+          "question_has_latex": 0.0
+        },
+        "decision": "ACCEPT"
+      },
+      "final_stage": 0,
+      "pred": "26000",
+      "correct": true,
+      "tokens_total": 208,
+      "actual_model_generated_tokens": 208,
+      "decision": "ACCEPT_STAGE0"
+    },
+    {
+      "idx": 300,
+      "order": 165,
+      "gold": "12",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 4,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "12",
+        "pred_source": "fallback_last",
+        "elapsed": 10.892
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.129
+      },
+      "stage3": {
+        "strict_pred": "12",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "12",
+      "pred_source": "s3_fallback_last",
+      "correct": true,
+      "tokens_total": 772,
+      "actual_model_generated_tokens": 772,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 149,
+      "order": 166,
+      "gold": "49",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 4,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "1",
+        "pred_source": "fallback_last",
+        "elapsed": 10.999
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.055
+      },
+      "stage3": {
+        "strict_pred": "61",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "61",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 772,
+      "actual_model_generated_tokens": 772,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 203,
+      "order": 167,
+      "gold": "12",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 128,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "9",
+        "pred_source": "fallback_last",
+        "elapsed": 11.034
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.003
+      },
+      "stage3": {
+        "strict_pred": "17",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "17",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 896,
+      "actual_model_generated_tokens": 896,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 387,
+      "order": 168,
+      "gold": "18",
+      "stage0_tokens": 173,
+      "stage2_tokens": 0,
+      "strict_probe_tokens": 0,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 173,
+        "natural_stop": true,
+        "pred": "18",
+        "pred_source": "boxed",
+        "elapsed": 7.376,
+        "features": {
+          "natural_stop": 1.0,
+          "pred_is_none": 0.0,
+          "pred_is_empty": 0.0,
+          "parse_source_boxed": 1.0,
+          "parse_source_fallback": 0.0,
+          "answer_valid": 1.0,
+          "answer_has_number": 1.0,
+          "answer_has_boxed": 1.0,
+          "answer_has_final_marker": 1.0,
+          "answer_length": 388,
+          "question_length_chars": 50,
+          "question_has_latex": 0.0
+        },
+        "decision": "ACCEPT"
+      },
+      "final_stage": 0,
+      "pred": "18",
+      "correct": true,
+      "tokens_total": 173,
+      "actual_model_generated_tokens": 173,
+      "decision": "ACCEPT_STAGE0"
+    },
+    {
+      "idx": 398,
+      "order": 169,
+      "gold": "\\text{Navin}",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 4,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "1",
+        "pred_source": "fallback_last",
+        "elapsed": 10.949
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.78
+      },
+      "stage3": {
+        "strict_pred": null,
+        "strict_source": "none",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": null,
+      "pred_source": "s3_none",
+      "correct": false,
+      "tokens_total": 772,
+      "actual_model_generated_tokens": 772,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 190,
+      "order": 170,
+      "gold": "\\frac{13}{18}",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 5,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "3",
+        "pred_source": "fallback_last",
+        "elapsed": 10.918
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.965
+      },
+      "stage3": {
+        "strict_pred": "1/6",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "1/6",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 773,
+      "actual_model_generated_tokens": 773,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 201,
+      "order": 171,
+      "gold": "66",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 4,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "5",
+        "pred_source": "fallback_last",
+        "elapsed": 10.927
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.081
+      },
+      "stage3": {
+        "strict_pred": "69",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "69",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 772,
+      "actual_model_generated_tokens": 772,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 418,
+      "order": 172,
+      "gold": "2\\sqrt{5}",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 8,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "12",
+        "pred_source": "fallback_last",
+        "elapsed": 10.881
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.944
+      },
+      "stage3": {
+        "strict_pred": "5",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "5",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 776,
+      "actual_model_generated_tokens": 776,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 14,
+      "order": 173,
+      "gold": "\\sqrt{51}",
+      "stage0_tokens": 229,
+      "stage2_tokens": 0,
+      "strict_probe_tokens": 0,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 229,
+        "natural_stop": true,
+        "pred": "\\sqrt{51}",
+        "pred_source": "boxed",
+        "elapsed": 9.746,
+        "features": {
+          "natural_stop": 1.0,
+          "pred_is_none": 0.0,
+          "pred_is_empty": 0.0,
+          "parse_source_boxed": 1.0,
+          "parse_source_fallback": 0.0,
+          "answer_valid": 1.0,
+          "answer_has_number": 1.0,
+          "answer_has_boxed": 1.0,
+          "answer_has_final_marker": 1.0,
+          "answer_length": 610,
+          "question_length_chars": 254,
+          "question_has_latex": 1.0
+        },
+        "decision": "ACCEPT"
+      },
+      "final_stage": 0,
+      "pred": "\\sqrt{51}",
+      "correct": true,
+      "tokens_total": 229,
+      "actual_model_generated_tokens": 229,
+      "decision": "ACCEPT_STAGE0"
+    },
+    {
+      "idx": 55,
+      "order": 174,
+      "gold": "3",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 3,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "2",
+        "pred_source": "fallback_last",
+        "elapsed": 11.037
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.169
+      },
+      "stage3": {
+        "strict_pred": "3",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "3",
+      "pred_source": "s3_fallback_last",
+      "correct": true,
+      "tokens_total": 771,
+      "actual_model_generated_tokens": 771,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 75,
+      "order": 175,
+      "gold": "\\frac{11}{36}",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 7,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "5",
+        "pred_source": "fallback_last",
+        "elapsed": 10.904
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.865
+      },
+      "stage3": {
+        "strict_pred": "11/36",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "11/36",
+      "pred_source": "s3_fallback_last",
+      "correct": true,
+      "tokens_total": 775,
+      "actual_model_generated_tokens": 775,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 284,
+      "order": 176,
+      "gold": "3 \\pm 2 \\sqrt{2}",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 128,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "2",
+        "pred_source": "fallback_last",
+        "elapsed": 11.077
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.199
+      },
+      "stage3": {
+        "strict_pred": "2",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "2",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 896,
+      "actual_model_generated_tokens": 896,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 39,
+      "order": 177,
+      "gold": "23",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 4,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "9",
+        "pred_source": "fallback_last",
+        "elapsed": 10.984
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.884
+      },
+      "stage3": {
+        "strict_pred": "23",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "23",
+      "pred_source": "s3_fallback_last",
+      "correct": true,
+      "tokens_total": 772,
+      "actual_model_generated_tokens": 772,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 391,
+      "order": 178,
+      "gold": "0",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 3,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "3",
+        "pred_source": "fallback_last",
+        "elapsed": 10.907
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.868
+      },
+      "stage3": {
+        "strict_pred": "6",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "6",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 771,
+      "actual_model_generated_tokens": 771,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 460,
+      "order": 179,
+      "gold": "75^\\circ",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 6,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "180",
+        "pred_source": "fallback_last",
+        "elapsed": 11.012
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.051
+      },
+      "stage3": {
+        "strict_pred": "85",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "85",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 774,
+      "actual_model_generated_tokens": 774,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 257,
+      "order": 180,
+      "gold": "864 \\mbox{ inches}^2",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 5,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "864",
+        "pred_source": "fallback_last",
+        "elapsed": 10.99
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.871
+      },
+      "stage3": {
+        "strict_pred": "864",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "864",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 773,
+      "actual_model_generated_tokens": 773,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 178,
+      "order": 181,
+      "gold": "60",
+      "stage0_tokens": 151,
+      "stage2_tokens": 0,
+      "strict_probe_tokens": 0,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 151,
+        "natural_stop": true,
+        "pred": "60",
+        "pred_source": "boxed",
+        "elapsed": 6.413,
+        "features": {
+          "natural_stop": 1.0,
+          "pred_is_none": 0.0,
+          "pred_is_empty": 0.0,
+          "parse_source_boxed": 1.0,
+          "parse_source_fallback": 0.0,
+          "answer_valid": 1.0,
+          "answer_has_number": 1.0,
+          "answer_has_boxed": 1.0,
+          "answer_has_final_marker": 1.0,
+          "answer_length": 350,
+          "question_length_chars": 73,
+          "question_has_latex": 1.0
+        },
+        "decision": "ACCEPT"
+      },
+      "final_stage": 0,
+      "pred": "60",
+      "correct": true,
+      "tokens_total": 151,
+      "actual_model_generated_tokens": 151,
+      "decision": "ACCEPT_STAGE0"
+    },
+    {
+      "idx": 212,
+      "order": 182,
+      "gold": "56",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 4,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "392",
+        "pred_source": "fallback_last",
+        "elapsed": 10.952
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.065
+      },
+      "stage3": {
+        "strict_pred": "56",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "56",
+      "pred_source": "s3_fallback_last",
+      "correct": true,
+      "tokens_total": 772,
+      "actual_model_generated_tokens": 772,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 472,
+      "order": 183,
+      "gold": "137 \\frac{1}{2}",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 12,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "2",
+        "pred_source": "fallback_last",
+        "elapsed": 11.089
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.198
+      },
+      "stage3": {
+        "strict_pred": "2",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "2",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 780,
+      "actual_model_generated_tokens": 780,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 420,
+      "order": 184,
+      "gold": "\\begin{pmatrix} 16/49 \\\\ 48/49 \\\\ 24/49 \\end{pmatrix}",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 43,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "2",
+        "pred_source": "fallback_last",
+        "elapsed": 11.104
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.172
+      },
+      "stage3": {
+        "strict_pred": "49",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "49",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 811,
+      "actual_model_generated_tokens": 811,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 67,
+      "order": 185,
+      "gold": "10",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 6,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "3",
+        "pred_source": "fallback_last",
+        "elapsed": 11.082
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.034
+      },
+      "stage3": {
+        "strict_pred": "59",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "59",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 774,
+      "actual_model_generated_tokens": 774,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 99,
+      "order": 186,
+      "gold": "\\begin{pmatrix} -1/3 \\\\ 2/3 \\\\ 5/3 \\end{pmatrix}",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 22,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "2",
+        "pred_source": "fallback_last",
+        "elapsed": 11.047
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.077
+      },
+      "stage3": {
+        "strict_pred": "1",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "1",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 790,
+      "actual_model_generated_tokens": 790,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 476,
+      "order": 187,
+      "gold": "200",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 5,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "90000",
+        "pred_source": "fallback_last",
+        "elapsed": 10.982
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.029
+      },
+      "stage3": {
+        "strict_pred": "100",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "100",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 773,
+      "actual_model_generated_tokens": 773,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 97,
+      "order": 188,
+      "gold": "\\text{east}",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 3,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "90",
+        "pred_source": "fallback_last",
+        "elapsed": 10.997
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.819
+      },
+      "stage3": {
+        "strict_pred": null,
+        "strict_source": "none",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": null,
+      "pred_source": "s3_none",
+      "correct": false,
+      "tokens_total": 771,
+      "actual_model_generated_tokens": 771,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 196,
+      "order": 189,
+      "gold": "1600",
+      "stage0_tokens": 200,
+      "stage2_tokens": 0,
+      "strict_probe_tokens": 0,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 200,
+        "natural_stop": true,
+        "pred": "1600",
+        "pred_source": "boxed",
+        "elapsed": 8.584,
+        "features": {
+          "natural_stop": 1.0,
+          "pred_is_none": 0.0,
+          "pred_is_empty": 0.0,
+          "parse_source_boxed": 1.0,
+          "parse_source_fallback": 0.0,
+          "answer_valid": 1.0,
+          "answer_has_number": 1.0,
+          "answer_has_boxed": 1.0,
+          "answer_has_final_marker": 1.0,
+          "answer_length": 408,
+          "question_length_chars": 37,
+          "question_has_latex": 0.0
+        },
+        "decision": "ACCEPT"
+      },
+      "final_stage": 0,
+      "pred": "1600",
+      "correct": true,
+      "tokens_total": 200,
+      "actual_model_generated_tokens": 200,
+      "decision": "ACCEPT_STAGE0"
+    },
+    {
+      "idx": 339,
+      "order": 190,
+      "gold": "2k",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 4,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "2",
+        "pred_source": "fallback_last",
+        "elapsed": 10.975
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.035
+      },
+      "stage3": {
+        "strict_pred": "2",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "2",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 772,
+      "actual_model_generated_tokens": 772,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 288,
+      "order": 191,
+      "gold": "7",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 3,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "2",
+        "pred_source": "fallback_last",
+        "elapsed": 11.075
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.041
+      },
+      "stage3": {
+        "strict_pred": "3",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "3",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 771,
+      "actual_model_generated_tokens": 771,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 318,
+      "order": 192,
+      "gold": "\\frac{11+9a}{20}",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 15,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "4",
+        "pred_source": "fallback_last",
+        "elapsed": 11.045
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.127
+      },
+      "stage3": {
+        "strict_pred": "20",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "20",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 783,
+      "actual_model_generated_tokens": 783,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 457,
+      "order": 193,
+      "gold": "0",
+      "stage0_tokens": 76,
+      "stage2_tokens": 0,
+      "strict_probe_tokens": 0,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 76,
+        "natural_stop": true,
+        "pred": "0",
+        "pred_source": "boxed",
+        "elapsed": 3.269,
+        "features": {
+          "natural_stop": 1.0,
+          "pred_is_none": 0.0,
+          "pred_is_empty": 0.0,
+          "parse_source_boxed": 1.0,
+          "parse_source_fallback": 0.0,
+          "answer_valid": 1.0,
+          "answer_has_number": 1.0,
+          "answer_has_boxed": 1.0,
+          "answer_has_final_marker": 1.0,
+          "answer_length": 219,
+          "question_length_chars": 38,
+          "question_has_latex": 0.0
+        },
+        "decision": "ACCEPT"
+      },
+      "final_stage": 0,
+      "pred": "0",
+      "correct": true,
+      "tokens_total": 76,
+      "actual_model_generated_tokens": 76,
+      "decision": "ACCEPT_STAGE0"
+    },
+    {
+      "idx": 124,
+      "order": 194,
+      "gold": "\\frac{11}{2}",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 3,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "5",
+        "pred_source": "fallback_last",
+        "elapsed": 10.971
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.867
+      },
+      "stage3": {
+        "strict_pred": "2",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "2",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 771,
+      "actual_model_generated_tokens": 771,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 242,
+      "order": 195,
+      "gold": "\\$32,\\!348",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 9,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "1",
+        "pred_source": "fallback_last",
+        "elapsed": 11.038
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.043
+      },
+      "stage3": {
+        "strict_pred": "27440",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "27440",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 777,
+      "actual_model_generated_tokens": 777,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 42,
+      "order": 196,
+      "gold": "4",
+      "stage0_tokens": 223,
+      "stage2_tokens": 0,
+      "strict_probe_tokens": 0,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 223,
+        "natural_stop": true,
+        "pred": "4",
+        "pred_source": "boxed",
+        "elapsed": 9.628,
+        "features": {
+          "natural_stop": 1.0,
+          "pred_is_none": 0.0,
+          "pred_is_empty": 0.0,
+          "parse_source_boxed": 1.0,
+          "parse_source_fallback": 0.0,
+          "answer_valid": 1.0,
+          "answer_has_number": 1.0,
+          "answer_has_boxed": 1.0,
+          "answer_has_final_marker": 1.0,
+          "answer_length": 484,
+          "question_length_chars": 100,
+          "question_has_latex": 0.0
+        },
+        "decision": "ACCEPT"
+      },
+      "final_stage": 0,
+      "pred": "4",
+      "correct": true,
+      "tokens_total": 223,
+      "actual_model_generated_tokens": 223,
+      "decision": "ACCEPT_STAGE0"
+    },
+    {
+      "idx": 60,
+      "order": 197,
+      "gold": "(6,31,-1)",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 10,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "2",
+        "pred_source": "fallback_last",
+        "elapsed": 11.047
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.01
+      },
+      "stage3": {
+        "strict_pred": "-1",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "-1",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 778,
+      "actual_model_generated_tokens": 778,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 192,
+      "order": 198,
+      "gold": "30",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 6,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "4",
+        "pred_source": "fallback_last",
+        "elapsed": 10.967
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 21.894
+      },
+      "stage3": {
+        "strict_pred": "16.5",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "16.5",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 774,
+      "actual_model_generated_tokens": 774,
+      "decision": "EXTRACT_ALWAYS"
+    },
+    {
+      "idx": 422,
+      "order": 199,
+      "gold": "\\{1\\pm\\sqrt{5},-2\\}",
+      "stage0_tokens": 256,
+      "stage2_tokens": 512,
+      "strict_probe_tokens": 14,
+      "soft_probe_tokens": 0,
+      "fallback_tokens": 0,
+      "verifier_tokens": 0,
+      "stage0": {
+        "tokens": 256,
+        "natural_stop": false,
+        "pred": "1",
+        "pred_source": "fallback_last",
+        "elapsed": 11.064
+      },
+      "stage2": {
+        "tokens": 512,
+        "natural_stop": false,
+        "elapsed": 22.643
+      },
+      "stage3": {
+        "strict_pred": "-2",
+        "strict_source": "fallback_last",
+        "soft_pred": null,
+        "soft_source": "none",
+        "decision": "EXTRACT_ALWAYS"
+      },
+      "final_stage": 3,
+      "pred": "-2",
+      "pred_source": "s3_fallback_last",
+      "correct": false,
+      "tokens_total": 782,
+      "actual_model_generated_tokens": 782,
+      "decision": "EXTRACT_ALWAYS"
+    }
+  ]
+}
