@@ -52,4 +52,15 @@ Status: `FEATURE_RCV_NEGATIVE_ABLATION`
 - Per GPT-5.5 stop criteria: C does not beat A or B consistently.
 - Paper should present feature-based RCV as a null ablation, NOT as the main method.
 
-Budget forcing `bforce_*.json` marked contaminated until rerun with V2 `run_budget_forcing.py`.
+Budget forcing `bforce_*.json` (old) marked contaminated until rerun with V2 `run_budget_forcing.py`.
+Budget forcing V2 `results/budget_forcing_v2/*.json`: `partial_total_token_only` — server ran pre-V2 script, field-level breakdown NOT captured. Overall token count is honest but cannot be called `field_level_verified`.
+
+## FEATURE_RCV_NEGATIVE_ABLATION_FINAL (2026-04-26)
+
+All RCV variants (V1 and V2) are **permanently frozen as negative ablations**:
+- V2 b2=512 A/B/C/D: all 41.0%, 0 discordant, p=1.0
+- V2 b2=4096 A/B/C: 73/73/74%, 1 discordant (not significant)
+- Majority-vote fallback (D): also 0 accuracy change
+- Root cause: truncated prefix lacks answer info; no post-hoc method helps
+
+Successor path: CART-IRIS (learned transducer, not heuristic gate).

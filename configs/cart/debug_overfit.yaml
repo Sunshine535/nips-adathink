@@ -1,0 +1,21 @@
+method_name: debug_overfit
+mechanism_enabled: true
+cart_transducer_enabled: true
+trace_conditioned: true
+online_readiness_enabled: false
+dataset: math_train
+seed: 42
+model: Qwen/Qwen3-8B
+checkpoint_path: checkpoints/cart/debug_overfit
+training:
+  max_steps: 100
+  batch_size: 4
+  learning_rate: 2.0e-4
+  lora_r: 16
+  lora_alpha: 32
+  lora_target_modules: ["q_proj", "k_proj", "v_proj", "o_proj"]
+  max_answer_tokens: 128
+  overfit_one_batch: true
+logging:
+  save_loss_per_step: true
+  save_checkpoint_every: 50

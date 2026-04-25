@@ -1,0 +1,25 @@
+method_name: full_cart
+mechanism_enabled: true
+cart_transducer_enabled: true
+trace_conditioned: true
+online_readiness_enabled: true
+answer_reservation_enabled: true
+use_old_stage3_prompt: false
+dataset: math500
+seed: 42
+metric: exact_match_normalized_math
+model: Qwen/Qwen3-8B
+checkpoint_path: checkpoints/cart/dev
+output_dir: results/cart/full_cart
+budgets:
+  b1: 256
+  b2_max: 512
+  b_answer: 128
+  checkpoint_interval: 128
+logging:
+  save_per_sample: true
+  save_question_hash: true
+  save_token_breakdown: true
+  save_readiness_score: true
+  save_checkpoint_decisions: true
+  save_trace_use_counterfactual: true

@@ -1,0 +1,15 @@
+method_name: existing_fragment
+mechanism_enabled: false
+cart_transducer_enabled: false
+online_readiness_enabled: false
+use_old_stage3_prompt: true
+dataset: math500
+seed: 42
+metric: exact_match_normalized_math
+model: Qwen/Qwen3-8B
+checkpoint_path: null
+output_dir: results/cart/existing_fragment
+logging:
+  save_per_sample: true
+  save_question_hash: true
+  save_token_breakdown: true
