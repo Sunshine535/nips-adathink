@@ -54,54 +54,70 @@ def load_gsm8k(n, seed):
 def generate_with_forcing(model, tok, prompt, budget, variant):
     """Generate with budget forcing.
 
-    early_stop: at budget, append STOP_TOKEN and generate ≤32 more tokens.
-    wait_extend: if EOS before 0.5*budget, inject WAIT_TOKEN and continue.
+    V2: returns dict with field-level token accounting:
+      - initial_generated_tokens
+      - forced_generated_tokens (early_stop only)
+      - extended_generated_tokens (wait_extend only)
+      - injected_prompt_tokens (STOP_TOKEN or WAIT_TOKEN tokenized)
+      - input_prompt_tokens_initial
+      - input_prompt_tokens_forced
+      - total_output_generated_tokens
+      - tokens (alias to total_output_generated_tokens for backward compat)
     """
     dev = next(model.parameters()).device
     inputs = tok(prompt, return_tensors="pt").to(dev)
     in_len = inputs["input_ids"].shape[1]
 
-    # Stage 1: normal generation with full budget
     with torch.no_grad():
         out = model.generate(**inputs, max_new_tokens=budget, do_sample=False,
                              pad_token_id=tok.eos_token_id, eos_token_id=tok.eos_token_id)
     gen = out[0][in_len:]
-    gen_len = len(gen)
-    eos = gen_len < budget  # hit EOS before budget
+    initial_tokens = len(gen)
+    eos = initial_tokens < budget
 
     text = tok.decode(gen, skip_special_tokens=True)
 
+    forced_tokens = 0
+    extended_tokens = 0
+    injected_tokens = 0
+    in_len2 = 0
+
     if variant == "early_stop" and not eos:
-        # Budget exhausted, inject "Final answer:" and generate up to 32 more
         forced_prompt = prompt + text + STOP_TOKEN
         inputs2 = tok(forced_prompt, return_tensors="pt").to(dev)
         in_len2 = inputs2["input_ids"].shape[1]
+        injected_tokens = len(tok.encode(STOP_TOKEN, add_special_tokens=False))
         with torch.no_grad():
             out2 = model.generate(**inputs2, max_new_tokens=32, do_sample=False,
                                   pad_token_id=tok.eos_token_id, eos_token_id=tok.eos_token_id)
+        forced_tokens = len(out2[0][in_len2:])
         text += STOP_TOKEN + tok.decode(out2[0][in_len2:], skip_special_tokens=True)
 
-    elif variant == "wait_extend" and eos and gen_len < budget // 2:
-        # Natural stop but short — try to extend thinking
+    elif variant == "wait_extend" and eos and initial_tokens < budget // 2:
         forced_prompt = prompt + text + WAIT_TOKEN
         inputs2 = tok(forced_prompt, return_tensors="pt").to(dev)
         in_len2 = inputs2["input_ids"].shape[1]
-        remaining = budget - gen_len - 3
+        injected_tokens = len(tok.encode(WAIT_TOKEN, add_special_tokens=False))
+        remaining = budget - initial_tokens - 3
         with torch.no_grad():
             out2 = model.generate(**inputs2, max_new_tokens=remaining, do_sample=False,
                                   pad_token_id=tok.eos_token_id, eos_token_id=tok.eos_token_id)
+        extended_tokens = len(out2[0][in_len2:])
         text += WAIT_TOKEN + tok.decode(out2[0][in_len2:], skip_special_tokens=True)
 
-    # Count ALL generated tokens including forced/injected
-    total_generated = gen_len
-    if variant == "early_stop" and not eos:
-        forced_tokens = len(out2[0][in_len2:])
-        total_generated = gen_len + forced_tokens
-    elif variant == "wait_extend" and eos and gen_len < budget // 2:
-        extended_tokens = len(out2[0][in_len2:])
-        total_generated = gen_len + extended_tokens
+    total_output = initial_tokens + forced_tokens + extended_tokens
 
-    return text, total_generated
+    return {
+        "text": text,
+        "initial_generated_tokens": initial_tokens,
+        "forced_generated_tokens": forced_tokens,
+        "extended_generated_tokens": extended_tokens,
+        "injected_prompt_tokens": injected_tokens,
+        "input_prompt_tokens_initial": in_len,
+        "input_prompt_tokens_forced": in_len2,
+        "total_output_generated_tokens": total_output,
+        "tokens": total_output,  # backward-compatible alias
+    }
 
 
 def main():
@@ -153,14 +169,15 @@ def main():
             prompt = tok.apply_chat_template(messages, tokenize=False,
                                             add_generation_prompt=True)
 
-        text, n_tok = generate_with_forcing(model, tok, prompt,
-                                            args.budget, args.variant)
+        gen_result = generate_with_forcing(model, tok, prompt,
+                                           args.budget, args.variant)
+        text = gen_result["text"]
+        n_tok = gen_result["total_output_generated_tokens"]
 
         if args.benchmark == "math500":
             pred, has_final, src = parse_prediction_math(text)
             c = 1 if is_correct_math(pred, item["gold"]) else 0
         else:
-            # simple GSM8K parsing
             import re
             nums = re.findall(r"[-+]?\d[\d,]*(?:\.\d+)?", text.split("Final answer:")[-1] if "Final answer:" in text else text)
             pred = nums[-1].replace(",", "") if nums else None
@@ -172,8 +189,19 @@ def main():
 
         correct_count += c
         total_tokens += n_tok
-        results.append({"idx": i, "gold": item["gold"], "pred": str(pred),
-                        "correct": c, "tokens": n_tok, "pred_source": src})
+        # V2: field-level token logging
+        sample_record = {
+            "idx": i, "gold": item["gold"], "pred": str(pred),
+            "correct": c, "tokens": n_tok, "pred_source": src,
+            "initial_generated_tokens": gen_result["initial_generated_tokens"],
+            "forced_generated_tokens": gen_result["forced_generated_tokens"],
+            "extended_generated_tokens": gen_result["extended_generated_tokens"],
+            "injected_prompt_tokens": gen_result["injected_prompt_tokens"],
+            "input_prompt_tokens_initial": gen_result["input_prompt_tokens_initial"],
+            "input_prompt_tokens_forced": gen_result["input_prompt_tokens_forced"],
+            "total_output_generated_tokens": gen_result["total_output_generated_tokens"],
+        }
+        results.append(sample_record)
 
         if (i+1) % 20 == 0:
             log.info(f"  [{i+1}/{len(items)}] acc={correct_count/(i+1):.3f} avg_tok={total_tokens/(i+1):.0f}")
@@ -191,9 +219,15 @@ def main():
         "meta": {"model": args.model, "benchmark": args.benchmark,
                  "n_samples": len(items), "budget": args.budget,
                  "variant": args.variant, "seed": args.seed,
-                 "elapsed_s": elapsed},
+                 "elapsed_s": elapsed,
+                 "schema_version": 2,
+                 "token_count_status": "field_level_v2"},
         "summary": {"accuracy": accuracy, "avg_tokens": avg_tokens,
-                    "n_correct": correct_count},
+                    "n_correct": correct_count,
+                    "avg_initial_tokens": sum(r["initial_generated_tokens"] for r in results) / len(results),
+                    "avg_forced_tokens": sum(r["forced_generated_tokens"] for r in results) / len(results),
+                    "avg_extended_tokens": sum(r["extended_generated_tokens"] for r in results) / len(results),
+                    "avg_injected_prompt_tokens": sum(r["injected_prompt_tokens"] for r in results) / len(results)},
         "per_sample": results,
     }
     with open(out_path, "w") as f:

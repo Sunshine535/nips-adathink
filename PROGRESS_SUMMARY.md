@@ -1,4 +1,10 @@
-# Progress Summary — 2026-04-24
+# Progress Summary
+
+> **2026-04-25 update**: RCV-IRIS frozen as **negative ablation** per GPT-5.5 Round 2 review. See `reports/FINAL_RCV_VERDICT.md`. Main paper rewrites pending: post-hoc/online accounting disclosure, budget-forcing rerun, related-work expansion, paper claim cleanup.
+>
+> **Canonical status: see `reports/FINAL_RCV_VERDICT.md` and `reports/REMAINING_RISKS.md`. Below sections may contain stale optimistic framing.**
+
+# Progress Summary — 2026-04-24 (HISTORICAL)
 
 ## Method: Coupling Tax + Mode-Conditioned Extraction (renamed from IRIS/TOWN)
 

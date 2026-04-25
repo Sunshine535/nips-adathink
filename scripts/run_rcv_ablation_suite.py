@@ -26,11 +26,29 @@ import argparse, glob, json, math, os, subprocess, sys
 
 
 def paired_analysis(all_results: dict):
-    """Compute paired McNemar and token audits across arms."""
+    """Compute paired McNemar and token audits across arms.
+
+    V2: Verifies same-sample via question_hash when available.
+    """
     arms = sorted(all_results.keys())
-    idxs = {a: {r["idx"]: r for r in all_results[a]["per_sample"]} for a in arms}
-    common_ids = set.intersection(*[set(idxs[a].keys()) for a in arms])
-    common = sorted(common_ids)
+    # Prefer hash join when V3 schema present
+    has_hash = all(
+        all_results[a]["per_sample"] and "question_hash" in all_results[a]["per_sample"][0]
+        for a in arms
+    )
+    if has_hash:
+        # Join by question_hash; verify all arms see same hash set
+        idxs = {a: {r["question_hash"]: r for r in all_results[a]["per_sample"]} for a in arms}
+        all_hashes = [set(idxs[a].keys()) for a in arms]
+        common_ids = set.intersection(*all_hashes)
+        common = sorted(common_ids)
+        print(f"[hash-join] {len(common)} samples common across {len(arms)} arms")
+    else:
+        # Legacy: idx join (V2 result files)
+        idxs = {a: {r["idx"]: r for r in all_results[a]["per_sample"]} for a in arms}
+        common_ids = set.intersection(*[set(idxs[a].keys()) for a in arms])
+        common = sorted(common_ids)
+        print(f"[legacy idx-join, no hash verification] {len(common)} samples")
 
     # Verify same samples
     if len(common) != len(all_results[arms[0]]["per_sample"]):
@@ -112,11 +130,17 @@ def paired_analysis(all_results: dict):
 
 
 def run_from_results(result_files: list):
+    """V2: Reject duplicate variant files (would silently overwrite)."""
     all_results = {}
     for f in result_files:
         with open(f) as fh:
             d = json.load(fh)
         variant = d["meta"]["variant"]
+        if variant in all_results:
+            raise ValueError(f"Duplicate variant {variant} found: "
+                             f"{all_results[variant].get('_source', '?')} vs {f}. "
+                             f"Clean output dir or specify exact files.")
+        d["_source"] = f
         all_results[variant] = d
     return paired_analysis(all_results)
 

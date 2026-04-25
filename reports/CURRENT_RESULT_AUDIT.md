@@ -1,5 +1,9 @@
 # Current Result Audit
 
+> **CANONICAL STATUS REFERENCE: `reports/FINAL_RCV_VERDICT.md` (2026-04-25)**. RCV is a negative ablation. Main contributions: Coupling Tax phenomenon + factorial interaction + decoupled extraction.
+
+
+
 ## Result Reliability Ledger
 
 | Result | File | Dataset | Config | Seed | Metric | Value | Compared Against | Supports GPT-5.5 Diagnosis? | Notes |

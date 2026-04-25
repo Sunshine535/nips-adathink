@@ -1,5 +1,9 @@
 # Patch Summary
 
+> **SUPERSEDED BY `reports/FINAL_RCV_VERDICT.md` (2026-04-25)**. The "b512 in progress" notes below are stale; b512 completed with 0 discordant for all variants. RCV is dropped as main method.
+
+
+
 ## Files Changed
 
 - `scripts/run_budget_forcing.py`: fix token undercount (returns `total_generated`, not `gen_len`)

@@ -1,5 +1,9 @@
 # Minimal Experiment Results
 
+> **SUPERSEDED BY `reports/FINAL_RCV_VERDICT.md` and `results/rcv_v2_b512/ablation_suite_report.json` (2026-04-25)**. b512 RCV experiments all completed with 0 discordant pairs (V2 honest accounting). RCV frozen as negative ablation.
+
+
+
 | Experiment | Command | Config | Dataset | Seed | Metric | Result | Expected | Pass/Fail | Interpretation |
 |------------|---------|--------|---------|------|--------|--------|----------|-----------|----------------|
 | smoke test (imports+run) | `python3 scripts/run_rcv_iris.py --n_samples 2 --b1 64 --b2_max 128 --b_answer 64` | tiny | GSM8K | 42 | no crash | ✓ | JSON written | **PASS** | Code runs |

@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""RCV-IRIS: Recoverability-Calibrated Verifier IRIS.
+"""RCV-IRIS: NEGATIVE ABLATION (NOT MAIN METHOD).
+
+** STATUS: feature-based RCV variants are negative ablations per GPT-5.5 Round 2
+   review. A/B/C/D all produced 41.0% on MATH-500 n=200 seed=42 with 0
+   discordant pairs. See reports/FINAL_RCV_VERDICT.md. **
 
 V2 (GPT-5.5 review fixes):
 - A (existing_fragment): ONLY strict probe, no soft probe. Pure old IRIS.
@@ -180,8 +184,13 @@ def run_rcv_sample(model, tok, item, args):
     bm = args.benchmark
     variant = args.variant
 
+    import hashlib
+    q_hash = hashlib.sha256(item["q"].encode("utf-8")).hexdigest()
+    g_hash = hashlib.sha256(str(item["gold"]).encode("utf-8")).hexdigest()
     r = {
         "idx": item["idx"], "order": item.get("order", item["idx"]),
+        "manifest_order": item.get("order", item["idx"]),
+        "question_hash": q_hash, "gold_hash": g_hash,
         "gold": item["gold"],
         "stage0_tokens": 0, "stage2_tokens": 0,
         "strict_probe_tokens": 0, "soft_probe_tokens": 0,
@@ -367,9 +376,12 @@ def main():
     p.add_argument("--seed", type=int, default=42)
     p.add_argument("--sample_manifest", type=str, default=None,
                    help="V2: Path to canonical sample manifest (enforces same-sample)")
-    p.add_argument("--variant", default="full_rcv",
+    p.add_argument("--variant", default="existing_fragment",
                    choices=["existing_fragment", "rcv_no_gate", "full_rcv",
-                            "stage0_only", "recover_only", "full_rcv_majvote"])
+                            "stage0_only", "recover_only", "full_rcv_majvote"],
+                   help="NEGATIVE ABLATION variants. Default is existing_fragment "
+                        "(no gate). full_rcv* are kept for ablation reproducibility "
+                        "only — see reports/FINAL_RCV_VERDICT.md.")
     p.add_argument("--fallback_action", default="town_parse",
                    choices=["town_parse", "majority_vote"],
                    help="V3: fallback action when recoverability gate rejects extraction")
@@ -397,6 +409,11 @@ def main():
     else:
         items = load_benchmark(args.benchmark, args.n_samples, args.seed)
     log.info(f"Loaded {len(items)} items, variant={args.variant}")
+    if args.variant in ("full_rcv", "full_rcv_majvote", "stage0_only", "recover_only"):
+        log.warning("=" * 60)
+        log.warning("RCV gate variants are NEGATIVE ABLATIONS, not the main method.")
+        log.warning("See reports/FINAL_RCV_VERDICT.md for evidence.")
+        log.warning("=" * 60)
     os.makedirs(args.output_dir, exist_ok=True)
     ts = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
 
@@ -436,9 +453,12 @@ def main():
                  "n": n, "seed": args.seed, "variant": args.variant,
                  "b1": args.b1, "b2_max": args.b2_max, "b_answer": args.b_answer,
                  "tau_accept": args.tau_accept, "tau_recover": args.tau_recover,
-                 "timestamp": ts, "schema_version": 2,
+                 "timestamp": ts, "schema_version": 3,
                  "sample_manifest": args.sample_manifest,
-                 "manifest_meta": manifest_meta},
+                 "manifest_meta": manifest_meta,
+                 "method_status": "negative_ablation"
+                                  if args.variant != "existing_fragment"
+                                  else "baseline_no_rcv"},
         "accuracy": n_correct / n,
         "avg_tokens": total_tokens / n,
         "n_correct": n_correct,
