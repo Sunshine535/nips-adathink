@@ -1,0 +1,23 @@
+{
+  "n_common": 50,
+  "arms": [
+    "prefix_conditioned",
+    "question_only"
+  ],
+  "accuracy": {
+    "prefix_conditioned": 0.02,
+    "question_only": 0.02
+  },
+  "avg_tokens": {
+    "prefix_conditioned": 640.0,
+    "question_only": 128.0
+  },
+  "pairwise": {
+    "prefix_conditioned_vs_question_only": {
+      "prefix_conditioned_only": 1,
+      "question_only_only": 1,
+      "discordant": 2,
+      "mcnemar_p": 1.0
+    }
+  }
+}
