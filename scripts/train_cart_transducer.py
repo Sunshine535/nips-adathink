@@ -102,7 +102,7 @@ def collate_fn(batch):
             "labels": labels}
 
 
-def train(model, tokenizer, dataset, cfg, output_dir, max_steps, overfit_one_batch):
+def train(model, tokenizer, dataset, cfg, output_dir, max_steps, overfit_one_batch, eval_generate_every=0):
     os.makedirs(output_dir, exist_ok=True)
 
     loader = DataLoader(dataset, batch_size=cfg.get("batch_size", 4),
@@ -145,6 +145,18 @@ def train(model, tokenizer, dataset, cfg, output_dir, max_steps, overfit_one_bat
         if step % 10 == 0 or step == 1:
             log.info(f"Step {step}/{max_steps}: loss={loss.item():.4f}")
 
+        # Generation EM check during overfit
+        if eval_generate_every > 0 and step % eval_generate_every == 0 and overfit_one_batch:
+            model.eval()
+            with torch.no_grad():
+                gen_out = model.generate(
+                    input_ids=fixed_batch["input_ids"][:1, :fixed_batch["input_ids"].shape[1]//2],
+                    max_new_tokens=128, do_sample=False,
+                    pad_token_id=tokenizer.eos_token_id)
+                gen_text = tokenizer.decode(gen_out[0], skip_special_tokens=True)
+                log.info(f"  [gen@{step}] output: {gen_text[-200:]}")
+            model.train()
+
     # Save adapter
     if hasattr(model, "save_pretrained"):
         model.save_pretrained(output_dir)
@@ -170,6 +182,8 @@ def main():
     p.add_argument("--output_dir", default="checkpoints/cart/debug_overfit")
     p.add_argument("--max_steps", type=int, default=100)
     p.add_argument("--overfit_one_batch", action="store_true")
+    p.add_argument("--eval_generate_every", type=int, default=0,
+                   help="Evaluate generation EM every N steps during overfit (0=disabled)")
     p.add_argument("--model", default=None)
     args = p.parse_args()
 
@@ -211,7 +225,8 @@ def main():
 
     losses = train(model, tokenizer, dataset, training_cfg,
                    args.output_dir, args.max_steps,
-                   args.overfit_one_batch or training_cfg.get("overfit_one_batch", False))
+                   args.overfit_one_batch or training_cfg.get("overfit_one_batch", False),
+                   eval_generate_every=args.eval_generate_every)
 
     # Report
     report = {

@@ -64,3 +64,16 @@ All RCV variants (V1 and V2) are **permanently frozen as negative ablations**:
 - Root cause: truncated prefix lacks answer info; no post-hoc method helps
 
 Successor path: CART-IRIS (learned transducer, not heuristic gate).
+
+## INITIAL_CART_BUG_BLOCKED (2026-04-26, commit 3f09be5)
+
+Results in `results/cart/ablation_n50/` are **implementation-blocked, NOT method-falsifying**:
+- GSM8K-trained LoRA evaluated on MATH-500: question_only 2%, prefix_conditioned 2%
+- **Missing true A arm**: suite report only has `question_only` and `prefix_conditioned`, not `existing_fragment`
+- **Missing D arm**: no `full_cart` with online readiness/reservation
+- **Silent checkpoint fallback**: eval catches LoRA load failure and continues with base model
+- **Domain mismatch**: LoRA trained on GSM8K arithmetic, evaluated on MATH algebra/geometry
+- **Loss-only overfit**: no generation accuracy verified
+
+These results show implementation bugs, NOT that CART as a mechanism fails.
+Corrected CART-v2 must: train on MATH domain, verify generation EM, hard-fail on checkpoint load, include all 4 A/B/C/D arms.

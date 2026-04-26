@@ -2,21 +2,16 @@
 
 ## Git identity
 CURRENT_BRANCH=main
-LOCAL_COMMIT=0a940c7f695fd287a21488c1aab3b610f155a445
-LOCAL_COMMIT_TIME=2026-04-25T20:35:25+08:00
-LOCAL_COMMIT_MESSAGE=data: budget forcing V2 rerun complete — IRIS Pareto-dominates both s1 variants
+LOCAL_COMMIT=3f09be5b47e1505a19c0ecaebac6c98e68352f12
+LOCAL_COMMIT_TIME=2026-04-26T10:43:55+08:00
+LOCAL_COMMIT_MESSAGE=data: CART-IRIS initial A/B/C — GSM8K-trained LoRA fails on MATH-500
 
 ## Working tree
+ M reports/CONVERSATION_REVIEW_VERSION.md
 ?? .claude/
-?? reports/CONVERSATION_REVIEW_VERSION.md
 
 ## Diff hash
-DIFF_HASH=NO_CODE_DIFF
-
-## Result/report artifact hash
-ARTIFACT_HASH=NO_REPORT_RESULT_LOG_FILES_FOUND
-
-## Review package files
+DIFF_HASH=HAS_UNCOMMITTED
 
 ## Status
 NEW_VERSION_UNREVIEWED

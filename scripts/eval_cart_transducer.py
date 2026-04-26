@@ -131,12 +131,15 @@ def main():
         trust_remote_code=True)
 
     if args.checkpoint:
-        try:
-            from peft import PeftModel
-            log.info(f"Loading LoRA from {args.checkpoint}")
-            model = PeftModel.from_pretrained(model, args.checkpoint)
-        except Exception as e:
-            log.warning(f"Could not load LoRA: {e}. Using base model.")
+        from peft import PeftModel
+        log.info(f"Loading LoRA from {args.checkpoint}")
+        model = PeftModel.from_pretrained(model, args.checkpoint)
+        trainable = sum(p.numel() for p in model.parameters() if p.requires_grad)
+        log.info(f"LoRA loaded: {trainable:,} trainable params")
+        checkpoint_loaded = True
+    else:
+        checkpoint_loaded = False
+        log.info("No checkpoint — using base model only")
     model.eval()
 
     items = load_eval_data(args.benchmark, args.n_samples, args.seed)
@@ -171,6 +174,8 @@ def main():
             "prefix_tokens": prefix_tok, "answer_tokens": answer_tok,
             "total_tokens": sample_tok,
             "trace_conditioned": args.trace_conditioned,
+            "checkpoint_requested": args.checkpoint,
+            "checkpoint_loaded": checkpoint_loaded,
         })
 
         if (i + 1) % 10 == 0:

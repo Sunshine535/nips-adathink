@@ -122,11 +122,15 @@ def main():
         trace, trace_len = generate_thinking_trace(
             model, tok, item["q"], args.max_trace_tokens)
 
+        # Tokenize trace for accurate token-level truncation
+        trace_token_ids = tok.encode(trace, add_special_tokens=False)
+        actual_trace_token_len = len(trace_token_ids)
+
         for frac in fractions:
-            trunc_len = max(1, int(trace_len * frac))
-            # Truncate at character level (approximate token boundary)
-            char_frac = int(len(trace) * frac)
-            prefix = trace[:char_frac]
+            trunc_tok_len = max(1, int(actual_trace_token_len * frac))
+            # Truncate at TOKEN level, then decode back
+            prefix_ids = trace_token_ids[:trunc_tok_len]
+            prefix = tok.decode(prefix_ids, skip_special_tokens=True)
 
             record = {
                 "dataset": item["dataset"],
@@ -134,13 +138,15 @@ def main():
                 "sample_id": item["idx"],
                 "question_hash": item["question_hash"],
                 "gold_hash": item["gold_hash"],
-                "prefix_token_len": trunc_len,
+                "prefix_token_len": trunc_tok_len,
+                "prefix_token_ids_len_actual": trunc_tok_len,
                 "truncation_fraction": frac,
-                "remaining_budget": args.max_trace_tokens - trunc_len,
+                "remaining_budget": args.max_trace_tokens - trunc_tok_len,
                 "question": item["q"],
                 "reasoning_prefix": prefix,
                 "gold_answer": item["gold"],
-                "full_trace_len": trace_len,
+                "full_trace_token_len": actual_trace_token_len,
+                "full_trace_gen_len": trace_len,
                 "source_trace_id": f"{item['idx']}_{args.seed}",
             }
             records.append(record)
