@@ -1,0 +1,39 @@
+{
+  "n_common": 50,
+  "arms": [
+    "cart_prefix_conditioned",
+    "cart_question_only",
+    "existing_fragment"
+  ],
+  "join_type": "hash-join",
+  "accuracy": {
+    "cart_prefix_conditioned": 0.26,
+    "cart_question_only": 0.02,
+    "existing_fragment": 0.2
+  },
+  "avg_tokens": {
+    "cart_prefix_conditioned": 633.06,
+    "cart_question_only": 109.46,
+    "existing_fragment": 625.94
+  },
+  "pairwise": {
+    "cart_prefix_conditioned_vs_cart_question_only": {
+      "cart_prefix_conditioned_only": 12,
+      "cart_question_only_only": 0,
+      "discordant": 12,
+      "mcnemar_p": 0.0005
+    },
+    "cart_prefix_conditioned_vs_existing_fragment": {
+      "cart_prefix_conditioned_only": 6,
+      "existing_fragment_only": 3,
+      "discordant": 9,
+      "mcnemar_p": 0.5078
+    },
+    "cart_question_only_vs_existing_fragment": {
+      "cart_question_only_only": 0,
+      "existing_fragment_only": 9,
+      "discordant": 9,
+      "mcnemar_p": 0.0039
+    }
+  }
+}
