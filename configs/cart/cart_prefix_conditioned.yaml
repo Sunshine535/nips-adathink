@@ -1,0 +1,17 @@
+method_name: cart_transducer_only
+mechanism_enabled: true
+cart_transducer_enabled: true
+trace_conditioned: true
+online_readiness_enabled: false
+use_old_stage3_prompt: false
+dataset: math500
+seed: 42
+metric: exact_match_normalized_math
+model: Qwen/Qwen3-8B
+checkpoint_path: checkpoints/cart/dev
+output_dir: results/cart/cart_transducer_only
+logging:
+  save_per_sample: true
+  save_question_hash: true
+  save_token_breakdown: true
+  save_trace_use_counterfactual: true
