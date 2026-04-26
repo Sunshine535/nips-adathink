@@ -59,11 +59,19 @@ def load_train_data(benchmark, n_samples, seed):
         for k, i in enumerate(idxs[:n_samples]):
             raw = ds[i]
             q = raw["problem"]
-            gold = str(raw["solution"])  # hendrycks_math uses "solution" not "answer"
-            out.append({"q": q, "gold": gold, "idx": i,
+            full_solution = str(raw["solution"])
+            # V3: Extract final answer from solution (boxed or last expression)
+            import re as _re
+            boxed_match = _re.findall(r'\\boxed\{([^}]+)\}', full_solution)
+            if boxed_match:
+                final_answer = boxed_match[-1]  # last boxed expression
+            else:
+                final_answer = full_solution.strip().split('\n')[-1].strip()
+            out.append({"q": q, "gold": final_answer, "gold_solution": full_solution,
+                        "idx": i,
                         "dataset": "EleutherAI/hendrycks_math", "split": "train",
                         "question_hash": hash_str(q),
-                        "gold_hash": hash_str(gold)})
+                        "gold_hash": hash_str(final_answer)})
         return out
     else:
         raise ValueError(f"Unsupported benchmark: {benchmark}")

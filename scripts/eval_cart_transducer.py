@@ -1,15 +1,17 @@
 #!/usr/bin/env python3
-"""Evaluate CART transducer on eval benchmark.
+"""Evaluate CART transducer — V3 with frozen-prefix and arm_name.
 
-Two modes:
-  - question_only: input question, no prefix
-  - prefix_conditioned: input question + truncated reasoning prefix
+Fixes from GPT-5.5:
+- arm_name in output meta (not just mode)
+- prefix_generator: base model generates prefix, LoRA only for answer (default)
+- checkpoint hard-fail (no silent fallback)
+- checkpoint_loaded logged per sample
 
 Usage:
     python3 scripts/eval_cart_transducer.py \
         --model Qwen/Qwen3-8B --checkpoint checkpoints/cart/dev \
         --benchmark math500 --n_samples 50 --seed 42 \
-        --trace_conditioned --b2_max 512 --output_dir results/cart/eval
+        --trace_conditioned --b2_max 512 --arm_name cart_prefix_conditioned
 """
 import argparse, hashlib, json, logging, os, random, re, sys, time
 from datetime import datetime, timezone
@@ -42,6 +44,7 @@ def load_eval_data(benchmark, n, seed):
 
 
 def generate_thinking_trace(model, tok, question, max_tokens):
+    """Generate thinking trace using the given model (should be BASE for clean ablation)."""
     messages = [{"role": "system", "content": "You are a careful math solver. Think step by step."},
                 {"role": "user", "content": question}]
     try:
@@ -110,40 +113,69 @@ def check_correct(pred, gold, benchmark):
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("--model", default="Qwen/Qwen3-8B")
-    p.add_argument("--checkpoint", default=None,
-                   help="LoRA checkpoint dir (None = base model only)")
+    p.add_argument("--checkpoint", default=None)
     p.add_argument("--benchmark", default="math500", choices=["math500", "gsm8k"])
     p.add_argument("--n_samples", type=int, default=50)
     p.add_argument("--seed", type=int, default=42)
     p.add_argument("--trace_conditioned", action="store_true")
-    p.add_argument("--b2_max", type=int, default=512,
-                   help="Budget for thinking trace generation")
+    p.add_argument("--b2_max", type=int, default=512)
     p.add_argument("--b_answer", type=int, default=128)
+    p.add_argument("--arm_name", default=None,
+                   help="V3: explicit arm name for ablation report")
+    p.add_argument("--prefix_generator", default="base",
+                   choices=["base", "answer_model"],
+                   help="V3: who generates prefix. 'base'=frozen base model (clean)")
     p.add_argument("--output_dir", default="results/cart/eval")
     args = p.parse_args()
 
     random.seed(args.seed); torch.manual_seed(args.seed)
 
+    # Determine arm_name
+    if args.arm_name:
+        arm_name = args.arm_name
+    elif args.checkpoint and args.trace_conditioned:
+        arm_name = "cart_prefix_conditioned"
+    elif args.checkpoint:
+        arm_name = "cart_question_only"
+    else:
+        arm_name = "existing_fragment"
+
+    # Determine mode for backward compat
+    mode = "prefix_conditioned" if args.trace_conditioned else "question_only"
+
     log.info(f"Loading {args.model}...")
     tok = AutoTokenizer.from_pretrained(args.model, trust_remote_code=True)
-    model = AutoModelForCausalLM.from_pretrained(
+
+    # V3: Load base model first (always needed for prefix generation)
+    base_model = AutoModelForCausalLM.from_pretrained(
         args.model, torch_dtype=torch.bfloat16, device_map="auto",
         trust_remote_code=True)
+    base_model.eval()
 
+    # V3: Load answer model (base + LoRA if checkpoint provided)
     if args.checkpoint:
         from peft import PeftModel
         log.info(f"Loading LoRA from {args.checkpoint}")
-        model = PeftModel.from_pretrained(model, args.checkpoint)
-        trainable = sum(p.numel() for p in model.parameters() if p.requires_grad)
+        answer_model = PeftModel.from_pretrained(base_model, args.checkpoint)
+        trainable = sum(p.numel() for p in answer_model.parameters() if p.requires_grad)
         log.info(f"LoRA loaded: {trainable:,} trainable params")
         checkpoint_loaded = True
+        answer_model.eval()
     else:
+        answer_model = base_model
         checkpoint_loaded = False
-        log.info("No checkpoint — using base model only")
-    model.eval()
+        log.info("No checkpoint — using base model for answers")
+
+    # V3: Decide prefix generator
+    if args.prefix_generator == "base":
+        prefix_model = base_model
+        log.info("Prefix generator: BASE model (frozen, clean ablation)")
+    else:
+        prefix_model = answer_model
+        log.info("Prefix generator: ANSWER model (LoRA-loaded, confounded)")
 
     items = load_eval_data(args.benchmark, args.n_samples, args.seed)
-    log.info(f"Loaded {len(items)} eval items, trace_conditioned={args.trace_conditioned}")
+    log.info(f"Loaded {len(items)} eval items, arm={arm_name}, prefix_gen={args.prefix_generator}")
     os.makedirs(args.output_dir, exist_ok=True)
     ts = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
 
@@ -156,10 +188,10 @@ def main():
         prefix_tok = 0
         if args.trace_conditioned:
             prefix, prefix_tok = generate_thinking_trace(
-                model, tok, item["q"], args.b2_max)
+                prefix_model, tok, item["q"], args.b2_max)
 
         answer_text, answer_tok = transducer_generate(
-            model, tok, item["q"], prefix, args.b_answer, args.trace_conditioned)
+            answer_model, tok, item["q"], prefix, args.b_answer, args.trace_conditioned)
         pred, src = parse_answer(answer_text, args.benchmark)
         correct = check_correct(pred, item["gold"], args.benchmark)
         if correct: n_correct += 1
@@ -173,7 +205,9 @@ def main():
             "correct": correct,
             "prefix_tokens": prefix_tok, "answer_tokens": answer_tok,
             "total_tokens": sample_tok,
+            "arm_name": arm_name,
             "trace_conditioned": args.trace_conditioned,
+            "prefix_generator": args.prefix_generator,
             "checkpoint_requested": args.checkpoint,
             "checkpoint_loaded": checkpoint_loaded,
         })
@@ -183,23 +217,25 @@ def main():
             log.info(f"[{i+1}/{len(items)}] acc={acc*100:.1f}% avg_tok={total_tok/(i+1):.0f}")
 
     n = len(results)
-    mode = "prefix_conditioned" if args.trace_conditioned else "question_only"
     summary = {
         "meta": {"model": args.model, "checkpoint": args.checkpoint,
                  "benchmark": args.benchmark, "n": n, "seed": args.seed,
-                 "mode": mode, "b2_max": args.b2_max, "b_answer": args.b_answer,
-                 "timestamp": ts},
+                 "mode": mode, "arm_name": arm_name,
+                 "prefix_generator": args.prefix_generator,
+                 "checkpoint_loaded": checkpoint_loaded,
+                 "b2_max": args.b2_max, "b_answer": args.b_answer,
+                 "timestamp": ts, "schema_version": 3},
         "accuracy": n_correct / n,
         "avg_tokens": total_tok / n,
         "n_correct": n_correct,
         "per_sample": results,
     }
 
-    fname = f"cart_{mode}_{args.benchmark}_{ts}.json"
+    fname = f"cart_{arm_name}_{args.benchmark}_{ts}.json"
     with open(os.path.join(args.output_dir, fname), "w") as f:
         json.dump(summary, f, indent=2, default=str)
 
-    log.info(f"\n=== CART Eval ({mode}) ===")
+    log.info(f"\n=== CART Eval ({arm_name}, prefix_gen={args.prefix_generator}) ===")
     log.info(f"Accuracy: {n_correct}/{n} = {n_correct/n*100:.1f}%")
     log.info(f"Avg tokens: {total_tok/n:.0f}")
 
