@@ -8,10 +8,19 @@ dataset: math500
 seed: 42
 metric: exact_match_normalized_math
 model: Qwen/Qwen3-8B
-checkpoint_path: checkpoints/cart/dev
+checkpoint_path: checkpoints/cart/math_question_only_dev
 output_dir: results/cart/cart_question_only
+training:
+  max_steps: 200
+  batch_size: 1
+  learning_rate: 2.0e-4
+  lora_r: 16
+  lora_alpha: 32
+  lora_target_modules: ["q_proj", "k_proj", "v_proj", "o_proj"]
+  max_input_tokens: 1024
+  max_answer_tokens: 128
 logging:
   save_per_sample: true
   save_question_hash: true
   save_token_breakdown: true
-  save_transducer_logits_or_scores: true
+  save_checkpoint_loaded: true

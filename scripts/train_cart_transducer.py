@@ -200,6 +200,11 @@ def main():
         model_name, torch_dtype=torch.bfloat16, device_map="auto",
         trust_remote_code=True)
 
+    # Enable gradient checkpointing to save memory
+    if hasattr(model, "gradient_checkpointing_enable"):
+        model.gradient_checkpointing_enable()
+        log.info("Gradient checkpointing enabled")
+
     # Apply LoRA
     try:
         from peft import LoraConfig, get_peft_model
