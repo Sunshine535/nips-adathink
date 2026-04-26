@@ -45,17 +45,23 @@ def load_train_data(benchmark, n_samples, seed):
                         "gold_hash": hash_str(gold)})
         return out
     elif benchmark == "math":
-        ds = load_dataset("hendrycks/math", split="train",
-                          trust_remote_code=True)
+        # Load all MATH subjects and concatenate
+        from datasets import concatenate_datasets
+        subjects = ['algebra', 'counting_and_probability', 'geometry',
+                     'intermediate_algebra', 'number_theory', 'prealgebra', 'precalculus']
+        all_ds = []
+        for subj in subjects:
+            all_ds.append(load_dataset("EleutherAI/hendrycks_math", subj, split="train"))
+        ds = concatenate_datasets(all_ds)
         idxs = list(range(len(ds)))
         random.seed(seed); random.shuffle(idxs)
         out = []
         for k, i in enumerate(idxs[:n_samples]):
             raw = ds[i]
             q = raw["problem"]
-            gold = str(raw["answer"])
+            gold = str(raw["solution"])  # hendrycks_math uses "solution" not "answer"
             out.append({"q": q, "gold": gold, "idx": i,
-                        "dataset": "hendrycks/math", "split": "train",
+                        "dataset": "EleutherAI/hendrycks_math", "split": "train",
                         "question_hash": hash_str(q),
                         "gold_hash": hash_str(gold)})
         return out
