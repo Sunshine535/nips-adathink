@@ -460,19 +460,20 @@ def generate_decoupled_answer(
         "math500": {
             "strict": (
                 "You are an expert mathematician. I have done most of the reasoning already. "
-                "Your job is ONLY to extract or compute the final answer and output it in the form "
-                "\\boxed{ANSWER}. Do not re-solve or re-explain. Do not output anything after the \\boxed{}. "
-                "The answer may be a number, fraction, expression, or interval — use LaTeX format."
+                "Your job is ONLY to extract or compute the final answer. "
+                "Do not re-solve or re-explain. Output ONLY \\boxed{your_answer} and nothing else. "
+                "Examples: \\boxed{42}, \\boxed{\\frac{3}{4}}, \\boxed{x^2+1}, \\boxed{(0,2]}."
             ),
             "soft": (
                 "You are an expert mathematician. Use the reasoning above to produce the final answer. "
                 "If the reasoning is clear, just extract the answer; otherwise complete the computation briefly. "
-                "End with \\boxed{ANSWER} in LaTeX format (number, fraction, expression, or interval)."
+                "End with \\boxed{your_answer} in LaTeX. "
+                "Examples: \\boxed{42}, \\boxed{\\frac{3}{4}}, \\boxed{x^2+1}."
             ),
             "fewshot": (
                 "You are an expert mathematician. Use the reasoning above to produce the final answer. "
                 "If the reasoning is clear, just extract it; otherwise complete the computation briefly. "
-                "Always end with \\boxed{ANSWER} in LaTeX.\n\n"
+                "Always end with \\boxed{your_answer} in LaTeX.\n\n"
                 "Examples:\n"
                 "  Integer answer: \\boxed{42}\n"
                 "  Fraction: \\boxed{\\frac{3}{4}}\n"
@@ -512,9 +513,8 @@ def generate_decoupled_answer(
         clean_trace = clean_trace.strip()
 
         if clean_trace:
-            # Add the reasoning as context and ask for final answer
             if benchmark == "math500":
-                prompt = base_prompt + f"Based on my reasoning: {clean_trace}\n\nThe final answer is \\boxed{{"
+                prompt = base_prompt + f"Based on my reasoning: {clean_trace}\n\nThe final answer is "
             else:
                 prompt = base_prompt + f"Based on my reasoning: {clean_trace}\n\nFinal answer: "
         else:
@@ -674,17 +674,16 @@ def run_iris_sample(
     )
     pred_s3, source_s3 = parse_prediction_dispatch(answer_text, benchmark)
 
-    # Retry mechanism: if extraction fell back to last-number on math500, retry with doubled budget
+    # Retry mechanism for math500: if no boxed answer found, retry with doubled budget
     tokens_s3_retry = 0
     retry_used = False
-    if benchmark == "math500" and source_s3 == "fallback_last":
+    if benchmark == "math500" and source_s3 in ("fallback_last", "none", "final_marker"):
         retry_used = True
         answer_text2, tokens_s3_retry, _ = generate_decoupled_answer(
             model, tokenizer, question, thinking_trace,
             answer_budget=b_answer * 2, benchmark=benchmark,
         )
         pred_s3_retry, source_s3_retry = parse_prediction_dispatch(answer_text2, benchmark)
-        # Use retry if it produces a proper boxed answer
         if source_s3_retry == "boxed":
             answer_text = answer_text2
             pred_s3 = pred_s3_retry
@@ -841,10 +840,12 @@ def main():
                         help="Minimum chunks before allowing early stop")
     parser.add_argument("--total_budget_cap", type=int, default=None,
                         help="Total token budget cap (if set, enforces B1+B2+B3 <= cap)")
-    parser.add_argument("--online_stage2", action="store_true", default=False,
+    parser.add_argument("--online_stage2", action="store_true", default=True,
                         help="Use deployment-faithful chunk-by-chunk Stage 2 "
-                             "(n_tokens_generated == n_tokens_used); default is "
-                             "post-hoc trace-truncation accounting for analysis.")
+                             "(n_tokens_generated == n_tokens_used). Default: True.")
+    parser.add_argument("--posthoc_stage2", action="store_true", default=False,
+                        help="Override online_stage2 with post-hoc trace-truncation "
+                             "accounting (for analysis/ablation only).")
 
     # Also run TOWN for comparison
     parser.add_argument("--run_town", action="store_true", default=False,
@@ -894,7 +895,8 @@ def main():
             b1=args.b1, b2_max=args.b2_max, b_answer=args.b_answer,
             chunk_size=args.chunk_size, tau_h=args.tau_h, tau_s=args.tau_s,
             min_chunks=args.min_chunks, total_budget_cap=args.total_budget_cap,
-            benchmark=args.benchmark, online_stage2=args.online_stage2,
+            benchmark=args.benchmark,
+            online_stage2=args.online_stage2 and not args.posthoc_stage2,
         )
 
         correct = is_correct_dispatch(result["pred"], item["gold"], args.benchmark)

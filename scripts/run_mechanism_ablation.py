@@ -147,8 +147,9 @@ def extract_mode_switch(model, tokenizer, question, thinking_prefix, answer_budg
     if benchmark == "math500":
         system_text = (
             "You are an expert mathematician. I have done most of the reasoning already. "
-            "Your job is ONLY to extract or compute the final answer and output it in the form "
-            "\\boxed{ANSWER}. Do not re-solve or re-explain."
+            "Your job is ONLY to extract or compute the final answer. "
+            "Do not re-solve or re-explain. Output ONLY \\boxed{your_answer} and nothing else. "
+            "Examples: \\boxed{42}, \\boxed{\\frac{3}{4}}, \\boxed{x^2+1}."
         )
     else:
         system_text = (
@@ -170,7 +171,7 @@ def extract_mode_switch(model, tokenizer, question, thinking_prefix, answer_budg
 
     if clean_trace:
         if benchmark == "math500":
-            prompt = base_prompt + f"Based on my reasoning: {clean_trace}\n\nThe final answer is \\boxed{{"
+            prompt = base_prompt + f"Based on my reasoning: {clean_trace}\n\nThe final answer is "
         else:
             prompt = base_prompt + f"Based on my reasoning: {clean_trace}\n\nFinal answer: "
     else:

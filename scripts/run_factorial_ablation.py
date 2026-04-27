@@ -71,8 +71,9 @@ EXTRACTION_PROMPT = {
               "Your job is ONLY to extract the final numerical answer. "
               "End with: Final answer: <number>."),
     "math500": ("You are an expert mathematician. I have done most of the reasoning already. "
-                "Your job is ONLY to extract or compute the final answer and output it in the form "
-                "\\boxed{ANSWER}. Do not re-solve or re-explain."),
+                "Your job is ONLY to extract or compute the final answer. "
+                "Do not re-solve or re-explain. Output ONLY \\boxed{your_answer} and nothing else. "
+                "Examples: \\boxed{42}, \\boxed{\\frac{3}{4}}, \\boxed{x^2+1}."),
 }
 
 NEUTRAL_PROMPT = "You are a careful math solver."
@@ -88,7 +89,7 @@ def extract_with_condition(model, tok, question, thinking_prefix, answer_budget,
     if use_extraction_prompt:
         system_text = EXTRACTION_PROMPT[benchmark]
         if benchmark == "math500":
-            user_text = question + "\n\nHere is my partial reasoning:\n" + clean_trace + "\n\nThe final answer is \\boxed{"
+            user_text = question + "\n\nHere is my partial reasoning:\n" + clean_trace + "\n\nThe final answer is "
         else:
             user_text = question + "\n\nHere is my partial reasoning:\n" + clean_trace + "\n\nFinal answer: "
     else:

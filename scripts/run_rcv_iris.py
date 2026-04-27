@@ -122,8 +122,9 @@ def generate_extraction(model, tok, question, prefix, budget, benchmark, prompt_
     if prompt_type == "strict":
         if benchmark == "math500":
             sys_text = ("You are an expert mathematician. I have done most of the reasoning. "
-                        "Your job is ONLY to extract or compute the final answer and output "
-                        "\\boxed{ANSWER}. Do not re-solve.")
+                        "Your job is ONLY to extract or compute the final answer. "
+                        "Do not re-solve. Output ONLY \\boxed{your_answer} and nothing else. "
+                        "Examples: \\boxed{42}, \\boxed{\\frac{3}{4}}, \\boxed{x^2+1}.")
         else:
             sys_text = ("You are a careful math solver. Extract the final numerical answer. "
                         "End with: Final answer: <number>.")
@@ -142,7 +143,7 @@ def generate_extraction(model, tok, question, prefix, budget, benchmark, prompt_
 
     if clean:
         if benchmark == "math500":
-            prompt = base + f"Based on my reasoning: {clean}\n\nThe final answer is \\boxed{{"
+            prompt = base + f"Based on my reasoning: {clean}\n\nThe final answer is "
         else:
             prompt = base + f"Based on my reasoning: {clean}\n\nFinal answer: "
     else:

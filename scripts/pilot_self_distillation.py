@@ -209,7 +209,7 @@ def generate_decoupled_from_trace(
         )
 
     if benchmark == "math500":
-        suffix = f"Based on my reasoning: {clean_trace}\n\nThe final answer is \\boxed{{"
+        suffix = f"Based on my reasoning: {clean_trace}\n\nThe final answer is "
     else:
         suffix = f"Based on my reasoning: {clean_trace}\n\nFinal answer: "
     prompt = base_nothink_prompt + suffix
