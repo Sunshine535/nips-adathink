@@ -286,9 +286,7 @@ def generate_adaptive_thinking(
         if ids:
             think_end_ids.add(ids[0])
 
-    # Generate full sequence with internals
-    # We generate all at once with max budget, then analyze the trace
-    # to find the optimal stopping point (more efficient than iterative generation)
+    fast = os.environ.get("IRIS_FAST_STAGE2", "") == "1"
     start = time.perf_counter()
     with torch.no_grad():
         outputs = model.generate(
@@ -297,8 +295,8 @@ def generate_adaptive_thinking(
             do_sample=False,
             pad_token_id=tokenizer.eos_token_id,
             eos_token_id=tokenizer.eos_token_id,
-            output_scores=True,
-            output_hidden_states=True,
+            output_scores=not fast,
+            output_hidden_states=not fast,
             return_dict_in_generate=True,
         )
     if target_device.type == "cuda":
@@ -310,50 +308,42 @@ def generate_adaptive_thinking(
     n_tokens = int(gen_ids.shape[0])
     full_text = tokenizer.decode(gen_ids, skip_special_tokens=False)
 
-    # --- Compute per-chunk entropy and stability ---
-    n_chunks = max(1, n_tokens // chunk_size)
     chunk_entropies = []
-    chunk_max_probs = []
-    chunk_think_end_probs = []
+    chunk_stabilities = []
     per_token_entropy = []
 
-    for step_idx, score in enumerate(outputs.scores):
-        logits = score[0].float()
-        probs = torch.softmax(logits, dim=-1)
-        H = -(probs * torch.log(probs + 1e-10)).sum().item()
-        per_token_entropy.append(H)
+    if not fast and hasattr(outputs, "scores") and outputs.scores:
+        for step_idx, score in enumerate(outputs.scores):
+            logits = score[0].float()
+            probs = torch.softmax(logits, dim=-1)
+            H = -(probs * torch.log(probs + 1e-10)).sum().item()
+            per_token_entropy.append(H)
+        for c in range(0, n_tokens, chunk_size):
+            c_end = min(c + chunk_size, n_tokens)
+            chunk_H = per_token_entropy[c:c_end]
+            chunk_entropies.append(float(np.mean(chunk_H)) if chunk_H else 0.0)
 
-    # Aggregate into chunks
-    for c in range(0, n_tokens, chunk_size):
-        c_end = min(c + chunk_size, n_tokens)
-        chunk_H = per_token_entropy[c:c_end]
-        chunk_entropies.append(float(np.mean(chunk_H)) if chunk_H else 0.0)
-
-    # Hidden-state stability per chunk
-    chunk_stabilities = []
-    last_layer_hiddens = []
-    if outputs.hidden_states is not None:
-        for step_idx, layer_states in enumerate(outputs.hidden_states):
-            if isinstance(layer_states, tuple) and len(layer_states) > 0:
-                last_h = layer_states[-1]
-                if last_h.dim() == 3:
-                    last_h = last_h[0, -1, :].float().cpu()
-                elif last_h.dim() == 2:
-                    last_h = last_h[-1, :].float().cpu()
-                else:
-                    last_h = last_h.float().cpu()
-                last_layer_hiddens.append(last_h)
-
-    for c in range(0, len(last_layer_hiddens), chunk_size):
-        c_end = min(c + chunk_size, len(last_layer_hiddens))
-        if c_end <= c:
-            break
-        h_start = last_layer_hiddens[c]
-        h_end = last_layer_hiddens[c_end - 1]
-        S = torch.norm(h_end - h_start, p=2).item()
-        chunk_stabilities.append(S)
-
-    del last_layer_hiddens
+        last_layer_hiddens = []
+        if outputs.hidden_states is not None:
+            for step_idx, layer_states in enumerate(outputs.hidden_states):
+                if isinstance(layer_states, tuple) and len(layer_states) > 0:
+                    last_h = layer_states[-1]
+                    if last_h.dim() == 3:
+                        last_h = last_h[0, -1, :].float().cpu()
+                    elif last_h.dim() == 2:
+                        last_h = last_h[-1, :].float().cpu()
+                    else:
+                        last_h = last_h.float().cpu()
+                    last_layer_hiddens.append(last_h)
+        for c in range(0, len(last_layer_hiddens), chunk_size):
+            c_end = min(c + chunk_size, len(last_layer_hiddens))
+            if c_end <= c:
+                break
+            h_start = last_layer_hiddens[c]
+            h_end = last_layer_hiddens[c_end - 1]
+            S = torch.norm(h_end - h_start, p=2).item()
+            chunk_stabilities.append(S)
+        del last_layer_hiddens
 
     # --- Find optimal stopping point ---
     # The "IRIS stopping point" is the earliest chunk >= min_chunks where
